@@ -30,12 +30,27 @@ function initStickyHeader() {
     }
   });
 
-  // Mobile menu toggle
+  // Mobile menu toggle & close on link or outside click
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const mainNav = document.getElementById('mainNav');
   if (mobileBtn && mainNav) {
-    mobileBtn.addEventListener('click', () => {
+    mobileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       mainNav.classList.toggle('show-mobile');
+    });
+
+    // Close when clicking any nav link
+    mainNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('show-mobile');
+      });
+    });
+
+    // Close when tapping outside
+    document.addEventListener('click', (e) => {
+      if (!mainNav.contains(e.target) && !mobileBtn.contains(e.target)) {
+        mainNav.classList.remove('show-mobile');
+      }
     });
   }
 }

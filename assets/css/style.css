@@ -348,6 +348,10 @@ a {
   50% { box-shadow: 0 0 10px rgba(0, 230, 118, 0.5); }
 }
 
+.mobile-only-cta {
+  display: none;
+}
+
 /* Header CTAs */
 .header-actions {
   display: flex;
@@ -1838,8 +1842,10 @@ a {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN (MEDIA QUERIES)
+   RESPONSIVE DESIGN (MEDIA QUERIES FOR PHONES & TABLETS)
    ========================================================================== */
+
+/* Universal Mobile Fixes */
 @media (max-width: 1100px) {
   .hero-grid {
     grid-template-columns: 1fr;
@@ -1861,27 +1867,67 @@ a {
   }
 }
 
+/* Tablet & Mobile Screens (<= 860px) */
 @media (max-width: 860px) {
-  .header-inner {
-    height: 64px;
+  .top-utility-inner {
+    padding: 0 16px;
+    gap: 10px;
+    flex-wrap: wrap;
   }
+  .utility-tags {
+    gap: 8px;
+    font-size: 11px;
+  }
+  .utility-btn kbd {
+    display: none;
+  }
+
+  .header-inner {
+    height: 62px;
+    padding: 0 16px;
+  }
+  .brand-crest {
+    gap: 10px;
+  }
+  .crest-shield {
+    width: 38px;
+    height: 44px;
+  }
+  .brand-title {
+    font-size: 22px;
+  }
+  .brand-subtitle {
+    font-size: 9.5px;
+  }
+
+  /* Mobile Navigation Drawer */
   .main-nav {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: #0A130E;
+    background: rgba(8, 16, 11, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 2px solid var(--brand-primary);
-    padding: 16px;
+    padding: 16px 20px 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85);
+    z-index: 99;
   }
   .main-nav.show-mobile {
     display: block;
+    animation: drawer-slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  @keyframes drawer-slide-down {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .nav-list {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    align-items: stretch;
+    gap: 6px;
   }
   .nav-item {
     height: auto;
@@ -1889,21 +1935,82 @@ a {
   }
   .nav-link {
     height: auto;
-    padding: 10px 0;
+    padding: 12px 14px;
     width: 100%;
+    border-radius: 4px;
+    font-size: 14px;
+    justify-content: space-between;
+    background: var(--bg-surface);
+    border: 1px solid var(--line-base);
   }
-  .mobile-menu-btn {
+  .nav-link::after {
+    display: none;
+  }
+  .nav-link:hover,
+  .nav-link.active {
+    background: var(--brand-forest);
+    border-color: var(--brand-primary);
+    color: var(--brand-volt);
+  }
+
+  .mobile-only-cta {
     display: block;
   }
-  .arena-viewport {
-    height: 480px;
+
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 20px 16px 36px;
+  }
+  .hero-main-card {
+    min-height: 420px;
+    padding: 24px 20px;
   }
   .hero-title {
-    font-size: 28px;
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+  .hero-desc {
+    font-size: 13.5px;
+    margin-bottom: 18px;
+  }
+
+  /* Simulator Arena */
+  .arena-viewport {
+    height: 420px;
+  }
+
+  /* Section Containers */
+  .section-container {
+    padding: 44px 16px;
+    scroll-margin-top: 72px;
+  }
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
   }
   .section-title {
-    font-size: 26px;
+    font-size: 24px;
   }
+  .section-filters {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filter-btn {
+    white-space: nowrap;
+    flex: none;
+  }
+
   .curriculum-grid,
   .docs-grid,
   .resources-grid {
@@ -1911,5 +2018,274 @@ a {
   }
   .footer-top-grid {
     grid-template-columns: 1fr;
+    gap: 28px;
   }
 }
+
+/* Phones & Small Screens (<= 640px) */
+@media (max-width: 640px) {
+  /* Utility Bar: Keep essential, hide secondary */
+  .top-utility-bar {
+    padding: 5px 0;
+  }
+  .top-utility-inner {
+    padding: 0 12px;
+  }
+  .utility-tags .utility-tag-item:nth-child(n+3) {
+    display: none;
+  }
+  .utility-actions {
+    gap: 8px;
+  }
+  .utility-btn {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  /* Header adjustments */
+  .header-inner {
+    padding: 0 12px;
+    height: 58px;
+  }
+  .brand-title {
+    font-size: 19px;
+  }
+  .brand-subtitle {
+    font-size: 9px;
+  }
+  /* In header, hide big CTA so it doesn't crush crest and hamburger */
+  .header-actions .btn-arsenal-primary {
+    display: none;
+  }
+
+  /* Ticker */
+  .live-ticker-strip {
+    height: 34px;
+  }
+  .ticker-label {
+    font-size: 10.5px;
+    padding: 0 10px;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+  .ticker-items {
+    font-size: 11.5px;
+    gap: 32px;
+  }
+
+  /* Hero Card */
+  .hero-section {
+    padding: 14px 12px 28px;
+  }
+  .hero-main-card {
+    min-height: 360px;
+    padding: 20px 14px;
+  }
+  .hero-title {
+    font-size: 21px;
+    line-height: 1.15;
+  }
+  .hero-desc {
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .hero-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-top: 12px;
+    margin-bottom: 18px;
+  }
+  .stat-pill-val {
+    font-size: 15px;
+  }
+  .stat-pill-lbl {
+    font-size: 8.5px;
+  }
+  .hero-actions-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+  .hero-actions-group a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 11px 16px;
+    font-size: 12.5px;
+  }
+
+  /* Side stories */
+  .side-story-card {
+    padding: 12px;
+    gap: 12px;
+  }
+  .side-story-thumb {
+    width: 72px;
+    height: 60px;
+  }
+  .side-story-title {
+    font-size: 13.5px;
+  }
+
+  /* 3D Simulator Arena on Phone: comfortable height that doesn't trap scrolling */
+  .simulator-arena-wrapper {
+    margin-bottom: 24px;
+  }
+  .arena-toolbar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .arena-title {
+    font-size: 12px;
+  }
+  .arena-controls {
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .arena-btn {
+    padding: 4px 8px;
+    font-size: 10.5px;
+  }
+  .arena-viewport {
+    height: 330px;
+  }
+
+  /* Interactive Tools */
+  .tool-card {
+    padding: 16px;
+  }
+  .tool-title {
+    font-size: 16px;
+  }
+  .tool-subtitle {
+    font-size: 11px;
+  }
+  .input-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-field[style*="max-width:100px"] {
+    max-width: 100% !important;
+  }
+  .preset-pills {
+    gap: 4px;
+  }
+  .preset-pill {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  .calc-result-box {
+    font-size: 10.5px;
+    padding: 10px;
+  }
+  .result-row {
+    padding-bottom: 3px;
+  }
+  .ping-terminal {
+    min-height: 140px;
+    max-height: 140px;
+    font-size: 10px;
+    padding: 8px;
+  }
+  .osi-layer-row {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
+  .osi-info-panel {
+    font-size: 10.5px;
+    padding: 8px;
+  }
+
+  /* Media Hub */
+  .video-player-container {
+    height: 210px;
+  }
+  .play-pulsing-btn {
+    width: 52px;
+    height: 52px;
+  }
+  .play-pulsing-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+  .video-details-box {
+    padding: 16px;
+  }
+  .video-title {
+    font-size: 17px;
+  }
+  .photo-gallery-side {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .gallery-card {
+    height: 115px;
+  }
+
+  /* Articles */
+  .article-image {
+    height: 150px;
+  }
+  .article-body {
+    padding: 16px;
+  }
+  .article-title {
+    font-size: 17px;
+  }
+
+  /* Footer */
+  .site-footer {
+    padding: 40px 0 20px;
+  }
+  .footer-inner {
+    padding: 0 16px;
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  /* Modals */
+  .modal-backdrop {
+    padding: 8px;
+  }
+  .modal-dialog {
+    max-height: 90vh;
+    border-radius: 4px;
+  }
+  .modal-header {
+    padding: 14px 16px;
+  }
+  .modal-title {
+    font-size: 16px;
+  }
+  .modal-body {
+    padding: 16px;
+  }
+  .search-input-wrap input {
+    font-size: 14px;
+    padding: 10px 14px 10px 38px;
+  }
+}
+
+/* Very Small Phones (<= 380px) */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 19px;
+  }
+  .stat-pill-val {
+    font-size: 13px;
+  }
+  .arena-viewport {
+    height: 300px;
+  }
+  .photo-gallery-side {
+    grid-template-columns: 1fr;
+  }
+  .gallery-card {
+    height: 130px;
+  }
+}
+
