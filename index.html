@@ -89,8 +89,11 @@
           <li class="nav-item"><a href="#maqolalar" class="nav-link">Maqolalar</a></li>
           <li class="nav-item"><a href="#manbalar" class="nav-link">Manbalar</a></li>
           <li class="nav-item mobile-only-cta" style="margin-top: 8px;">
-            <a href="#simulyatorlar" class="btn-arsenal-primary" style="width: 100%; justify-content: center; clip-path:none; border-radius:4px;">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg>
+            <a href="#simulyatorlar" class="btn-arsenal-primary"
+              style="width: 100%; justify-content: center; clip-path:none; border-radius:4px;">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                <path d="M5 3l14 9-14 9V3z" />
+              </svg>
               3D Lab Ga Kirish
             </a>
           </li>
@@ -180,8 +183,11 @@
                 <path d="M5 3l14 9-14 9V3z" />
               </svg>
             </a>
+            <a href="hardware3d.html" target="_blank" class="btn-arsenal-secondary" style="border-color:var(--brand-primary); color:var(--brand-volt);" title="Kompyuter sxemalari va qismlari atributlari">
+              ⚡ 3D Sxemalar & Atributlar ↗
+            </a>
             <a href="3d.html" target="_blank" class="btn-arsenal-secondary">
-              Alohida Oynada Ochish ↗
+              🌐 3D Tarmoq ↗
             </a>
           </div>
         </div>
@@ -190,14 +196,14 @@
       <!-- Side Stories (Arsenal 3-Stack) -->
       <div class="hero-side-stories">
         <!-- Card 1 -->
-        <a href="#oquv-dasturi" class="side-story-card">
+        <a href="hardware3d.html" target="_blank" class="side-story-card">
           <div class="side-story-thumb">
-            <img src="assets/images/lab_datacenter.jpg" alt="Cisco Lab">
+            <div style="width:100%; height:100%; background:#091910; display:flex; align-items:center; justify-content:center; color:var(--brand-volt); font-size:26px;">⚡</div>
           </div>
           <div class="side-story-content">
-            <span class="side-story-badge">O‘quv Dasturi 2026</span>
-            <h3 class="side-story-title">Cisco CCNA va Enterprise Routing Moduli</h3>
-            <span class="side-story-meta">VLAN, OSPFv3 va BGP bo‘yicha to‘liq amaliyot</span>
+            <span class="side-story-badge">Yangi 3D Simulyator 2026</span>
+            <h3 class="side-story-title">Kompyuter Sxemalari & Hardware Atributlari</h3>
+            <span class="side-story-meta">CPU, VRM 16-faza, DDR5 shinalar va mantiqiy ALU</span>
           </div>
         </a>
 
@@ -247,15 +253,25 @@
       </div>
     </div>
 
-    <!-- 3D Arena Box (Seamlessly embeds 3d.html) -->
+    <!-- 3D Arena Box (Seamlessly embeds 3d.html and hardware3d.html) -->
     <div class="simulator-arena-wrapper" id="arenaWrapper">
+      <!-- 3D Simulyator Tanlash (Tab Switcher) -->
+      <div class="sim-switcher-bar">
+        <button class="sim-tab-btn active" id="simTabLan" data-sim="3d.html" data-title="LAN 3D TOPOLOGIYA MUHITI (v2.4)">
+          🌐 3D Tarmoq Topologiyasi (LAN 3D)
+        </button>
+        <button class="sim-tab-btn" id="simTabHardware" data-sim="hardware3d.html" data-title="KOMPYUTER SXEMALARI VA ATRIBUTLARI (v2.0)">
+          ⚡ 3D Kompyuter Sxemalari & Atributlari (Hardware 3D)
+        </button>
+      </div>
+
       <div class="arena-toolbar">
         <div class="arena-info">
           <div class="arena-badge-live">
             <span class="status-dot"></span>
             FAOL 3D SIMULYATOR
           </div>
-          <span class="arena-title">LAN 3D TOPOLOGIYA MUHITI (v2.4)</span>
+          <span class="arena-title" id="arenaMainTitle">LAN 3D TOPOLOGIYA MUHITI (v2.4)</span>
         </div>
         <div class="arena-controls">
           <button class="arena-btn" id="arenaReload" title="Qurilmalarni boshlang‘ich holatga qaytarish">
@@ -439,17 +455,17 @@
       <!-- Modul 1 -->
       <div class="module-card">
         <div class="module-number">01</div>
-        <h3 class="module-title">Kompyuter Tarmoqlari Asoslari</h3>
-        <p class="module-desc">Tarmoq topologiyalari, kabel turlari, OSI/TCP-IP modellari va lokal tarmoqni noldan
-          loyihalash.</p>
+        <h3 class="module-title">CHIZIQLI ALGEBRA</h3>
+        <p class="module-desc">Matritsalar, determinantlar, chiziqli tenglamalar sistemasi va vektor fazolari nazorati.
+        </p>
         <ul class="module-topics-list">
-          <li>Fizik va mantiqiy topologiyalar</li>
-          <li>IPv4/IPv6 manzillash va subnetting</li>
-          <li>DHCP, DNS va NAT xizmatlari</li>
-          <li>Lokal tarmoqda xatoliklarni aniqlash</li>
+          <li>Fizik va abstrak vektor fazolari</li>
+          <li>Matritsa elementlari va determinantlar</li>
+          <li>Xos qiymatlart va xos vektorlar</li>
+          <li>kwadrat formulalar va chiziqli tenglamalar sistemasi</li>
         </ul>
         <div class="module-meta-row">
-          <span>Hajmi: <b class="module-hours">60 Soat</b></span>
+          <span>Hajmi: <b class="module-hours">180 Soat</b></span>
           <a href="#taqdimotlar" class="doc-btn">Silabus (PDF)</a>
         </div>
       </div>
@@ -457,17 +473,16 @@
       <!-- Modul 2 -->
       <div class="module-card">
         <div class="module-number">02</div>
-        <h3 class="module-title">Cisco Routing & Switching</h3>
-        <p class="module-desc">Katta korxona tarmoqlarini marshrutlash, kommutatsiya va virtual segmentatsiya (VLAN)
-          asoslari.</p>
+        <h3 class="module-title">MA'LUMOTLAR BAZASI</h3>
+        <p class="module-desc">Ma'lumotlar bazasining nazariy asoslari va amaliyotda qo'llanilishi.</p>
         <ul class="module-topics-list">
-          <li>VLAN va Inter-VLAN Routing (Router-on-a-Stick)</li>
-          <li>Spanning Tree Protocol (STP & RSTP)</li>
-          <li>Dinamik routing: OSPFv2 va OSPFv3</li>
+          <li>Ma'lumotlar bazasining nazariy asoslari</li>
+          <li>SQL asoslari</li>
+          <li>Dinamik routing:</li>
           <li>EtherChannel va Link Aggregation</li>
         </ul>
         <div class="module-meta-row">
-          <span>Hajmi: <b class="module-hours">72 Soat</b></span>
+          <span>Hajmi: <b class="module-hours">180 Soat</b></span>
           <a href="#taqdimotlar" class="doc-btn">Silabus (PDF)</a>
         </div>
       </div>
@@ -475,17 +490,17 @@
       <!-- Modul 3 -->
       <div class="module-card">
         <div class="module-number">03</div>
-        <h3 class="module-title">Kiberxavfsizlik & Tarmoq Himoyasi</h3>
-        <p class="module-desc">Tarmoq perimetrini himoyalash, Next-Generation Firewall (NGFW), IDS/IPS va xavfsiz VPN
-          kanallar.</p>
+        <h3 class="module-title">ELEKTRONIKA VA SXEMALAR</h3>
+        <p class="module-desc">Elektronika va sxemalar asoslari, Elektronika va sxemalar asoslari, Elektronika va
+          sxemalar asoslari</p>
         <ul class="module-topics-list">
-          <li>Access Control Lists (Standart va Kengaytirilgan ACL)</li>
-          <li>Stateful Firewall va port xavfsizligi</li>
-          <li>IPsec VPN va SSL/TLS shifrlash</li>
-          <li>Kiberhujumlarni aniqlash va oldini olish</li>
+          <li>Elektronika asoslari</li>
+          <li>Elektronika va sxemalar asoslari</li>
+          <li>Elektronika va sxemalar asoslari</li>
+          <li>Elektronika va sxemalar asoslari</li>
         </ul>
         <div class="module-meta-row">
-          <span>Hajmi: <b class="module-hours">64 Soat</b></span>
+          <span>Hajmi: <b class="module-hours">180 Soat</b></span>
           <a href="#taqdimotlar" class="doc-btn">Silabus (PDF)</a>
         </div>
       </div>
@@ -493,22 +508,42 @@
       <!-- Modul 4 -->
       <div class="module-card">
         <div class="module-number">04</div>
-        <h3 class="module-title">Optik Aloqa & Infratuzilma</h3>
-        <p class="module-desc">Magistral optik tola tarmoqlari, WDM texnologiyalari, payvandlash va laboratoriya
-          sinovlari.</p>
+        <h3 class="module-title">DISKRET MATEMATIKA</h3>
+        <p class="module-desc">Diskret matematika asoslari, diskret matematika asoslari, diskret matematika asoslari
+        </p>
         <ul class="module-topics-list">
-          <li>Single-mode va Multi-mode tolalar</li>
-          <li>Fusion Splicing texnologiyasi</li>
-          <li>OTDR optik reflektometriya</li>
-          <li>DWDM va CWDM to‘lqin multiplexing</li>
+          <li>Diskret matematika asoslari</li>
+          <li>Diskret matematika asoslari</li>
+          <li>Diskret matematika asoslari</li>
+          <li>Diskret matematika asoslari</li>
         </ul>
         <div class="module-meta-row">
-          <span>Hajmi: <b class="module-hours">56 Soat</b></span>
+          <span>Hajmi: <b class="module-hours">180 Soat</b></span>
+          <a href="#taqdimotlar" class="doc-btn">Silabus (PDF)</a>
+        </div>
+      </div>
+
+      <!-- Modul 5 -->
+      <div class="module-card">
+        <div class="module-number">05</div>
+        <h3 class="module-title">KOMPYUTER TARMOQLARI</h3>
+        <p class="module-desc">Kompyuter tarmoqlari, informatika va dasturlash asoslari, informatika va
+          dasturlash asoslari
+        </p>
+        <ul class="module-topics-list">
+          <li>Kompyuter tarmoqlari asoslari</li>
+          <li>Kompyuter tarmoqlari asoslari</li>
+          <li>Kompyuter tarmoqlari asoslari</li>
+          <li>Kompyuter tarmoqlari asoslari</li>
+        </ul>
+        <div class="module-meta-row">
+          <span>Hajmi: <b class="module-hours">180 Soat</b></span>
           <a href="#taqdimotlar" class="doc-btn">Silabus (PDF)</a>
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- ==========================================================================
        7. TAQDIMOTLAR VA QO'LLANMALAR (PRESENTATIONS & DOCS)

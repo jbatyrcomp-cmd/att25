@@ -66,6 +66,23 @@
   .actbtn.on{background:var(--accent); color:#1A1204; border-color:var(--accent);}
   .actbtn.warn:hover{border-color:var(--danger); color:var(--danger);}
 
+  /* Dropdown for Topologies */
+  .dropdown{position:relative; display:inline-block;}
+  .topo-menu{
+    display:none; position:absolute; top:calc(100% + 6px); right:0;
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:6px; min-width:185px; box-shadow:0 12px 30px rgba(0,0,0,0.85);
+    z-index:40; flex-direction:column; gap:3px;
+  }
+  .topo-menu.show{display:flex;}
+  .topo-item{
+    display:flex; align-items:center; gap:8px; width:100%; padding:7px 10px;
+    border-radius:8px; border:none; background:transparent; color:var(--ink);
+    font-family:'Manrope',sans-serif; font-size:11px; font-weight:600;
+    cursor:pointer; text-align:left; transition:.15s;
+  }
+  .topo-item:hover{background:var(--panel-2); color:var(--accent);}
+
   /* Panel */
   #panel{
     position:fixed; top:12px; right:12px; bottom:12px; width:270px; z-index:22;
@@ -168,8 +185,27 @@
   <div id="actions">
     <a href="index.html" class="actbtn" id="homePortalBtn" style="color:var(--wired); border-color:rgba(111,227,196,0.35); text-decoration:none;" title="Boshqaruv portaliga qaytish">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      ATT-25 Portal
+      Portal
     </a>
+    <a href="hardware3d.html" class="actbtn" id="hardwareSimBtn" style="color:#00FF87; border-color:rgba(0,255,135,0.35); text-decoration:none;" title="Kompyuter sxemalari va atributlari simulyatori">
+      <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      Hardware 3D
+    </a>
+    <div class="dropdown" id="topoDropdown">
+      <button class="actbtn" id="topoBtn" style="color:var(--accent); border-color:rgba(255,180,84,0.35);" title="Tayyor bog'lanish shablonlari">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Topologiyalar ▼
+      </button>
+      <div class="topo-menu" id="topoMenu">
+        <button class="topo-item" data-topo="star">⭐ Yulduz (Star)</button>
+        <button class="topo-item" data-topo="ring">⭕ Halqa (Ring)</button>
+        <button class="topo-item" data-topo="bus">🚌 Shina (Bus)</button>
+        <button class="topo-item" data-topo="tree">🌳 Daraxt (Tree / Ierarxik)</button>
+        <button class="topo-item" data-topo="mesh">🕸️ To‘r (Full Mesh)</button>
+        <button class="topo-item" data-topo="office">🏠 Uy / Ofis (LAN & Wi-Fi)</button>
+        <button class="topo-item" data-topo="seed">🔄 Boshlang‘ich tarmoq</button>
+      </div>
+    </div>
     <button class="actbtn" id="connectModeBtn">
       <svg viewBox="0 0 24 24"><path d="M6 12h12M14 8l4 4-4 4"/></svg>
       Ulash rejimi
@@ -971,6 +1007,228 @@ function animate(){
   renderer.render(scene, camera);
 }
 
+/* ============================= TOPOLOGY TEMPLATES ============================= */
+function clearAllNetwork(){
+  [...devices.keys()].forEach(removeDevice);
+}
+
+function loadTopology(type){
+  clearAllNetwork();
+
+  if(type==='star'){
+    // ⭐ Yulduz (Star) Topologiyasi: markazda Router, atrofiga radial mijozlar
+    const router = addDevice('router'); router.name = "Markaziy Router"; router.label.querySelector('.nm').textContent = router.name;
+    router.group.position.set(0, 0, 0);
+
+    const endpoints = [
+      {type:'server', pos:[4.2, 0, 0], name:'Fayl Server'},
+      {type:'desktop', pos:[2.6, 0, 3.2], name:'Menejer PC'},
+      {type:'desktop', pos:[-2.6, 0, 3.2], name:'Buxgalteriya PC'},
+      {type:'laptop', pos:[-4.2, 0, 0], name:'Admin Noutbuk'},
+      {type:'printer', pos:[-2.6, 0, -3.2], name:'Tarmoq Printer'},
+      {type:'phone', pos:[2.6, 0, -3.2], name:'IP Telefon'}
+    ];
+
+    endpoints.forEach(ep => {
+      const dev = addDevice(ep.type);
+      dev.name = ep.name;
+      dev.label.querySelector('.nm').textContent = dev.name;
+      dev.group.position.set(ep.pos[0], ep.pos[1], ep.pos[2]);
+      addConnection(router.id, dev.id);
+    });
+
+    toast("⭐ Yulduz (Star) topologiyasi yuklandi: 1 ta Router, 6 ta mijoz");
+  }
+  else if(type==='ring'){
+    // ⭕ Halqa (Ring) Topologiyasi: qurilmalar bir-biriga zanjir bo'lib ulangan
+    const ringItems = [
+      {type:'server', name:'Server A'},
+      {type:'desktop', name:'PC-1'},
+      {type:'laptop', name:'Noutbuk'},
+      {type:'desktop', name:'PC-2'},
+      {type:'printer', name:'Ofis Printer'},
+      {type:'desktop', name:'PC-3'}
+    ];
+    const r = 4.5;
+    const created = [];
+    const count = ringItems.length;
+
+    ringItems.forEach((item, i)=>{
+      const angle = (i / count) * Math.PI * 2;
+      const dev = addDevice(item.type);
+      dev.name = item.name;
+      dev.label.querySelector('.nm').textContent = dev.name;
+      dev.group.position.set(Math.cos(angle)*r, 0, Math.sin(angle)*r);
+      created.push(dev);
+    });
+
+    for(let i=0; i<count; i++){
+      const next = (i + 1) % count;
+      addConnection(created[i].id, created[next].id);
+    }
+
+    toast("⭕ Halqa (Ring) topologiyasi yuklandi (Ketma-ket aylana aloqa)");
+  }
+  else if(type==='bus'){
+    // 🚌 Shina (Bus / Magistral) Topologiyasi: umumiy liniyada ketma-ket
+    const busNodes = [
+      {type:'server', x:-2.6, z:-4.2, name:'Bosh Server'},
+      {type:'desktop', x:2.6, z:-2.1, name:'Kompyuter 1'},
+      {type:'desktop', x:-2.6, z:0.0, name:'Kompyuter 2'},
+      {type:'laptop', x:2.6, z:2.1, name:'Noutbuk'},
+      {type:'printer', x:-2.6, z:4.2, name:'Tarmoq Printer'}
+    ];
+
+    const created = [];
+    busNodes.forEach(bn => {
+      const dev = addDevice(bn.type);
+      dev.name = bn.name;
+      dev.label.querySelector('.nm').textContent = dev.name;
+      dev.group.position.set(bn.x, 0, bn.z);
+      created.push(dev);
+    });
+
+    for(let i=0; i<created.length - 1; i++){
+      addConnection(created[i].id, created[i+1].id);
+    }
+
+    toast("🚌 Shina (Bus) topologiyasi yuklandi (Magistral liniya)");
+  }
+  else if(type==='tree'){
+    // 🌳 Daraxt (Tree / Ierarxik) Topologiyasi (Cisco Core-Distribution-Access)
+    const modem = addDevice('modem'); modem.name = "Internet WAN"; modem.label.querySelector('.nm').textContent = modem.name;
+    modem.group.position.set(0, 0, -4.8);
+
+    const coreRouter = addDevice('router'); coreRouter.name = "Asosiy Core Router"; coreRouter.label.querySelector('.nm').textContent = coreRouter.name;
+    coreRouter.group.position.set(0, 0, -2.4);
+    addConnection(modem.id, coreRouter.id);
+
+    const distLeft = addDevice('router'); distLeft.name = "Filial Router A"; distLeft.label.querySelector('.nm').textContent = distLeft.name;
+    distLeft.group.position.set(-3.6, 0, 0.4);
+    addConnection(coreRouter.id, distLeft.id);
+
+    const distRight = addDevice('router'); distRight.name = "Filial Router B"; distRight.label.querySelector('.nm').textContent = distRight.name;
+    distRight.group.position.set(3.6, 0, 0.4);
+    addConnection(coreRouter.id, distRight.id);
+
+    // End devices under distLeft
+    const srv = addDevice('server'); srv.name = "Lokal Server"; srv.label.querySelector('.nm').textContent = srv.name;
+    srv.group.position.set(-5.0, 0, 3.4);
+    addConnection(distLeft.id, srv.id);
+
+    const pc1 = addDevice('desktop'); pc1.name = "Dasturchi PC"; pc1.label.querySelector('.nm').textContent = pc1.name;
+    pc1.group.position.set(-2.4, 0, 3.4);
+    addConnection(distLeft.id, pc1.id);
+
+    // End devices under distRight
+    const pc2 = addDevice('desktop'); pc2.name = "Menejer PC"; pc2.label.querySelector('.nm').textContent = pc2.name;
+    pc2.group.position.set(2.4, 0, 3.4);
+    addConnection(distRight.id, pc2.id);
+
+    const lap = addDevice('laptop'); lap.name = "Noutbuk Wi-Fi"; lap.label.querySelector('.nm').textContent = lap.name;
+    lap.group.position.set(5.0, 0, 3.4);
+    addConnection(distRight.id, lap.id);
+
+    toast("🌳 Daraxtsimon (Tree) ierarxik topologiya yuklandi");
+  }
+  else if(type==='mesh'){
+    // 🕸️ To‘r (Full Mesh) Topologiyasi: har bir tugun barcha tugunlarga ulangan
+    const meshItems = [
+      {type:'router', name:'Tugun Router 1'},
+      {type:'router', name:'Tugun Router 2'},
+      {type:'server', name:'Klaster Server 1'},
+      {type:'server', name:'Klaster Server 2'},
+      {type:'desktop', name:'NOC Monitoring'}
+    ];
+    const r = 4.0;
+    const created = [];
+    const count = meshItems.length;
+
+    meshItems.forEach((item, i)=>{
+      const angle = (i / count) * Math.PI * 2;
+      const dev = addDevice(item.type);
+      dev.name = item.name;
+      dev.label.querySelector('.nm').textContent = dev.name;
+      dev.group.position.set(Math.cos(angle)*r, 0, Math.sin(angle)*r);
+      created.push(dev);
+    });
+
+    for(let i=0; i<count; i++){
+      for(let j=i+1; j<count; j++){
+        addConnection(created[i].id, created[j].id);
+      }
+    }
+
+    toast("🕸️ To‘rsimon (Full Mesh) topologiya yuklandi (Maksimal ishonchlilik)");
+  }
+  else if(type==='office'){
+    // 🏠 Uy / Ofis Gibrid (LAN & Wi-Fi) Topologiyasi
+    const modem = addDevice('modem'); modem.name = "ISP Provayder"; modem.label.querySelector('.nm').textContent = modem.name;
+    modem.group.position.set(0, 0, -4.4);
+
+    const router = addDevice('router'); router.name = "Wi-Fi Gateway"; router.label.querySelector('.nm').textContent = router.name;
+    router.group.position.set(0, 0, -1.8);
+    addConnection(modem.id, router.id);
+
+    // Simli LAN
+    const srv = addDevice('server'); srv.name = "NAS Fayl Server"; srv.label.querySelector('.nm').textContent = srv.name;
+    srv.group.position.set(-3.6, 0, 1.0);
+    addConnection(router.id, srv.id);
+
+    const pc = addDevice('desktop'); pc.name = "Ishchi Kompyuter"; pc.label.querySelector('.nm').textContent = pc.name;
+    pc.group.position.set(-1.8, 0, 3.6);
+    addConnection(router.id, pc.id);
+
+    const prn = addDevice('printer'); prn.name = "Ofis Printer"; prn.label.querySelector('.nm').textContent = prn.name;
+    prn.group.position.set(-4.0, 0, 3.4);
+    addConnection(router.id, prn.id);
+
+    // Simsiz Wi-Fi
+    const lap = addDevice('laptop'); lap.name = "Noutbuk (Wi-Fi)"; lap.label.querySelector('.nm').textContent = lap.name;
+    lap.group.position.set(2.4, 0, 1.6);
+    addConnection(router.id, lap.id);
+
+    const ph1 = addDevice('phone'); ph1.name = "Smartfon 1"; ph1.label.querySelector('.nm').textContent = ph1.name;
+    ph1.group.position.set(4.0, 0, 3.2);
+    addConnection(router.id, ph1.id);
+
+    const ph2 = addDevice('phone'); ph2.name = "Smartfon 2"; ph2.label.querySelector('.nm').textContent = ph2.name;
+    ph2.group.position.set(1.8, 0, 4.0);
+    addConnection(router.id, ph2.id);
+
+    toast("🏠 Uy va Ofis (Gibrid LAN/Wi-Fi) topologiyasi yuklandi");
+  }
+  else {
+    seed();
+    toast("Boshlang‘ich tarmoq yuklandi");
+  }
+}
+
+/* Dropdown UI interaction */
+const topoBtn = document.getElementById('topoBtn');
+const topoMenu = document.getElementById('topoMenu');
+if(topoBtn && topoMenu){
+  topoBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    topoMenu.classList.toggle('show');
+  });
+  document.addEventListener('click', ()=>{ topoMenu.classList.remove('show'); });
+  topoMenu.querySelectorAll('.topo-item').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      topoMenu.classList.remove('show');
+      loadTopology(btn.dataset.topo);
+    });
+  });
+}
+
+/* Support postMessage from parent portal (index.html) */
+window.addEventListener('message', (e)=>{
+  if(e.data && e.data.action==='loadTopology'){
+    loadTopology(e.data.type);
+  }
+});
+
 /* ============================= SEED NETWORK ============================= */
 function seed(){
   const modem = addDevice('modem'); modem.group.position.set(0,0,-4.2);
@@ -989,7 +1247,16 @@ function seed(){
   const phone = addDevice('phone'); phone.group.position.set(-1.6,0,3.8);
   addConnection(router.id, phone.id);
 }
-seed();
+
+// Check URL query on start (e.g. ?topo=star)
+const urlParams = new URLSearchParams(window.location.search);
+const qTopo = urlParams.get('topo') || window.location.hash.replace('#','');
+if(qTopo && ['star','ring','bus','tree','mesh','office'].includes(qTopo)){
+  loadTopology(qTopo);
+} else {
+  seed();
+}
+
 animate();
 
 })();

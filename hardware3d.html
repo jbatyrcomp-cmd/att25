@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Kompyuter Sxemalari va Atributlari Simulyatori | ATT-25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060B08;
+    --panel: #0E1812;
+    --panel-2: #14221A;
+    --line: #1C3325;
+    --line-bright: rgba(0, 230, 118, 0.3);
+    --ink: #FFFFFF;
+    --ink-dim: #94A3B8;
+    --accent: #00E676;
+    --accent-volt: #00FF87;
+    --gold: #FBBF24;
+    --cyan: #38BDF8;
+    --danger: #EF4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--ink); user-select: none;
+  }
+  #scene { position: fixed; inset: 0; display: block; touch-action: none; z-index: 1; }
+  #labels { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
+
+  /* 3D Component floating labels */
+  .complabel {
+    position: absolute; transform: translate(-50%, -100%); white-space: nowrap;
+    font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+    background: rgba(14, 24, 18, 0.88); border: 1px solid var(--line-bright);
+    color: var(--ink); display: flex; align-items: center; gap: 6px;
+    backdrop-filter: blur(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .complabel .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; box-shadow: 0 0 6px var(--accent); }
+  .complabel .bus-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--gold); }
+
+  /* Toolbar */
+  #toolbar {
+    position: fixed; top: 12px; left: 12px; right: 12px; z-index: 20;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    pointer-events: none;
+  }
+  #toolbar > * { pointer-events: auto; }
+
+  #brand {
+    background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    padding: 7px 14px; border-radius: 4px; display: flex; flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  }
+  #brand b { font-family: 'Oswald', sans-serif; font-size: 15px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink); }
+  #brand b span { color: var(--accent); }
+  #brand span.sub { font-size: 10px; color: var(--ink-dim); font-weight: 600; }
+
+  /* Modes / Architecture Selector */
+  #modesBar {
+    display: flex; gap: 4px; background: var(--panel); border: 1px solid var(--line);
+    padding: 4px; border-radius: 6px; overflow-x: auto; max-width: 100%;
+  }
+  .modebtn {
+    background: transparent; border: 1px solid transparent; color: var(--ink-dim);
+    font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 12px;
+    border-radius: 4px; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .modebtn:hover { background: var(--panel-2); color: var(--ink); }
+  .modebtn.active {
+    background: var(--accent); color: #03140A; border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.4);
+  }
+
+  /* Actions */
+  #actions { display: flex; gap: 6px; margin-left: auto; }
+  .actbtn {
+    display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 6px;
+    background: var(--panel); border: 1px solid var(--line); color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11.5px; font-weight: 700;
+    cursor: pointer; transition: all 0.15s; text-decoration: none;
+  }
+  .actbtn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .actbtn:hover { border-color: var(--accent); color: var(--accent); }
+  .actbtn.pulse-on { background: rgba(0, 230, 118, 0.15); border-color: var(--accent); color: var(--accent); }
+
+  /* Attribute Inspector Panel */
+  #panel {
+    position: fixed; top: 12px; right: 12px; bottom: 12px; width: 330px; z-index: 25;
+    background: rgba(14, 24, 18, 0.94); border: 1px solid var(--line-bright);
+    border-top: 3px solid var(--accent); border-radius: 6px; padding: 20px;
+    display: none; flex-direction: column; gap: 14px; overflow-y: auto;
+    backdrop-filter: blur(12px); box-shadow: 0 15px 40px rgba(0,0,0,0.85);
+  }
+  #panel.show { display: flex; animation: slide-panel 0.25s ease; }
+  @keyframes slide-panel { from { opacity: 0; transform: translateX(15px); } to { opacity: 1; transform: translateX(0); } }
+
+  .ptop { display: flex; justify-content: space-between; align-items: flex-start; }
+  #pName { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; color: var(--ink); line-height: 1.1; }
+  #pType { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 4px; }
+  .xbtn { background: none; border: none; color: var(--ink-dim); cursor: pointer; font-size: 18px; line-height: 1; }
+  .xbtn:hover { color: var(--accent); }
+
+  .pbadge {
+    display: inline-flex; align-items: center; gap: 6px; font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; padding: 4px 8px; border-radius: 3px; background: rgba(0, 230, 118, 0.1);
+    color: var(--accent-volt); border: 1px solid rgba(0, 230, 118, 0.25);
+  }
+
+  .pdesc { font-size: 12px; color: var(--ink-dim); line-height: 1.5; }
+
+  .spec-table { display: flex; flex-direction: column; gap: 6px; font-size: 11.5px; }
+  .spec-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 8px; background: var(--panel-2); border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .spec-row .k { color: var(--ink-dim); font-size: 11px; }
+  .spec-row .v { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ink); }
+
+  /* Circuit Schematic Mini View */
+  .schematic-box {
+    background: #050A07; border: 1px solid var(--line); border-radius: 4px;
+    padding: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--accent); display: flex; flex-direction: column; gap: 4px;
+  }
+  .schematic-box .title { font-size: 9.5px; color: var(--gold); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
+
+  /* Bottom Legend & Controls */
+  #bottomBar {
+    position: fixed; left: 12px; bottom: 12px; z-index: 20;
+    display: flex; align-items: center; gap: 12px; pointer-events: none;
+  }
+  #bottomBar > * { pointer-events: auto; }
+
+  #legend {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+    padding: 7px 14px; display: flex; gap: 14px; align-items: center; font-size: 10.5px;
+    color: var(--ink-dim); font-weight: 600;
+  }
+  .lgitem { display: flex; align-items: center; gap: 6px; }
+  .lgdot { width: 8px; height: 8px; border-radius: 2px; }
+
+  #hint {
+    position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 20;
+    background: var(--panel); border: 1px solid var(--line-bright); padding: 7px 16px;
+    border-radius: 20px; font-size: 11px; color: var(--ink-dim); text-align: center;
+    pointer-events: none; transition: opacity 0.4s ease;
+  }
+  #hint b { color: var(--accent); }
+  #hint.hide { opacity: 0; }
+
+  #toast {
+    position: fixed; left: 50%; top: 12px; transform: translate(-50%, -150%); z-index: 30;
+    background: #0A160F; border: 1px solid var(--accent); color: var(--ink); padding: 8px 18px;
+    border-radius: 20px; font-size: 12px; font-weight: 700; transition: transform 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 230, 118, 0.4); pointer-events: none;
+  }
+  #toast.show { transform: translate(-50%, 0); }
+
+  /* Mobile queries */
+  @media (max-width: 860px) {
+    #panel { width: auto; left: 12px; right: 12px; bottom: 12px; top: auto; max-height: 55vh; }
+    #brand b { font-size: 13px; }
+    .modebtn { font-size: 10px; padding: 5px 8px; }
+    #legend { display: none; }
+    #hint { bottom: 8px; font-size: 9.5px; padding: 5px 12px; max-width: 90vw; }
+  }
+  @media (max-width: 500px) {
+    #brand span.sub { display: none; }
+    .actbtn span { display: none; }
+    .actbtn { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+<div id="labels"></div>
+
+<!-- Top Toolbar -->
+<div id="toolbar">
+  <div id="brand">
+    <b>ATT-25 <span>HARDWARE 3D</span></b>
+    <span class="sub">Kompyuter Sxemalari va Atributlari Laboratoriyasi</span>
+  </div>
+
+  <div id="modesBar">
+    <button class="modebtn active" data-mode="all">⚡ Barcha Sxemalar</button>
+    <button class="modebtn" data-mode="cpu">🧠 CPU & Kesh</button>
+    <button class="modebtn" data-mode="ram">💾 RAM & Shinalar</button>
+    <button class="modebtn" data-mode="vrm">🔋 VRM Quvvat Zanjiri</button>
+    <button class="modebtn" data-mode="pcie">🚀 PCIe & GPU Magistral</button>
+    <button class="modebtn" data-mode="logic">🔲 Mantiqiy Elementlar (ALU)</button>
+  </div>
+
+  <div id="actions">
+    <button class="actbtn pulse-on" id="pulseSpeedBtn" title="Signal oqimi tezligi">
+      <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span>Takt: 4.2 GHz</span>
+    </button>
+    <button class="actbtn" id="resetCamBtn" title="Kamerani boshlang‘ich burchakka qaytarish">
+      <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <span>Qayta</span>
+    </button>
+    <a href="3d.html" class="actbtn" style="color:var(--cyan); border-color:rgba(56,189,248,0.35);" title="Tarmoq topologiyasi simulyatoriga o‘tish">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      <span>LAN 3D</span>
+    </a>
+    <a href="index.html" class="actbtn" style="color:var(--accent); border-color:var(--line-bright);" title="Boshqaruv portaliga qaytish">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>ATT-25 Portal</span>
+    </a>
+  </div>
+</div>
+
+<!-- Attribute Inspector Panel -->
+<aside id="panel">
+  <div class="ptop">
+    <div>
+      <h2 id="pName">Markaziy Protsessor (CPU)</h2>
+      <div id="pType">Hisoblash & Sxemotexnika Klasteri</div>
+    </div>
+    <button class="xbtn" id="pClose">✕</button>
+  </div>
+
+  <div class="pbadge" id="pStatus">
+    <span style="width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent);"></span>
+    <span id="pStatusText">FAOL • Takt chastotasi: 4.2 GHz</span>
+  </div>
+
+  <p class="pdesc" id="pDesc">
+    Kompyuterning asosiy arxitektura o‘zagi. Barcha mantiqiy va arifmetik amallarni boshqaruv shinalari va kesh xotirasi orqali bajaradi.
+  </p>
+
+  <div class="schematic-box">
+    <div class="title">📐 Sxema Ulanishi & Topologiya:</div>
+    <div id="pSchematic">
+      CPU ↔ [FSB / QPI 32GB/s] ↔ DDR5 RAM<br>
+      CPU ↔ [PCIe 5.0 x16: 64GB/s] ↔ GPU<br>
+      CPU ↔ [DMI 4.0 16GB/s] ↔ PCH Chipset
+    </div>
+  </div>
+
+  <div class="spec-table" id="pSpecs">
+    <!-- Dynamic specs will populate here -->
+  </div>
+</aside>
+
+<!-- Bottom Bar -->
+<div id="bottomBar">
+  <div id="legend">
+    <div class="lgitem"><span class="lgdot" style="background:#00E676;"></span> Data Bus (Ma'lumotlar Shinası)</div>
+    <div class="lgitem"><span class="lgdot" style="background:#FBBF24;"></span> Address Bus (Manzil Shinası)</div>
+    <div class="lgitem"><span class="lgdot" style="background:#38BDF8;"></span> Control & Clock (Boshqaruv)</div>
+  </div>
+</div>
+
+<div id="hint">Qismlar ustiga bosing → <b>Atributlari</b> va <b>Sxema ulanishlarini</b> o‘rganing. Sichqoncha bilan aylantiring.</div>
+<div id="toast"></div>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ==========================================================================
+   1. HARDWARE ATTRIBUTES DATABASE (Kompyuter Qismlari va Atributlari)
+   ========================================================================== */
+const HARDWARE_DATA = {
+  cpu: {
+    name: "Markaziy Protsessor (CPU)",
+    type: "LGA 1700 / X86-64 Micro-Arxitektura",
+    status: "FAOL • 4.2 GHz Boost • 1.15V",
+    desc: "Kompyuterning miyasi. Dasturiy buyruqlarni dekodlaydi, arifmetik-mantiqiy hisoblashlarni (ALU) bajaradi va xotira boshqaruvchisiga (IMC) ega.",
+    schematic: "CPU Core ↔ [L1/L2/L3 Kesh] ↔ IMC Xotira Nazoratchisi ↔ DDR5 Shina\nVRM 12V ➔ PWM ➔ [1.15V VCore] ➔ CPU Kremniy Kristali",
+    specs: [
+      {k:"Yadrolar / Oqimlar:", v:"16 Yadro (8P + 8E) / 24 Oqim"},
+      {k:"Baza / Boost Takt:", v:"3.4 GHz / 5.4 GHz"},
+      {k:"L3 Kesh Xotira:", v:"30 MB Smart Cache"},
+      {k:"TDP Issiqlik Paketi:", v:"125 W (Max Turbo 253 W)"},
+      {k:"Ishchi Harorat:", v:"48 °C (Norma)"},
+      {k:"Ishlab Chiqarish:", v:"Intel 7 (10nm SuperFin)"}
+    ]
+  },
+  vrm: {
+    name: "VRM Quvvat Zanjiri (Voltage Regulator)",
+    type: "16+1+1 Fazali Digital PWM Sxemasi",
+    status: "BARQAROR • 12V DC ➔ 1.15V VCore",
+    desc: "Quvvat manbaidan keluvchi 12V kuchlanishni protsessor kristali talab qiladigan ultra-toza 0.8V - 1.3V oraliqdagi kuchlanishga tushirib beruvchi ko‘p fazali sxema.",
+    schematic: "+12V Kirish ➔ Kirish Kondensatorlari ➔ High/Low MOSFET ➔ Ferrit Drossel (0.22uH) ➔ Chiqish Polimer Kondensatorlari ➔ CPU VCore",
+    specs: [
+      {k:"Fazalar Soni:", v:"16 + 1 + 1 Digital DrMOS"},
+      {k:"Har bir Faza Sig‘imi:", v:"90A Smart Power Stage"},
+      {k:"PWM Nazoratchi:", v:"Renesas Digital RAA229"},
+      {k:"Sovutish Radiatori:", v:"Ikkitalik qalin alyuminiy fin"},
+      {k:"F.I.K (Samaradorlik):", v:"94.2% energiya tejamkorligi"},
+      {k:"VRM Harorati:", v:"52 °C"}
+    ]
+  },
+  ram: {
+    name: "DDR5 Tezkor Xotira (RAM)",
+    type: "Dual-Channel 128-bit Xotira Shinalari",
+    status: "FAOL • 6400 MT/s • CL32 1.35V",
+    desc: "Protsessorga soniyasiga o‘nlab gigabayt ma'lumotlarni kechikishlarsiz yetkazib beruvchi yuqori tezlikdagi dinamik xotira (On-Die ECC xatolik to‘g‘rilash bilan).",
+    schematic: "CPU IMC ➔ 2x 32-bit Sub-Channel A/B ➔ SPD Hub ➔ PMIC Quvvat ➔ 8x BGA Xotira Kristallari (16GB Modul)",
+    specs: [
+      {k:"Jami Sig‘im:", v:"32 GB (2x 16GB Dual Kit)"},
+      {k:"O‘tkazish Qobiliyati:", v:"102.4 GB/s (Nazariy)"},
+      {k:"Takt Chastotasi:", v:"6400 MHz (XMP 3.0)"},
+      {k:"Tayminglar:", v:"CL32-39-39-102"},
+      {k:"Kuchlanish:", v:"1.35 V (Ichki PMIC orqali)"},
+      {k:"RGB Yoritish:", v:"Sinxron dasturiy nazorat"}
+    ]
+  },
+  gpu: {
+    name: "PCIe 5.0 x16 Slot & GPU Shina",
+    type: "Magistral Video Interfeysi (High Bandwidth)",
+    status: "ULANGAN • PCIe 5.0 x16 (64 GB/s)",
+    desc: "Grafik kartani to‘g‘ridan-to‘g‘ri protsessorning 16 ta PCIe 5.0 liniyasiga ulovchi, po‘lat bilan mustahkamlangan ultra-tezkor kengaytmali slot.",
+    schematic: "CPU PCIe Controller ↔ [16 Differential Pairs Tx/Rx] ↔ PCIe 5.0 Slot ↔ GPU VRAM & Shaders",
+    specs: [
+      {k:"Interfeys Standarti:", v:"PCI Express 5.0"},
+      {k:"Liniyalar Soni:", v:"x16 Full Speed"},
+      {k:"Ikki Tomonlama Tezlik:", v:"63.0 GB/s o‘tkazish"},
+      {k:"Slot Himoyasi:", v:"Steel Armor metall korpus"},
+      {k:"Signallash Kengligi:", v:"32 GT/s har bir liniya"},
+      {k:"Quvvat Ta'minoti:", v:"Slotdan 75W gacha"}
+    ]
+  },
+  ssd: {
+    name: "M.2 NVMe PCIe 4.0 SSD",
+    type: "To‘g‘ridan-to‘g‘ri Flesh Xotira Arxitekturasi",
+    status: "TAYYOR • 7300 MB/s O‘qish",
+    desc: "Operatsion tizim va darslik materiallarini sekundning ulushida yuklovchi 3D TLC NAND xotira, termal alyuminiy radiator bilan himoyalangan.",
+    schematic: "CPU PCIe x4 Liniyasi ↔ NVMe 1.4 Protokoli ↔ 8-Kanalli Kontroller ↔ 3D NAND Flesh Bloki",
+    specs: [
+      {k:"Interfeys:", v:"M.2 2280 (NVMe PCIe 4.0 x4)"},
+      {k:"Ketma-ket O‘qish:", v:"7300 MB/s"},
+      {k:"Ketma-ket Yozish:", v:"6800 MB/s"},
+      {k:"IOPS Tasodifiy Tezlik:", v:"1,000,000 IOPS"},
+      {k:"Sovutgich:", v:"Qalin M.2 Shield Frozr"},
+      {k:"Ishonchlilik (TBW):", v:"1200 Terabayt"}
+    ]
+  },
+  chipset: {
+    name: "Chipset PCH (Janubiy Ko‘prik)",
+    type: "Platform Controller Hub (I/O Master)",
+    status: "BARQAROR • DMI 4.0 x8 Aloqa",
+    desc: "Barcha tashqi kiritish-chiqarish qurilmalari: USB portlar, tarmoq kartasi (LAN), Wi-Fi moduli, audio kodek va SATA disklarni birlashtiruvchi markaziy kommutator.",
+    schematic: "CPU ↔ [DMI 4.0 x8: 15.75 GB/s] ↔ PCH Chipset ➔ USB 3.2, 2.5G LAN, Realtek ALC1220 Audio",
+    specs: [
+      {k:"Bog‘lanish Shinası:", v:"DMI 4.0 (PCIe 4.0 x8 ekvivalenti)"},
+      {k:"PCIe Liniyalar:", v:"20 ta qo‘shimcha PCIe 4.0"},
+      {k:"USB Portlar Sig‘imi:", v:"10x USB 3.2 Gen 2x2 (20Gbps)"},
+      {k:"Tarmoq Kontrolleri:", v:"Intel 2.5 Gbps Ethernet"},
+      {k:"Audio Kodek:", v:"7.1 HD Audio DAC"},
+      {k:"TDP Quvvat:", v:"6 W"}
+    ]
+  },
+  logic: {
+    name: "Raqamli Mantiqiy Elementlar (ALU & Gates)",
+    type: "Tranzistorli Mantiqiy Zanjirlar Sxemasi",
+    status: "SIMULYATSIYA • AND, OR, NOT, XOR, Flip-Flop",
+    desc: "Protsessor ichidagi har qanday arifmetik qo‘shish, ayirish yoki taqqoslash amali millionlab mantiqiy elementlar (ventillar) kaskadi orqali amalga oshiriladi.",
+    schematic: "Kirish A, B ➔ [XOR Ventili (Yig‘indi)] & [AND Ventili (Ko‘chirish)] ➔ Yarim Qo‘shgich (Half Adder)",
+    specs: [
+      {k:"Asosiy Elementlar:", v:"AND, OR, NOT, NAND, NOR, XOR"},
+      {k:"Ventil Tranzistorlari:", v:"CMOS (P-MOS va N-MOS juftligi)"},
+      {k:"Kommutatsiya Vaqti:", v:"15 pikosekund (ps)"},
+      {k:"Arifmetik Blok:", v:"ALU (Arithmetic Logic Unit)"},
+      {k:"Ro‘yxat Registrlari:", v:"D-Flip-Flop triggers"},
+      {k:"ATT-25 Darsligi:", v:"Sxemotexnika 3-modul"}
+    ]
+  }
+};
+
+/* ==========================================================================
+   2. THREE.JS 3D SCENE SETUP
+   ========================================================================== */
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.shadowMap.enabled = true;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x060B08);
+scene.fog = new THREE.FogExp2(0x060B08, 0.035);
+
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+let camTheta = Math.PI * 0.25, camPhi = Math.PI * 0.35, camRadius = 14;
+const camTarget = new THREE.Vector3(0, 0, 0);
+
+function updateCamera(){
+  const x = camRadius * Math.sin(camPhi) * Math.sin(camTheta);
+  const y = camRadius * Math.cos(camPhi);
+  const z = camRadius * Math.sin(camPhi) * Math.cos(camTheta);
+  camera.position.set(x, y, z).add(camTarget);
+  camera.lookAt(camTarget);
+}
+updateCamera();
+
+/* Lighting */
+const ambientLight = new THREE.AmbientLight(0x243E2E, 1.4);
+scene.add(ambientLight);
+
+const mainSpot = new THREE.DirectionalLight(0x00FF87, 1.2);
+mainSpot.position.set(8, 15, 8);
+mainSpot.castShadow = true;
+scene.add(mainSpot);
+
+const fillLight = new THREE.DirectionalLight(0x38BDF8, 0.8);
+fillLight.position.set(-10, 8, -6);
+scene.add(fillLight);
+
+const goldLight = new THREE.PointLight(0xFBBF24, 1.2, 12);
+goldLight.position.set(0, 3, 0);
+scene.add(goldLight);
+
+/* ==========================================================================
+   3. PROCEDURAL 3D MOTHERBOARD PCB & COMPONENTS
+   ========================================================================== */
+const pickableMeshes = [];
+const componentGroups = {};
+
+/* Helper Box */
+function createBox(w, h, d, color, matOpts={}){
+  const geo = new THREE.BoxGeometry(w, h, d);
+  const mat = new THREE.MeshStandardMaterial({
+    color, roughness:0.4, metalness:0.3, ...matOpts
+  });
+  const m = new THREE.Mesh(geo, mat);
+  m.castShadow = true; m.receiveShadow = true;
+  return m;
+}
+
+/* 1. PCB Mainboard Base */
+const pcbWidth = 9.4, pcbLength = 9.4, pcbThick = 0.12;
+const pcbGeo = new THREE.BoxGeometry(pcbWidth, pcbThick, pcbLength);
+const pcbMat = new THREE.MeshStandardMaterial({
+  color: 0x0A1810, roughness: 0.6, metalness: 0.2
+});
+const pcb = new THREE.Mesh(pcbGeo, pcbMat);
+pcb.position.y = -pcbThick/2;
+pcb.receiveShadow = true;
+scene.add(pcb);
+
+/* Golden silkscreen grid tracks */
+const gridHelper = new THREE.GridHelper(pcbWidth * 0.95, 24, 0x00E676, 0x143320);
+gridHelper.position.y = 0.01;
+scene.add(gridHelper);
+
+/* 2. CPU Socket & Processor Assembly */
+const cpuGroup = new THREE.Group();
+cpuGroup.position.set(0, 0, -1.6);
+cpuGroup.userData = { compKey: 'cpu' };
+
+// Socket bracket
+const socketBase = createBox(2.6, 0.16, 2.6, 0x1A2520, {roughness:0.7});
+cpuGroup.add(socketBase);
+
+// CPU Metallic Heatspreader (IHS)
+const ihs = createBox(2.1, 0.18, 2.1, 0xC8D3CC, {roughness:0.25, metalness:0.85});
+ihs.position.y = 0.12;
+cpuGroup.add(ihs);
+
+// Glowing CPU Core Die center
+const dieGlow = createBox(0.9, 0.02, 0.9, 0x00E676, {emissive:0x00E676, emissiveIntensity:0.8});
+dieGlow.position.y = 0.22;
+cpuGroup.add(dieGlow);
+
+scene.add(cpuGroup);
+componentGroups.cpu = cpuGroup;
+cpuGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'cpu'; pickableMeshes.push(o); } });
+
+/* 3. VRM Power Delivery (MOSFETs, Chokes & Heatsinks) */
+const vrmGroup = new THREE.Group();
+vrmGroup.position.set(-2.4, 0, -1.6);
+vrmGroup.userData = { compKey: 'vrm' };
+
+// Large Matte Black Aluminum Heatsink
+const vrmHeatsink = createBox(0.9, 0.9, 3.2, 0x101712, {roughness:0.3, metalness:0.7});
+vrmHeatsink.position.set(-0.2, 0.45, 0);
+vrmGroup.add(vrmHeatsink);
+
+// Heatsink fins
+for(let f = -1.3; f <= 1.3; f += 0.3){
+  const fin = createBox(0.85, 0.2, 0.06, 0x00E676, {emissive:0x00E676, emissiveIntensity:0.3});
+  fin.position.set(-0.2, 0.85, f);
+  vrmGroup.add(fin);
+}
+
+// Ferrite Chokes (R22 cubes)
+for(let c = -1.2; c <= 1.2; c += 0.45){
+  const choke = createBox(0.32, 0.32, 0.32, 0x222C26, {roughness:0.5});
+  choke.position.set(0.48, 0.16, c);
+  vrmGroup.add(choke);
+}
+
+scene.add(vrmGroup);
+componentGroups.vrm = vrmGroup;
+vrmGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'vrm'; pickableMeshes.push(o); } });
+
+/* 4. RAM Slots & Dual DDR5 Sticks */
+const ramGroup = new THREE.Group();
+ramGroup.position.set(2.4, 0, -1.6);
+ramGroup.userData = { compKey: 'ram' };
+
+// 4 DIMM Slots
+for(let s = -0.6; s <= 0.6; s += 0.4){
+  const slot = createBox(0.18, 0.25, 3.4, 0x16201A, {roughness:0.8});
+  slot.position.set(s, 0.12, 0);
+  ramGroup.add(slot);
+}
+
+// 2 Installed DDR5 Modules with RGB Bars
+[-0.2, 0.2].forEach(posX => {
+  const stick = createBox(0.12, 0.7, 3.2, 0x1A2920, {roughness:0.4, metalness:0.5});
+  stick.position.set(posX, 0.45, 0);
+  ramGroup.add(stick);
+
+  // RGB Top Lightbar
+  const rgbBar = createBox(0.13, 0.08, 3.1, 0x00FF87, {emissive:0x00FF87, emissiveIntensity:0.9});
+  rgbBar.position.set(posX, 0.82, 0);
+  ramGroup.add(rgbBar);
+});
+
+scene.add(ramGroup);
+componentGroups.ram = ramGroup;
+ramGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'ram'; pickableMeshes.push(o); } });
+
+/* 5. PCIe 5.0 x16 Slot & GPU Interface */
+const gpuGroup = new THREE.Group();
+gpuGroup.position.set(0, 0, 1.6);
+gpuGroup.userData = { compKey: 'gpu' };
+
+// Steel Reinforced PCIe Slot
+const pcieSlot = createBox(5.6, 0.28, 0.28, 0xA0B0A8, {roughness:0.3, metalness:0.8});
+pcieSlot.position.set(0, 0.14, 0);
+gpuGroup.add(pcieSlot);
+
+// Simulated GPU PCB inserted
+const gpuBoard = createBox(5.2, 0.5, 0.08, 0x0E2616, {roughness:0.5});
+gpuBoard.position.set(0, 0.42, 0);
+gpuGroup.add(gpuBoard);
+
+// Gold Contacts Edge
+const contacts = createBox(4.8, 0.06, 0.09, 0xFBBF24, {metalness:0.9, roughness:0.2});
+contacts.position.set(0, 0.16, 0);
+gpuGroup.add(contacts);
+
+scene.add(gpuGroup);
+componentGroups.gpu = gpuGroup;
+gpuGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'gpu'; pickableMeshes.push(o); } });
+
+/* 6. M.2 NVMe SSD Slot & Thermal Armor */
+const ssdGroup = new THREE.Group();
+ssdGroup.position.set(0, 0, 0.35);
+ssdGroup.userData = { compKey: 'ssd' };
+
+// M.2 Armor Plate
+const m2Heatsink = createBox(3.2, 0.16, 0.85, 0x1A2520, {roughness:0.3, metalness:0.7});
+m2Heatsink.position.set(0, 0.1, 0);
+ssdGroup.add(m2Heatsink);
+
+// Green Laser Engraved Stripe
+const m2Stripe = createBox(2.8, 0.02, 0.08, 0x00E676, {emissive:0x00E676, emissiveIntensity:0.7});
+m2Stripe.position.set(0, 0.19, 0);
+ssdGroup.add(m2Stripe);
+
+scene.add(ssdGroup);
+componentGroups.ssd = ssdGroup;
+ssdGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'ssd'; pickableMeshes.push(o); } });
+
+/* 7. Chipset PCH & Heatsink */
+const chipsetGroup = new THREE.Group();
+chipsetGroup.position.set(2.6, 0, 2.6);
+chipsetGroup.userData = { compKey: 'chipset' };
+
+const pchHeatsink = createBox(2.0, 0.35, 2.0, 0x152219, {roughness:0.3, metalness:0.7});
+pchHeatsink.position.set(0, 0.18, 0);
+chipsetGroup.add(pchHeatsink);
+
+// Illuminated ATT-25 Logo on Chipset
+const pchGlow = createBox(0.9, 0.02, 0.9, 0xFBBF24, {emissive:0xFBBF24, emissiveIntensity:0.7});
+pchGlow.position.set(0, 0.36, 0);
+chipsetGroup.add(pchGlow);
+
+scene.add(chipsetGroup);
+componentGroups.chipset = chipsetGroup;
+chipsetGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'chipset'; pickableMeshes.push(o); } });
+
+/* 8. Logic Circuit Matrix (ALU / Logic Gates) */
+const logicGroup = new THREE.Group();
+logicGroup.position.set(-2.8, 0, 2.8);
+logicGroup.userData = { compKey: 'logic' };
+
+// Logic Matrix Chip
+const logicBase = createBox(1.8, 0.14, 1.8, 0x16241C, {roughness:0.5});
+logicBase.position.set(0, 0.08, 0);
+logicGroup.add(logicBase);
+
+// Pin grid
+for(let px = -0.7; px <= 0.7; px += 0.35){
+  for(let pz = -0.7; pz <= 0.7; pz += 0.35){
+    const led = createBox(0.12, 0.06, 0.12, 0x38BDF8, {emissive:0x38BDF8, emissiveIntensity:0.6});
+    led.position.set(px, 0.16, pz);
+    logicGroup.add(led);
+  }
+}
+
+scene.add(logicGroup);
+componentGroups.logic = logicGroup;
+logicGroup.traverse(o => { if(o.isMesh) { o.userData.compKey = 'logic'; pickableMeshes.push(o); } });
+
+/* Selection highlight wireframe box */
+const selBoxGeo = new THREE.BoxGeometry(1, 1, 1);
+const selBoxMat = new THREE.MeshBasicMaterial({color:0x00FF87, wireframe:true, transparent:true, opacity:0.85});
+const selBox = new THREE.Mesh(selBoxGeo, selBoxMat);
+selBox.visible = false;
+scene.add(selBox);
+
+/* ==========================================================================
+   4. DATA BUSES & ANIMATED SIGNAL PARTICLES
+   ========================================================================== */
+const busLines = [
+  // CPU <-> RAM (Data Bus)
+  { from: new THREE.Vector3(1.1, 0.04, -1.6), to: new THREE.Vector3(1.8, 0.04, -1.6), color: 0x00E676, speed: 2.8 },
+  // CPU <-> VRM (Power Line)
+  { from: new THREE.Vector3(-1.8, 0.04, -1.6), to: new THREE.Vector3(-1.1, 0.04, -1.6), color: 0xFBBF24, speed: 2.2 },
+  // CPU <-> GPU (PCIe Lane)
+  { from: new THREE.Vector3(0, 0.04, -0.4), to: new THREE.Vector3(0, 0.04, 1.4), color: 0x38BDF8, speed: 3.2 },
+  // CPU <-> Chipset (DMI Bus)
+  { from: new THREE.Vector3(0.8, 0.04, -0.8), to: new THREE.Vector3(2.4, 0.04, 1.8), color: 0x00FF87, speed: 2.5 },
+  // Chipset <-> Logic (I/O Bus)
+  { from: new THREE.Vector3(1.8, 0.04, 2.6), to: new THREE.Vector3(-1.8, 0.04, 2.8), color: 0x00E676, speed: 2.0 }
+];
+
+const particleSystem = [];
+const particleGeo = new THREE.SphereGeometry(0.06, 8, 8);
+
+busLines.forEach(bus => {
+  // Render physical glowing trace line on PCB
+  const points = [bus.from, bus.to];
+  const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+  const lineMat = new THREE.LineBasicMaterial({color: bus.color, transparent:true, opacity:0.65});
+  const line = new THREE.Line(lineGeo, lineMat);
+  scene.add(line);
+
+  // 3 flowing signal pulses along each bus line
+  for(let i=0; i<3; i++){
+    const pMat = new THREE.MeshBasicMaterial({color: bus.color});
+    const pMesh = new THREE.Mesh(particleGeo, pMat);
+    scene.add(pMesh);
+    particleSystem.push({
+      mesh: pMesh,
+      from: bus.from,
+      to: bus.to,
+      t: i * 0.33,
+      speed: bus.speed
+    });
+  }
+});
+
+/* ==========================================================================
+   5. FLOATING 3D LABELS
+   ========================================================================== */
+const labelsContainer = document.getElementById('labels');
+const LABEL_DEFS = [
+  { key: 'cpu', text: 'CPU Socket', tag: 'LGA 1700', pos: new THREE.Vector3(0, 0.6, -1.6) },
+  { key: 'vrm', text: 'VRM Quvvat', tag: '16-Faza', pos: new THREE.Vector3(-2.4, 1.1, -1.6) },
+  { key: 'ram', text: 'DDR5 RAM', tag: '6400 MT/s', pos: new THREE.Vector3(2.4, 1.1, -1.6) },
+  { key: 'gpu', text: 'PCIe 5.0 x16', tag: '64 GB/s', pos: new THREE.Vector3(0, 0.6, 1.6) },
+  { key: 'ssd', text: 'M.2 NVMe', tag: 'Gen4 x4', pos: new THREE.Vector3(0, 0.4, 0.35) },
+  { key: 'chipset', text: 'PCH Chipset', tag: 'DMI 4.0', pos: new THREE.Vector3(2.6, 0.6, 2.6) },
+  { key: 'logic', text: 'Mantiqiy ALU', tag: 'CMOS Gates', pos: new THREE.Vector3(-2.8, 0.4, 2.8) }
+];
+
+LABEL_DEFS.forEach(l => {
+  const el = document.createElement('div');
+  el.className = 'complabel';
+  el.innerHTML = `<span class="dot"></span><span>${l.text}</span><span class="bus-tag">${l.tag}</span>`;
+  labelsContainer.appendChild(el);
+  l.element = el;
+});
+
+function updateLabels(){
+  const tempV = new THREE.Vector3();
+  LABEL_DEFS.forEach(l => {
+    tempV.copy(l.pos);
+    tempV.project(camera);
+    const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
+    const y = (-(tempV.y * 0.5) + 0.5) * window.innerHeight;
+    l.element.style.left = `${x}px`;
+    l.element.style.top = `${y}px`;
+    l.element.style.display = tempV.z > 1 ? 'none' : 'flex';
+  });
+}
+
+/* ==========================================================================
+   6. INTERACTIVE SELECTION & INSPECTOR LOGIC
+   ========================================================================== */
+const panel = document.getElementById('panel');
+const pName = document.getElementById('pName');
+const pType = document.getElementById('pType');
+const pStatusText = document.getElementById('pStatusText');
+const pDesc = document.getElementById('pDesc');
+const pSchematic = document.getElementById('pSchematic');
+const pSpecs = document.getElementById('pSpecs');
+const pClose = document.getElementById('pClose');
+const toastEl = document.getElementById('toast');
+
+let toastTimer = null;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2000);
+}
+
+function selectComponent(key){
+  const data = HARDWARE_DATA[key];
+  if(!data) return;
+
+  pName.textContent = data.name;
+  pType.textContent = data.type;
+  pStatusText.textContent = data.status;
+  pDesc.textContent = data.desc;
+  pSchematic.innerHTML = data.schematic.replace(/\n/g, '<br>');
+
+  pSpecs.innerHTML = '';
+  data.specs.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'spec-row';
+    row.innerHTML = `<span class="k">${s.k}</span><span class="v">${s.v}</span>`;
+    pSpecs.appendChild(row);
+  });
+
+  panel.classList.add('show');
+
+  // Highlight 3D bounding box
+  const grp = componentGroups[key];
+  if(grp){
+    const bbox = new THREE.Box3().setFromObject(grp);
+    const size = new THREE.Vector3();
+    const center = new THREE.Vector3();
+    bbox.getSize(size);
+    bbox.getCenter(center);
+
+    selBox.scale.set(size.x + 0.2, size.y + 0.2, size.z + 0.2);
+    selBox.position.copy(center);
+    selBox.visible = true;
+  }
+
+  toast(data.name + " tanlandi");
+}
+
+pClose.addEventListener('click', ()=>{
+  panel.classList.remove('show');
+  selBox.visible = false;
+});
+
+/* Raycasting for Click Selection */
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+window.addEventListener('pointerdown', (e)=>{
+  // Ignore clicks on UI elements
+  if(e.target.closest('#toolbar, #panel, #bottomBar')) return;
+
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(pickableMeshes);
+
+  if(hits.length > 0){
+    const key = hits[0].object.userData.compKey;
+    if(key) selectComponent(key);
+  }
+});
+
+/* ==========================================================================
+   7. MODES & CAMERA FOCUS
+   ========================================================================== */
+const modeButtons = document.querySelectorAll('.modebtn');
+modeButtons.forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    modeButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+
+    if(mode === 'all'){
+      camTarget.set(0, 0, 0);
+      camRadius = 14; camPhi = Math.PI * 0.35; camTheta = Math.PI * 0.25;
+      panel.classList.remove('show');
+      selBox.visible = false;
+      toast("Barcha ona plata sxemalari ko‘rinishi");
+    } else if(HARDWARE_DATA[mode]) {
+      selectComponent(mode);
+      const grp = componentGroups[mode];
+      if(grp){
+        camTarget.copy(grp.position);
+        camRadius = 8; camPhi = Math.PI * 0.3;
+        toast(HARDWARE_DATA[mode].name + " sxemasiga yaqinlashildi");
+      }
+    }
+    updateCamera();
+  });
+});
+
+/* Pulse Speed Button */
+const pulseSpeedBtn = document.getElementById('pulseSpeedBtn');
+let speedMultiplier = 1.0;
+pulseSpeedBtn.addEventListener('click', ()=>{
+  if(speedMultiplier === 1.0){
+    speedMultiplier = 2.2;
+    pulseSpeedBtn.querySelector('span').textContent = 'Takt: 5.4 GHz Turbo';
+    toast("⚡ Takt chastotasi oshirildi: 5.4 GHz Turbo");
+  } else if(speedMultiplier === 2.2){
+    speedMultiplier = 0.4;
+    pulseSpeedBtn.querySelector('span').textContent = 'Takt: 1.2 GHz Eco';
+    toast("🌱 Takt chastotasi tushirildi: 1.2 GHz Eco");
+  } else {
+    speedMultiplier = 1.0;
+    pulseSpeedBtn.querySelector('span').textContent = 'Takt: 4.2 GHz';
+    toast("⚖️ Normal takt rejimi: 4.2 GHz");
+  }
+});
+
+/* Reset Cam Button */
+document.getElementById('resetCamBtn').addEventListener('click', ()=>{
+  camTarget.set(0, 0, 0);
+  camRadius = 14; camPhi = Math.PI * 0.35; camTheta = Math.PI * 0.25;
+  updateCamera();
+  panel.classList.remove('show');
+  selBox.visible = false;
+  toast("Kamera boshlang‘ich holatga qaytarildi");
+});
+
+/* ==========================================================================
+   8. ORBIT & TOUCH CONTROLS
+   ========================================================================== */
+let isDragging = false, prevMouseX = 0, prevMouseY = 0;
+
+window.addEventListener('pointerdown', (e)=>{
+  if(e.target.closest('#toolbar, #panel, #bottomBar')) return;
+  isDragging = true;
+  prevMouseX = e.clientX;
+  prevMouseY = e.clientY;
+});
+
+window.addEventListener('pointermove', (e)=>{
+  if(!isDragging) return;
+  const dx = e.clientX - prevMouseX;
+  const dy = e.clientY - prevMouseY;
+  prevMouseX = e.clientX;
+  prevMouseY = e.clientY;
+
+  camTheta -= dx * 0.007;
+  camPhi = Math.max(0.12, Math.min(Math.PI * 0.48, camPhi - dy * 0.007));
+  updateCamera();
+});
+
+window.addEventListener('pointerup', ()=>{ isDragging = false; });
+
+window.addEventListener('wheel', (e)=>{
+  camRadius = Math.max(4, Math.min(22, camRadius + e.deltaY * 0.012));
+  updateCamera();
+}, {passive:true});
+
+/* Resize Handler */
+function onResize(){
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  updateCamera();
+}
+window.addEventListener('resize', onResize);
+
+/* ==========================================================================
+   9. ANIMATION LOOP
+   ========================================================================== */
+const clock = new THREE.Clock();
+
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  // Animate signal pulses across data buses
+  particleSystem.forEach(p => {
+    p.t += dt * (p.speed * 0.35 * speedMultiplier);
+    if(p.t > 1) p.t -= 1;
+    p.mesh.position.lerpVectors(p.from, p.to, p.t);
+  });
+
+  // Slow subtle rotation for die glow & VRM lights
+  goldLight.intensity = 1.0 + Math.sin(clock.elapsedTime * 4) * 0.3;
+
+  updateLabels();
+  renderer.render(scene, camera);
+}
+
+// Select CPU by default after 500ms
+setTimeout(()=>selectComponent('cpu'), 400);
+
+animate();
+
+})();
+</script>
+</body>
+</html>

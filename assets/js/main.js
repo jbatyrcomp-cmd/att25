@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initPingSimulator();
   initOsiInspector();
   initArenaControls();
+  initTopologyChips();
+  initSimulatorSwitcher();
   initSearchModal();
   initSettingsModal();
   initArticleReader();
@@ -310,7 +312,8 @@ function initArenaControls() {
 
   if (newTabBtn) {
     newTabBtn.addEventListener('click', () => {
-      window.open('3d.html', '_blank');
+      const currentSrc = iframe ? (iframe.getAttribute('src') || '3d.html') : '3d.html';
+      window.open(currentSrc, '_blank');
     });
   }
 
@@ -327,10 +330,52 @@ function initArenaControls() {
   }
 }
 
+function initTopologyChips() {
+  const chips = document.querySelectorAll('.topo-chip');
+  const iframe = document.getElementById('arenaIframe');
+  if (!chips.length || !iframe) return;
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const topoType = chip.dataset.topo;
+
+      // Send postMessage to 3d.html iframe
+      if (iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ action: 'loadTopology', type: topoType }, '*');
+      }
+    });
+  });
+}
+
+function initSimulatorSwitcher() {
+  const tabBtns = document.querySelectorAll('.sim-tab-btn');
+  const iframe = document.getElementById('arenaIframe');
+  const mainTitle = document.getElementById('arenaMainTitle');
+  const topoBar = document.querySelector('.topo-templates-bar');
+  if (!tabBtns.length || !iframe) return;
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const simSrc = btn.dataset.sim;
+      const title = btn.dataset.title;
+      iframe.src = simSrc;
+      if (mainTitle && title) mainTitle.textContent = title;
+      if (topoBar) {
+        topoBar.style.display = simSrc.includes('hardware3d') ? 'none' : 'flex';
+      }
+    });
+  });
+}
+
 /* ==========================================================================
    6. QIDIRUV (SEARCH) MODALI
    ========================================================================== */
 const SEARCH_INDEX = [
+  { title: "3D Kompyuter Sxemalari & Atributlari", category: "Simulyator", link: "hardware3d.html", desc: "Ona plata arxitekturasi, CPU LGA1700, VRM sxemasi, DDR5, PCIe 5.0 shinalari va mantiqiy elementlar" },
   { title: "3D LAN Simulyatori", category: "Simulyator", link: "#simulyatorlar", desc: "Interaktiv 3D muhitda tarmoq qurish va paketlar harakatini kuzatish" },
   { title: "IP Subnet & VLSM Kalkulyatori", category: "Simulyator", link: "#subnet-calc", desc: "IP manzil va CIDR maskasi bo‘yicha tarmoq parametrlarini hisoblash" },
   { title: "Jonli Ping & Latency Terminali", category: "Simulyator", link: "#ping-terminal", desc: "ICMP paketlar yuborish va tarmoq kechikishini sinovdan o‘tkazish" },
