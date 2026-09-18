@@ -78,9 +78,9 @@
         <ul class="nav-list">
           <li class="nav-item"><a href="#bosh-sahifa" class="nav-link active">Bosh Sahifa</a></li>
           <li class="nav-item">
-            <a href="#simulyatorlar" class="nav-link">
+            <a href="simulyator.html" class="nav-link">
               Simulyatorlar
-              <span class="nav-badge-pill">3D LIVE</span>
+              <span class="nav-badge-pill">5 IN 1</span>
             </a>
           </li>
           <li class="nav-item"><a href="#oquv-dasturi" class="nav-link">O‘quv Dasturi</a></li>
@@ -88,13 +88,10 @@
           <li class="nav-item"><a href="#media-hub" class="nav-link">Media Hub</a></li>
           <li class="nav-item"><a href="#maqolalar" class="nav-link">Maqolalar</a></li>
           <li class="nav-item"><a href="#manbalar" class="nav-link">Manbalar</a></li>
-          <li class="nav-item mobile-only-cta" style="margin-top: 8px;">
-            <a href="#simulyatorlar" class="btn-arsenal-primary"
-              style="width: 100%; justify-content: center; clip-path:none; border-radius:4px;">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
-                <path d="M5 3l14 9-14 9V3z" />
-              </svg>
-              3D Lab Ga Kirish
+          <li class="nav-item mobile-only-cta" style="margin-top: 10px;">
+            <a href="simulyator.html" class="btn-arsenal-primary"
+              style="width: 100%; justify-content: center; clip-path:none; border-radius:4px; font-size:13px; padding:12px;">
+              ⚡ Simulyatorlar Markazi (5-in-1) ↗
             </a>
           </li>
         </ul>
@@ -102,11 +99,11 @@
 
       <!-- Header CTAs -->
       <div class="header-actions">
-        <a href="#simulyatorlar" class="btn-arsenal-primary">
+        <a href="simulyator.html" class="btn-arsenal-primary" title="Yagona Simulyatorlar Markaziga kirish">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path d="M5 3l14 9-14 9V3z" />
           </svg>
-          3D Lab Ga Kirish
+          Simulyatorlar Markazi ↗
         </a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menyu">
           <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
@@ -177,17 +174,17 @@
           </div>
 
           <div class="hero-actions-group">
-            <a href="#simulyatorlar" class="btn-arsenal-primary">
-              Simulyatorni Boshlash
+            <a href="simulyator.html" class="btn-arsenal-primary">
+              Simulyatorlar Markaziga Kirish
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <path d="M5 3l14 9-14 9V3z" />
               </svg>
             </a>
-            <a href="hardware3d.html" target="_blank" class="btn-arsenal-secondary" style="border-color:var(--brand-primary); color:var(--brand-volt);" title="Kompyuter sxemalari va qismlari atributlari">
-              ⚡ 3D Sxemalar & Atributlar ↗
+            <a href="simulyator.html#lan3d" class="btn-arsenal-secondary">
+              🌐 3D LAN Topologiya ↗
             </a>
-            <a href="3d.html" target="_blank" class="btn-arsenal-secondary">
-              🌐 3D Tarmoq ↗
+            <a href="simulyator.html#hardware3d" class="btn-arsenal-secondary" style="border-color:var(--brand-primary); color:var(--brand-volt);" title="Kompyuter sxemalari va qismlari atributlari">
+              ⚡ 3D Sxemalar ↗
             </a>
           </div>
         </div>
@@ -196,7 +193,7 @@
       <!-- Side Stories (Arsenal 3-Stack) -->
       <div class="hero-side-stories">
         <!-- Card 1 -->
-        <a href="hardware3d.html" target="_blank" class="side-story-card">
+        <a href="simulyator.html#hardware3d" class="side-story-card">
           <div class="side-story-thumb">
             <div style="width:100%; height:100%; background:#091910; display:flex; align-items:center; justify-content:center; color:var(--brand-volt); font-size:26px;">⚡</div>
           </div>
@@ -237,200 +234,34 @@
   </section>
 
   <!-- ==========================================================================
-       5. SIMULATORS ARENA (3D.HTML + INTERACTIVE TOOLS)
+       5. ATT-25 YAGONA SIMULYATORLAR MARKAZI (YAGONA BO‘LIM)
        ========================================================================== -->
-  <section class="section-container" id="simulyatorlar">
-    <div class="section-header">
-      <div class="section-title-wrap">
-        <span class="section-pretitle">Amaliy Laboratoriya Markazi</span>
-        <h2 class="section-title">Tarmoq Simulyatorlari Hub</h2>
-      </div>
-      <div class="section-filters">
-        <button class="filter-btn active">Barchasi</button>
-        <button class="filter-btn">3D Fazoviy</button>
-        <button class="filter-btn">IP & Hisoblash</button>
-        <button class="filter-btn">Protokollar</button>
-      </div>
-    </div>
-
-    <!-- 3D Arena Box (Seamlessly embeds 3d.html and hardware3d.html) -->
-    <div class="simulator-arena-wrapper" id="arenaWrapper">
-      <!-- 3D Simulyator Tanlash (Tab Switcher) -->
-      <div class="sim-switcher-bar">
-        <button class="sim-tab-btn active" id="simTabLan" data-sim="3d.html" data-title="LAN 3D TOPOLOGIYA MUHITI (v2.4)">
-          🌐 3D Tarmoq Topologiyasi (LAN 3D)
-        </button>
-        <button class="sim-tab-btn" id="simTabHardware" data-sim="hardware3d.html" data-title="KOMPYUTER SXEMALARI VA ATRIBUTLARI (v2.0)">
-          ⚡ 3D Kompyuter Sxemalari & Atributlari (Hardware 3D)
-        </button>
-      </div>
-
-      <div class="arena-toolbar">
-        <div class="arena-info">
-          <div class="arena-badge-live">
-            <span class="status-dot"></span>
-            FAOL 3D SIMULYATOR
-          </div>
-          <span class="arena-title" id="arenaMainTitle">LAN 3D TOPOLOGIYA MUHITI (v2.4)</span>
+  <section class="section-container" id="simulyatorlar" style="padding: 24px 24px 44px;">
+    <div class="sim-hub-promo-banner">
+      <div class="sim-promo-left">
+        <div class="sim-promo-tag">
+          <span class="status-dot"></span>
+          YAGONA AMALIY BO‘LIM • 5-IN-1 LABORATORIYA
         </div>
-        <div class="arena-controls">
-          <button class="arena-btn" id="arenaReload" title="Qurilmalarni boshlang‘ich holatga qaytarish">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
-              <path d="M23 4v6h-6M1 20v-6h6" />
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-            </svg>
-            Qayta Yuklash
-          </button>
-          <button class="arena-btn" id="arenaFullscreen" title="To‘liq ekranda ochish">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
-              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-            </svg>
-            To‘liq Ekran
-          </button>
-          <button class="arena-btn" id="arenaNewTab" title="Alohida yangi oynada ochish">
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
-            </svg>
-            Yangi Oyna ↗
-          </button>
+        <h2 class="sim-promo-title">ATT-25 Simulyatorlar Markazi</h2>
+        <p class="sim-promo-desc">
+          Barcha 3D tarmoq topologiyalari, kompyuter apparat sxemalari (CPU/VRM/DDR5/ALU), IP Subnet kalkulyatori, jonli Ping terminali va OSI 7 qatlamli model bitta yagona interaktiv bo‘limda jamlandi.
+        </p>
+        <div class="sim-promo-chips">
+          <a href="simulyator.html#lan3d" class="promo-chip">🌐 3D LAN Topologiya</a>
+          <a href="simulyator.html#hardware3d" class="promo-chip">⚡ 3D Hardware Sxemalari</a>
+          <a href="simulyator.html#subnet" class="promo-chip">🔢 IP Subnet Kalkulyator</a>
+          <a href="simulyator.html#ping" class="promo-chip">💻 Jonli Ping Terminali</a>
+          <a href="simulyator.html#osi" class="promo-chip">📶 OSI 7 Modeli</a>
         </div>
       </div>
-      <div class="arena-viewport">
-        <iframe src="3d.html" class="arena-iframe" id="arenaIframe" title="LAN 3D Simulyator Arena"></iframe>
-      </div>
-    </div>
-
-    <!-- Additional Interactive Simulators Grid -->
-    <div class="simulators-grid">
-      <!-- 1. Interactive IP Subnetting & VLSM Calculator -->
-      <div class="tool-card" id="subnet-calc">
-        <div class="tool-header">
-          <div class="tool-icon-box">
-            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2">
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <line x1="8" y1="9" x2="16" y2="9" />
-              <line x1="8" y1="13" x2="16" y2="13" />
-              <line x1="8" y1="17" x2="12" y2="17" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="tool-title">IP Subnet & VLSM Kalkulyatori</h3>
-            <p class="tool-subtitle">Tarmoq maskasi va hostlar sonini hisoblash</p>
-          </div>
-        </div>
-
-        <div class="subnet-form">
-          <div class="input-row">
-            <div class="form-field">
-              <label class="form-label" for="calcIp">IP Manzil</label>
-              <input type="text" id="calcIp" class="arsenal-input" value="192.168.10.15">
-            </div>
-            <div class="form-field" style="max-width:100px;">
-              <label class="form-label" for="calcCidr">CIDR (/)</label>
-              <input type="number" id="calcCidr" class="arsenal-input" value="24" min="1" max="32">
-            </div>
-          </div>
-
-          <div class="preset-pills">
-            <button class="preset-pill" data-cidr="24">/24 (254 Host)</button>
-            <button class="preset-pill" data-cidr="26">/26 (62 Host)</button>
-            <button class="preset-pill" data-cidr="28">/28 (14 Host)</button>
-            <button class="preset-pill" data-cidr="30">/30 (2 Host P2P)</button>
-            <button class="preset-pill" data-cidr="16">/16 (65k Host)</button>
-          </div>
-        </div>
-
-        <div class="calc-result-box">
-          <div class="result-row"><span class="k">Tarmoq ID:</span><span class="v" id="resNet">192.168.10.0 /24</span>
-          </div>
-          <div class="result-row"><span class="k">Tarmoq Maskasi:</span><span class="v"
-              id="resMask">255.255.255.0</span></div>
-          <div class="result-row"><span class="k">Wildcard:</span><span class="v" id="resWild">0.0.0.255</span></div>
-          <div class="result-row"><span class="k">Hostlar Oralig‘i:</span><span class="v" id="resRange">192.168.10.1 –
-              192.168.10.254</span></div>
-          <div class="result-row"><span class="k">Foydalanuvchi Hostlar:</span><span class="v" id="resHosts">254
-              ta</span></div>
-          <div class="result-row"><span class="k">Ikkilik Ko‘rinish:</span><span class="v"
-              id="resBinary">11111111.11111111.11111111.00000000</span></div>
-        </div>
-      </div>
-
-      <!-- 2. Interactive Ping & Latency Terminal -->
-      <div class="tool-card" id="ping-terminal">
-        <div class="tool-header">
-          <div class="tool-icon-box">
-            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2">
-              <polyline points="4 17 10 11 4 5" />
-              <line x1="12" y1="19" x2="20" y2="19" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="tool-title">Jonli Ping & Latency Terminali</h3>
-            <p class="tool-subtitle">Tugunlararo kechikish va ICMP tahlili</p>
-          </div>
-        </div>
-
-        <div class="subnet-form">
-          <div class="input-row">
-            <div class="form-field">
-              <label class="form-label" for="pingTarget">Host / IP Manzil</label>
-              <input type="text" id="pingTarget" class="arsenal-input" value="8.8.8.8"
-                placeholder="Masalan: 192.168.1.1">
-            </div>
-            <button class="btn-arsenal-primary" id="runPingBtn"
-              style="align-self:flex-end; padding:8px 14px; font-size:12px;">
-              Ping
-            </button>
-            <button class="btn-arsenal-secondary" id="clearPingBtn"
-              style="align-self:flex-end; padding:8px 10px; font-size:11px;">
-              Tozala
-            </button>
-          </div>
-        </div>
-
-        <div class="ping-terminal" id="pingTerminal">
-          <div class="terminal-line system">[ATT-25 ICMP Echo Engine v2.4] Tayyor. IP kiriting va "Ping" tugmasini
-            bosing.</div>
-        </div>
-      </div>
-
-      <!-- 3. Interactive OSI 7 Layer Inspector -->
-      <div class="tool-card" id="osi-inspector">
-        <div class="tool-header">
-          <div class="tool-icon-box">
-            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2">
-              <polygon points="12 2 2 7 12 12 22 7 12 2" />
-              <polyline points="2 17 12 22 22 17" />
-              <polyline points="2 12 12 17 22 12" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="tool-title">OSI 7 Qatlamli Model Inspektori</h3>
-            <p class="tool-subtitle">Protokollar steki va PDU birliklari</p>
-          </div>
-        </div>
-
-        <div class="osi-layers-stack">
-          <div class="osi-layer-row active" data-layer="7"><span>7. Application (Amaliy)</span> <span>HTTP/3, DNS</span>
-          </div>
-          <div class="osi-layer-row" data-layer="6"><span>6. Presentation (Taqdimot)</span> <span>TLS 1.3, JPEG</span>
-          </div>
-          <div class="osi-layer-row" data-layer="5"><span>5. Session (Seans)</span> <span>RPC, Sockets</span></div>
-          <div class="osi-layer-row" data-layer="4"><span>4. Transport (Transport)</span> <span>TCP, UDP</span></div>
-          <div class="osi-layer-row" data-layer="3"><span>3. Network (Tarmoq)</span> <span>IPv4/IPv6, OSPF</span></div>
-          <div class="osi-layer-row" data-layer="2"><span>2. Data Link (Kanal)</span> <span>Ethernet, 802.1Q</span>
-          </div>
-          <div class="osi-layer-row" data-layer="1"><span>1. Physical (Jismoniy)</span> <span>Optika, RJ45</span></div>
-        </div>
-
-        <div class="osi-info-panel" id="osiInfoBox">
-          <div><b>Qatlam 7: Application (Amaliy)</b></div>
-          <div style="margin-top:4px;"><b>PDU Birligi:</b> Ma'lumotlar (Data)</div>
-          <div><b>Protokollar:</b> HTTP/3, HTTPS, DNS, DHCP, SSH</div>
-          <div><b>Qurilmalar:</b> Gateway, Next-Gen Firewall, Server</div>
-          <div style="margin-top:4px; color:var(--text-light);">Foydalanuvchi dasturlari va tarmoq xizmatlari
-            o‘rtasidagi to‘g‘ridan-to‘g‘ri interfeys.</div>
-        </div>
+      <div class="sim-promo-right">
+        <a href="simulyator.html" class="btn-arsenal-primary sim-promo-cta">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Simulyatorlar Markaziga Kirish ↗
+        </a>
       </div>
     </div>
   </section>
@@ -863,7 +694,12 @@
 
       <div class="footer-bottom-bar">
         <span>© 2026 ATT-25 Yo‘nalishi. Barcha huquqlar himoyalangan.</span>
-        <span style="color:var(--brand-primary); font-weight:700;">JUMAMYRADOW BATYR</span>
+        <div style="display:flex; align-items:center; gap:20px;">
+          <a href="admin.html" style="color:var(--text-dim); text-decoration:none; font-size:12.5px; display:inline-flex; align-items:center; gap:5px; transition:color 0.2s;" onmouseover="this.style.color='var(--brand-primary)'" onmouseout="this.style.color='var(--text-dim)'">
+            🔐 Admin Panel
+          </a>
+          <span style="color:var(--brand-primary); font-weight:700;">JUMAMYRADOW BATYR</span>
+        </div>
       </div>
     </div>
   </footer>
@@ -919,6 +755,55 @@
             </div>
             <span class="arena-badge-live">FOAL (v2.4)</span>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Simulyatorlar Launcher Modal (Tepada "3D Lab Ga Kirish" bosilganda ochiladi) -->
+  <div class="modal-backdrop" id="simLauncherModal">
+    <div class="modal-dialog" style="max-width:720px;">
+      <div class="modal-header">
+        <div>
+          <span class="editorial-tag" style="color:var(--brand-volt);">3D Laboratoriya Markazi</span>
+          <h3 class="modal-title" style="font-size:22px; margin-top:4px;">3D Simulyatorni Tanlang</h3>
+        </div>
+        <button class="modal-close-btn" id="simLauncherClose">✕</button>
+      </div>
+      <div class="modal-body" style="padding:24px;">
+        <p style="color:var(--text-dim); margin-bottom:20px; font-size:14px;">
+          Quyidagi simulyatorlardan birini tanlang. Ular alohida to‘liq ekranli 3D fazoviy laboratoriya sifatida ishga tushadi:
+        </p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px;">
+          <!-- 3D LAN Card -->
+          <a href="3d.html" target="_blank" class="sim-modal-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:6px; background:var(--bg-surface-2); border:1px solid var(--line-bright); transition:all 0.25s ease;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span style="font-size:36px;">🌐</span>
+                <span style="font-size:10px; font-weight:700; color:var(--brand-primary); background:rgba(0,230,118,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,230,118,0.3);">3D TARMOQ v2.4</span>
+              </div>
+              <h4 style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">LAN & Topologiyalar Simulyatori</h4>
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Star, Ring, Bus, Tree, Mesh va Ofis topologiyalari, real-time paketlar trafigi va qurilmalar ulanishi.</p>
+            </div>
+            <div style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-primary); font-weight:700; font-size:13px;">
+              Laboratoriyaga Kirish ↗
+            </div>
+          </a>
+
+          <!-- 3D Hardware Card -->
+          <a href="hardware3d.html" target="_blank" class="sim-modal-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:6px; background:var(--bg-surface-2); border:1px solid rgba(0,255,135,0.35); transition:all 0.25s ease;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span style="font-size:36px;">⚡</span>
+                <span style="font-size:10px; font-weight:700; color:var(--brand-volt); background:rgba(0,255,135,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,255,135,0.3);">YANGI 3D v2.0</span>
+              </div>
+              <h4 style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">Kompyuter Sxemalari & Atributlari</h4>
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Ona plata ATX PCB, CPU LGA1700, 16-faza VRM, DDR5, PCIe 5.0 shinalar signallari va mantiqiy ALU darvozalari.</p>
+            </div>
+            <div style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-volt); font-weight:700; font-size:13px;">
+              Laboratoriyaga Kirish ↗
+            </div>
+          </a>
         </div>
       </div>
     </div>
