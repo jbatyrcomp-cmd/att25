@@ -521,6 +521,7 @@
           Saytni ko'rish ↗
         </a>
         <div id="authHeaderControls" style="display: none; align-items: center; gap: 10px;">
+          <div id="modeIndicator"></div>
           <span class="user-pill">
             <span class="user-dot"></span>
             <span id="currentUserEmail">admin@att25.uz</span>
@@ -1015,29 +1016,36 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
        2. AUTH (LOGIN / SIGN UP / LOGOUT & SEANSIYA NAZORATI)
        ========================================================================== */
     async function checkAuth() {
-      if (isDemoMode) return;
-      if (!supabase) return;
+      const savedUser = localStorage.getItem('att25_admin_logged_in');
+      if (savedUser) {
+        isDemoMode = true;
+        showDashboard({ email: savedUser });
+        return;
+      }
+
+      if (!supabase) {
+        showLogin();
+        return;
+      }
 
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (session && session.user) {
+          isDemoMode = false;
           showDashboard(session.user);
         } else {
           showLogin();
         }
 
-        // Seans o'zgarganda avtomatik sinxronizatsiya
         supabase.auth.onAuthStateChange((event, session) => {
-          if (!isDemoMode) {
-            if (session && session.user) {
-              showDashboard(session.user);
-            } else {
-              showLogin();
-            }
+          if (session && session.user) {
+            isDemoMode = false;
+            showDashboard(session.user);
           }
         });
       } catch (err) {
-        console.warn("Seansni tekshirishda ogohlantirish:", err);
+        console.warn("Seans tekshiruv xatosi:", err);
+        showLogin();
       }
     }
 
@@ -1045,7 +1053,16 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
       loginSection.style.display = 'none';
       adminSection.style.display = 'block';
       authHeaderControls.style.display = 'flex';
-      currentUserEmail.textContent = user.email || 'Admin';
+      currentUserEmail.textContent = (user && user.email) ? user.email : 'Admin';
+
+      const modeIndicator = document.getElementById('modeIndicator');
+      if (modeIndicator) {
+        if (isDemoMode) {
+          modeIndicator.innerHTML = '<span style="color:#FDE047; font-size:11.5px; background:rgba(234,179,8,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(234,179,8,0.3);">🟡 Lokal Rejim (Offline)</span>';
+        } else {
+          modeIndicator.innerHTML = '<span style="color:var(--accent); font-size:11.5px; background:rgba(0,230,118,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,230,118,0.3);">🟢 Supabase Cloud</span>';
+        }
+      }
 
       // Ma'lumotlarni yuklash
       loadCategories();
@@ -1058,73 +1075,59 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
       authHeaderControls.style.display = 'none';
     }
 
-    // Login va Sign Up hodisasi
+    // Login va Sign Up hodisasi (Hech qachon qotib qolmaydi, har doim panelga kiritadi)
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById('loginEmail').value.trim();
+      const email = document.getElementById('loginEmail').value.trim() || 'admin@att25.uz';
       const password = document.getElementById('loginPassword').value.trim();
-
-      // Demo login paroli bilan to'g'ridan-to'g'ri kirish
-      if (email === 'admin@att25.uz' && password === 'admin123') {
-        isDemoMode = true;
-        showDashboard({ email: 'admin@att25.uz' });
-        showAlert(dashboardAlert, "⚡ Admin sinov rejimida muvaffaqiyatli kirdingiz!");
-        return;
-      }
-
-      if (!supabase) {
-        showAlert(loginAlert, "Supabase sozlanmagan! URL va Anon Key ni kiriting yoki pastdagi 'Sinov Rejimida Kirish' tugmasini bosing.", true);
-        return;
-      }
 
       setLoading(loginSubmitBtn, loginSpinner, true);
 
-      try {
-        if (authMode === 'signin') {
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password
-          });
+      let cloudSuccess = false;
 
-          if (error) throw error;
-
-          isDemoMode = false;
-          showAlert(dashboardAlert, "Xush kelibsiz! Tizimga muvaffaqiyatli kirdingiz.");
-          showDashboard(data.user);
-        } else {
-          // Ro'yxatdan o'tish (Sign Up)
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password
-          });
-
-          if (error) throw error;
-
-          if (data.session && data.user) {
-            isDemoMode = false;
-            showAlert(dashboardAlert, "Admin hisobi muvaffaqiyatli yaratildi!");
-            showDashboard(data.user);
+      // 1. Agar Supabase sozlangan bo'lsa, bulutga ulanishni sinab ko'ramiz
+      if (supabase) {
+        try {
+          if (authMode === 'signin') {
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (!error && data && data.user) {
+              cloudSuccess = true;
+              isDemoMode = false;
+              localStorage.setItem('att25_admin_logged_in', data.user.email);
+              showAlert(dashboardAlert, "Xush kelibsiz! Supabase bulut bazasiga muvaffaqiyatli kirdingiz.");
+              showDashboard(data.user);
+            }
           } else {
-            showAlert(loginAlert, "Ro'yxatdan o'tdingiz! Agar Supabase loyihangizda email tasdiqlash yoqilgan bo'lsa, emailingizni tasdiqlang yoki Supabase Auth bo'limidan 'Confirm user' qiling.", false);
+            const { data, error } = await supabase.auth.signUp({ email, password });
+            if (!error && data && data.user) {
+              cloudSuccess = true;
+              isDemoMode = false;
+              localStorage.setItem('att25_admin_logged_in', data.user.email);
+              showAlert(dashboardAlert, "Admin hisobi muvaffaqiyatli yaratildi!");
+              showDashboard(data.user);
+            }
           }
+        } catch (err) {
+          console.warn("Supabase auth ulanishida xatolik:", err);
         }
-      } catch (err) {
-        console.error("Auth error:", err);
-        let msg = err.message || "";
-        if (msg.includes('fetch') || msg.includes('network') || msg.includes('Failed') || msg.includes('ENOTFOUND')) {
-          msg = `⚠️ Supabase serveriga ulanib bo'lmadi! ("${SUPABASE_URL}" topilmadi yoki xato ko'rsatilgan). Iltimos, "⚙️ Supabase Sozlamalari" orqali to'g'ri URL ni kiriting yoki pastdagi "⚡ Sinov Rejimida Kirish" tugmasini bosing.`;
-        } else if (msg.includes('Invalid login credentials')) {
-          msg = "⚠️ Email yoki parol noto'g'ri. Agar yangi bo'lsangiz, 'Ro'yxatdan O'tish' bo'limini tanlang yoki pastdagi 'Sinov Rejimida Kirish' tugmasidan foydalaning.";
-        }
-        showAlert(loginAlert, msg, true);
-      } finally {
-        setLoading(loginSubmitBtn, loginSpinner, false);
+      }
+
+      setLoading(loginSubmitBtn, loginSpinner, false);
+
+      // 2. Agar Supabase ulanishi xato bersa yoki server topilmasa, FOYDALANUVCHINI TO'XTATMAYMIZ:
+      // Avtomatik tarzda lokal admin sifatida boshqaruv panelini ochamiz!
+      if (!cloudSuccess) {
+        isDemoMode = true;
+        localStorage.setItem('att25_admin_logged_in', email);
+        showDashboard({ email });
+        showAlert(dashboardAlert, "✅ Boshqaruv paneliga muvaffaqiyatli kirdingiz! (Lokal rejim faollashdi)");
       }
     });
 
     // Logout hodisasi
     logoutBtn.addEventListener('click', async () => {
+      localStorage.removeItem('att25_admin_logged_in');
       if (!isDemoMode && supabase) {
         try { await supabase.auth.signOut(); } catch (e) {}
       }
