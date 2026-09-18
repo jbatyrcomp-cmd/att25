@@ -520,7 +520,7 @@
         <a href="index.html" class="btn btn-secondary btn-sm" target="_blank" title="Asosiy portalni yangi oynada ochish">
           Saytni ko'rish ↗
         </a>
-        <div id="authHeaderControls" style="display: none; align-items: center; gap: 10px;">
+        <div id="authHeaderControls" style="display: flex; align-items: center; gap: 10px;">
           <div id="modeIndicator"></div>
           <span class="user-pill">
             <span class="user-dot"></span>
@@ -533,9 +533,9 @@
   </header>
 
   <!-- ==========================================================================
-       LOGIN SECTION (Ko'rinadi: Foydalanuvchi tizimga kirmagan bo'lsa)
+       LOGIN SECTION (Faqat 'Chiqish' bosilganda ko'rinadi)
        ========================================================================== -->
-  <section id="loginSection" class="auth-wrapper">
+  <section id="loginSection" class="auth-wrapper" style="display: none;">
     <div class="auth-card">
       <div class="auth-header">
         <span class="brand-badge">XAVFSIZ BOSHQARUV</span>
@@ -591,9 +591,9 @@
   </section>
 
   <!-- ==========================================================================
-       ADMIN DASHBOARD SECTION (Ko'rinadi: Auth tasdiqlanganda)
+       ADMIN DASHBOARD SECTION (Boshqaruv Paneli)
        ========================================================================== -->
-  <main id="adminSection" class="container" style="display: none; padding-top: 28px;">
+  <main id="adminSection" class="container" style="display: block; padding-top: 28px;">
     
     <!-- Toast / Alert container -->
     <div id="dashboardAlert" class="alert"></div>
@@ -965,6 +965,8 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     // Demo Kirish Tugmasi
     if (demoLoginBtn) {
       demoLoginBtn.addEventListener('click', () => {
+        localStorage.removeItem('att25_admin_explicit_logout');
+        localStorage.setItem('att25_admin_logged_in', 'demo-admin@att25.uz');
         isDemoMode = true;
         showDashboard({ email: 'demo-admin@att25.uz' });
         showAlert(dashboardAlert, "⚡ Sinov (Demo) rejimida muvaffaqiyatli kirdingiz! Siz bo'limlar va materiallarni erkin qo'shib sinashingiz mumkin.");
@@ -1016,36 +1018,33 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
        2. AUTH (LOGIN / SIGN UP / LOGOUT & SEANSIYA NAZORATI)
        ========================================================================== */
     async function checkAuth() {
-      const savedUser = localStorage.getItem('att25_admin_logged_in');
-      if (savedUser) {
-        isDemoMode = true;
-        showDashboard({ email: savedUser });
-        return;
-      }
-
-      if (!supabase) {
+      const isExplicitLogout = localStorage.getItem('att25_admin_explicit_logout') === 'true';
+      if (isExplicitLogout) {
         showLogin();
         return;
       }
 
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (session && session.user) {
-          isDemoMode = false;
-          showDashboard(session.user);
-        } else {
-          showLogin();
-        }
+      const savedUser = localStorage.getItem('att25_admin_logged_in') || 'admin@att25.uz';
+      isDemoMode = true;
+      showDashboard({ email: savedUser });
 
-        supabase.auth.onAuthStateChange((event, session) => {
+      if (supabase) {
+        try {
+          const { data: { session }, error } = await supabase.auth.getSession();
           if (session && session.user) {
             isDemoMode = false;
             showDashboard(session.user);
           }
-        });
-      } catch (err) {
-        console.warn("Seans tekshiruv xatosi:", err);
-        showLogin();
+
+          supabase.auth.onAuthStateChange((event, session) => {
+            if (session && session.user) {
+              isDemoMode = false;
+              showDashboard(session.user);
+            }
+          });
+        } catch (err) {
+          console.warn("Seans tekshiruv xatosi:", err);
+        }
       }
     }
 
@@ -1078,6 +1077,8 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     // Login va Sign Up hodisasi (Hech qachon qotib qolmaydi, har doim panelga kiritadi)
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      localStorage.removeItem('att25_admin_explicit_logout');
 
       const email = document.getElementById('loginEmail').value.trim() || 'admin@att25.uz';
       const password = document.getElementById('loginPassword').value.trim();
@@ -1127,6 +1128,7 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
 
     // Logout hodisasi
     logoutBtn.addEventListener('click', async () => {
+      localStorage.setItem('att25_admin_explicit_logout', 'true');
       localStorage.removeItem('att25_admin_logged_in');
       if (!isDemoMode && supabase) {
         try { await supabase.auth.signOut(); } catch (e) {}
