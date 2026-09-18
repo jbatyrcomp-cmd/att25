@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initArenaControls();
   initTopologyChips();
   initSimulatorSwitcher();
+  initSimLauncherModal();
   initSearchModal();
   initSettingsModal();
   initArticleReader();
@@ -371,15 +372,55 @@ function initSimulatorSwitcher() {
   });
 }
 
+function initSimLauncherModal() {
+  const launcherBtn = document.getElementById('openSimLauncherBtn');
+  const launcherModal = document.getElementById('simLauncherModal');
+  const closeBtn = document.getElementById('simLauncherClose');
+  const navDropdownItem = document.getElementById('simNavDropdownItem');
+  const navDropdownBtn = document.getElementById('simNavDropdownBtn');
+
+  if (launcherBtn && launcherModal) {
+    launcherBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      launcherModal.classList.add('open');
+    });
+  }
+
+  if (closeBtn && launcherModal) {
+    closeBtn.addEventListener('click', () => {
+      launcherModal.classList.remove('open');
+    });
+  }
+
+  if (launcherModal) {
+    launcherModal.addEventListener('click', (e) => {
+      if (e.target === launcherModal) {
+        launcherModal.classList.remove('open');
+      }
+    });
+  }
+
+  // Mobile toggle for navigation dropdown
+  if (navDropdownItem && navDropdownBtn) {
+    navDropdownBtn.addEventListener('click', (e) => {
+      if (window.innerWidth <= 860) {
+        e.preventDefault();
+        navDropdownItem.classList.toggle('mobile-open');
+      }
+    });
+  }
+}
+
 /* ==========================================================================
    6. QIDIRUV (SEARCH) MODALI
    ========================================================================== */
 const SEARCH_INDEX = [
-  { title: "3D Kompyuter Sxemalari & Atributlari", category: "Simulyator", link: "hardware3d.html", desc: "Ona plata arxitekturasi, CPU LGA1700, VRM sxemasi, DDR5, PCIe 5.0 shinalari va mantiqiy elementlar" },
-  { title: "3D LAN Simulyatori", category: "Simulyator", link: "#simulyatorlar", desc: "Interaktiv 3D muhitda tarmoq qurish va paketlar harakatini kuzatish" },
-  { title: "IP Subnet & VLSM Kalkulyatori", category: "Simulyator", link: "#subnet-calc", desc: "IP manzil va CIDR maskasi bo‘yicha tarmoq parametrlarini hisoblash" },
-  { title: "Jonli Ping & Latency Terminali", category: "Simulyator", link: "#ping-terminal", desc: "ICMP paketlar yuborish va tarmoq kechikishini sinovdan o‘tkazish" },
-  { title: "OSI 7 Qatlamli Model Inspektori", category: "Simulyator", link: "#osi-inspector", desc: "OSI qatlamlari, protokollari va apparat jihozlarini tahlil qilish" },
+  { title: "Yagona Simulyatorlar Markazi (5-in-1)", category: "Simulyator", link: "simulyator.html", desc: "3D LAN, 3D Hardware Sxemalari, Subnet, Ping va OSI modeli bitta yagona bo‘limda" },
+  { title: "3D Kompyuter Sxemalari & Atributlari", category: "Simulyator", link: "simulyator.html#hardware3d", desc: "Ona plata arxitekturasi, CPU LGA1700, VRM sxemasi, DDR5, PCIe 5.0 shinalari va mantiqiy elementlar" },
+  { title: "3D LAN Simulyatori", category: "Simulyator", link: "simulyator.html#lan3d", desc: "Interaktiv 3D muhitda tarmoq qurish va paketlar harakatini kuzatish" },
+  { title: "IP Subnet & VLSM Kalkulyatori", category: "Simulyator", link: "simulyator.html#subnet", desc: "IP manzil va CIDR maskasi bo‘yicha tarmoq parametrlarini hisoblash" },
+  { title: "Jonli Ping & Latency Terminali", category: "Simulyator", link: "simulyator.html#ping", desc: "ICMP paketlar yuborish va tarmoq kechikishini sinovdan o‘tkazish" },
+  { title: "OSI 7 Qatlamli Model Inspektori", category: "Simulyator", link: "simulyator.html#osi", desc: "OSI qatlamlari, protokollari va apparat jihozlarini tahlil qilish" },
   { title: "Cisco Routing & Switching (CCNA)", category: "O‘quv Dasturi", link: "#oquv-dasturi", desc: "OSPF, VLAN, Inter-VLAN va BGP marshrutlash protokollari" },
   { title: "Kiberxavfsizlik va Next-Gen Firewall", category: "O‘quv Dasturi", link: "#oquv-dasturi", desc: "Tarmoq xavfsizligi, IDS/IPS va tarmoq himoyasi qoidalari" },
   { title: "Tolali optik aloqa liniyalari laboratoriyasi", category: "Media & Lab", link: "#media-hub", desc: "Optik tolani payvandlash (Fusion Splicer) va reflektometr (OTDR)" },

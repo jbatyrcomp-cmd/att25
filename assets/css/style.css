@@ -348,6 +348,132 @@ a {
   50% { box-shadow: 0 0 10px rgba(0, 230, 118, 0.5); }
 }
 
+/* Navigation Dropdown */
+.nav-item-dropdown {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-dropdown-trigger {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 0;
+  width: 320px;
+  background: rgba(10, 20, 14, 0.97);
+  border: 1px solid var(--line-bright);
+  border-top: 3px solid var(--brand-primary);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 0 0 var(--radius-clean) var(--radius-clean);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 120;
+}
+
+.nav-item-dropdown:hover .nav-dropdown-menu,
+.nav-item-dropdown:focus-within .nav-dropdown-menu,
+.nav-dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-item-dropdown:hover .nav-dropdown-trigger svg {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-header {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  letter-spacing: 1px;
+  padding: 6px 10px 4px;
+  text-transform: uppercase;
+}
+
+.nav-dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: var(--radius-clean);
+  color: var(--text-white);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.nav-dropdown-link:hover {
+  background: var(--bg-surface-2);
+  border-color: rgba(0, 230, 118, 0.25);
+  transform: translateX(3px);
+}
+
+.nav-dropdown-link .dd-icon {
+  width: 34px;
+  height: 34px;
+  background: var(--bg-surface-3);
+  border: 1px solid var(--line-bright);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.nav-dropdown-link:hover .dd-icon {
+  background: var(--brand-forest);
+  border-color: var(--brand-primary);
+}
+
+.nav-dropdown-link .dd-title {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-dropdown-link .dd-tag {
+  font-size: 8.5px;
+  font-family: var(--font-mono);
+  color: var(--brand-volt);
+  background: rgba(0, 230, 118, 0.15);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.nav-dropdown-link .dd-desc {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.nav-dropdown-divider {
+  height: 1px;
+  background: var(--line-base);
+  margin: 4px 6px;
+}
+
 .mobile-only-cta {
   display: none;
 }
@@ -790,6 +916,272 @@ a {
   background: var(--brand-primary);
   color: #03140A;
   border-color: var(--brand-primary);
+}
+
+/* ==========================================================================
+   SIMULATORS PROMO BANNER (YAGONA SIMULYATORLAR MARKAZIGA O‘TISH)
+   ========================================================================== */
+.sim-hub-promo-banner {
+  background: linear-gradient(135deg, #07150C 0%, #0D2215 50%, #08140C 100%);
+  border: 1px solid var(--line-bright);
+  border-left: 4px solid var(--brand-primary);
+  border-radius: var(--radius-clean);
+  padding: 36px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 230, 118, 0.15);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.sim-hub-promo-banner::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(0, 230, 118, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sim-promo-left {
+  max-width: 800px;
+}
+
+.sim-promo-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.sim-promo-title {
+  font-family: var(--font-editorial);
+  font-size: 32px;
+  font-weight: 800;
+  color: #FFF;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.sim-promo-desc {
+  font-size: 14.5px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.sim-promo-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.promo-chip {
+  background: rgba(14, 30, 20, 0.8);
+  border: 1px solid var(--line-bright);
+  color: var(--text-white);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.promo-chip:hover {
+  background: var(--brand-forest);
+  border-color: var(--brand-primary);
+  color: var(--brand-volt);
+  transform: translateY(-2px);
+}
+
+.sim-promo-cta {
+  white-space: nowrap;
+  padding: 14px 28px;
+  font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .sim-hub-promo-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+    gap: 20px;
+  }
+  .sim-promo-title {
+    font-size: 24px;
+  }
+  .sim-promo-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   3D SIMULATOR LAUNCH CARDS (DASHBOARD SHARFIDA ALOHIDA 3D OYNALARGA CHIQISH)
+   ========================================================================== */
+.sim-launch-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.sim-launch-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--line-base);
+  border-top: 3px solid var(--brand-primary);
+  border-radius: var(--radius-clean);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.sim-launch-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(0, 230, 118, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sim-launch-card:hover {
+  border-color: var(--line-bright);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 118, 0.2);
+}
+
+.sim-launch-card.hardware-card {
+  border-top-color: var(--brand-volt);
+}
+
+.sim-launch-card.hardware-card::before {
+  background: radial-gradient(circle, rgba(0, 255, 135, 0.12) 0%, transparent 70%);
+}
+
+.sim-card-badge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sim-badge-live {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.sim-badge-version {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--line-base);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.sim-card-icon-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.sim-card-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-clean);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.15);
+}
+
+.sim-launch-card:hover .sim-card-icon {
+  background: var(--brand-forest);
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.4);
+}
+
+.sim-card-title {
+  font-family: var(--font-editorial);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-white);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.sim-card-sub {
+  font-size: 12px;
+  color: var(--brand-volt);
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.sim-card-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.sim-card-specs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.spec-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-dim);
+  background: var(--bg-surface-3);
+  border: 1px solid var(--line-base);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.sim-modal-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px rgba(0,230,118,0.25);
 }
 
 /* ==========================================================================
@@ -2046,6 +2438,32 @@ a {
     background: var(--brand-forest);
     border-color: var(--brand-primary);
     color: var(--brand-volt);
+  }
+
+  .nav-item-dropdown {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+  }
+  .nav-dropdown-menu {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    background: rgba(14, 24, 18, 0.95);
+    border-radius: var(--radius-clean);
+    margin-top: 4px;
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .nav-item-dropdown.mobile-open .nav-dropdown-menu {
+    display: flex;
+  }
+
+  .sim-launch-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .mobile-only-cta {

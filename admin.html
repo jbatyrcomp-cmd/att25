@@ -511,6 +511,9 @@
       </a>
 
       <div class="header-actions">
+        <button id="settingsHeaderBtn" class="btn btn-secondary btn-sm" title="Supabase API sozlamalari">
+          ⚙️ Sozlamalar
+        </button>
         <button id="sqlHelperBtn" class="btn btn-secondary btn-sm" title="Supabase SQL jadvallari sxemasi">
           📋 SQL Sxema
         </button>
@@ -568,9 +571,19 @@
         </button>
       </form>
 
-      <div style="margin-top: 18px; text-align: center;">
-        <button type="button" id="sqlHelperLink" style="background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; text-decoration: underline; font-family: inherit;">
-          Supabase SQL jadvallarini yaratish kerakmi?
+      <!-- Tezkor Demo Kirish Tugmasi -->
+      <div style="margin-top: 14px;">
+        <button type="button" id="demoLoginBtn" class="btn btn-secondary" style="width: 100%; font-size: 12.5px; border-style: dashed; border-color: rgba(0, 230, 118, 0.4); color: var(--accent);">
+          ⚡ Sinov / Demo Rejimida Kirish (Darhol ochish)
+        </button>
+      </div>
+
+      <div style="margin-top: 18px; display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+        <button type="button" id="settingsModalOpenBtn" style="background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-family: inherit; font-size: 12px;">
+          ⚙️ Supabase Sozlamalari
+        </button>
+        <button type="button" id="sqlHelperLink" style="background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-family: inherit; font-size: 12px;">
+          📋 SQL Sxema
         </button>
       </div>
     </div>
@@ -749,24 +762,74 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
   </div>
 
   <!-- ==========================================================================
+       SUPABASE SETTINGS MODAL
+       ========================================================================== -->
+  <div id="settingsModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-top: 3px solid var(--accent); border-radius: var(--radius); max-width: 580px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+      <div style="padding: 16px 20px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="font-size: 16px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; margin: 0;">
+          <span>⚙️</span> Supabase API Sozlamalari
+        </h3>
+        <button type="button" id="settingsModalClose" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 14px;">✕</button>
+      </div>
+      <div style="padding: 20px; overflow-y: auto; font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+        <p style="margin-bottom: 16px; color: var(--text);">
+          Supabase loyihangiz URL yoki Anon Key'ini to'g'ridan-to'g'ri o'zgartiring va saqlang:
+        </p>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="cfgSupabaseUrl">Supabase Project URL</label>
+          <input type="text" id="cfgSupabaseUrl" placeholder="https://xyz.supabase.co" style="font-family: monospace;">
+          <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Supabase Dashboard -> Project Settings -> API bo'limidagi <b>Project URL</b></span>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="cfgSupabaseKey">Supabase Anon Key</label>
+          <input type="text" id="cfgSupabaseKey" placeholder="sb_publishable_... yoki eyJ..." style="font-family: monospace;">
+          <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Supabase Dashboard -> Project Settings -> API bo'limidagi <b>anon public key</b></span>
+        </div>
+
+        <div id="settingsAlert" class="alert" style="display: none; margin-bottom: 12px;"></div>
+      </div>
+      <div style="padding: 14px 20px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+        <button type="button" id="resetSettingsBtn" class="btn btn-secondary btn-sm" style="color: var(--text-muted);">Standartga Qaytarish</button>
+        <button type="button" id="saveSettingsBtn" class="btn btn-primary btn-sm">💾 Saqlash va Ulanish</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        SUPABASE CONFIGURATION VA VANILLA JAVASCRIPT
        ========================================================================== -->
   <script>
     /* ==========================================================================
-       1. SUPABASE SOZLAMALARI
+       1. SUPABASE SOZLAMALARI VA INITSIALIZATSIYA
        ========================================================================== */
-    const SUPABASE_URL = "https://kyfwytygqdqpufojajfv.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_NS2CFYIJ81Sb3x0yQzFP1w_ngwHWvki";
+    const DEFAULT_SUPABASE_URL = "https://kyfwytygqdqpufojajfv.supabase.co";
+    const DEFAULT_SUPABASE_ANON_KEY = "sb_publishable_NS2CFYIJ81Sb3x0yQzFP1w_ngwHWvki";
+
+    let SUPABASE_URL = localStorage.getItem('att25_custom_supabase_url') || DEFAULT_SUPABASE_URL;
+    let SUPABASE_ANON_KEY = localStorage.getItem('att25_custom_supabase_anon_key') || DEFAULT_SUPABASE_ANON_KEY;
+    let isDemoMode = false;
 
     // Supabase mijozini initsializatsiya qilish
     let supabase = null;
-    const isConfigured = SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes("YOUR_SUPABASE_URL");
 
-    if (isConfigured) {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } else {
-      document.getElementById('configWarning').style.display = 'block';
+    function initSupabase() {
+      try {
+        const isConfigured = SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes("YOUR_SUPABASE_URL");
+        if (isConfigured && window.supabase) {
+          supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+          document.getElementById('configWarning').style.display = 'none';
+        } else {
+          supabase = null;
+          document.getElementById('configWarning').style.display = 'block';
+        }
+      } catch (e) {
+        console.error("Supabase initsializatsiya xatosi:", e);
+      }
     }
+    initSupabase();
 
     // DOM Elementlari
     const loginSection = document.getElementById('loginSection');
@@ -781,6 +844,7 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     const authCardTitle = document.getElementById('authCardTitle');
     const authCardSubtitle = document.getElementById('authCardSubtitle');
     const loginSubmitText = document.getElementById('loginSubmitText');
+    const demoLoginBtn = document.getElementById('demoLoginBtn');
     let authMode = 'signin';
 
     const loginForm = document.getElementById('loginForm');
@@ -813,12 +877,8 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     const sqlHelperLink = document.getElementById('sqlHelperLink');
     const copySqlBtn = document.getElementById('copySqlBtn');
 
-    function openSqlModal() {
-      sqlModal.style.display = 'flex';
-    }
-    function closeSqlModal() {
-      sqlModal.style.display = 'none';
-    }
+    function openSqlModal() { sqlModal.style.display = 'flex'; }
+    function closeSqlModal() { sqlModal.style.display = 'none'; }
 
     if (sqlHelperBtn) sqlHelperBtn.addEventListener('click', openSqlModal);
     if (sqlHelperLink) sqlHelperLink.addEventListener('click', openSqlModal);
@@ -836,6 +896,77 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
         }).catch(() => {
           showAlert(loginAlert, "Nusxalab bo'lmadi, qo'lda tanlab oling.", true);
         });
+      });
+    }
+
+    // Sozlamalar Modali Elementlari
+    const settingsModal = document.getElementById('settingsModal');
+    const settingsModalClose = document.getElementById('settingsModalClose');
+    const settingsHeaderBtn = document.getElementById('settingsHeaderBtn');
+    const settingsModalOpenBtn = document.getElementById('settingsModalOpenBtn');
+    const cfgSupabaseUrl = document.getElementById('cfgSupabaseUrl');
+    const cfgSupabaseKey = document.getElementById('cfgSupabaseKey');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+    const settingsAlert = document.getElementById('settingsAlert');
+
+    function openSettingsModal() {
+      cfgSupabaseUrl.value = SUPABASE_URL;
+      cfgSupabaseKey.value = SUPABASE_ANON_KEY;
+      settingsAlert.style.display = 'none';
+      settingsModal.style.display = 'flex';
+    }
+    function closeSettingsModal() { settingsModal.style.display = 'none'; }
+
+    if (settingsHeaderBtn) settingsHeaderBtn.addEventListener('click', openSettingsModal);
+    if (settingsModalOpenBtn) settingsModalOpenBtn.addEventListener('click', openSettingsModal);
+    if (settingsModalClose) settingsModalClose.addEventListener('click', closeSettingsModal);
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) closeSettingsModal();
+    });
+
+    if (saveSettingsBtn) {
+      saveSettingsBtn.addEventListener('click', () => {
+        const newUrl = cfgSupabaseUrl.value.trim();
+        const newKey = cfgSupabaseKey.value.trim();
+        if (!newUrl || !newKey) {
+          showAlert(settingsAlert, "URL va Anon Key to'ldirilishi shart!", true);
+          return;
+        }
+
+        localStorage.setItem('att25_custom_supabase_url', newUrl);
+        localStorage.setItem('att25_custom_supabase_anon_key', newKey);
+        SUPABASE_URL = newUrl;
+        SUPABASE_ANON_KEY = newKey;
+        initSupabase();
+
+        showAlert(settingsAlert, "Yangi sozlamalar muvaffaqiyatli saqlandi!");
+        setTimeout(() => {
+          closeSettingsModal();
+          if (!isDemoMode) checkAuth();
+        }, 1200);
+      });
+    }
+
+    if (resetSettingsBtn) {
+      resetSettingsBtn.addEventListener('click', () => {
+        localStorage.removeItem('att25_custom_supabase_url');
+        localStorage.removeItem('att25_custom_supabase_anon_key');
+        SUPABASE_URL = DEFAULT_SUPABASE_URL;
+        SUPABASE_ANON_KEY = DEFAULT_SUPABASE_ANON_KEY;
+        cfgSupabaseUrl.value = SUPABASE_URL;
+        cfgSupabaseKey.value = SUPABASE_ANON_KEY;
+        initSupabase();
+        showAlert(settingsAlert, "Standart sozlamalar tiklandi!");
+      });
+    }
+
+    // Demo Kirish Tugmasi
+    if (demoLoginBtn) {
+      demoLoginBtn.addEventListener('click', () => {
+        isDemoMode = true;
+        showDashboard({ email: 'demo-admin@att25.uz' });
+        showAlert(dashboardAlert, "⚡ Sinov (Demo) rejimida muvaffaqiyatli kirdingiz! Siz bo'limlar va materiallarni erkin qo'shib sinashingiz mumkin.");
       });
     }
 
@@ -871,7 +1002,7 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
       element.style.display = 'flex';
       setTimeout(() => {
         element.style.display = 'none';
-      }, 5000);
+      }, 6000);
     }
 
     // Loading holati
@@ -884,23 +1015,30 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
        2. AUTH (LOGIN / SIGN UP / LOGOUT & SEANSIYA NAZORATI)
        ========================================================================== */
     async function checkAuth() {
+      if (isDemoMode) return;
       if (!supabase) return;
 
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (session && session.user) {
-        showDashboard(session.user);
-      } else {
-        showLogin();
-      }
-
-      // Seans o'zgarganda avtomatik sinxronizatsiya
-      supabase.auth.onAuthStateChange((event, session) => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
         if (session && session.user) {
           showDashboard(session.user);
         } else {
           showLogin();
         }
-      });
+
+        // Seans o'zgarganda avtomatik sinxronizatsiya
+        supabase.auth.onAuthStateChange((event, session) => {
+          if (!isDemoMode) {
+            if (session && session.user) {
+              showDashboard(session.user);
+            } else {
+              showLogin();
+            }
+          }
+        });
+      } catch (err) {
+        console.warn("Seansni tekshirishda ogohlantirish:", err);
+      }
     }
 
     function showDashboard(user) {
@@ -923,13 +1061,22 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     // Login va Sign Up hodisasi
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      if (!supabase) {
-        showAlert(loginAlert, "Supabase sozlanmagan! URL va Anon Key ni kiriting.", true);
-        return;
-      }
 
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
+
+      // Demo login paroli bilan to'g'ridan-to'g'ri kirish
+      if (email === 'admin@att25.uz' && password === 'admin123') {
+        isDemoMode = true;
+        showDashboard({ email: 'admin@att25.uz' });
+        showAlert(dashboardAlert, "⚡ Admin sinov rejimida muvaffaqiyatli kirdingiz!");
+        return;
+      }
+
+      if (!supabase) {
+        showAlert(loginAlert, "Supabase sozlanmagan! URL va Anon Key ni kiriting yoki pastdagi 'Sinov Rejimida Kirish' tugmasini bosing.", true);
+        return;
+      }
 
       setLoading(loginSubmitBtn, loginSpinner, true);
 
@@ -942,6 +1089,7 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
 
           if (error) throw error;
 
+          isDemoMode = false;
           showAlert(dashboardAlert, "Xush kelibsiz! Tizimga muvaffaqiyatli kirdingiz.");
           showDashboard(data.user);
         } else {
@@ -954,14 +1102,22 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
           if (error) throw error;
 
           if (data.session && data.user) {
+            isDemoMode = false;
             showAlert(dashboardAlert, "Admin hisobi muvaffaqiyatli yaratildi!");
             showDashboard(data.user);
           } else {
-            showAlert(loginAlert, "Ro'yxatdan o'tdingiz! Agar Supabase email tasdiqlash yoqilgan bo'lsa, emailingizni tekshiring yoki Supabase Auth bo'limidan 'Confirm user' qiling.", false);
+            showAlert(loginAlert, "Ro'yxatdan o'tdingiz! Agar Supabase loyihangizda email tasdiqlash yoqilgan bo'lsa, emailingizni tasdiqlang yoki Supabase Auth bo'limidan 'Confirm user' qiling.", false);
           }
         }
       } catch (err) {
-        showAlert(loginAlert, err.message || "Amalni bajarishda xatolik yuz berdi. Ma'lumotlarni tekshiring.", true);
+        console.error("Auth error:", err);
+        let msg = err.message || "";
+        if (msg.includes('fetch') || msg.includes('network') || msg.includes('Failed') || msg.includes('ENOTFOUND')) {
+          msg = `⚠️ Supabase serveriga ulanib bo'lmadi! ("${SUPABASE_URL}" topilmadi yoki xato ko'rsatilgan). Iltimos, "⚙️ Supabase Sozlamalari" orqali to'g'ri URL ni kiriting yoki pastdagi "⚡ Sinov Rejimida Kirish" tugmasini bosing.`;
+        } else if (msg.includes('Invalid login credentials')) {
+          msg = "⚠️ Email yoki parol noto'g'ri. Agar yangi bo'lsangiz, 'Ro'yxatdan O'tish' bo'limini tanlang yoki pastdagi 'Sinov Rejimida Kirish' tugmasidan foydalaning.";
+        }
+        showAlert(loginAlert, msg, true);
       } finally {
         setLoading(loginSubmitBtn, loginSpinner, false);
       }
@@ -969,8 +1125,10 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
 
     // Logout hodisasi
     logoutBtn.addEventListener('click', async () => {
-      if (!supabase) return;
-      await supabase.auth.signOut();
+      if (!isDemoMode && supabase) {
+        try { await supabase.auth.signOut(); } catch (e) {}
+      }
+      isDemoMode = false;
       showLogin();
     });
 
@@ -978,6 +1136,25 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
        3. BO'LIMLAR (CATEGORIES) CRUD
        ========================================================================== */
     async function loadCategories() {
+      // Demo rejim
+      if (isDemoMode) {
+        let stored = localStorage.getItem('att25_demo_categories');
+        if (!stored) {
+          const defaults = [
+            { id: 1, name: 'Kompyuter Tarmoqlari' },
+            { id: 2, name: 'Axborot Xavfsizligi' },
+            { id: 3, name: 'Optik Tolali Aloqa' },
+            { id: 4, name: '3D Simulyatsiyalar' }
+          ];
+          localStorage.setItem('att25_demo_categories', JSON.stringify(defaults));
+          globalCategories = defaults;
+        } else {
+          try { globalCategories = JSON.parse(stored); } catch (e) { globalCategories = []; }
+        }
+        renderCategories();
+        return;
+      }
+
       if (!supabase) return;
 
       try {
@@ -1029,6 +1206,14 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
         return;
       }
 
+      if (isDemoMode) {
+        globalCategories = globalCategories.filter(c => String(c.id) !== String(id));
+        localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
+        showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli o'chirildi. (Demo)`);
+        renderCategories();
+        return;
+      }
+
       try {
         const { error } = await supabase
           .from('categories')
@@ -1053,6 +1238,17 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
 
       setLoading(catSubmitBtn, catSpinner, true);
 
+      if (isDemoMode) {
+        const newCat = { id: Date.now(), name };
+        globalCategories.push(newCat);
+        localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
+        categoryName.value = '';
+        showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli qo'shildi! (Demo)`);
+        renderCategories();
+        setLoading(catSubmitBtn, catSpinner, false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from('categories')
@@ -1075,6 +1271,24 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
        4. MATERIALLAR (MATERIALS) CRUD
        ========================================================================== */
     async function loadMaterials() {
+      // Demo rejim
+      if (isDemoMode) {
+        let stored = localStorage.getItem('att25_demo_materials');
+        if (!stored) {
+          const defaults = [
+            { id: 1, category_id: 1, title: 'OSI Modeli va TCP/IP Arxitekturasi', type: 'pptx', url: 'https://example.com/osi_model.pptx', categories: { name: 'Kompyuter Tarmoqlari' } },
+            { id: 2, category_id: 3, title: 'Optik Tolali Liniyalarni Payvandlash Qo\'llanmasi', type: 'video', url: 'https://youtube.com', categories: { name: 'Optik Tolali Aloqa' } },
+            { id: 3, category_id: 2, title: 'Kiberxavfsizlik va Shifrlash Asoslari', type: 'docx', url: 'https://example.com/security.docx', categories: { name: 'Axborot Xavfsizligi' } }
+          ];
+          localStorage.setItem('att25_demo_materials', JSON.stringify(defaults));
+          globalMaterials = defaults;
+        } else {
+          try { globalMaterials = JSON.parse(stored); } catch (e) { globalMaterials = []; }
+        }
+        renderMaterials();
+        return;
+      }
+
       if (!supabase) return;
 
       try {
@@ -1104,7 +1318,7 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     function renderMaterials(filterKeyword = '') {
       const q = filterKeyword.toLowerCase().trim();
       const filtered = globalMaterials.filter(m => {
-        const titleMatch = m.title.toLowerCase().includes(q);
+        const titleMatch = (m.title || '').toLowerCase().includes(q);
         const catName = m.categories?.name ? m.categories.name.toLowerCase() : '';
         return titleMatch || catName.includes(q);
       });
@@ -1129,7 +1343,7 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
             <td style="color: var(--text-muted); font-size: 11px;">${index + 1}</td>
             <td style="font-weight: 600;">${escapeHtml(item.title)}</td>
             <td><span class="cat-pill" style="font-size:11px; padding:2px 8px;">${escapeHtml(catName)}</span></td>
-            <td><span class="type-badge ${typeClass}">${item.type.toUpperCase()}</span></td>
+            <td><span class="type-badge ${typeClass}">${(item.type || 'Fayl').toUpperCase()}</span></td>
             <td>
               <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="material-link">
                 ${escapeHtml(item.url)} ↗
@@ -1161,6 +1375,27 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
 
       setLoading(matSubmitBtn, matSpinner, true);
 
+      if (isDemoMode) {
+        const catObj = globalCategories.find(c => String(c.id) === String(category_id));
+        const newMat = {
+          id: Date.now(),
+          category_id,
+          type,
+          title,
+          url,
+          created_at: new Date().toISOString(),
+          categories: { name: catObj ? catObj.name : '—' }
+        };
+        globalMaterials.unshift(newMat);
+        localStorage.setItem('att25_demo_materials', JSON.stringify(globalMaterials));
+        matTitle.value = '';
+        matUrl.value = '';
+        showAlert(dashboardAlert, `"${title}" materiali muvaffaqiyatli saqlandi! (Demo)`);
+        renderMaterials();
+        setLoading(matSubmitBtn, matSpinner, false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from('materials')
@@ -1183,6 +1418,14 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     // Materialni o'chirish
     window.deleteMaterial = async function(id, title) {
       if (!confirm(`Haqiqatan ham "${title}" materialini o'chirmoqchimisiz?`)) {
+        return;
+      }
+
+      if (isDemoMode) {
+        globalMaterials = globalMaterials.filter(m => String(m.id) !== String(id));
+        localStorage.setItem('att25_demo_materials', JSON.stringify(globalMaterials));
+        showAlert(dashboardAlert, `Material muvaffaqiyatli o'chirildi. (Demo)`);
+        renderMaterials();
         return;
       }
 
