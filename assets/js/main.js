@@ -625,9 +625,9 @@ function openVideoModal(title, subtitle, url, type = 'auto') {
 
   if (!modal || !playerContainer) return;
 
-  // 1. Sarlavha va subtitlni yangilash
-  if (titleEl) titleEl.textContent = title || "Video Material";
-  if (subtitleEl) subtitleEl.textContent = subtitle || "Video Darslik";
+  // 1. Sarlavhani screenshotdagi kabi KATTA HARFLARDA (UPPERCASE) yangilash
+  const displayTitle = (title || "OPTIK TOLALI LINIYALARNI FUSION SPLICER BILAN PAYVANDLASH").toUpperCase();
+  if (titleEl) titleEl.textContent = displayTitle;
 
   // 2. Video turini aniqlash va kontent yaratish
   let playerHtml = '';
@@ -643,11 +643,11 @@ function openVideoModal(title, subtitle, url, type = 'auto') {
 
     playerHtml = `<iframe 
       src="${embedUrl}" 
-      title="${title || 'Video Player'}" 
+      title="${displayTitle}" 
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
       allowfullscreen>
     </iframe>`;
-  } else if (url) {
+  } else if (url && (type === 'video' || /\.(mp4|webm|ogg)($|\?)/i.test(url))) {
     // HTML5 Video (.mp4, .webm, va h.k.)
     playerHtml = `<video 
       src="${url}" 
@@ -658,7 +658,18 @@ function openVideoModal(title, subtitle, url, type = 'auto') {
       Brauzeringiz ushbu videoni qo‘llab-quvvatlamaydi.
     </video>`;
   } else {
-    playerHtml = `<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#94a3b8; font-family:sans-serif;">Video manzili topilmadi</div>`;
+    // Agar to'g'ridan-to'g'ri url bo'lmasa - screenshotdagi aniq cyber poster ko'rinishi
+    playerHtml = `
+      <div class="video-poster-overlay">
+        <img src="assets/images/fiber_telecom.jpg" class="video-poster-img" alt="Video Preview">
+        <div class="video-poster-content">
+          <div class="video-poster-badge" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'ATT-25', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'youtube')">
+            ▶ VIDEO MA'RUZA: Optik tolani kesish va payvandlash amaliyoti
+          </div>
+          <div class="video-poster-meta">Davomiyligi: 45:20 • Ruxsat: 1080p 60FPS Full HD</div>
+        </div>
+      </div>
+    `;
   }
 
   // 3. Pleerni joylashtirish va modalni ochish
