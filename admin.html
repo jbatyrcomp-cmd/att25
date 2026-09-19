@@ -496,6 +496,126 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    /* Source toggle tabs */
+    .source-toggle {
+      display: flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 3px;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .source-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .source-btn.active {
+      background: var(--accent);
+      color: #031208;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* File dropzone */
+    .file-dropzone {
+      border: 2px dashed var(--card-border);
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius);
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .file-dropzone:hover, .file-dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(0, 230, 118, 0.04);
+    }
+
+    .dropzone-icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .dropzone-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .dropzone-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .selected-file-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(0, 230, 118, 0.08);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      border-radius: var(--radius);
+      margin-top: 4px;
+    }
+
+    .selected-file-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .selected-file-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 280px;
+    }
+
+    .selected-file-size {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .remove-file-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+
+    .remove-file-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -605,7 +725,7 @@
           <h2 class="card-title">📁 Bo'limlar (Kategoriyalar)</h2>
           <p class="card-subtitle">Materiallar uchun yangi yo'nalish yoki mavzu bo'limi qo'shing</p>
 
-          <form id="addCategoryForm">
+          <form id="addCategoryForm" onsubmit="window.handleAddCategory(event); return false;">
             <div class="form-group" style="margin-bottom: 14px;">
               <label for="categoryName">Bo'lim Nomi</label>
               <input type="text" id="categoryName" placeholder="Masalan: Kompyuter Tarmoqlari" required>
@@ -619,7 +739,12 @@
           <div style="margin-top: 20px;">
             <label>Mavjud Bo'limlar</label>
             <div id="categoriesContainer" class="category-pills">
-              <span style="font-size: 12px; color: var(--text-muted);">Yuklanmoqda...</span>
+              <span class="cat-pill"><span>Kompyuter Tarmoqlari</span><button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('cat_1', 'Kompyuter Tarmoqlari')">&times;</button></span>
+              <span class="cat-pill"><span>Axborot Xavfsizligi</span><button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('cat_2', 'Axborot Xavfsizligi')">&times;</button></span>
+              <span class="cat-pill"><span>Optik Tolali Aloqa</span><button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('cat_3', 'Optik Tolali Aloqa')">&times;</button></span>
+              <span class="cat-pill"><span>3D Simulyatsiyalar</span><button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('cat_4', '3D Simulyatsiyalar')">&times;</button></span>
+              <span class="cat-pill"><span>Dasturlash & Serverlar</span><button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('cat_5', 'Dasturlash & Serverlar')">&times;</button></span>
+              <span class="cat-pill"><span>Simsiz Texnologiyalar</span><button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('cat_6', 'Simsiz Texnologiyalar')">&times;</button></span>
             </div>
           </div>
         </div>
@@ -629,41 +754,87 @@
       <div>
         <div class="card">
           <h2 class="card-title">📤 Yangi Material Joylash</h2>
-          <p class="card-subtitle">Taqdimot, darslik hujjati yoki videoni bo'limga biriktiring</p>
+          <p class="card-subtitle">Taqdimot, darslik hujjati yoki videoni qurilmadan yuklang yoki havola biriktiring</p>
 
-          <form id="addMaterialForm" class="form-grid">
+          <form id="addMaterialForm" class="form-grid" onsubmit="window.handleAddMaterial(event); return false;">
+            <!-- Source Selector: Device File vs External URL -->
+            <div class="form-group full-width">
+              <label>Yuklash Manbasi</label>
+              <div class="source-toggle">
+                <button type="button" id="sourceFileBtn" class="source-btn active" onclick="window.setUploadSource('file')">
+                  📁 Qurilmadan Fayl Yuklash
+                </button>
+                <button type="button" id="sourceUrlBtn" class="source-btn" onclick="window.setUploadSource('url')">
+                  🔗 Tashqi Havola (URL)
+                </button>
+              </div>
+            </div>
+
+            <!-- Category Select -->
             <div class="form-group">
               <label for="matCategory">Tegishli Bo'lim</label>
               <select id="matCategory" required>
                 <option value="" disabled selected>Bo'limni tanlang...</option>
+                <option value="cat_1">Kompyuter Tarmoqlari</option>
+                <option value="cat_2">Axborot Xavfsizligi</option>
+                <option value="cat_3">Optik Tolali Aloqa</option>
+                <option value="cat_4">3D Simulyatsiyalar</option>
+                <option value="cat_5">Dasturlash & Serverlar</option>
+                <option value="cat_6">Simsiz Texnologiyalar</option>
               </select>
             </div>
 
+            <!-- Material Type Select -->
             <div class="form-group">
               <label for="matType">Material Turi</label>
               <select id="matType" required>
                 <option value="pptx">Taqdimot (PPTX)</option>
                 <option value="docx">Hujjat (DOCX)</option>
-                <option value="video">Video Darslik</option>
+                <option value="video">Video Darslik (MP4)</option>
                 <option value="pdf">Qo'llanma (PDF)</option>
                 <option value="other">Boshqa Fayl</option>
               </select>
             </div>
 
+            <!-- Title -->
             <div class="form-group full-width">
               <label for="matTitle">Material Sarlavhasi (Mavzu)</label>
               <input type="text" id="matTitle" placeholder="Masalan: OSPF protokoli va konfiguratsiyasi" required>
             </div>
 
-            <div class="form-group full-width">
+            <!-- OPTION A: DEVICE FILE UPLOAD DROPZONE -->
+            <div class="form-group full-width" id="fileUploadContainer">
+              <label>Qurilmadan Faylni Tanlang</label>
+              <div class="file-dropzone" id="fileDropzone" onclick="window.triggerFileInput(event)">
+                <input type="file" id="matFileInput" onclick="event.stopPropagation();" onchange="window.handleFileInputChange(event);" style="display: none;" accept=".pptx,.ppt,.docx,.doc,.pdf,.mp4,.webm,.mkv,.zip,.rar,.txt,.xlsx,.xls,.png,.jpg,.jpeg">
+                <div id="dropzoneDefault">
+                  <span class="dropzone-icon">📁</span>
+                  <div class="dropzone-text">Faylni bu yerga tashlang yoki <span style="color:var(--accent); text-decoration:underline;">qurilmadan tanlang</span></div>
+                  <div class="dropzone-hint">PPTX, DOCX, PDF, Video (MP4) va boshqa formatlar (Cheklovsiz hajm)</div>
+                </div>
+                <div id="selectedFileBox" class="selected-file-box" style="display: none;">
+                  <div class="selected-file-info">
+                    <span id="selectedFileIcon" style="font-size: 24px;">📄</span>
+                    <div>
+                      <div id="selectedFileName" class="selected-file-name">fayl_nomi.pptx</div>
+                      <div id="selectedFileSize" class="selected-file-size">0 KB</div>
+                    </div>
+                  </div>
+                  <button type="button" id="removeFileBtn" class="remove-file-btn" onclick="window.clearSelectedFile(event);" title="Faylni o'chirish">✕</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- OPTION B: EXTERNAL URL INPUT -->
+            <div class="form-group full-width" id="urlUploadContainer" style="display: none;">
               <label for="matUrl">Tashqi Havola (URL)</label>
-              <input type="url" id="matUrl" placeholder="https://drive.google.com/... yoki https://youtube.com/..." required>
+              <input type="url" id="matUrl" placeholder="https://drive.google.com/... yoki https://youtube.com/...">
             </div>
 
             <div class="form-group full-width" style="margin-top: 6px;">
-              <button type="submit" id="matSubmitBtn" class="btn btn-primary">
+              <button type="submit" id="matSubmitBtn" class="btn btn-primary" style="width: 100%;">
                 <span class="spinner" id="matSpinner"></span>
-                <span>Materialni Saqlash</span>
+                <span id="matSubmitBtnText">💾 Materialni Saqlash</span>
               </button>
             </div>
           </form>
@@ -692,8 +863,8 @@
               <th>Mavzu Sarlavhasi</th>
               <th>Bo'lim</th>
               <th>Turi</th>
-              <th>Havola (Link)</th>
-              <th style="width: 90px; text-align: right;">Amallar</th>
+              <th>Fayl / Manba</th>
+              <th style="width: 100px; text-align: right;">Amallar</th>
             </tr>
           </thead>
           <tbody id="materialsTableBody">
@@ -866,6 +1037,24 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     const matUrl = document.getElementById('matUrl');
     const matSubmitBtn = document.getElementById('matSubmitBtn');
     const matSpinner = document.getElementById('matSpinner');
+    const matSubmitBtnText = document.getElementById('matSubmitBtnText');
+
+    // Material Source & File Upload Elements
+    const sourceFileBtn = document.getElementById('sourceFileBtn');
+    const sourceUrlBtn = document.getElementById('sourceUrlBtn');
+    const fileUploadContainer = document.getElementById('fileUploadContainer');
+    const urlUploadContainer = document.getElementById('urlUploadContainer');
+    const fileDropzone = document.getElementById('fileDropzone');
+    const matFileInput = document.getElementById('matFileInput');
+    const dropzoneDefault = document.getElementById('dropzoneDefault');
+    const selectedFileBox = document.getElementById('selectedFileBox');
+    const selectedFileName = document.getElementById('selectedFileName');
+    const selectedFileSize = document.getElementById('selectedFileSize');
+    const selectedFileIcon = document.getElementById('selectedFileIcon');
+    const removeFileBtn = document.getElementById('removeFileBtn');
+
+    let activeUploadSource = 'file'; // 'file' or 'url'
+    let selectedDeviceFile = null;
 
     const materialsTableBody = document.getElementById('materialsTableBody');
     const refreshBtn = document.getElementById('refreshBtn');
@@ -1138,194 +1327,479 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
     });
 
     /* ==========================================================================
-       3. BO'LIMLAR (CATEGORIES) CRUD
+       3. YORDAMCHI VA INDEXEDDB FAYL SAQLASH XIZMATI
        ========================================================================== */
-    async function loadCategories() {
-      // Demo rejim
-      if (isDemoMode) {
-        let stored = localStorage.getItem('att25_demo_categories');
-        if (!stored) {
-          const defaults = [
-            { id: 1, name: 'Kompyuter Tarmoqlari' },
-            { id: 2, name: 'Axborot Xavfsizligi' },
-            { id: 3, name: 'Optik Tolali Aloqa' },
-            { id: 4, name: '3D Simulyatsiyalar' }
-          ];
-          localStorage.setItem('att25_demo_categories', JSON.stringify(defaults));
-          globalCategories = defaults;
-        } else {
-          try { globalCategories = JSON.parse(stored); } catch (e) { globalCategories = []; }
-        }
-        renderCategories();
+    const DEFAULT_CATEGORIES = [
+      { id: 'cat_1', name: 'Kompyuter Tarmoqlari' },
+      { id: 'cat_2', name: 'Axborot Xavfsizligi' },
+      { id: 'cat_3', name: 'Optik Tolali Aloqa' },
+      { id: 'cat_4', name: '3D Simulyatsiyalar' },
+      { id: 'cat_5', name: 'Dasturlash & Serverlar' },
+      { id: 'cat_6', name: 'Simsiz Texnologiyalar' }
+    ];
+
+    // Fayl hajmini chiroyli formatlash (MB, KB, B)
+    function formatBytes(bytes, decimals = 1) {
+      if (!bytes || bytes === 0) return '0 B';
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    // Source (Manba) Tabbari: Qurilmadan yuklash vs URL
+    window.setUploadSource = function(source) {
+      activeUploadSource = source;
+      const sFileBtn = document.getElementById('sourceFileBtn');
+      const sUrlBtn = document.getElementById('sourceUrlBtn');
+      const fUpContainer = document.getElementById('fileUploadContainer');
+      const uUpContainer = document.getElementById('urlUploadContainer');
+      const mUrl = document.getElementById('matUrl');
+
+      if (source === 'file') {
+        if (sFileBtn) sFileBtn.classList.add('active');
+        if (sUrlBtn) sUrlBtn.classList.remove('active');
+        if (fUpContainer) fUpContainer.style.display = 'block';
+        if (uUpContainer) uUpContainer.style.display = 'none';
+        if (mUrl) mUrl.removeAttribute('required');
+      } else {
+        if (sUrlBtn) sUrlBtn.classList.add('active');
+        if (sFileBtn) sFileBtn.classList.remove('active');
+        if (fUpContainer) fUpContainer.style.display = 'none';
+        if (uUpContainer) uUpContainer.style.display = 'block';
+        if (mUrl) mUrl.setAttribute('required', 'required');
+      }
+    };
+
+    if (sourceFileBtn && sourceUrlBtn) {
+      sourceFileBtn.addEventListener('click', () => window.setUploadSource('file'));
+      sourceUrlBtn.addEventListener('click', () => window.setUploadSource('url'));
+    }
+
+    // Qurilmadan fayl tanlash triggeri
+    window.triggerFileInput = function(e) {
+      if (e && e.target && (e.target.id === 'removeFileBtn' || e.target.closest('#removeFileBtn'))) {
         return;
       }
+      const fileInput = document.getElementById('matFileInput');
+      if (fileInput) fileInput.click();
+    };
 
-      if (!supabase) return;
+    // Fayl tanlanganda hodisa
+    window.handleFileInputChange = function(e) {
+      const file = e.target.files && e.target.files[0];
+      if (file) {
+        window.handleFileSelection(file);
+      }
+    };
 
+    // Faylni tanlash va forma maydonlarini to'ldirish
+    window.handleFileSelection = function(file) {
+      if (!file) return;
+      selectedDeviceFile = file;
+      const defBox = document.getElementById('dropzoneDefault');
+      const selBox = document.getElementById('selectedFileBox');
+      const nameEl = document.getElementById('selectedFileName');
+      const sizeEl = document.getElementById('selectedFileSize');
+      const iconEl = document.getElementById('selectedFileIcon');
+      const typeSelect = document.getElementById('matType');
+      const titleInput = document.getElementById('matTitle');
+
+      if (defBox) defBox.style.display = 'none';
+      if (selBox) selBox.style.display = 'flex';
+      if (nameEl) nameEl.textContent = file.name;
+      if (sizeEl) sizeEl.textContent = formatBytes(file.size);
+
+      // Fayl kengaytmasini aniqlash va avtomatik matType ni belgilash
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      let icon = '📄';
+      if (['pptx', 'ppt'].includes(ext)) {
+        if (typeSelect) typeSelect.value = 'pptx';
+        icon = '📊';
+      } else if (['docx', 'doc', 'rtf', 'txt'].includes(ext)) {
+        if (typeSelect) typeSelect.value = 'docx';
+        icon = '📝';
+      } else if (ext === 'pdf') {
+        if (typeSelect) typeSelect.value = 'pdf';
+        icon = '📕';
+      } else if (['mp4', 'webm', 'mkv', 'avi', 'mov'].includes(ext)) {
+        if (typeSelect) typeSelect.value = 'video';
+        icon = '🎬';
+      } else {
+        if (typeSelect) typeSelect.value = 'other';
+        icon = '📦';
+      }
+      if (iconEl) iconEl.textContent = icon;
+
+      // Agar sarlavha kiritilmagan bo'lsa, fayl nomidan toza sarlavha yasab berish
+      if (titleInput && !titleInput.value.trim()) {
+        const clean = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ");
+        titleInput.value = clean.charAt(0).toUpperCase() + clean.slice(1);
+      }
+    };
+
+    // Tanlangan faylni bekor qilish
+    window.clearSelectedFile = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      selectedDeviceFile = null;
+      const fileInput = document.getElementById('matFileInput');
+      if (fileInput) fileInput.value = '';
+      const defBox = document.getElementById('dropzoneDefault');
+      const selBox = document.getElementById('selectedFileBox');
+      if (defBox) defBox.style.display = 'block';
+      if (selBox) selBox.style.display = 'none';
+    };
+
+    // Drag-and-Drop qo'llab-quvvatlash
+    if (fileDropzone) {
+      fileDropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileDropzone.classList.add('dragover');
+      });
+      fileDropzone.addEventListener('dragleave', () => {
+        fileDropzone.classList.remove('dragover');
+      });
+      fileDropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          const file = e.dataTransfer.files[0];
+          window.handleFileSelection(file);
+        }
+      });
+    }
+
+    /* ==========================================================================
+       INDEXEDDB STORAGE (Qurilmadan yuklangan har qanday katta fayllar uchun)
+       ========================================================================== */
+    const IDB_NAME = 'att25_materials_storage';
+    const IDB_VERSION = 1;
+    const IDB_STORE = 'files';
+
+    function openMaterialsDB() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) {
+          reject(new Error("Brauzeringiz IndexedDB'ni qo'llab-quvvatlamaydi"));
+          return;
+        }
+        const request = indexedDB.open(IDB_NAME, IDB_VERSION);
+        request.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) {
+            db.createObjectStore(IDB_STORE, { keyPath: 'id' });
+          }
+        };
+        request.onsuccess = (e) => resolve(e.target.result);
+        request.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    async function saveFileToDB(fileId, fileObj) {
+      const db = await openMaterialsDB();
+      const blob = new Blob([fileObj], { type: fileObj.type || 'application/octet-stream' });
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, 'readwrite');
+        const store = tx.objectStore(IDB_STORE);
+        store.put({
+          id: fileId,
+          name: fileObj.name,
+          type: fileObj.type,
+          size: fileObj.size,
+          lastModified: fileObj.lastModified || Date.now(),
+          blob: blob
+        });
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    async function getFileFromDB(fileId) {
+      const db = await openMaterialsDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(IDB_STORE, 'readonly');
+        const store = tx.objectStore(IDB_STORE);
+        const req = store.get(fileId);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function deleteFileFromDB(fileId) {
       try {
-        const { data, error } = await supabase
-          .from('categories')
-          .select('*')
-          .order('name', { ascending: true });
-
-        if (error) throw error;
-
-        globalCategories = data || [];
-        renderCategories();
-      } catch (err) {
-        console.error("Bo'limlarni yuklashda xatolik:", err);
+        const db = await openMaterialsDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, 'readwrite');
+          const store = tx.objectStore(IDB_STORE);
+          store.delete(fileId);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => reject(tx.error);
+        });
+      } catch (e) {
+        console.warn("DB file delete warning:", e);
       }
     }
 
-    function renderCategories() {
+    // Qurilmadan yuklangan faylni yuklab olish
+    window.downloadDeviceFile = async function(fileId, fileName) {
+      try {
+        const fileRecord = await getFileFromDB(fileId);
+        if (!fileRecord || !fileRecord.blob) {
+          showAlert(dashboardAlert, "Fayl qurilma xotirasidan topilmadi yoki o'chirilgan.", true);
+          return;
+        }
+        const blobUrl = URL.createObjectURL(fileRecord.blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = fileName || fileRecord.name || 'material_fayl';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(blobUrl);
+        }, 2000);
+      } catch (err) {
+        console.error("Fayl yuklab olish xatosi:", err);
+        showAlert(dashboardAlert, "Faylni yuklab olishda xatolik: " + err.message, true);
+      }
+    };
+
+    // Faylni brauzer oynasida to'g'ridan-to'g'ri ko'rish / ochish
+    window.previewDeviceFile = async function(fileId) {
+      try {
+        const fileRecord = await getFileFromDB(fileId);
+        if (!fileRecord || !fileRecord.blob) {
+          showAlert(dashboardAlert, "Fayl qurilma xotirasidan topilmadi.", true);
+          return;
+        }
+        const blobUrl = URL.createObjectURL(fileRecord.blob);
+        window.open(blobUrl, '_blank');
+      } catch (err) {
+        console.error("Faylni ochish xatosi:", err);
+        showAlert(dashboardAlert, "Faylni ochishda xatolik: " + err.message, true);
+      }
+    };
+
+    /* ==========================================================================
+       4. BO'LIMLAR (CATEGORIES) CRUD - ISHONCHLI VA HAR DOIM ISHLAYDI
+       ========================================================================== */
+    window.loadCategories = async function() {
+      // 1. Dastlab darhol lokal xotiradan yuklaymiz
+      let stored = localStorage.getItem('att25_categories') || localStorage.getItem('att25_demo_categories');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            globalCategories = parsed;
+          } else {
+            globalCategories = [...DEFAULT_CATEGORIES];
+          }
+        } catch (e) {
+          globalCategories = [...DEFAULT_CATEGORIES];
+        }
+      } else {
+        globalCategories = [...DEFAULT_CATEGORIES];
+        localStorage.setItem('att25_categories', JSON.stringify(globalCategories));
+        localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
+      }
+
+      window.renderCategories();
+
+      // 2. Agar Supabase ulangan bo'lsa, sinxronlashtirishni sinab ko'ramiz
+      if (supabase && !isDemoMode) {
+        try {
+          const { data, error } = await supabase
+            .from('categories')
+            .select('*')
+            .order('name', { ascending: true });
+
+          if (!error && data && data.length > 0) {
+            const merged = [...data];
+            globalCategories.forEach(localCat => {
+              if (!merged.some(c => c.name.toLowerCase() === localCat.name.toLowerCase())) {
+                merged.push(localCat);
+              }
+            });
+            globalCategories = merged;
+            localStorage.setItem('att25_categories', JSON.stringify(globalCategories));
+            localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
+            window.renderCategories();
+          }
+        } catch (err) {
+          console.warn("Supabase categories sync fallback to local:", err);
+        }
+      }
+    };
+
+    window.renderCategories = function() {
       // 1. MatCategory select dropdown
-      matCategory.innerHTML = '<option value="" disabled selected>Bo\'limni tanlang...</option>';
-      globalCategories.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.id;
-        opt.textContent = cat.name;
-        matCategory.appendChild(opt);
-      });
+      const select = document.getElementById('matCategory');
+      if (select) {
+        const prevSelected = select.value;
+        select.innerHTML = '<option value="" disabled selected>Bo\'limni tanlang...</option>';
+        globalCategories.forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat.id;
+          opt.textContent = cat.name;
+          if (prevSelected && String(cat.id) === String(prevSelected)) {
+            opt.selected = true;
+          }
+          select.appendChild(opt);
+        });
+      }
 
       // 2. Categories pills display
-      if (globalCategories.length === 0) {
-        categoriesContainer.innerHTML = '<span style="font-size: 12px; color: var(--text-muted);">Hozircha bo\'limlar mavjud emas.</span>';
-        return;
-      }
+      const container = document.getElementById('categoriesContainer');
+      if (container) {
+        if (globalCategories.length === 0) {
+          container.innerHTML = '<span style="font-size: 12px; color: var(--text-muted);">Hozircha bo\'limlar mavjud emas.</span>';
+          return;
+        }
 
-      categoriesContainer.innerHTML = '';
-      globalCategories.forEach(cat => {
-        const span = document.createElement('span');
-        span.className = 'cat-pill';
-        span.innerHTML = `
-          <span>${escapeHtml(cat.name)}</span>
-          <button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="deleteCategory('${cat.id}', '${escapeHtml(cat.name).replace(/'/g, "\\'")}')">&times;</button>
-        `;
-        categoriesContainer.appendChild(span);
-      });
-    }
+        container.innerHTML = '';
+        globalCategories.forEach(cat => {
+          const span = document.createElement('span');
+          span.className = 'cat-pill';
+          span.innerHTML = `
+            <span>${escapeHtml(cat.name)}</span>
+            <button type="button" class="del-cat-btn" title="Bo'limni o'chirish" onclick="window.deleteCategory('${cat.id}', '${escapeHtml(cat.name).replace(/'/g, "\\'")}')">&times;</button>
+          `;
+          container.appendChild(span);
+        });
+      }
+    };
 
     // Bo'limni o'chirish
     window.deleteCategory = async function(id, name) {
-      if (!confirm(`Haqiqatan ham "${name}" bo'limini o'chirmoqchimisiz? Undagi barcha materiallar ham o'chirilishi mumkin.`)) {
+      if (!confirm(`Haqiqatan ham "${name}" bo'limini o'chirmoqchimisiz? Undagi materiallar umumiy bo'limga o'tkazilishi mumkin.`)) {
         return;
       }
 
-      if (isDemoMode) {
-        globalCategories = globalCategories.filter(c => String(c.id) !== String(id));
-        localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
-        showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli o'chirildi. (Demo)`);
-        renderCategories();
-        return;
-      }
+      globalCategories = globalCategories.filter(c => String(c.id) !== String(id));
+      localStorage.setItem('att25_categories', JSON.stringify(globalCategories));
+      localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
+      window.renderCategories();
+      showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli o'chirildi.`);
 
-      try {
-        const { error } = await supabase
-          .from('categories')
-          .delete()
-          .eq('id', id);
-
-        if (error) throw error;
-
-        showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli o'chirildi.`);
-        await loadCategories();
-        await loadMaterials();
-      } catch (err) {
-        showAlert(dashboardAlert, err.message || "Bo'limni o'chirishda xatolik yuz berdi.", true);
+      if (supabase && !isDemoMode) {
+        try {
+          await supabase.from('categories').delete().eq('id', id);
+        } catch (err) {
+          console.warn("Supabase delete category warning:", err);
+        }
       }
     };
 
     // Yangi Bo'lim Qo'shish
-    addCategoryForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const name = categoryName.value.trim();
-      if (!name) return;
+    window.handleAddCategory = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const nameInput = document.getElementById('categoryName');
+      const name = nameInput ? nameInput.value.trim() : '';
+      if (!name) {
+        showAlert(dashboardAlert, "Iltimos, bo'lim nomini kiriting!", true);
+        return false;
+      }
+
+      if (globalCategories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+        showAlert(dashboardAlert, `"${name}" bo'limi allaqachon mavjud!`, true);
+        return false;
+      }
 
       setLoading(catSubmitBtn, catSpinner, true);
 
-      if (isDemoMode) {
-        const newCat = { id: Date.now(), name };
-        globalCategories.push(newCat);
-        localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
-        categoryName.value = '';
-        showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli qo'shildi! (Demo)`);
-        renderCategories();
-        setLoading(catSubmitBtn, catSpinner, false);
-        return;
+      const newCat = {
+        id: 'cat_' + Date.now(),
+        name: name
+      };
+
+      // Har doim lokal bazaga saqlanadi va ekranda zudlik bilan paydo bo'ladi
+      globalCategories.push(newCat);
+      localStorage.setItem('att25_categories', JSON.stringify(globalCategories));
+      localStorage.setItem('att25_demo_categories', JSON.stringify(globalCategories));
+      if (nameInput) nameInput.value = '';
+      window.renderCategories();
+
+      showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli qo'shildi!`);
+
+      // Agar Supabase ulangan bo'lsa, orqa fonda sinxronlash
+      if (supabase && !isDemoMode) {
+        try {
+          await supabase.from('categories').insert([{ name }]);
+        } catch (err) {
+          console.warn("Supabase insert category warning:", err);
+        }
       }
 
-      try {
-        const { data, error } = await supabase
-          .from('categories')
-          .insert([{ name }])
-          .select();
-
-        if (error) throw error;
-
-        categoryName.value = '';
-        showAlert(dashboardAlert, `"${name}" bo'limi muvaffaqiyatli qo'shildi!`);
-        await loadCategories();
-      } catch (err) {
-        showAlert(dashboardAlert, err.message || "Bo'lim qo'shishda xatolik yuz berdi.", true);
-      } finally {
-        setLoading(catSubmitBtn, catSpinner, false);
-      }
-    });
+      setLoading(catSubmitBtn, catSpinner, false);
+      return false;
+    };
 
     /* ==========================================================================
-       4. MATERIALLAR (MATERIALS) CRUD
+       5. MATERIALLAR (MATERIALS) CRUD - QURILMADAN YUKLASH VA HAVOLALAR
        ========================================================================== */
-    async function loadMaterials() {
-      // Demo rejim
-      if (isDemoMode) {
-        let stored = localStorage.getItem('att25_demo_materials');
-        if (!stored) {
-          const defaults = [
-            { id: 1, category_id: 1, title: 'OSI Modeli va TCP/IP Arxitekturasi', type: 'pptx', url: 'https://example.com/osi_model.pptx', categories: { name: 'Kompyuter Tarmoqlari' } },
-            { id: 2, category_id: 3, title: 'Optik Tolali Liniyalarni Payvandlash Qo\'llanmasi', type: 'video', url: 'https://youtube.com', categories: { name: 'Optik Tolali Aloqa' } },
-            { id: 3, category_id: 2, title: 'Kiberxavfsizlik va Shifrlash Asoslari', type: 'docx', url: 'https://example.com/security.docx', categories: { name: 'Axborot Xavfsizligi' } }
-          ];
-          localStorage.setItem('att25_demo_materials', JSON.stringify(defaults));
-          globalMaterials = defaults;
-        } else {
-          try { globalMaterials = JSON.parse(stored); } catch (e) { globalMaterials = []; }
+    window.loadMaterials = async function() {
+      // 1. Dastlab lokal xotiradan o'qiymiz
+      let stored = localStorage.getItem('att25_materials') || localStorage.getItem('att25_demo_materials');
+      if (stored) {
+        try {
+          globalMaterials = JSON.parse(stored);
+          if (!Array.isArray(globalMaterials)) globalMaterials = [];
+        } catch (e) {
+          globalMaterials = [];
         }
-        renderMaterials();
-        return;
+      } else {
+        const defaults = [
+          { id: 1, category_id: 'cat_1', title: 'OSPF Modeli va TCP/IP Arxitekturasi', type: 'pptx', source: 'url', url: 'https://example.com/osi_model.pptx', categories: { name: 'Kompyuter Tarmoqlari' } },
+          { id: 2, category_id: 'cat_3', title: 'Optik Tolali Liniyalarni Payvandlash Qo\'llanmasi', type: 'video', source: 'url', url: 'https://youtube.com', categories: { name: 'Optik Tolali Aloqa' } },
+          { id: 3, category_id: 'cat_2', title: 'Kiberxavfsizlik va Shifrlash Asoslari', type: 'docx', source: 'url', url: 'https://example.com/security.docx', categories: { name: 'Axborot Xavfsizligi' } }
+        ];
+        globalMaterials = defaults;
+        localStorage.setItem('att25_materials', JSON.stringify(defaults));
+        localStorage.setItem('att25_demo_materials', JSON.stringify(defaults));
       }
 
-      if (!supabase) return;
+      window.renderMaterials();
 
-      try {
-        const { data, error } = await supabase
-          .from('materials')
-          .select(`
-            id,
-            title,
-            type,
-            url,
-            created_at,
-            category_id,
-            categories ( name )
-          `)
-          .order('created_at', { ascending: false });
+      // 2. Supabase bulut bazasi bilan sinxronlash
+      if (supabase && !isDemoMode) {
+        try {
+          const { data, error } = await supabase
+            .from('materials')
+            .select(`
+              id,
+              title,
+              type,
+              url,
+              created_at,
+              category_id,
+              categories ( name )
+            `)
+            .order('created_at', { ascending: false });
 
-        if (error) throw error;
-
-        globalMaterials = data || [];
-        renderMaterials();
-      } catch (err) {
-        console.error("Materiallarni yuklashda xatolik:", err);
-        materialsTableBody.innerHTML = `<tr><td colspan="6" class="empty-state" style="color:var(--danger);">Materiallarni yuklab bo'lmadi: ${err.message}</td></tr>`;
+          if (!error && data && data.length > 0) {
+            const merged = [...data];
+            globalMaterials.forEach(localMat => {
+              if (!merged.some(m => String(m.id) === String(localMat.id) || m.title === localMat.title)) {
+                merged.push(localMat);
+              }
+            });
+            globalMaterials = merged;
+            localStorage.setItem('att25_materials', JSON.stringify(globalMaterials));
+            window.renderMaterials();
+          }
+        } catch (err) {
+          console.warn("Supabase materials sync warning:", err);
+        }
       }
-    }
+    };
 
-    function renderMaterials(filterKeyword = '') {
+    window.renderMaterials = function(filterKeyword = '') {
       const q = filterKeyword.toLowerCase().trim();
       const filtered = globalMaterials.filter(m => {
         const titleMatch = (m.title || '').toLowerCase().includes(q);
         const catName = m.categories?.name ? m.categories.name.toLowerCase() : '';
-        return titleMatch || catName.includes(q);
+        const fileName = (m.file_name || '').toLowerCase();
+        return titleMatch || catName.includes(q) || fileName.includes(q);
       });
 
       if (filtered.length === 0) {
@@ -1343,82 +1817,51 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
         const catName = item.categories?.name || '—';
         const typeClass = `type-${item.type}` in { 'type-pptx':1, 'type-docx':1, 'type-video':1, 'type-pdf':1 } ? `type-${item.type}` : 'type-other';
         
+        let sourceCellHtml = '';
+        if (item.source === 'device' || item.file_id) {
+          const sizeStr = item.file_size ? formatBytes(item.file_size) : '';
+          sourceCellHtml = `
+            <div style="display:flex; flex-direction:column; gap:5px;">
+              <span style="font-size:11.5px; color:#A7F3D0; display:inline-flex; align-items:center; gap:5px;">
+                📁 <b style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHtml(item.file_name || '')}">${escapeHtml(item.file_name || 'Qurilma fayli')}</b>
+                ${sizeStr ? `<span style="color:var(--text-muted); font-size:10.5px;">(${sizeStr})</span>` : ''}
+              </span>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:11px; color:var(--accent); border-color:rgba(0,230,118,0.35);" onclick="window.downloadDeviceFile('${item.file_id}', '${escapeHtml(item.file_name || item.title).replace(/'/g, "\\'")}')">
+                  📥 Yuklab olish
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" style="padding:3px 8px; font-size:11px; color:var(--text-muted);" onclick="window.previewDeviceFile('${item.file_id}')">
+                  👁️ Ochish
+                </button>
+              </div>
+            </div>
+          `;
+        } else {
+          sourceCellHtml = `
+            <a href="${escapeHtml(item.url || '#')}" target="_blank" rel="noopener noreferrer" class="material-link">
+              ${escapeHtml(item.url || 'Havola mavjud emas')} ↗
+            </a>
+          `;
+        }
+
         return `
           <tr>
             <td style="color: var(--text-muted); font-size: 11px;">${index + 1}</td>
-            <td style="font-weight: 600;">${escapeHtml(item.title)}</td>
+            <td style="font-weight: 600;">
+              ${escapeHtml(item.title)}
+            </td>
             <td><span class="cat-pill" style="font-size:11px; padding:2px 8px;">${escapeHtml(catName)}</span></td>
             <td><span class="type-badge ${typeClass}">${(item.type || 'Fayl').toUpperCase()}</span></td>
-            <td>
-              <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="material-link">
-                ${escapeHtml(item.url)} ↗
-              </a>
-            </td>
+            <td>${sourceCellHtml}</td>
             <td style="text-align: right;">
-              <button class="btn btn-danger btn-sm" onclick="deleteMaterial(${item.id}, '${escapeHtml(item.title).replace(/'/g, "\\'")}')">
+              <button class="btn btn-danger btn-sm" onclick="window.deleteMaterial('${item.id}', '${escapeHtml(item.title).replace(/'/g, "\\'")}')">
                 O'chirish
               </button>
             </td>
           </tr>
         `;
       }).join('');
-    }
-
-    // Yangi Material Qo'shish
-    addMaterialForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const category_id = matCategory.value;
-      const type = matType.value;
-      const title = matTitle.value.trim();
-      const url = matUrl.value.trim();
-
-      if (!category_id || !title || !url) {
-        showAlert(dashboardAlert, "Iltimos, barcha maydonlarni to'ldiring.", true);
-        return;
-      }
-
-      setLoading(matSubmitBtn, matSpinner, true);
-
-      if (isDemoMode) {
-        const catObj = globalCategories.find(c => String(c.id) === String(category_id));
-        const newMat = {
-          id: Date.now(),
-          category_id,
-          type,
-          title,
-          url,
-          created_at: new Date().toISOString(),
-          categories: { name: catObj ? catObj.name : '—' }
-        };
-        globalMaterials.unshift(newMat);
-        localStorage.setItem('att25_demo_materials', JSON.stringify(globalMaterials));
-        matTitle.value = '';
-        matUrl.value = '';
-        showAlert(dashboardAlert, `"${title}" materiali muvaffaqiyatli saqlandi! (Demo)`);
-        renderMaterials();
-        setLoading(matSubmitBtn, matSpinner, false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from('materials')
-          .insert([{ category_id, type, title, url }])
-          .select();
-
-        if (error) throw error;
-
-        matTitle.value = '';
-        matUrl.value = '';
-        showAlert(dashboardAlert, `"${title}" materiali muvaffaqiyatli saqlandi!`);
-        await loadMaterials();
-      } catch (err) {
-        showAlert(dashboardAlert, err.message || "Materialni saqlashda xatolik yuz berdi.", true);
-      } finally {
-        setLoading(matSubmitBtn, matSpinner, false);
-      }
-    });
+    };
 
     // Materialni o'chirish
     window.deleteMaterial = async function(id, title) {
@@ -1426,40 +1869,155 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
         return;
       }
 
-      if (isDemoMode) {
-        globalMaterials = globalMaterials.filter(m => String(m.id) !== String(id));
-        localStorage.setItem('att25_demo_materials', JSON.stringify(globalMaterials));
-        showAlert(dashboardAlert, `Material muvaffaqiyatli o'chirildi. (Demo)`);
-        renderMaterials();
-        return;
+      const matToDelete = globalMaterials.find(m => String(m.id) === String(id));
+      if (matToDelete && matToDelete.file_id) {
+        await deleteFileFromDB(matToDelete.file_id);
       }
 
-      try {
-        const { error } = await supabase
-          .from('materials')
-          .delete()
-          .eq('id', id);
+      globalMaterials = globalMaterials.filter(m => String(m.id) !== String(id));
+      localStorage.setItem('att25_materials', JSON.stringify(globalMaterials));
+      localStorage.setItem('att25_demo_materials', JSON.stringify(globalMaterials));
 
-        if (error) throw error;
+      window.renderMaterials();
+      showAlert(dashboardAlert, `"${title}" materiali muvaffaqiyatli o'chirildi.`);
 
-        showAlert(dashboardAlert, `Material muvaffaqiyatli o'chirildi.`);
-        await loadMaterials();
-      } catch (err) {
-        showAlert(dashboardAlert, err.message || "Materialni o'chirishda xatolik yuz berdi.", true);
+      if (supabase && !isDemoMode) {
+        try {
+          await supabase.from('materials').delete().eq('id', id);
+        } catch (err) {
+          console.warn("Supabase delete material warning:", err);
+        }
       }
     };
 
+    // Yangi Material Qo'shish Formasi
+    window.handleAddMaterial = async function(e) {
+      if (e && e.preventDefault) e.preventDefault();
+
+      const category_id = matCategory.value;
+      const type = matType.value;
+      const title = matTitle.value.trim();
+
+      if (!category_id) {
+        showAlert(dashboardAlert, "Iltimos, tegishli bo'limni tanlang.", true);
+        return false;
+      }
+      if (!title) {
+        showAlert(dashboardAlert, "Iltimos, material sarlavhasini kiriting.", true);
+        return false;
+      }
+
+      setLoading(matSubmitBtn, matSpinner, true);
+
+      const catObj = globalCategories.find(c => String(c.id) === String(category_id));
+      const catName = catObj ? catObj.name : 'Umumiy';
+
+      let newMaterial = null;
+
+      // 1. QURILMADAN FAYL YUKLASH TURI
+      if (activeUploadSource === 'file') {
+        if (!selectedDeviceFile) {
+          showAlert(dashboardAlert, "Iltimos, qurilmangizdan faylni tanlang yoki tashlang!", true);
+          setLoading(matSubmitBtn, matSpinner, false);
+          return false;
+        }
+
+        const fileId = 'file_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
+
+        try {
+          await saveFileToDB(fileId, selectedDeviceFile);
+        } catch (err) {
+          console.error("IndexedDB ga faylni saqlashda xatolik:", err);
+          showAlert(dashboardAlert, "Faylni qurilma xotirasiga saqlashda xatolik yuz berdi: " + err.message, true);
+          setLoading(matSubmitBtn, matSpinner, false);
+          return false;
+        }
+
+        newMaterial = {
+          id: Date.now(),
+          category_id: category_id,
+          type: type,
+          title: title,
+          source: 'device',
+          file_id: fileId,
+          file_name: selectedDeviceFile.name,
+          file_size: selectedDeviceFile.size,
+          file_type: selectedDeviceFile.type,
+          url: '',
+          created_at: new Date().toISOString(),
+          categories: { name: catName }
+        };
+      } else {
+        // 2. HAVOLA (URL) TURI
+        const url = matUrl.value.trim();
+        if (!url) {
+          showAlert(dashboardAlert, "Iltimos, havola (URL) manzilini kiriting.", true);
+          setLoading(matSubmitBtn, matSpinner, false);
+          return false;
+        }
+
+        newMaterial = {
+          id: Date.now(),
+          category_id: category_id,
+          type: type,
+          title: title,
+          source: 'url',
+          url: url,
+          created_at: new Date().toISOString(),
+          categories: { name: catName }
+        };
+      }
+
+      // Lokal massiv va xotirani yangilash
+      globalMaterials.unshift(newMaterial);
+      localStorage.setItem('att25_materials', JSON.stringify(globalMaterials));
+      localStorage.setItem('att25_demo_materials', JSON.stringify(globalMaterials));
+
+      // Formani tozalash
+      matTitle.value = '';
+      if (matUrl) matUrl.value = '';
+      window.clearSelectedFile();
+
+      window.renderMaterials();
+      showAlert(dashboardAlert, `"${title}" materiali muvaffaqiyatli saqlandi!`);
+
+      // Agar Supabase online bo'lsa va URL turida bo'lsa, bulutga ham jo'natamiz
+      if (supabase && !isDemoMode && activeUploadSource === 'url') {
+        try {
+          await supabase.from('materials').insert([{
+            category_id: isNaN(Number(category_id)) ? null : Number(category_id),
+            type,
+            title,
+            url: newMaterial.url
+          }]);
+        } catch (err) {
+          console.warn("Supabase insert material warning:", err);
+        }
+      }
+
+      setLoading(matSubmitBtn, matSpinner, false);
+      return false;
+    };
+
+    // Event listenerlar
+    if (addCategoryForm) addCategoryForm.addEventListener('submit', window.handleAddCategory);
+    if (addMaterialForm) addMaterialForm.addEventListener('submit', window.handleAddMaterial);
+
     // Filter qidiruvi
-    filterInput.addEventListener('input', (e) => {
-      renderMaterials(e.target.value);
-    });
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        window.renderMaterials(e.target.value);
+      });
+    }
 
     // Refresh tugmasi
-    refreshBtn.addEventListener('click', async () => {
-      await loadCategories();
-      await loadMaterials();
-      showAlert(dashboardAlert, "Ma'lumotlar yangilandi.");
-    });
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', async () => {
+        await window.loadCategories();
+        await window.loadMaterials();
+        showAlert(dashboardAlert, "Ma'lumotlar yangilandi.");
+      });
+    }
 
     // XSS himoyasi uchun
     function escapeHtml(str) {
@@ -1472,7 +2030,11 @@ CREATE POLICY "Admin materials delete" ON materials FOR DELETE TO authenticated 
         .replace(/'/g, "&#039;");
     }
 
-    // Dastlabki tekshiruv
+    // Dastlabki ma'lumotlarni darhol yuklash (UI kutib qolmasligi uchun)
+    window.loadCategories();
+    window.loadMaterials();
+
+    // Dastlabki seans tekshiruvi
     checkAuth();
   </script>
 </body>
