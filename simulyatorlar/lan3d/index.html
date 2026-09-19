@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAN 3D Simulyator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+<div id="labels"></div>
+
+<div id="toolbar">
+  <div id="brand"><b>LAN 3D Simulyator</b><span>Qurilmalarni qo‘shing va tarmoqni quring</span></div>
+  <div id="devtray"></div>
+  <div id="actions">
+    <a href="../index.html" class="actbtn" id="homeHubBtn" target="_top" style="color:var(--accent); border-color:var(--line-bright); text-decoration:none;" title="Simulyatorlar markaziga qaytish">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Markaz
+    </a>
+    <a href="../hardware3d/index.html" class="actbtn" id="hardwareSimBtn" target="_top" style="color:#00FF87; border-color:rgba(0,255,135,0.35); text-decoration:none;" title="Kompyuter sxemalari va atributlari simulyatori">
+      <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      Hardware 3D
+    </a>
+    <a href="../../index.html" class="actbtn" id="homePortalBtn" target="_top" style="color:var(--wired); border-color:rgba(111,227,196,0.35); text-decoration:none;" title="Boshqaruv portaliga qaytish">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Portal
+    </a>
+    <div class="dropdown" id="topoDropdown">
+      <button class="actbtn" id="topoBtn" style="color:var(--accent); border-color:rgba(255,180,84,0.35);" title="Tayyor bog'lanish shablonlari">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Topologiyalar ▼
+      </button>
+      <div class="topo-menu" id="topoMenu">
+        <button class="topo-item" data-topo="star">⭐ Yulduz (Star)</button>
+        <button class="topo-item" data-topo="ring">⭕ Halqa (Ring)</button>
+        <button class="topo-item" data-topo="bus">🚌 Shina (Bus)</button>
+        <button class="topo-item" data-topo="tree">🌳 Daraxt (Tree / Ierarxik)</button>
+        <button class="topo-item" data-topo="mesh">🕸️ To‘r (Full Mesh)</button>
+        <button class="topo-item" data-topo="office">🏠 Uy / Ofis (LAN & Wi-Fi)</button>
+        <button class="topo-item" data-topo="seed">🔄 Boshlang‘ich tarmoq</button>
+      </div>
+    </div>
+    <button class="actbtn" id="connectModeBtn">
+      <svg viewBox="0 0 24 24"><path d="M6 12h12M14 8l4 4-4 4"/></svg>
+      Ulash rejimi
+    </button>
+    <button class="actbtn" id="wifiToolbarBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Wi-Fi boshqaruvi va sozlamalari">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+      Wi-Fi
+    </button>
+    <button class="actbtn" id="msgModeBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Kompyuterlararo xabar yuborish">
+      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Xabar
+    </button>
+    <button class="actbtn" id="pduModeBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.35);" title="Fayl va PDU paket almashish simulyatsiyasi">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Fayl / PDU
+    </button>
+    <button class="actbtn" id="ciscoTerminalBtn" style="color:#00FF87; border-color:rgba(0,255,135,0.35);" title="Cisco IOS CLI Terminalini ochish">
+      <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      Cisco CLI
+    </button>
+    <button class="actbtn" id="simDockBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Cisco Packet Tracer simulyatsiya jurnali">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Event List
+    </button>
+    <button class="actbtn warn" id="clearBtn">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+      Tozalash
+    </button>
+    <button class="actbtn" id="lanFsBtn" style="color:var(--accent); border-color:var(--line-bright);" title="Simulyatorni to‘liq ekranga yoyish">
+      <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      To‘liq Ekran
+    </button>
+  </div>
+</div>
+
+<aside id="panel">
+  <div class="ptop">
+    <div>
+      <h2 id="pName">—</h2>
+      <div class="type" id="pType">—</div>
+    </div>
+    <button class="xbtn" id="pClose">✕</button>
+  </div>
+  <div>
+    <label>Qurilma nomi</label>
+    <input type="text" id="pNameInput" maxlength="24">
+  </div>
+
+  <!-- Editable IP Configuration Card -->
+  <div class="ip-config-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <label style="margin-bottom:0; font-weight:700;">IP Konfiguratsiyasi</label>
+      <div class="ip-mode-switch">
+        <button type="button" class="ip-mode-btn active" id="ipModeStatic">Statik</button>
+        <button type="button" class="ip-mode-btn" id="ipModeDhcp">DHCP</button>
+      </div>
+    </div>
+    <div class="ip-fields" id="ipFieldsContainer">
+      <div class="field-row">
+        <span class="f-lbl">IPv4:</span>
+        <input type="text" id="pIpInput" class="ip-field-input" placeholder="192.168.1.10">
+      </div>
+      <div class="field-row">
+        <span class="f-lbl">Mask:</span>
+        <input type="text" id="pMaskInput" class="ip-field-input" placeholder="255.255.255.0">
+      </div>
+      <div class="field-row">
+        <span class="f-lbl">Shlyuz:</span>
+        <input type="text" id="pGwInput" class="ip-field-input" placeholder="192.168.1.1">
+      </div>
+      <div class="field-row">
+        <span class="f-lbl">DNS:</span>
+        <input type="text" id="pDnsInput" class="ip-field-input" placeholder="8.8.8.8">
+      </div>
+    </div>
+    <div class="kv" style="margin-top:4px;"><span class="k">MAC manzil</span><span class="mono" id="pMAC">—</span></div>
+    <div class="kv"><span class="k">Ulanishlar</span><span class="mono" id="pCount">0</span></div>
+  </div>
+
+  <!-- Wi-Fi Status Card in Panel -->
+  <div class="wifi-status-card" id="pWifiStatusCard" style="display:none; background:var(--panel-2); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:10px; flex-direction:column; gap:5px;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-size:11px; font-weight:700; color:#38BDF8; display:flex; align-items:center; gap:5px;">
+        <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        Wi-Fi Holati
+      </span>
+      <span id="pWifiBadge" style="font-size:9.5px; padding:2px 6px; border-radius:4px; font-weight:700; background:rgba(56,189,248,0.15); color:#38BDF8;">Faol</span>
+    </div>
+    <div class="kv"><span class="k">Rejim</span><span class="mono" id="pWifiMode">AP (Router)</span></div>
+    <div class="kv"><span class="k">SSID</span><span class="mono" id="pWifiSsid">Cisco_Office_WiFi</span></div>
+    <div class="kv" id="pWifiSignalRow"><span class="k">Signal</span><span class="mono" id="pWifiSignal">📶 -45 dBm</span></div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:6px;">
+    <button class="panel-act-btn wifi" id="panelWifiBtn">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+      Wi-Fi Sozlamalari & Boshqaruv
+    </button>
+    <div id="pWifiAdapterToggleSection" style="display:none;">
+      <button class="panel-act-btn" id="pAddWifiAdapterBtn" style="background:rgba(111,227,196,0.1); color:#6FE3C4; border:1px solid rgba(111,227,196,0.3); font-size:10.5px;">
+        ➕ Wi-Fi Adapter (WLAN0) qo‘shish
+      </button>
+    </div>
+    <button class="panel-act-btn msg" id="panelMsgBtn">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Kompyuterga Xabar Yuborish
+    </button>
+    <button class="panel-act-btn cli" id="panelCliBtn">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      Cisco CLI Terminal
+    </button>
+    <button class="panel-act-btn pdu" id="panelPduBtn">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Fayl / Paket Yuborish
+    </button>
+  </div>
+  <div>
+    <label>Ulangan portlar & qurilmalar</label>
+    <div id="connlist"></div>
+  </div>
+  <div id="inboxSection" style="margin-top:4px;">
+    <label>Kelgan xabarlar (Inbox)</label>
+    <div id="inboxList" class="inbox-list"></div>
+  </div>
+  <button id="delDeviceBtn">
+    <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+    Qurilmani o‘chirish
+  </button>
+</aside>
+
+<div id="legend">
+  <div class="lgitem"><span class="lgline" style="border-color:#6FE3C4"></span>Simli (Ethernet)</div>
+  <div class="lgitem"><span class="lgline dashed" style="border-color:#4FC7E8"></span>Simsiz (Wi‑Fi)</div>
+  <div class="lgitem"><span class="lgline" style="border-color:#FF8C4B"></span>WAN (Internet)</div>
+</div>
+
+<div id="hint">Tepadagi tugmalar orqali qurilma qo‘shing → sudrab joylashtiring → <b>Ulash rejimi</b>ni yoqib ikkita qurilmani ketma-ket bosing.</div>
+<div id="toast"></div>
+
+<!-- PDU / File Transfer Modal -->
+<div class="sim-modal-overlay" id="pduModal">
+  <div class="sim-modal-box">
+    <div class="modal-head">
+      <div class="modal-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Fayl & Paket Almashish (Cisco PDU Simulyatsiyasi)
+      </div>
+      <button class="xbtn" id="pduClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid-2">
+        <div>
+          <label>Jo‘natuvchi (Source):</label>
+          <select id="pduSrcSelect" class="sim-select"></select>
+        </div>
+        <div>
+          <label>Qabul qiluvchi (Destination):</label>
+          <select id="pduDstSelect" class="sim-select"></select>
+        </div>
+      </div>
+
+      <div>
+        <label>Protokol va Paket Turi:</label>
+        <div class="proto-tabs" id="pduProtoTabs">
+          <button class="proto-btn active" data-proto="ftp">📄 Fayl (FTP/SMB)</button>
+          <button class="proto-btn" data-proto="icmp">📡 ICMP Ping</button>
+          <button class="proto-btn" data-proto="http">🌐 HTTP So‘rov</button>
+          <button class="proto-btn" data-proto="arp">🔍 ARP So‘rovi</button>
+        </div>
+      </div>
+
+      <div id="ftpFileSection">
+        <label>Yuboriladigan fayl:</label>
+        <select id="pduFileSelect" class="sim-select">
+          <option value="tarmoq_darsligi.pdf|4.2 MB">tarmoq_darsligi.pdf (4.2 MB)</option>
+          <option value="cisco_switch_config.cfg|24 KB">cisco_switch_config.cfg (24 KB)</option>
+          <option value="baza_backup.sql|86 MB">baza_backup.sql (86 MB)</option>
+          <option value="arxiv_materiallar.zip|14.8 MB">arxiv_materiallar.zip (14.8 MB)</option>
+        </select>
+      </div>
+
+      <div id="icmpCountSection" style="display:none;">
+        <label>ICMP Echo paketlar soni:</label>
+        <input type="number" id="pduPingCount" class="sim-input" value="4" min="1" max="10">
+      </div>
+
+      <div class="sim-transfer-preview" id="pduPreview">
+        <div class="route-tag" id="pduRoutePreview">Marshrut: hisoblanmoqda...</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="actbtn" id="pduCancelBtn">Bekor qilish</button>
+      <button class="actbtn on" id="pduSendBtn" style="background:#00E676; color:#03140A; border-color:#00E676; font-weight:800;">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Yuborish (Simulyatsiya)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Port Selection & Cable Type Modal -->
+<div class="sim-modal-overlay" id="portSelectModal">
+  <div class="sim-modal-box">
+    <div class="modal-head">
+      <div class="modal-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        Portlarni Tanlash & Kabel Bog‘lash
+      </div>
+      <button class="xbtn" id="portClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid-2">
+        <div class="port-select-card">
+          <b id="portDevAName" style="color:#00FF87; font-size:12.5px;">Qurilma A</b>
+          <label style="margin-top:6px;">Ulanish porti:</label>
+          <select id="portDevASelect" class="sim-select"></select>
+        </div>
+        <div class="port-select-card">
+          <b id="portDevBName" style="color:#4FC7E8; font-size:12.5px;">Qurilma B</b>
+          <label style="margin-top:6px;">Ulanish porti:</label>
+          <select id="portDevBSelect" class="sim-select"></select>
+        </div>
+      </div>
+
+      <div>
+        <label>Kabel turi (Transmission Media):</label>
+        <div class="proto-tabs" id="cableTypeTabs">
+          <button class="proto-btn active" data-cable="auto">⚡ Avtomatik (Auto)</button>
+          <button class="proto-btn" data-cable="straight">🔌 To‘g‘ri kabel (Straight)</button>
+          <button class="proto-btn" data-cable="crossover">🔀 Krossover (Cross)</button>
+          <button class="proto-btn" data-cable="fiber">💡 Optik tola (Fiber 10G)</button>
+        </div>
+      </div>
+
+      <div class="sim-transfer-preview" id="cablePreview">
+        <div id="cableInfoText">Tavsiya etiladi: Avtomatik aniqlash (MDI/MDIX)</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="actbtn" id="portCancelBtn">Bekor qilish</button>
+      <button class="actbtn on" id="portConnectBtn" style="background:#00E676; color:#03140A; border-color:#00E676; font-weight:800;">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M6 12h12M14 8l4 4-4 4"/></svg>
+        Portlarni Bog‘lash
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Direct Message Modal -->
+<div class="sim-modal-overlay" id="messageModal">
+  <div class="sim-modal-box">
+    <div class="modal-head">
+      <div class="modal-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Kompyuterga Xabar Yuborish (Direct Chat)
+      </div>
+      <button class="xbtn" id="msgClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid-2">
+        <div>
+          <label>Jo‘natuvchi (Sender PC):</label>
+          <select id="msgSrcSelect" class="sim-select"></select>
+        </div>
+        <div>
+          <label>Qabul qiluvchi (Recipient PC):</label>
+          <select id="msgDstSelect" class="sim-select"></select>
+        </div>
+      </div>
+
+      <div>
+        <label>Xabar matni:</label>
+        <input type="text" id="msgTextInput" class="sim-input" placeholder="Xabarni kiriting (masalan: Salom, faylni qabul qilib oldingizmi?)" maxlength="80">
+      </div>
+
+      <div>
+        <label>Tezkor shablonlar:</label>
+        <div class="proto-tabs" id="msgQuickTemplates">
+          <button class="proto-btn" data-txt="Salom! Tarmoq aloqasi tekshirildi.">👋 Salom!</button>
+          <button class="proto-btn" data-txt="Fayl serverga yuklandi, yuklab oling.">📁 Fayl yuklandi</button>
+          <button class="proto-btn" data-txt="Ping testi muvaffaqiyatli o‘tdi.">⚡ Ping OK</button>
+          <button class="proto-btn" data-txt="Uchrashuv soat 15:00 da.">⏰ Uchrashuv</button>
+        </div>
+      </div>
+
+      <div class="sim-transfer-preview" id="msgRoutePreview">
+        <div>Marshrut hisoblanmoqda...</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="actbtn" id="msgCancelBtn">Bekor qilish</button>
+      <button class="actbtn on" id="msgSendBtn" style="background:#A78BFA; color:#0A0814; border-color:#A78BFA; font-weight:800;">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Xabarni Jo‘natish
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Cisco IOS CLI & PC Command Prompt Modal -->
+<div class="sim-modal-overlay" id="ciscoTerminalModal">
+  <div class="cisco-terminal-window">
+    <div class="term-head">
+      <div class="term-head-left">
+        <div class="term-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="term-title" id="termTitle">Cisco IOS CLI — Router 1</span>
+        <select id="termDeviceSelect" class="term-dev-select"></select>
+      </div>
+      <button class="xbtn" id="termClose">✕</button>
+    </div>
+
+    <!-- Quick Commands Bar -->
+    <div class="term-quick-bar">
+      <button class="tq-btn" data-cmd="enable">enable</button>
+      <button class="tq-btn" data-cmd="conf t">conf t</button>
+      <button class="tq-btn" data-cmd="sh ip int br">sh ip int br</button>
+      <button class="tq-btn" data-cmd="sh mac">sh mac</button>
+      <button class="tq-btn" data-cmd="sh vlan">sh vlan</button>
+      <button class="tq-btn" data-cmd="sh run">sh run</button>
+      <button class="tq-btn" data-cmd="ping 192.168.1.1">ping</button>
+      <button class="tq-btn" data-cmd="help">help (?)</button>
+    </div>
+
+    <!-- Terminal Screen -->
+    <div class="term-screen" id="termScreen"></div>
+
+    <!-- Input Form -->
+    <form class="term-input-row" id="termForm">
+      <span class="term-prompt" id="termPrompt">Router#</span>
+      <input type="text" id="termInput" class="term-input" autocomplete="off" spellcheck="false">
+    </form>
+  </div>
+</div>
+
+<!-- Cisco Packet Tracer Event List Simulation Dock -->
+<div id="simDock" class="sim-dock">
+  <div class="dock-header">
+    <div class="dock-title">
+      <span class="pulse-dot"></span>
+      <b>Cisco Simulyatsiya Jurnali (Event List)</b>
+      <span class="dock-status" id="dockStatusText">Real-Time rejim</span>
+    </div>
+    <div class="dock-controls">
+      <button class="actbtn on" id="simPlayPauseBtn">
+        <svg viewBox="0 0 24 24" width="12" height="12"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        <span>To‘xtatish</span>
+      </button>
+      <div class="speed-box">
+        <label>Tezlik:</label>
+        <select id="simSpeedSelect" class="sim-mini-select">
+          <option value="0.5">0.5x</option>
+          <option value="1.0" selected>1.0x (Oddiy)</option>
+          <option value="2.0">2.0x (Tezkor)</option>
+        </select>
+      </div>
+      <button class="actbtn" id="simClearEventsBtn" title="Jurnalni tozalash">Tozalash</button>
+      <button class="xbtn" id="simDockClose">✕</button>
+    </div>
+  </div>
+  <div class="dock-body">
+    <table class="sim-table" id="simEventTable">
+      <thead>
+        <tr>
+          <th>Vaqt</th>
+          <th>Jo‘natuvchi</th>
+          <th>Qabul qiluvchi</th>
+          <th>Turi</th>
+          <th>Joriy Tugun</th>
+          <th>Holat & Ma'lumot</th>
+        </tr>
+      </thead>
+      <tbody id="simEventTbody">
+        <tr>
+          <td colspan="6" class="empty">Hali paket uzatish hodisalari mavjud emas. "Fayl / PDU" tugmasini bosib simulyatsiyani boshlang.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Wi-Fi Management & Settings Modal -->
+<div class="sim-modal-overlay" id="wifiModal">
+  <div class="sim-modal-box" style="max-width:560px;">
+    <div class="modal-head">
+      <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="#38BDF8" fill="none" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+        <span>Wi-Fi Boshqaruv Markazi — <b id="wifiModalDevName">Router 1</b></span>
+      </div>
+      <button class="xbtn" id="wifiModalClose">✕</button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- Device Switcher inside Modal -->
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; background:var(--panel-2); padding:8px 12px; border-radius:8px; border:1px solid var(--line);">
+        <label style="margin:0; font-size:11px; font-weight:700;">Tanlangan qurilma:</label>
+        <select id="wifiDevSelect" class="sim-mini-select" style="min-width:180px;"></select>
+      </div>
+
+      <!-- AP (Access Point / Router / Hotspot) Section -->
+      <div id="wifiApSection" style="display:none; flex-direction:column; gap:12px;">
+        <div class="ip-config-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <b style="color:#38BDF8; font-size:12.5px;">Tarmoq Tarqatuvchi (Wi-Fi AP) Sozlamalari</b>
+            <label class="switch-lbl" style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:11px;">
+              <input type="checkbox" id="wifiApRadioSwitch" checked>
+              <span>Radio: <b id="wifiApRadioStatus" style="color:#38BDF8;">YOQILGAN</b></span>
+            </label>
+          </div>
+          <div class="ip-fields">
+            <div class="field-row">
+              <span class="f-lbl" style="width:75px;">SSID:</span>
+              <input type="text" id="wifiApSsidInput" class="ip-field-input" placeholder="Tarmoq nomi (SSID)" maxlength="32">
+            </div>
+            <div class="field-row">
+              <span class="f-lbl" style="width:75px;">Xavfsizlik:</span>
+              <select id="wifiApSecuritySelect" class="sim-select" style="padding:4px 8px; font-size:11px;">
+                <option value="wpa2">WPA2-Personal (AES Tavsiya)</option>
+                <option value="wpa3">WPA3-SAE (Yuqori xavfsizlik)</option>
+                <option value="open">Ochiq (Parolsiz / Open)</option>
+              </select>
+            </div>
+            <div class="field-row" id="wifiApPassRow">
+              <span class="f-lbl" style="width:75px;">Parol:</span>
+              <input type="text" id="wifiApPassInput" class="ip-field-input" placeholder="Wi-Fi paroli (kamida 8 ta belgi)">
+            </div>
+            <div class="field-row">
+              <span class="f-lbl" style="width:75px;">Chastota:</span>
+              <div class="proto-tabs" id="wifiBandTabs" style="flex:1;">
+                <button type="button" class="proto-btn active" data-band="5GHz">⚡ 5 GHz (802.11ax)</button>
+                <button type="button" class="proto-btn" data-band="2.4GHz">📡 2.4 GHz (Uzoq masofa)</button>
+              </div>
+            </div>
+            <div class="field-row">
+              <span class="f-lbl" style="width:75px;">Tx Quvvati:</span>
+              <div class="proto-tabs" id="wifiTxTabs" style="flex:1;">
+                <button type="button" class="proto-btn" data-tx="25">25% (4m)</button>
+                <button type="button" class="proto-btn" data-tx="50">50% (7m)</button>
+                <button type="button" class="proto-btn active" data-tx="100">100% (11m)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-weight:700;">Ulangan simsiz mijozlar (<span id="wifiClientCount">0</span> ta):</label>
+          <div id="wifiConnectedClientsList" class="inbox-list" style="max-height:110px;"></div>
+        </div>
+      </div>
+
+      <!-- Client (Station - Laptop, Phone, Printer, PC) Section -->
+      <div id="wifiClientSection" style="display:none; flex-direction:column; gap:12px;">
+        <!-- Adapter status & Hotspot toggle -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--panel-2); border:1px solid var(--line); border-radius:8px; padding:8px 12px;">
+          <div>
+            <b id="wifiClientAdapterName" style="color:#6FE3C4; font-size:12px;">WLAN0 (Wi-Fi Adapter)</b>
+            <div style="font-size:10px; color:var(--ink-dim);" id="wifiClientAdapterStatus">Holat: Yoqilgan</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="actbtn" id="wifiToggleHotspotBtn" style="font-size:10.5px; padding:4px 9px;">
+              🔥 Hotspot / Direct
+            </button>
+            <button class="actbtn on" id="wifiClientScanBtn" style="font-size:10.5px; padding:4px 9px;">
+              🔄 Qidirish (Scan)
+            </button>
+          </div>
+        </div>
+
+        <!-- Current Connection Card -->
+        <div id="wifiCurrentConnCard" style="display:none; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.3); border-radius:8px; padding:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:10px; color:var(--ink-dim);">Hozirda ulangan tarmoq:</div>
+              <b id="wifiCurSsid" style="color:#38BDF8; font-size:13px;">—</b>
+              <div style="font-size:10.5px; color:var(--ink-dim); margin-top:2px;">
+                IP: <span id="wifiCurIp" class="mono" style="color:#6FE3C4;">—</span> · Signal: <span id="wifiCurSignal">—</span>
+              </div>
+            </div>
+            <button class="actbtn warn" id="wifiDisconnectBtn" style="font-size:10.5px; padding:4px 8px;">
+              Uzish
+            </button>
+          </div>
+        </div>
+
+        <!-- Scanned Networks List -->
+        <div>
+          <label style="font-weight:700;">Atrofdagi mavjud Wi-Fi tarmoqlari:</label>
+          <div id="wifiScannedList" class="inbox-list" style="max-height:160px;"></div>
+        </div>
+
+        <!-- Password Prompt Card -->
+        <div id="wifiConnectPromptCard" style="display:none; background:var(--panel-2); border:1px solid var(--accent); border-radius:8px; padding:10px; flex-direction:column; gap:6px;">
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-size:11.5px; font-weight:700;">Parol kiriting: <b id="wifiTargetSsid" style="color:var(--accent);">—</b></span>
+            <button class="xbtn" id="wifiCancelPromptBtn" style="font-size:13px;">✕</button>
+          </div>
+          <div style="display:flex; gap:6px; margin-top:4px;">
+            <input type="text" id="wifiTargetPassInput" class="ip-field-input" placeholder="Wi-Fi parolini kiriting">
+            <button class="actbtn on" id="wifiConfirmConnectBtn" style="background:#00E676; color:#03140A; border-color:#00E676; font-weight:800; padding:4px 12px;">
+              Ulanish
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="actbtn" id="wifiModalDoneBtn">Yopish</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts Modular Architecture -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/devices.js"></script>
+<script src="js/connections.js"></script>
+<script src="js/cisco_sim.js"></script>
+<script src="js/cisco_cli.js"></script>
+<script src="js/messaging.js"></script>
+<script src="js/wifi.js"></script>
+<script src="js/topologies.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

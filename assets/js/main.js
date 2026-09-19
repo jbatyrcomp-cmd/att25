@@ -3,6 +3,13 @@
  * Arsenal.com Yashil Uslubidagi Interaktiv Logika va Simulyatorlar Dvigateli
  */
 
+// Anti-nesting: Prevent main portal from being trapped inside an iframe
+if (window.top !== window.self) {
+  try {
+    window.top.location.href = window.location.href;
+  } catch(e) {}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initStickyHeader();
   initSubnetCalculator();
@@ -313,7 +320,7 @@ function initArenaControls() {
 
   if (newTabBtn) {
     newTabBtn.addEventListener('click', () => {
-      const currentSrc = iframe ? (iframe.getAttribute('src') || '3d.html') : '3d.html';
+      const currentSrc = iframe ? (iframe.getAttribute('src') || '3d/index.html') : '3d/index.html';
       window.open(currentSrc, '_blank');
     });
   }
@@ -342,7 +349,7 @@ function initTopologyChips() {
       chip.classList.add('active');
       const topoType = chip.dataset.topo;
 
-      // Send postMessage to 3d.html iframe
+      // Send postMessage to 3d/index.html iframe
       if (iframe.contentWindow) {
         iframe.contentWindow.postMessage({ action: 'loadTopology', type: topoType }, '*');
       }
@@ -415,12 +422,12 @@ function initSimLauncherModal() {
    6. QIDIRUV (SEARCH) MODALI
    ========================================================================== */
 const SEARCH_INDEX = [
-  { title: "Yagona Simulyatorlar Markazi (5-in-1)", category: "Simulyator", link: "simulyator.html", desc: "3D LAN, 3D Hardware Sxemalari, Subnet, Ping va OSI modeli bitta yagona bo‘limda" },
-  { title: "3D Kompyuter Sxemalari & Atributlari", category: "Simulyator", link: "simulyator.html#hardware3d", desc: "Ona plata arxitekturasi, CPU LGA1700, VRM sxemasi, DDR5, PCIe 5.0 shinalari va mantiqiy elementlar" },
-  { title: "3D LAN Simulyatori", category: "Simulyator", link: "simulyator.html#lan3d", desc: "Interaktiv 3D muhitda tarmoq qurish va paketlar harakatini kuzatish" },
-  { title: "IP Subnet & VLSM Kalkulyatori", category: "Simulyator", link: "simulyator.html#subnet", desc: "IP manzil va CIDR maskasi bo‘yicha tarmoq parametrlarini hisoblash" },
-  { title: "Jonli Ping & Latency Terminali", category: "Simulyator", link: "simulyator.html#ping", desc: "ICMP paketlar yuborish va tarmoq kechikishini sinovdan o‘tkazish" },
-  { title: "OSI 7 Qatlamli Model Inspektori", category: "Simulyator", link: "simulyator.html#osi", desc: "OSI qatlamlari, protokollari va apparat jihozlarini tahlil qilish" },
+  { title: "Yagona Simulyatorlar Markazi (5-in-1)", category: "Simulyator", link: "simulyatorlar/index.html", desc: "3D LAN, 3D Hardware Sxemalari, Subnet, Ping va OSI modeli bitta yagona bo‘limda" },
+  { title: "3D Kompyuter Sxemalari & Atributlari", category: "Simulyator", link: "simulyatorlar/index.html#hardware3d", desc: "Ona plata arxitekturasi, CPU LGA1700, VRM sxemasi, DDR5, PCIe 5.0 shinalari va mantiqiy elementlar" },
+  { title: "3D LAN Simulyatori", category: "Simulyator", link: "simulyatorlar/index.html#lan3d", desc: "Interaktiv 3D muhitda tarmoq qurish va paketlar harakatini kuzatish" },
+  { title: "IP Subnet & VLSM Kalkulyatori", category: "Simulyator", link: "simulyatorlar/index.html#subnet", desc: "IP manzil va CIDR maskasi bo‘yicha tarmoq parametrlarini hisoblash" },
+  { title: "Jonli Ping & Latency Terminali", category: "Simulyator", link: "simulyatorlar/index.html#ping", desc: "ICMP paketlar yuborish va tarmoq kechikishini sinovdan o‘tkazish" },
+  { title: "OSI 7 Qatlamli Model Inspektori", category: "Simulyator", link: "simulyatorlar/index.html#osi", desc: "OSI qatlamlari, protokollari va apparat jihozlarini tahlil qilish" },
   { title: "Cisco Routing & Switching (CCNA)", category: "O‘quv Dasturi", link: "#oquv-dasturi", desc: "OSPF, VLAN, Inter-VLAN va BGP marshrutlash protokollari" },
   { title: "Kiberxavfsizlik va Next-Gen Firewall", category: "O‘quv Dasturi", link: "#oquv-dasturi", desc: "Tarmoq xavfsizligi, IDS/IPS va tarmoq himoyasi qoidalari" },
   { title: "Tolali optik aloqa liniyalari laboratoriyasi", category: "Media & Lab", link: "#media-hub", desc: "Optik tolani payvandlash (Fusion Splicer) va reflektometr (OTDR)" },

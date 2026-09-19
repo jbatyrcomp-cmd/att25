@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulyatorlar & Amaliy Laboratoriya Markazi | ATT-25</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="css/hub.css">
+</head>
+<body class="sim-center-body">
+
+  <!-- ==========================================================================
+       TOP UNIVERSAL HUB HEADER WITH TABS
+       ========================================================================== -->
+  <header class="sim-hub-header">
+    <div class="sim-hub-topbar">
+      <!-- Brand Logo -->
+      <a href="../index.html" class="sim-hub-brand" target="_top" title="ATT-25 Boshqaruv Portaliga Qaytish">
+        <div class="sim-hub-crest">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2L2 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sim-hub-title">ATT-25 <span>SIMULYATORLAR</span></div>
+          <div class="sim-hub-subtitle">Yagona Amaliy & 3D Laboratoriya Markazi</div>
+        </div>
+      </a>
+
+      <!-- 5-in-1 Tab Switcher Bar -->
+      <nav class="sim-tabs-strip" id="hubTabs" role="tablist">
+        <button class="hub-tab-btn active" data-tab="lan3d" role="tab">
+          🌐 3D LAN Topologiya
+          <span class="badge-count">v2.4</span>
+        </button>
+        <button class="hub-tab-btn" data-tab="hardware3d" role="tab">
+          ⚡ 3D Hardware Sxemalari
+          <span class="badge-count">v2.0</span>
+        </button>
+        <button class="hub-tab-btn" data-tab="subnet" role="tab">
+          🔢 Subnet Kalkulyator
+        </button>
+        <button class="hub-tab-btn" data-tab="ping" role="tab">
+          💻 Jonli Ping Terminali
+        </button>
+        <button class="hub-tab-btn" data-tab="osi" role="tab">
+          📶 OSI 7 Qatlam Modeli
+        </button>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="hub-actions">
+        <button class="hub-btn" id="hubFullscreenBtn" title="To‘liq ekranga o‘tish">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+          </svg>
+          To‘liq Ekran
+        </button>
+        <a href="../index.html" class="hub-btn" target="_top" style="background:var(--brand-forest); border-color:var(--sim-accent); color:var(--sim-volt);" title="Boshqaruv portaliga qaytish">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Asosiy Portal ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN VIEWPORT CONTAINER (ALL SIMULATORS & TOOLS UNDER ONE ROOF)
+       ========================================================================== -->
+  <main class="sim-viewport-container" id="hubViewport">
+
+    <!-- 1. TAB: 3D LAN TOPOLOGIYA SIMULYATORI -->
+    <div class="sim-tab-panel active" id="tab-lan3d" role="tabpanel">
+      <iframe src="lan3d/index.html" class="sim-fullscreen-frame" id="iframeLan" title="3D LAN Simulyatori" allow="fullscreen" allowfullscreen="true"></iframe>
+    </div>
+
+    <!-- 2. TAB: 3D HARDWARE & SXEMALAR SIMULYATORI -->
+    <div class="sim-tab-panel" id="tab-hardware3d" role="tabpanel">
+      <iframe src="hardware3d/index.html" class="sim-fullscreen-frame" id="iframeHardware" title="3D Hardware Sxemalari Simulyatori" allow="fullscreen" allowfullscreen="true"></iframe>
+    </div>
+
+    <!-- 3. TAB: IP SUBNET & VLSM KALKULYATORI -->
+    <div class="sim-tab-panel" id="tab-subnet" role="tabpanel">
+      <div class="tool-tab-content">
+        <div class="tool-tab-header">
+          <div>
+            <h2>IP Subnet & VLSM Kalkulyatori</h2>
+            <p>Tarmoq maskasi, hostlar soni, wildcard va ikkilik ko‘rinishini hisoblash vositasi</p>
+          </div>
+          <span class="arena-badge-live"><span class="status-dot"></span> REAL-TIME HISOBLASH</span>
+        </div>
+
+        <div class="tool-card" style="border-top-color:var(--brand-primary); max-width:850px; margin:0 auto;">
+          <div class="subnet-form">
+            <div class="input-row">
+              <div class="form-field">
+                <label class="form-label" for="calcIp">IP Manzil</label>
+                <input type="text" id="calcIp" class="arsenal-input" value="192.168.10.15">
+              </div>
+              <div class="form-field" style="max-width:130px;">
+                <label class="form-label" for="calcCidr">CIDR (Prefiks /)</label>
+                <input type="number" id="calcCidr" class="arsenal-input" value="24" min="1" max="32">
+              </div>
+            </div>
+
+            <div class="preset-pills">
+              <button class="preset-pill" data-cidr="24">/24 (254 Host)</button>
+              <button class="preset-pill" data-cidr="26">/26 (62 Host)</button>
+              <button class="preset-pill" data-cidr="28">/28 (14 Host)</button>
+              <button class="preset-pill" data-cidr="30">/30 (2 Host P2P)</button>
+              <button class="preset-pill" data-cidr="16">/16 (65,534 Host)</button>
+              <button class="preset-pill" data-cidr="8">/8 (16.7M Host)</button>
+            </div>
+          </div>
+
+          <div class="calc-result-box" style="margin-top:20px;">
+            <div class="result-row"><span class="k">Tarmoq ID:</span><span class="v" id="resNet">192.168.10.0 /24</span></div>
+            <div class="result-row"><span class="k">Tarmoq Maskasi:</span><span class="v" id="resMask">255.255.255.0</span></div>
+            <div class="result-row"><span class="k">Wildcard Maska:</span><span class="v" id="resWild">0.0.0.255</span></div>
+            <div class="result-row"><span class="k">Hostlar Oralig‘i:</span><span class="v" id="resRange">192.168.10.1 – 192.168.10.254</span></div>
+            <div class="result-row"><span class="k">Foydalanuvchi Hostlar:</span><span class="v" id="resHosts">254 ta</span></div>
+            <div class="result-row"><span class="k">Broadcast Manzil:</span><span class="v" id="resBcast" style="color:var(--brand-volt);">192.168.10.255</span></div>
+            <div class="result-row"><span class="k">Ikkilik (Binary):</span><span class="v" id="resBinary">11111111.11111111.11111111.00000000</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. TAB: JONLI PING TERMINALI -->
+    <div class="sim-tab-panel" id="tab-ping" role="tabpanel">
+      <div class="tool-tab-content">
+        <div class="tool-tab-header">
+          <div>
+            <h2>Jonli Ping & Latency Terminali</h2>
+            <p>Tugunlararo kechikish, ICMP paketlar yo‘qolishi va RTT statistikasini emulyatsiya qilish</p>
+          </div>
+          <span class="arena-badge-live"><span class="status-dot"></span> ICMP ECHO EMULYATORI</span>
+        </div>
+
+        <div class="tool-card" style="border-top-color:var(--sim-volt); max-width:900px; margin:0 auto;">
+          <div class="ping-controls">
+            <div class="form-field" style="flex:1;">
+              <label class="form-label" for="pingTarget">Nishon Tugun (IP yoki Domen)</label>
+              <input type="text" id="pingTarget" class="arsenal-input" value="192.168.1.1">
+            </div>
+            <div class="form-field" style="max-width:120px;">
+              <label class="form-label" for="pingCount">Paketlar Soni</label>
+              <select id="pingCount" class="arsenal-input">
+                <option value="4" selected>4 Paket</option>
+                <option value="8">8 Paket</option>
+                <option value="12">12 Paket</option>
+              </select>
+            </div>
+            <button class="btn-arsenal-primary" id="startPingBtn" style="height:44px; margin-top:19px;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              Ping Yuborish
+            </button>
+          </div>
+
+          <div class="terminal-screen" id="pingTerminalScreen" style="min-height:280px; margin-top:20px;">
+            <div class="terminal-line system">ATT-25 Ping Diagnostika Terminali v2.4 tayyor.</div>
+            <div class="terminal-line prompt">Target IP manzilni kiriting va 'Ping Yuborish' tugmasini bosing...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. TAB: OSI 7 QATLAMLI MODEL INSPEKTORI -->
+    <div class="sim-tab-panel" id="tab-osi" role="tabpanel">
+      <div class="tool-tab-content">
+        <div class="tool-tab-header">
+          <div>
+            <h2>OSI 7 Qatlamli Model Inspektori</h2>
+            <p>Qatlamlararo PDU birliklari, tarmoq protokollari va apparat vositalarini chuqur tahlil qiling</p>
+          </div>
+          <span class="arena-badge-live"><span class="status-dot"></span> ISO/IEC 7498-1 STANDARTI</span>
+        </div>
+
+        <div class="osi-container" style="max-width:960px; margin:0 auto;">
+          <div class="osi-layers-stack">
+            <div class="osi-layer-row active" data-layer="7">
+              <span class="layer-num">7</span>
+              <span class="layer-name">Application (Amaliy)</span>
+              <span class="layer-unit">Ma'lumot</span>
+            </div>
+            <div class="osi-layer-row" data-layer="6">
+              <span class="layer-num">6</span>
+              <span class="layer-name">Presentation (Taqdimot)</span>
+              <span class="layer-unit">Format</span>
+            </div>
+            <div class="osi-layer-row" data-layer="5">
+              <span class="layer-num">5</span>
+              <span class="layer-name">Session (Seans)</span>
+              <span class="layer-unit">Sinxron</span>
+            </div>
+            <div class="osi-layer-row" data-layer="4">
+              <span class="layer-num">4</span>
+              <span class="layer-name">Transport (Transport)</span>
+              <span class="layer-unit">Segment</span>
+            </div>
+            <div class="osi-layer-row" data-layer="3">
+              <span class="layer-num">3</span>
+              <span class="layer-name">Network (Tarmoq)</span>
+              <span class="layer-unit">Paket</span>
+            </div>
+            <div class="osi-layer-row" data-layer="2">
+              <span class="layer-num">2</span>
+              <span class="layer-name">Data Link (Kanal)</span>
+              <span class="layer-unit">Kadr</span>
+            </div>
+            <div class="osi-layer-row" data-layer="1">
+              <span class="layer-num">1</span>
+              <span class="layer-name">Physical (Jismoniy)</span>
+              <span class="layer-unit">Bit</span>
+            </div>
+          </div>
+
+          <div class="osi-details-panel">
+            <div class="osi-info-box" id="osiInfoBox">
+              <div style="font-size:16px; font-weight:800; color:#FFF; font-family:var(--font-editorial);">Qatlam 7: Application (Amaliy)</div>
+              <div style="margin-top:8px;"><b>PDU Birligi:</b> Ma'lumotlar (Data)</div>
+              <div><b>Protokollar:</b> HTTP/3, HTTPS, DNS, DHCP, SSH, FTP, SMTP</div>
+              <div><b>Qurilmalar:</b> Gateway, Next-Gen Firewall, Web Server</div>
+              <div style="margin-top:10px; color:var(--text-light); line-height:1.6;">
+                Foydalanuvchi dasturlari va tarmoq xizmatlari o‘rtasidagi to‘g‘ridan-to‘g‘ri interfeys. Brauzer va ilovalar so‘rovlari aynan shu qatlamda shakllanadi.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Notification Toast -->
+  <div id="hubToast"></div>
+
+  <!-- Floating Exit Fullscreen Button -->
+  <button id="exitFsFloatBtn" title="To‘liq ekrandan chiqish">
+    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+    Oynaga Qaytish
+  </button>
+
+  <!-- Modular Scripts -->
+  <script src="js/hub.js"></script>
+  <script src="js/subnet.js"></script>
+  <script src="js/ping.js"></script>
+  <script src="js/osi.js"></script>
+</body>
+</html>
