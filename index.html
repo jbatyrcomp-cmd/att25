@@ -183,7 +183,9 @@
             <a href="simulyator.html#lan3d" class="btn-arsenal-secondary">
               🌐 3D LAN Topologiya ↗
             </a>
-            <a href="simulyator.html#hardware3d" class="btn-arsenal-secondary" style="border-color:var(--brand-primary); color:var(--brand-volt);" title="Kompyuter sxemalari va qismlari atributlari">
+            <a href="simulyator.html#hardware3d" class="btn-arsenal-secondary"
+              style="border-color:var(--brand-primary); color:var(--brand-volt);"
+              title="Kompyuter sxemalari va qismlari atributlari">
               ⚡ 3D Sxemalar ↗
             </a>
           </div>
@@ -195,7 +197,9 @@
         <!-- Card 1 -->
         <a href="simulyator.html#hardware3d" class="side-story-card">
           <div class="side-story-thumb">
-            <div style="width:100%; height:100%; background:#091910; display:flex; align-items:center; justify-content:center; color:var(--brand-volt); font-size:26px;">⚡</div>
+            <div
+              style="width:100%; height:100%; background:#091910; display:flex; align-items:center; justify-content:center; color:var(--brand-volt); font-size:26px;">
+              ⚡</div>
           </div>
           <div class="side-story-content">
             <span class="side-story-badge">Yangi 3D Simulyator 2026</span>
@@ -245,7 +249,8 @@
         </div>
         <h2 class="sim-promo-title">ATT-25 Simulyatorlar Markazi</h2>
         <p class="sim-promo-desc">
-          Barcha 3D tarmoq topologiyalari, kompyuter apparat sxemalari (CPU/VRM/DDR5/ALU), IP Subnet kalkulyatori, jonli Ping terminali va OSI 7 qatlamli model bitta yagona interaktiv bo‘limda jamlandi.
+          Barcha 3D tarmoq topologiyalari, kompyuter apparat sxemalari (CPU/VRM/DDR5/ALU), IP Subnet kalkulyatori, jonli
+          Ping terminali va OSI 7 qatlamli model bitta yagona interaktiv bo‘limda jamlandi.
         </p>
         <div class="sim-promo-chips">
           <a href="simulyator.html#lan3d" class="promo-chip">🌐 3D LAN Topologiya</a>
@@ -258,7 +263,7 @@
       <div class="sim-promo-right">
         <a href="simulyator.html" class="btn-arsenal-primary sim-promo-cta">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3"/>
+            <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
           Simulyatorlar Markaziga Kirish ↗
         </a>
@@ -468,17 +473,17 @@
         <span class="section-pretitle">Vizual Kontent</span>
         <h2 class="section-title">Media Hub: Foto & Video Materiallar</h2>
       </div>
-      <div class="section-filters">
-        <button class="filter-btn active">Barchasi</button>
-        <button class="filter-btn">Videolar</button>
-        <button class="filter-btn">Foto Galereya</button>
+      <div class="section-filters" id="mediaFilterBtns">
+        <button class="filter-btn active" data-filter="all">Barchasi</button>
+        <button class="filter-btn" data-filter="video">Videolar</button>
+        <button class="filter-btn" data-filter="photo">Foto Galereya</button>
       </div>
     </div>
 
-    <div class="media-grid">
+    <div class="media-grid" id="mediaMainGrid">
       <!-- Main Video Spotlight -->
-      <div class="video-spotlight">
-        <div class="video-player-container" id="videoPlayTrigger">
+      <div class="video-spotlight" data-media-type="video">
+        <div class="video-player-container" id="videoPlayTrigger" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
           <div class="play-pulsing-btn">
             <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
               <path d="M8 5v14l11-7z" />
@@ -486,15 +491,19 @@
           </div>
         </div>
         <div class="video-details-box">
-          <div class="editorial-tag">Video Masterklass</div>
+          <div class="editorial-tag">Video Masterklass • Asosiy</div>
           <h3 class="video-title">Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash</h3>
           <p class="video-desc">
             ATT-25 laboratoriyasida talabalar tomonidan o‘tkazilgan amaliy mashg‘ulot. Optik tolani tozalash, kesish,
             payvandlash apparatida birlashtirish va so‘nish ko‘rsatkichlarini (dB) o‘lchash to‘liq ko‘rsatilgan.
           </p>
           <div style="margin-top:16px;">
-            <button class="btn-arsenal-primary" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <button class="btn-arsenal-primary"
+              onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')"
+              style="cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
               Videoni ko‘rish
             </button>
           </div>
@@ -502,7 +511,7 @@
       </div>
 
       <!-- Photo Gallery Side -->
-      <div class="photo-gallery-side">
+      <div class="photo-gallery-side" data-media-type="photo">
         <div class="gallery-card">
           <img src="assets/images/lab_datacenter.jpg" alt="Data Center">
           <div class="gallery-caption-overlay">Cisco Server Stendlari va Switch Klasteri</div>
@@ -518,6 +527,113 @@
         <div class="gallery-card">
           <img src="assets/images/fiber_telecom.jpg" alt="Patch Panel">
           <div class="gallery-caption-overlay">10G SFP+ Magistral Kommutatsiya</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Qo'shimcha Video Darsliklar & Materiallar To'plami -->
+    <div class="video-materials-grid" id="videoMaterialsGrid" data-media-type="video">
+      <!-- Video 1 -->
+      <div class="video-card-item">
+        <div class="video-card-thumb" onclick="openVideoModal('Cisco IOS: Router va Switchlarni Dastlabki Sozlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <img src="assets/images/lab_datacenter.jpg" alt="Cisco IOS">
+          <div class="video-card-play-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="video-duration-pill">28:15 • 1080p</span>
+        </div>
+        <div class="video-card-body">
+          <div>
+            <div class="video-card-meta">
+              <span class="video-card-tag">Cisco CCNA</span>
+              <span style="font-size:11px; color:var(--text-dim);">1-Qism</span>
+            </div>
+            <h4 class="video-card-title">Cisco IOS: Router va Switchlarni Dastlabki Sozlash</h4>
+            <p class="video-desc">
+              Cisco uskunalarida CLI interfeysi, IP manzillar biriktirish, parollarni shifrlash va SSH xavfsiz ulanishini sozlash.
+            </p>
+          </div>
+          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('Cisco IOS: Router va Switchlarni Dastlabki Sozlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+            ▶ Videoni ko‘rish
+          </button>
+        </div>
+      </div>
+
+      <!-- Video 2 -->
+      <div class="video-card-item">
+        <div class="video-card-thumb" onclick="openVideoModal('Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <img src="assets/images/fiber_telecom.jpg" alt="Wireshark Tahlil">
+          <div class="video-card-play-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="video-duration-pill">34:50 • 1080p</span>
+        </div>
+        <div class="video-card-body">
+          <div>
+            <div class="video-card-meta">
+              <span class="video-card-tag">Tarmoq Tahlili</span>
+              <span style="font-size:11px; color:var(--text-dim);">2-Qism</span>
+            </div>
+            <h4 class="video-card-title">Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish</h4>
+            <p class="video-desc">
+              TCP 3-way handshake, DNS so‘rovlari, ARP jadvallari va shifrlanmagan HTTP ma'lumotlarni paketlar sathida tekshirish.
+            </p>
+          </div>
+          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+            ▶ Videoni ko‘rish
+          </button>
+        </div>
+      </div>
+
+      <!-- Video 3 -->
+      <div class="video-card-item">
+        <div class="video-card-thumb" onclick="openVideoModal('MikroTik RouterOS v7: VLAN va DHCP Server', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <img src="assets/images/lab_datacenter.jpg" alt="MikroTik RouterOS">
+          <div class="video-card-play-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="video-duration-pill">41:10 • 1080p</span>
+        </div>
+        <div class="video-card-body">
+          <div>
+            <div class="video-card-meta">
+              <span class="video-card-tag">MikroTik Lab</span>
+              <span style="font-size:11px; color:var(--text-dim);">3-Qism</span>
+            </div>
+            <h4 class="video-card-title">MikroTik RouterOS v7: VLAN va DHCP Server</h4>
+            <p class="video-desc">
+              MikroTik routerlarida Bridge VLAN filtering, korporativ tarmoq segmentatsiyasi va pool bilan DHCP server o‘rnatish.
+            </p>
+          </div>
+          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('MikroTik RouterOS v7: VLAN va DHCP Server', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+            ▶ Videoni ko‘rish
+          </button>
+        </div>
+      </div>
+
+      <!-- Video 4 -->
+      <div class="video-card-item">
+        <div class="video-card-thumb" onclick="openVideoModal('Server Rack & Data Center Kabel Standartlari', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <img src="assets/images/fiber_telecom.jpg" alt="Server Rack">
+          <div class="video-card-play-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <span class="video-duration-pill">22:40 • 1080p</span>
+        </div>
+        <div class="video-card-body">
+          <div>
+            <div class="video-card-meta">
+              <span class="video-card-tag">Data Center</span>
+              <span style="font-size:11px; color:var(--text-dim);">4-Qism</span>
+            </div>
+            <h4 class="video-card-title">Server Rack & Data Center Kabel Standartlari</h4>
+            <p class="video-desc">
+              Patch panellar montaji, Cat6A SFTP kabel marshrutlash, optik kross panellar va 10G SFP+ ulanishlar tartibi.
+            </p>
+          </div>
+          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('Server Rack & Data Center Kabel Standartlari', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+            ▶ Videoni ko‘rish
+          </button>
         </div>
       </div>
     </div>
@@ -773,35 +889,50 @@
       </div>
       <div class="modal-body" style="padding:24px;">
         <p style="color:var(--text-dim); margin-bottom:20px; font-size:14px;">
-          Quyidagi simulyatorlardan birini tanlang. Ular alohida to‘liq ekranli 3D fazoviy laboratoriya sifatida ishga tushadi:
+          Quyidagi simulyatorlardan birini tanlang. Ular alohida to‘liq ekranli 3D fazoviy laboratoriya sifatida ishga
+          tushadi:
         </p>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px;">
           <!-- 3D LAN Card -->
-          <a href="3d.html" target="_blank" class="sim-modal-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:6px; background:var(--bg-surface-2); border:1px solid var(--line-bright); transition:all 0.25s ease;">
+          <a href="3d.html" target="_blank" class="sim-modal-card"
+            style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:6px; background:var(--bg-surface-2); border:1px solid var(--line-bright); transition:all 0.25s ease;">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <span style="font-size:36px;">🌐</span>
-                <span style="font-size:10px; font-weight:700; color:var(--brand-primary); background:rgba(0,230,118,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,230,118,0.3);">3D TARMOQ v2.4</span>
+                <span
+                  style="font-size:10px; font-weight:700; color:var(--brand-primary); background:rgba(0,230,118,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,230,118,0.3);">3D
+                  TARMOQ v2.4</span>
               </div>
-              <h4 style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">LAN & Topologiyalar Simulyatori</h4>
-              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Star, Ring, Bus, Tree, Mesh va Ofis topologiyalari, real-time paketlar trafigi va qurilmalar ulanishi.</p>
+              <h4
+                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">
+                LAN & Topologiyalar Simulyatori</h4>
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Star, Ring, Bus, Tree, Mesh va Ofis
+                topologiyalari, real-time paketlar trafigi va qurilmalar ulanishi.</p>
             </div>
-            <div style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-primary); font-weight:700; font-size:13px;">
+            <div
+              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-primary); font-weight:700; font-size:13px;">
               Laboratoriyaga Kirish ↗
             </div>
           </a>
 
           <!-- 3D Hardware Card -->
-          <a href="hardware3d.html" target="_blank" class="sim-modal-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:6px; background:var(--bg-surface-2); border:1px solid rgba(0,255,135,0.35); transition:all 0.25s ease;">
+          <a href="hardware3d.html" target="_blank" class="sim-modal-card"
+            style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:6px; background:var(--bg-surface-2); border:1px solid rgba(0,255,135,0.35); transition:all 0.25s ease;">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <span style="font-size:36px;">⚡</span>
-                <span style="font-size:10px; font-weight:700; color:var(--brand-volt); background:rgba(0,255,135,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,255,135,0.3);">YANGI 3D v2.0</span>
+                <span
+                  style="font-size:10px; font-weight:700; color:var(--brand-volt); background:rgba(0,255,135,0.12); padding:3px 8px; border-radius:4px; border:1px solid rgba(0,255,135,0.3);">YANGI
+                  3D v2.0</span>
               </div>
-              <h4 style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">Kompyuter Sxemalari & Atributlari</h4>
-              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Ona plata ATX PCB, CPU LGA1700, 16-faza VRM, DDR5, PCIe 5.0 shinalar signallari va mantiqiy ALU darvozalari.</p>
+              <h4
+                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">
+                Kompyuter Sxemalari & Atributlari</h4>
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Ona plata ATX PCB, CPU LGA1700,
+                16-faza VRM, DDR5, PCIe 5.0 shinalar signallari va mantiqiy ALU darvozalari.</p>
             </div>
-            <div style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-volt); font-weight:700; font-size:13px;">
+            <div
+              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-volt); font-weight:700; font-size:13px;">
               Laboratoriyaga Kirish ↗
             </div>
           </a>
@@ -835,7 +966,8 @@
   <div class="video-modal-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
     <div class="video-modal-dialog">
       <div class="video-modal-header">
-        <h3 class="video-modal-title" id="videoModalTitle">OPTIK TOLALI LINIYALARNI FUSION SPLICER BILAN PAYVANDLASH</h3>
+        <h3 class="video-modal-title" id="videoModalTitle">OPTIK TOLALI LINIYALARNI FUSION SPLICER BILAN PAYVANDLASH
+        </h3>
         <button class="video-modal-close-btn" id="videoModalClose" aria-label="Yopish">✕</button>
       </div>
       <div class="video-modal-body">

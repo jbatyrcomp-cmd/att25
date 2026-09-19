@@ -773,15 +773,58 @@ function initPresentationModal() {
 }
 
 /* ==========================================================================
-   11. KATEGORIYA FILTRLARI
+   11. KATEGORIYA FILTRLARI (MEDIA HUB VA MAQOLALAR)
    ========================================================================== */
 function initCategoryFilters() {
-  const filterBtns = document.querySelectorAll('.section-filters .filter-btn');
-  filterBtns.forEach(btn => {
+  // Media Hub filtrlari
+  const mediaFilterBtns = document.querySelectorAll('#mediaFilterBtns .filter-btn');
+  const spotlight = document.querySelector('.video-spotlight');
+  const photoGallery = document.querySelector('.photo-gallery-side');
+  const videoGrid = document.getElementById('videoMaterialsGrid');
+
+  if (mediaFilterBtns.length) {
+    mediaFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        mediaFilterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+        if (filter === 'all') {
+          if (spotlight) spotlight.style.display = '';
+          if (photoGallery) photoGallery.style.display = '';
+          if (videoGrid) videoGrid.style.display = '';
+        } else if (filter === 'video') {
+          if (spotlight) spotlight.style.display = '';
+          if (photoGallery) photoGallery.style.display = 'none';
+          if (videoGrid) videoGrid.style.display = '';
+        } else if (filter === 'photo') {
+          if (spotlight) spotlight.style.display = 'none';
+          if (photoGallery) photoGallery.style.display = '';
+          if (videoGrid) videoGrid.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Umumiy filtr tugmalari uchun (aktivlikni o'zgartirish)
+  const otherFilterBtns = document.querySelectorAll('.section-filters:not(#mediaFilterBtns) .filter-btn');
+  otherFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const parent = btn.parentElement;
       parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+
+      const text = btn.textContent.trim().toLowerCase();
+      const articles = document.querySelectorAll('.articles-grid .article-card');
+      articles.forEach(card => {
+        const cat = card.querySelector('.article-category');
+        const catText = cat ? cat.textContent.trim().toLowerCase() : '';
+        if (text === 'barchasi' || catText.includes(text)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     });
   });
 }
