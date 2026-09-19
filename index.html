@@ -492,6 +492,12 @@
             ATT-25 laboratoriyasida talabalar tomonidan o‘tkazilgan amaliy mashg‘ulot. Optik tolani tozalash, kesish,
             payvandlash apparatida birlashtirish va so‘nish ko‘rsatkichlarini (dB) o‘lchash to‘liq ko‘rsatilgan.
           </p>
+          <div style="margin-top:16px;">
+            <button class="btn-arsenal-primary" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'Video Masterklass • ATT-25 Laboratoriyasi', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'youtube')" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Videoni ko‘rish
+            </button>
+          </div>
         </div>
       </div>
 
@@ -825,26 +831,19 @@
     </div>
   </div>
 
-  <!-- Video Player Modal -->
-  <div class="modal-backdrop" id="videoModal">
-    <div class="modal-dialog" style="max-width:800px; background:#000;">
-      <div class="modal-header">
-        <div class="modal-title">Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash</div>
-        <button class="modal-close-btn" id="videoModalClose">✕</button>
+  <!-- Modal Video Player (Minimalistik, Oq Card, #2563eb Ko'k Aksent) -->
+  <div class="video-modal-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
+    <div class="video-modal-card">
+      <div class="video-modal-header">
+        <div class="video-modal-titles">
+          <span class="video-modal-subtitle" id="videoModalSubtitle">Video Darslik</span>
+          <h3 class="video-modal-title" id="videoModalTitle">Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash</h3>
+        </div>
+        <button class="video-modal-close" id="videoModalClose" aria-label="Yopish">&times;</button>
       </div>
-      <div class="modal-body" style="padding:0;">
-        <div
-          style="position:relative; width:100%; height:450px; background:#000; display:flex; align-items:center; justify-content:center;">
-          <img src="assets/images/fiber_telecom.jpg" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"
-            alt="Video">
-          <div
-            style="position:absolute; inset:0; background:rgba(0,0,0,0.4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px;">
-            <div
-              style="font-family:var(--font-mono); color:var(--brand-primary); font-size:14px; background:rgba(0,0,0,0.8); padding:8px 16px; border:1px solid var(--brand-primary);">
-              ▶ VIDEO MA'RUZA: Optik tolani kesish va payvandlash amaliyoti
-            </div>
-            <div style="color:var(--text-light); font-size:12px;">Davomiyligi: 45:20 • Ruxsat: 1080p 60FPS Full HD</div>
-          </div>
+      <div class="video-modal-body">
+        <div class="video-player-frame" id="videoPlayerContainer">
+          <!-- Video yoki YouTube iframe dinamik ravishda joylanadi -->
         </div>
       </div>
     </div>

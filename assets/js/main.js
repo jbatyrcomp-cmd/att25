@@ -615,27 +615,114 @@ function initArticleReader() {
 }
 
 /* ==========================================================================
-   9. VIDEO PLAYER MODALI
+   9. VIDEO PLAYER MODALI (YOUTUBE & HTML5 VIDEO)
    ========================================================================== */
+function openVideoModal(title, subtitle, url, type = 'auto') {
+  const modal = document.getElementById('videoModal');
+  const titleEl = document.getElementById('videoModalTitle');
+  const subtitleEl = document.getElementById('videoModalSubtitle');
+  const playerContainer = document.getElementById('videoPlayerContainer');
+
+  if (!modal || !playerContainer) return;
+
+  // 1. Sarlavha va subtitlni yangilash
+  if (titleEl) titleEl.textContent = title || "Video Material";
+  if (subtitleEl) subtitleEl.textContent = subtitle || "Video Darslik";
+
+  // 2. Video turini aniqlash va kontent yaratish
+  let playerHtml = '';
+  const isYouTube = type === 'youtube' || /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)/i.test(url);
+
+  if (isYouTube && url) {
+    // YouTube video ID ni aniqlash
+    const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+    const videoId = ytMatch ? ytMatch[1] : '';
+    const embedUrl = videoId 
+      ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1` 
+      : url;
+
+    playerHtml = `<iframe 
+      src="${embedUrl}" 
+      title="${title || 'Video Player'}" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      allowfullscreen>
+    </iframe>`;
+  } else if (url) {
+    // HTML5 Video (.mp4, .webm, va h.k.)
+    playerHtml = `<video 
+      src="${url}" 
+      controls 
+      autoplay 
+      playsinline 
+      preload="metadata">
+      Brauzeringiz ushbu videoni qo‘llab-quvvatlamaydi.
+    </video>`;
+  } else {
+    playerHtml = `<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#94a3b8; font-family:sans-serif;">Video manzili topilmadi</div>`;
+  }
+
+  // 3. Pleerni joylashtirish va modalni ochish
+  playerContainer.innerHTML = playerHtml;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const playerContainer = document.getElementById('videoPlayerContainer');
+
+  if (!modal) return;
+
+  // Videoni to'xtatish (kontentni tozalash)
+  if (playerContainer) {
+    playerContainer.innerHTML = '';
+  }
+
+  // Modalni yopish va sahifa scrollini qaytarish
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Global qilish (HTML inline onclick orqali ham to'g'ridan-to'g'ri ishlashi uchun)
+window.openVideoModal = openVideoModal;
+window.closeVideoModal = closeVideoModal;
+
 function initVideoPlayer() {
   const videoModal = document.getElementById('videoModal');
   const videoClose = document.getElementById('videoModalClose');
   const playTrigger = document.getElementById('videoPlayTrigger');
 
-  if (!videoModal || !playTrigger) return;
-
-  playTrigger.addEventListener('click', () => {
-    videoModal.classList.add('open');
-  });
-
-  if (videoClose) {
-    videoClose.addEventListener('click', () => {
-      videoModal.classList.remove('open');
+  // Asosiy video poster triggeri
+  if (playTrigger) {
+    playTrigger.addEventListener('click', () => {
+      openVideoModal(
+        "Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash",
+        "Video Masterklass • ATT-25 Laboratoriyasi",
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "youtube"
+      );
     });
   }
 
-  videoModal.addEventListener('click', (e) => {
-    if (e.target === videoModal) videoModal.classList.remove('open');
+  // Yopish tugmasi
+  if (videoClose) {
+    videoClose.addEventListener('click', closeVideoModal);
+  }
+
+  // Backdrop foniga bosilganda yopish
+  if (videoModal) {
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        closeVideoModal();
+      }
+    });
+  }
+
+  // Escape tugmasi bilan yopish
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && videoModal && videoModal.classList.contains('open')) {
+      closeVideoModal();
+    }
   });
 }
 
