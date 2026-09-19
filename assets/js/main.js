@@ -617,28 +617,35 @@ function initArticleReader() {
 /* ==========================================================================
    9. VIDEO PLAYER MODALI (YOUTUBE & HTML5 VIDEO)
    ========================================================================== */
-function openVideoModal(title, subtitle, url, type = 'auto') {
+function openVideoModal(title, arg2, arg3) {
   const modal = document.getElementById('videoModal');
   const titleEl = document.getElementById('videoModalTitle');
-  const subtitleEl = document.getElementById('videoModalSubtitle');
   const playerContainer = document.getElementById('videoPlayerContainer');
 
   if (!modal || !playerContainer) return;
 
-  // 1. Sarlavhani screenshotdagi kabi KATTA HARFLARDA (UPPERCASE) yangilash
+  // Parametrlarni moslash: openVideoModal(title, url) yoki openVideoModal(title, subtitle, url)
+  let url = '';
+  if (arg3) {
+    url = arg3;
+  } else {
+    url = arg2 || '';
+  }
+
+  // 1. Modal sarlavhasini dinamik yangilash (KATTA HARFLARDA)
   const displayTitle = (title || "OPTIK TOLALI LINIYALARNI FUSION SPLICER BILAN PAYVANDLASH").toUpperCase();
   if (titleEl) titleEl.textContent = displayTitle;
 
-  // 2. Video turini aniqlash va kontent yaratish
+  // 2. Video manzilini tahlil qilish va mos pleerni yaratish
   let playerHtml = '';
-  const isYouTube = type === 'youtube' || /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)/i.test(url);
+  const isYouTube = url && (url.includes('youtube') || url.includes('youtu.be'));
 
-  if (isYouTube && url) {
+  if (isYouTube) {
     // YouTube video ID ni aniqlash
-    const ytMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+    const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
     const videoId = ytMatch ? ytMatch[1] : '';
     const embedUrl = videoId 
-      ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1` 
+      ? `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0` 
       : url;
 
     playerHtml = `<iframe 
@@ -647,7 +654,7 @@ function openVideoModal(title, subtitle, url, type = 'auto') {
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
       allowfullscreen>
     </iframe>`;
-  } else if (url && (type === 'video' || /\.(mp4|webm|ogg)($|\?)/i.test(url))) {
+  } else if (url) {
     // HTML5 Video (.mp4, .webm, va h.k.)
     playerHtml = `<video 
       src="${url}" 
@@ -658,12 +665,12 @@ function openVideoModal(title, subtitle, url, type = 'auto') {
       Brauzeringiz ushbu videoni qo‘llab-quvvatlamaydi.
     </video>`;
   } else {
-    // Agar to'g'ridan-to'g'ri url bo'lmasa - screenshotdagi aniq cyber poster ko'rinishi
+    // Agar URL kiritilmagan bo'lsa - standart preview poster
     playerHtml = `
       <div class="video-poster-overlay">
         <img src="assets/images/fiber_telecom.jpg" class="video-poster-img" alt="Video Preview">
         <div class="video-poster-content">
-          <div class="video-poster-badge" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'ATT-25', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'youtube')">
+          <div class="video-poster-badge" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
             ▶ VIDEO MA'RUZA: Optik tolani kesish va payvandlash amaliyoti
           </div>
           <div class="video-poster-meta">Davomiyligi: 45:20 • Ruxsat: 1080p 60FPS Full HD</div>
