@@ -99,6 +99,16 @@
         <span>Simulyatsiya: Faol</span>
       </button>
 
+      <button class="btn-action" id="btnFgToggle" title="Funksiya Generatori — AC signal manbasi">
+        <svg viewBox="0 0 24 24"><path d="M2 12h4l2-5 4 10 4-5h6"/></svg>
+        <span>🌊 FG</span>
+      </button>
+
+      <button class="btn-action" id="btnAnalysis" title="Tahlil oynasi — Bode, DC Sweep, Transient">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>📊 Tahlil</span>
+      </button>
+
       <button class="btn-action gold-badge" id="btnLabs">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="12 6 12 12 16 14"/></svg>
         <span>Laboratoriya Darslari</span>
@@ -311,6 +321,36 @@
             </div>
           </div>
 
+          <div class="comp-item" draggable="true" data-type="transistor_pnp" title="PNP Tranzistor (2N3906 / BC557)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="6" y1="12" x2="12" y2="12"/><line x1="12" y1="6" x2="12" y2="18"/><line x1="12" y1="9" x2="18" y2="5"/><line x1="6" y1="15" x2="12" y2="13"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">PNP Tranzistor</span>
+              <span class="comp-sub">2N3906 Elektron kalit</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="mosfet_n" title="N-MOSFET (2N7000 / IRF540N)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="10" y2="12"/><line x1="10" y1="7" x2="10" y2="17" stroke-dasharray="2,1"/><line x1="13" y1="7" x2="13" y2="11"/><line x1="13" y1="13" x2="13" y2="17"/><line x1="13" y1="9" x2="19" y2="6"/><line x1="13" y1="15" x2="19" y2="18"/><line x1="11" y1="12" x2="13" y2="12"/><polyline points="11,11 13,12 11,13" fill="currentColor"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">N-MOSFET</span>
+              <span class="comp-sub">2N7000 Kalit/Kuchaytirgich</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="mosfet_p" title="P-MOSFET (IRF9540 / BS250)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="10" y2="12"/><line x1="10" y1="7" x2="10" y2="17" stroke-dasharray="2,1"/><line x1="13" y1="7" x2="13" y2="11"/><line x1="13" y1="13" x2="13" y2="17"/><line x1="13" y1="9" x2="19" y2="6"/><line x1="13" y1="15" x2="19" y2="18"/><line x1="11" y1="12" x2="13" y2="12"/><polyline points="13,11 11,12 13,13" fill="currentColor"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">P-MOSFET</span>
+              <span class="comp-sub">IRF9540 Yuqori tarafli kalit</span>
+            </div>
+          </div>
+
           <div class="comp-item" draggable="true" data-type="motor" title="DC Elektrodvigatel">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M10 8h4l-2 8"/></svg>
@@ -320,7 +360,28 @@
               <span class="comp-sub">DC Motor + Parrak</span>
             </div>
           </div>
+
+          <div class="comp-item" draggable="true" data-type="inductor" title="Induktivlik Katushkasi (1mH)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="5" y2="12"/><path d="M5 12 q2,-6 4,0 q2,-6 4,0 q2,-6 4,0"/><line x1="17" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Induktivlik (1mH)</span>
+              <span class="comp-sub">Katushka / RL filtr</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="transformer" title="Ideal Transformator (1:1)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 8 q3,-4 6,0 q3,-4 6,0" /><path d="M4 16 q3,-4 6,0 q3,-4 6,0" /><line x1="11" y1="5" x2="11" y2="19"/><line x1="13" y1="5" x2="13" y2="19"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Transformator (1:1)</span>
+              <span class="comp-sub">Kuchlanish o'zgartiruvchi</span>
+            </div>
+          </div>
         </div>
+
 
         <!-- Digital Logic & ICs -->
         <div class="palette-category">
@@ -791,18 +852,89 @@
 <!-- Toast Message -->
 <div id="toast"></div>
 
+<!-- Function Generator Floating Window -->
+<div class="instrument-window" id="fgWindow" style="width:380px; right:420px;">
+  <div class="instrument-header">
+    <span class="instrument-title">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M2 12h4l2-5 4 10 4-5h6"/></svg>
+      FUNKSIYA GENERATORI
+    </span>
+    <button class="inst-close-btn" id="fgCloseBtn">✕</button>
+  </div>
+  <div id="fgPanelContainer"></div>
+</div>
+
+<!-- Analysis Window — Bode / DC Sweep / Transient -->
+<div class="instrument-window" id="analysisWindow" style="width:620px; max-height:540px; top:80px; left:calc(50% - 310px); right:auto;">
+  <div class="instrument-header">
+    <span class="instrument-title">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      CIRCUIT TAHLILI — MULTISIM DARAJASI
+    </span>
+    <button class="inst-close-btn" id="analysisCloseBtn">✕</button>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="analysis-tabs">
+    <button class="analysis-tab active" id="tabBode">📈 Bode Diagrammasi</button>
+    <button class="analysis-tab" id="tabDcSweep">⚡ DC Sweep</button>
+    <button class="analysis-tab" id="tabTransient">⏱️ Tranzient</button>
+  </div>
+
+  <!-- Bode tab -->
+  <div class="analysis-pane" id="paneBode">
+    <div class="analysis-controls">
+      <label>fMin (Hz): <input type="number" id="acFMin" value="1" min="0.001" max="1000" step="0.1" class="analysis-input"></label>
+      <label>fMax (Hz): <input type="number" id="acFMax" value="1000000" min="100" max="10000000" step="100" class="analysis-input"></label>
+      <label>Nuqtalar: <input type="number" id="acPoints" value="100" min="20" max="500" step="10" class="analysis-input"></label>
+      <button class="btn-action" id="btnRunAC">▶ Ishga tushirish</button>
+    </div>
+    <canvas id="bodeCanvas" width="580" height="360" class="analysis-canvas"></canvas>
+    <div class="analysis-result" id="acResult">Zanjirni ulang va ▶ ni bosing.</div>
+  </div>
+
+  <!-- DC Sweep tab -->
+  <div class="analysis-pane hidden" id="paneDcSweep">
+    <div class="analysis-controls">
+      <label>Vmin (V): <input type="number" id="swVMin" value="0" min="-30" max="0" step="0.5" class="analysis-input"></label>
+      <label>Vmax (V): <input type="number" id="swVMax" value="12" min="1" max="50" step="0.5" class="analysis-input"></label>
+      <label>Qadamlar: <input type="number" id="swSteps" value="100" min="10" max="500" step="10" class="analysis-input"></label>
+      <select id="swPlotMode" class="analysis-input" style="padding:6px 8px;">
+        <option value="vi">V–I xarakteristika</option>
+        <option value="vp">V–P (Quvvat)</option>
+        <option value="vv">Vin–Vout</option>
+      </select>
+      <button class="btn-action" id="btnRunSweep">▶ Ishga tushirish</button>
+    </div>
+    <canvas id="sweepCanvas" width="580" height="300" class="analysis-canvas"></canvas>
+    <div class="analysis-result" id="sweepResult">Zanjirni ulang va ▶ ni bosing.</div>
+  </div>
+
+  <!-- Transient tab -->
+  <div class="analysis-pane hidden" id="paneTransient">
+    <div class="analysis-controls">
+      <label>Davomiylik: <input type="number" id="trDuration" value="50" min="1" max="10000" step="1" class="analysis-input"> ms</label>
+      <label>Nuqtalar: <input type="number" id="trSteps" value="500" min="50" max="2000" step="50" class="analysis-input"></label>
+      <button class="btn-action" id="btnRunTransient">▶ Ishga tushirish</button>
+    </div>
+    <canvas id="transientCanvas" width="580" height="300" class="analysis-canvas"></canvas>
+    <div class="analysis-result" id="transientResult">RC/RL/RLC zanjirini quring va ▶ ni bosing.</div>
+  </div>
+</div>
+
 <!-- Scripts in proper dependency order -->
-<script src="js/engine.js?v=5"></script>
-<script src="js/components.js?v=5"></script>
-<script src="js/arduino.js?v=5"></script>
-<script src="js/breadboard3d.js?v=5"></script>
-<script src="js/instruments.js?v=5"></script>
-<script src="js/storage.js?v=5"></script>
-<script src="js/labs.js?v=5"></script>
-<script src="js/templates_data.js?v=5"></script>
-<script src="js/templates_modal.js?v=5"></script>
-<script src="js/live_controls.js?v=5"></script>
-<script src="js/app.js?v=5"></script>
+<script src="js/engine.js?v=6"></script>
+<script src="js/components.js?v=6"></script>
+<script src="js/analysis.js?v=6"></script>
+<script src="js/arduino.js?v=6"></script>
+<script src="js/breadboard3d.js?v=6"></script>
+<script src="js/instruments.js?v=6"></script>
+<script src="js/storage.js?v=6"></script>
+<script src="js/labs.js?v=6"></script>
+<script src="js/templates_data.js?v=6"></script>
+<script src="js/templates_modal.js?v=6"></script>
+<script src="js/live_controls.js?v=6"></script>
+<script src="js/app.js?v=6"></script>
 
 </body>
 </html>

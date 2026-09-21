@@ -2239,5 +2239,308 @@ html, body {
   transition: width 0.15s ease;
 }
 
+/* =========================================================================
+   ANALYSIS WINDOW STYLES — Bode / DC Sweep / Transient
+   ========================================================================= */
+#analysisWindow {
+  overflow-y: auto;
+}
+
+.analysis-tabs {
+  display: flex;
+  gap: 2px;
+  background: rgba(2, 6, 23, 0.6);
+  padding: 6px 8px 0;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+}
+
+.analysis-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748B;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 6px 6px 0 0;
+}
+
+.analysis-tab:hover {
+  color: #94A3B8;
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.analysis-tab.active {
+  color: #38BDF8;
+  border-bottom-color: #38BDF8;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.analysis-pane {
+  padding: 10px 10px 6px;
+}
+
+.analysis-pane.hidden {
+  display: none;
+}
+
+.analysis-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(2, 6, 23, 0.4);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+.analysis-controls label {
+  font-size: 0.72rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.analysis-input {
+  background: rgba(2, 6, 23, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 6px;
+  color: #F8FAFC;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 4px 6px;
+  width: 90px;
+  transition: border-color 0.2s;
+}
+
+.analysis-input:focus {
+  outline: none;
+  border-color: #38BDF8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+}
+
+.analysis-canvas {
+  display: block;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  width: 100%;
+  max-width: 100%;
+}
+
+.analysis-result {
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #64748B;
+  padding: 6px 4px 2px;
+  border-top: 1px solid rgba(56, 189, 248, 0.08);
+  margin-top: 6px;
+}
+
+/* =========================================================================
+   FUNCTION GENERATOR PANEL STYLES
+   ========================================================================= */
+.fg-panel {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fg-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: #38BDF8;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.05em;
+}
+
+.fg-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.fg-toggle input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #00FF87;
+}
+
+.fg-toggle-label {
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #64748B;
+  cursor: pointer;
+}
+
+.fg-display {
+  background: #060E1A;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  padding: 8px 14px 6px;
+  gap: 6px;
+}
+
+.fg-display-val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: #00FF87;
+  text-shadow: 0 0 8px rgba(0, 255, 135, 0.5);
+  letter-spacing: -1px;
+}
+
+.fg-display-unit {
+  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #64748B;
+}
+
+.fg-waveform-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.fg-wave-btn {
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 8px;
+  color: #64748B;
+  font-size: 1.2rem;
+  width: 50px;
+  height: 38px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: sans-serif;
+}
+
+.fg-wave-btn:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #94A3B8;
+}
+
+.fg-wave-btn.active {
+  background: rgba(0, 255, 135, 0.1);
+  border-color: #00FF87;
+  color: #00FF87;
+  box-shadow: 0 0 8px rgba(0, 255, 135, 0.2);
+}
+
+.fg-params {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fg-param-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 72px;
+  align-items: center;
+  gap: 8px;
+}
+
+.fg-param-row label {
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #64748B;
+}
+
+.fg-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(56, 189, 248, 0.2);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.fg-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00FF87;
+  box-shadow: 0 0 6px rgba(0, 255, 135, 0.5);
+  cursor: pointer;
+}
+
+.fg-num-input {
+  background: rgba(2, 6, 23, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 6px;
+  color: #F8FAFC;
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 4px 6px;
+  width: 100%;
+  text-align: right;
+}
+
+.fg-num-input:focus {
+  outline: none;
+  border-color: #00FF87;
+}
+
+.fg-preview {
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  background: #060E1A;
+  width: 100%;
+  display: block;
+}
+
+.fg-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #475569;
+  padding: 4px 2px 2px;
+  border-top: 1px solid rgba(56, 189, 248, 0.08);
+}
+
+/* Close button for instrument windows */
+.inst-close-btn {
+  background: transparent;
+  border: none;
+  color: #64748B;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.inst-close-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+/* Utility */
+.hidden {
+  display: none !important;
+}
 
 

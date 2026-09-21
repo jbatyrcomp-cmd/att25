@@ -125,6 +125,27 @@ class CircuitStorage {
       else if (type === 'dc_source') {
         comp = new CircuitComponents.DcSource(x, y, cData.voltage || 5.0);
       }
+      // === FAZA 1: YANGI KOMPONENTLAR ===
+      else if (type === 'transistor_pnp') {
+        comp = new CircuitComponents.TransistorPnp(x, y);
+        if (cData.beta !== undefined) comp.beta = cData.beta;
+      }
+      else if (type === 'mosfet_n') {
+        comp = new CircuitComponents.MOSFETn(x, y);
+        if (cData.Vth !== undefined) comp.Vth = cData.Vth;
+        if (cData.K !== undefined) comp.K = cData.K;
+      }
+      else if (type === 'mosfet_p') {
+        comp = new CircuitComponents.MOSFETp(x, y);
+        if (cData.Vth !== undefined) comp.Vth = cData.Vth;
+        if (cData.K !== undefined) comp.K = cData.K;
+      }
+      else if (type === 'inductor') {
+        comp = new CircuitComponents.Inductor(x, y, cData.inductance || 0.001);
+      }
+      else if (type === 'transformer') {
+        comp = new CircuitComponents.Transformer(x, y, cData.n1 || 1, cData.n2 || 1);
+      }
 
       if (comp) {
         comp.rotation = cData.rotation || 0;

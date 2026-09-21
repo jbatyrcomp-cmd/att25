@@ -197,5 +197,266 @@ class VirtualOscilloscope {
   }
 }
 
+/* ==========================================================================
+   FUNCTION GENERATOR — Virtual Signal Manba (Multisim FG kabi)
+   Sin / Kvadrat / Uchburchak / Tishli (Sawtooth) to'lqinlar
+   ========================================================================== */
+class FunctionGenerator {
+  constructor() {
+    this.waveform = 'sine';     // 'sine'|'square'|'triangle'|'sawtooth'
+    this.frequency = 1000;       // Hz
+    this.amplitude = 5.0;        // V (peak)
+    this.dcOffset = 0;           // V (DC offset)
+    this.phase = 0;              // degrees
+    this.enabled = false;
+    this._time = 0;
+    // UI state
+    this.panelEl = null;
+  }
+
+  /**
+   * Berilgan vaqtda chiqish kuchlanishini qaytarish
+   * @param {number} t - Vaqt (soniya)
+   * @returns {number} - Kuchlanish (V)
+   */
+  getVoltage(t) {
+    if (!this.enabled) return this.dcOffset;
+    const T = 1 / (this.frequency || 1);
+    const phi = (this.phase * Math.PI) / 180;
+    const tNorm = ((t % T) + T) % T; // [0, T)
+    const x = tNorm / T; // [0, 1)
+    const A = this.amplitude;
+    let v = 0;
+
+    switch (this.waveform) {
+      case 'sine':
+        v = A * Math.sin(2 * Math.PI * x + phi);
+        break;
+      case 'square':
+        v = A * (Math.sin(2 * Math.PI * x + phi) >= 0 ? 1 : -1);
+        break;
+      case 'triangle':
+        v = A * (2 * Math.abs(2 * (x - Math.floor(x + 0.5))) - 1);
+        break;
+      case 'sawtooth':
+        v = A * (2 * (x - Math.floor(x + 0.5)));
+        break;
+      default:
+        v = 0;
+    }
+    return v + this.dcOffset;
+  }
+
+  /**
+   * Har bir frame da vaqtni yangilash (dt soniyada)
+   */
+  tick(dt) {
+    this._time += dt;
+    return this.getVoltage(this._time);
+  }
+
+  /**
+   * Function Generator panelini render qilish
+   */
+  renderPanel(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const waveIcons = {
+      sine: '〜', square: '⊓', triangle: '∧', sawtooth: '╱'
+    };
+
+    container.innerHTML = `
+      <div class="fg-panel" id="fgPanel">
+        <div class="fg-header">
+          <span class="fg-title">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5">
+              <path d="M2 12h4l2-5 4 10 4-5h6"/>
+            </svg>
+            FUNKSIYA GENERATORI
+          </span>
+          <label class="fg-toggle">
+            <input type="checkbox" id="fgEnableToggle" ${this.enabled ? 'checked' : ''}>
+            <span class="fg-toggle-label">${this.enabled ? '🟢 FAOL' : '⚫ NOFAOL'}</span>
+          </label>
+        </div>
+
+        <div class="fg-display">
+          <div class="fg-display-val" id="fgDisplayVal">${this.getVoltage(this._time).toFixed(2)}</div>
+          <div class="fg-display-unit">V</div>
+        </div>
+
+        <div class="fg-waveform-row">
+          ${['sine', 'square', 'triangle', 'sawtooth'].map(w => `
+            <button class="fg-wave-btn ${this.waveform === w ? 'active' : ''}" data-wave="${w}" title="${w}">
+              ${waveIcons[w]}
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="fg-params">
+          <div class="fg-param-row">
+            <label>Chastota (Hz)</label>
+            <input type="range" id="fgFreqSlider" min="1" max="100000" step="1" value="${this.frequency}" class="fg-slider">
+            <input type="number" id="fgFreqInput" value="${this.frequency}" min="0.1" max="1000000" step="1" class="fg-num-input">
+          </div>
+          <div class="fg-param-row">
+            <label>Amplituda (V)</label>
+            <input type="range" id="fgAmpSlider" min="0.1" max="20" step="0.1" value="${this.amplitude}" class="fg-slider">
+            <input type="number" id="fgAmpInput" value="${this.amplitude}" min="0" max="50" step="0.1" class="fg-num-input">
+          </div>
+          <div class="fg-param-row">
+            <label>DC Offset (V)</label>
+            <input type="range" id="fgOffsetSlider" min="-20" max="20" step="0.1" value="${this.dcOffset}" class="fg-slider">
+            <input type="number" id="fgOffsetInput" value="${this.dcOffset}" min="-50" max="50" step="0.1" class="fg-num-input">
+          </div>
+          <div class="fg-param-row">
+            <label>Faza (°)</label>
+            <input type="range" id="fgPhaseSlider" min="0" max="360" step="1" value="${this.phase}" class="fg-slider">
+            <input type="number" id="fgPhaseInput" value="${this.phase}" min="0" max="360" step="1" class="fg-num-input">
+          </div>
+        </div>
+
+        <canvas id="fgPreviewCanvas" width="340" height="80" class="fg-preview"></canvas>
+
+        <div class="fg-info">
+          <span>T = ${(1000 / this.frequency).toFixed(2)} ms</span>
+          <span>Vpp = ${(2 * this.amplitude).toFixed(1)} V</span>
+          <span>Vrms = ${(this.waveform === 'sine' ? this.amplitude / Math.SQRT2 : this.amplitude).toFixed(2)} V</span>
+        </div>
+      </div>
+    `;
+
+    this.panelEl = container.querySelector('#fgPanel');
+    this._bindPanelEvents();
+    this._drawPreview();
+  }
+
+  _bindPanelEvents() {
+    const panel = this.panelEl;
+    if (!panel) return;
+
+    // Enable toggle
+    panel.querySelector('#fgEnableToggle')?.addEventListener('change', (e) => {
+      this.enabled = e.target.checked;
+      const label = panel.querySelector('.fg-toggle-label');
+      if (label) label.textContent = this.enabled ? '🟢 FAOL' : '⚫ NOFAOL';
+    });
+
+    // Waveform buttons
+    panel.querySelectorAll('.fg-wave-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.waveform = btn.dataset.wave;
+        panel.querySelectorAll('.fg-wave-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this._updateInfo();
+        this._drawPreview();
+      });
+    });
+
+    // Slider + number input pairs
+    const pairs = [
+      ['fgFreqSlider', 'fgFreqInput', 'frequency', 0.1, 1e6],
+      ['fgAmpSlider', 'fgAmpInput', 'amplitude', 0, 50],
+      ['fgOffsetSlider', 'fgOffsetInput', 'dcOffset', -50, 50],
+      ['fgPhaseSlider', 'fgPhaseInput', 'phase', 0, 360]
+    ];
+
+    for (const [sliderId, inputId, prop, min, max] of pairs) {
+      const slider = panel.querySelector(`#${sliderId}`);
+      const numInput = panel.querySelector(`#${inputId}`);
+      if (!slider || !numInput) continue;
+
+      slider.addEventListener('input', (e) => {
+        const v = Math.max(min, Math.min(max, parseFloat(e.target.value)));
+        this[prop] = v;
+        numInput.value = v;
+        this._updateInfo();
+        this._drawPreview();
+      });
+
+      numInput.addEventListener('input', (e) => {
+        const v = Math.max(min, Math.min(max, parseFloat(e.target.value) || 0));
+        this[prop] = v;
+        slider.value = Math.min(parseFloat(slider.max), v);
+        this._updateInfo();
+        this._drawPreview();
+      });
+    }
+  }
+
+  _updateInfo() {
+    if (!this.panelEl) return;
+    const infoEl = this.panelEl.querySelector('.fg-info');
+    if (infoEl) {
+      infoEl.innerHTML = `
+        <span>T = ${(1000 / this.frequency).toFixed(2)} ms</span>
+        <span>Vpp = ${(2 * this.amplitude).toFixed(1)} V</span>
+        <span>Vrms = ${(this.waveform === 'sine' ? this.amplitude / Math.SQRT2 : this.amplitude).toFixed(2)} V</span>
+      `;
+    }
+  }
+
+  _drawPreview() {
+    const canvas = this.panelEl ? this.panelEl.querySelector('#fgPreviewCanvas') : null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    ctx.fillStyle = '#060E1A';
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(56,189,248,0.12)';
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2);
+    ctx.moveTo(W / 4, 0); ctx.lineTo(W / 4, H);
+    ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H);
+    ctx.moveTo(3 * W / 4, 0); ctx.lineTo(3 * W / 4, H);
+    ctx.stroke();
+
+    // Waveform (2 tam zikl)
+    const cycles = 2;
+    const T = 1 / Math.max(this.frequency, 0.001);
+    const totalTime = T * cycles;
+    const A = this.amplitude;
+    const offset = this.dcOffset;
+    const maxV = A + Math.abs(offset) + 0.5;
+
+    ctx.strokeStyle = '#00FF87';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = 'rgba(0,255,135,0.5)';
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    for (let px = 0; px < W; px++) {
+      const t = (px / W) * totalTime;
+      const v = this.getVoltage(t);
+      const y = H / 2 - (v / maxV) * (H / 2 - 6);
+      if (px === 0) ctx.moveTo(px, y); else ctx.lineTo(px, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Label
+    ctx.fillStyle = '#38BDF8';
+    ctx.font = '9px JetBrains Mono';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${this.frequency >= 1000 ? (this.frequency / 1000).toFixed(1) + 'kHz' : this.frequency + 'Hz'} | ${this.waveform}`, 6, 12);
+  }
+
+  /**
+   * Animatsiya loopida har frame da chaqiriladi
+   */
+  updateDisplay(dt) {
+    this._time += dt;
+    if (this.panelEl) {
+      const dispEl = this.panelEl.querySelector('#fgDisplayVal');
+      if (dispEl) dispEl.textContent = this.getVoltage(this._time).toFixed(3);
+    }
+  }
+}
+
 window.DigitalMultimeter = DigitalMultimeter;
 window.VirtualOscilloscope = VirtualOscilloscope;
+window.FunctionGenerator = FunctionGenerator;

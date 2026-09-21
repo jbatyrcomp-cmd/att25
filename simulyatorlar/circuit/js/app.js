@@ -64,6 +64,10 @@ let engine = new CircuitEngine();
 let breadboard3d = null;
 let multimeter = new DigitalMultimeter(engine);
 let oscilloscope = new VirtualOscilloscope('scopeCanvas');
+let functionGenerator = new FunctionGenerator();
+let acAnalysis = new ACAnalysis(engine);
+let dcSweep = new DCSweepAnalysis(engine);
+let transientAn = new TransientAnalysis(engine);
 
 let selectedComp = null;
 let selectedWire = null;
@@ -214,6 +218,12 @@ function addComponent(type, x, y) {
   else if (type === 'dc_source_5v') comp = new CircuitComponents.DcSource(x, y, 5.0);
   else if (type === 'dc_source_12v') comp = new CircuitComponents.DcSource(x, y, 12.0);
   else if (type === 'dc_source_3v3') comp = new CircuitComponents.DcSource(x, y, 3.3);
+  // === FAZA 1: YANGI KOMPONENTLAR (Multisim darajasi) ===
+  else if (type === 'transistor_pnp') comp = new CircuitComponents.TransistorPnp(x, y);
+  else if (type === 'mosfet_n') comp = new CircuitComponents.MOSFETn(x, y);
+  else if (type === 'mosfet_p') comp = new CircuitComponents.MOSFETp(x, y);
+  else if (type === 'inductor') comp = new CircuitComponents.Inductor(x, y, 0.001);
+  else if (type === 'transformer') comp = new CircuitComponents.Transformer(x, y, 1, 1);
 
   if (comp) {
     engine.addComponent(comp);
@@ -1120,6 +1130,137 @@ document.querySelectorAll('.dial-btn').forEach(btn => {
     playTone(700, 'sine', 0.03, 0.1);
   });
 });
+
+/* ==========================================================================
+   FUNCTION GENERATOR WINDOW EVENTS
+   ========================================================================== */
+const fgWindow = document.getElementById('fgWindow');
+const btnFgToggle = document.getElementById('btnFgToggle');
+const fgCloseBtn = document.getElementById('fgCloseBtn');
+
+let fgPanelRendered = false;
+
+if (btnFgToggle && fgWindow) {
+  btnFgToggle.addEventListener('click', () => {
+    fgWindow.classList.toggle('show');
+    if (fgWindow.classList.contains('show') && !fgPanelRendered) {
+      functionGenerator.renderPanel('fgPanelContainer');
+      fgPanelRendered = true;
+    }
+    playTone(560, 'triangle', 0.05, 0.12);
+    toast('🌊 Funksiya Generatori ' + (fgWindow.classList.contains('show') ? 'ochildi' : 'yopildi'));
+  });
+}
+if (fgCloseBtn && fgWindow) {
+  fgCloseBtn.addEventListener('click', () => fgWindow.classList.remove('show'));
+}
+
+/* ==========================================================================
+   ANALYSIS WINDOW EVENTS (BODE / DC SWEEP / TRANSIENT)
+   ========================================================================== */
+const analysisWindow = document.getElementById('analysisWindow');
+const btnAnalysis = document.getElementById('btnAnalysis');
+const analysisCloseBtn = document.getElementById('analysisCloseBtn');
+
+// Tab switching
+function switchAnalysisTab(activeId) {
+  ['paneBode', 'paneDcSweep', 'paneTransient'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden', id !== activeId);
+  });
+  ['tabBode', 'tabDcSweep', 'tabTransient'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', id === activeId.replace('pane', 'tab').replace(/[A-Z]/, s => s.toLowerCase()));
+  });
+}
+
+document.getElementById('tabBode')?.addEventListener('click', () => {
+  switchAnalysisTab('paneBode');
+  ['tabBode', 'tabDcSweep', 'tabTransient'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+  document.getElementById('tabBode')?.classList.add('active');
+});
+document.getElementById('tabDcSweep')?.addEventListener('click', () => {
+  ['paneBode', 'paneDcSweep', 'paneTransient'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('paneDcSweep')?.classList.remove('hidden');
+  ['tabBode', 'tabDcSweep', 'tabTransient'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+  document.getElementById('tabDcSweep')?.classList.add('active');
+});
+document.getElementById('tabTransient')?.addEventListener('click', () => {
+  ['paneBode', 'paneDcSweep', 'paneTransient'].forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('paneTransient')?.classList.remove('hidden');
+  ['tabBode', 'tabDcSweep', 'tabTransient'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+  document.getElementById('tabTransient')?.classList.add('active');
+});
+
+// Bode Plot Run
+document.getElementById('btnRunAC')?.addEventListener('click', () => {
+  const fMin = parseFloat(document.getElementById('acFMin')?.value) || 1;
+  const fMax = parseFloat(document.getElementById('acFMax')?.value) || 1e6;
+  const pts = parseInt(document.getElementById('acPoints')?.value) || 100;
+  const results = acAnalysis.run(fMin, fMax, pts);
+  const resultEl = document.getElementById('acResult');
+
+  if (results.error) {
+    if (resultEl) resultEl.textContent = '⚠️ ' + results.error;
+    return;
+  }
+  const canvas = document.getElementById('bodeCanvas');
+  acAnalysis.drawBode(canvas, results);
+  if (resultEl) {
+    const bwStr = results.bw3dB
+      ? (results.bw3dB >= 1000 ? (results.bw3dB / 1000).toFixed(1) + ' kHz' : results.bw3dB.toFixed(0) + ' Hz')
+      : 'Aniqlanmadi';
+    resultEl.textContent = `✅ Tahlil yakunlandi | -3dB Bandwidth: ${bwStr} | Max: ${(20 * Math.log10(results.maxMag)).toFixed(1)} dB`;
+  }
+  toast('📈 Bode diagrammasi chizildi!');
+});
+
+// DC Sweep Run
+document.getElementById('btnRunSweep')?.addEventListener('click', () => {
+  const vMin = parseFloat(document.getElementById('swVMin')?.value) || 0;
+  const vMax = parseFloat(document.getElementById('swVMax')?.value) || 12;
+  const steps = parseInt(document.getElementById('swSteps')?.value) || 100;
+  const plotMode = document.getElementById('swPlotMode')?.value || 'vi';
+
+  const src = engine.components.find(c => c.type === 'battery' || c.type === 'dc_source');
+  if (!src) {
+    document.getElementById('sweepResult').textContent = '⚠️ Kuchlanish manbasi topilmadi!';
+    return;
+  }
+  const results = dcSweep.run(src, vMin, vMax, steps);
+  const canvas = document.getElementById('sweepCanvas');
+  dcSweep.drawSweep(canvas, results, plotMode);
+  const maxI = Math.max(...results.currents);
+  document.getElementById('sweepResult').textContent =
+    `✅ DC Sweep yakunlandi | Max tok: ${maxI >= 1 ? maxI.toFixed(3) + 'A' : (maxI * 1000).toFixed(1) + 'mA'} | ${vMin}V → ${vMax}V`;
+  toast('⚡ DC Sweep tahlili yakunlandi!');
+});
+
+// Transient Run
+document.getElementById('btnRunTransient')?.addEventListener('click', () => {
+  const durMs = parseFloat(document.getElementById('trDuration')?.value) || 50;
+  const steps = parseInt(document.getElementById('trSteps')?.value) || 500;
+  const results = transientAn.run(durMs / 1000, steps);
+  const canvas = document.getElementById('transientCanvas');
+  transientAn.drawTransient(canvas, results);
+  const tau = results.Rv && results.Cv ? (results.Rv * results.Cv * 1000).toFixed(2) + ' ms' :
+              results.Rv && results.Lv ? ((results.Lv / results.Rv) * 1000).toFixed(2) + ' ms' : 'N/A';
+  document.getElementById('transientResult').textContent =
+    `✅ Tranzient tahlil yakunlandi | τ = ${tau} | ${durMs} ms vaqt oralig'i`;
+  toast('⏱️ Tranzient tahlili yakunlandi!');
+});
+
+if (btnAnalysis && analysisWindow) {
+  btnAnalysis.addEventListener('click', () => {
+    analysisWindow.classList.toggle('show');
+    playTone(700, 'triangle', 0.05, 0.12);
+    toast('📊 Tahlil oynasi ' + (analysisWindow.classList.contains('show') ? 'ochildi' : 'yopildi'));
+  });
+}
+if (analysisCloseBtn && analysisWindow) {
+  analysisCloseBtn.addEventListener('click', () => analysisWindow.classList.remove('show'));
+}
+
 
 /* Guided Labs Modal */
 function renderLabs() {

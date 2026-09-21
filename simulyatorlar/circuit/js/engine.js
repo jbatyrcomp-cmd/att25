@@ -360,6 +360,140 @@ class CircuitEngine {
             }
           }
 
+          // Process 3-terminal: PNP Bipolar Transistor (pins: E, B, C)
+          else if (comp.type === 'transistor_pnp' && comp.pins.length === 3) {
+            const pinE = comp.pins[0]; // Emitter
+            const pinB = comp.pins[1]; // Base
+            const pinC = comp.pins[2]; // Collector
+            const nE = this.nodeMap.get(pinE.id);
+            const nB = this.nodeMap.get(pinB.id);
+            const nC = this.nodeMap.get(pinC.id);
+
+            const vE = nE ? nE.voltage : 0;
+            const vB = nB ? nB.voltage : 0;
+            const vC = nC ? nC.voltage : 0;
+            const vEB = vE - vB; // PNP: Emitter-Base kuchlanish
+            const isConducting = vEB > 0.65;
+
+            if (pinId === pinB.id && nE) {
+              const gB = isConducting ? 1 / 120 : 1e-7;
+              totalConductance += gB;
+              targetVoltageSum += gB * (nE.voltage - 0.65);
+            } else if (pinId === pinE.id && nB) {
+              const gB = isConducting ? 1 / 120 : 1e-7;
+              totalConductance += gB;
+              targetVoltageSum += gB * (nB.voltage + 0.65);
+            } else if (pinId === pinC.id && nE) {
+              const ib = isConducting ? Math.max(0, (vEB - 0.65) / 120) : 0;
+              const gEC = isConducting ? Math.min(8.0, Math.max(0.01, (comp.beta * ib) / Math.max(0.1, vE - vC))) : 1e-7;
+              totalConductance += gEC;
+              targetVoltageSum += gEC * nE.voltage;
+            }
+          }
+
+          // Process 3-terminal: N-MOSFET (pins: G, D, S)
+          else if (comp.type === 'mosfet_n' && comp.pins.length === 3) {
+            const pinG = comp.pins[0]; const pinD = comp.pins[1]; const pinS = comp.pins[2];
+            const nG = this.nodeMap.get(pinG.id);
+            const nD = this.nodeMap.get(pinD.id);
+            const nS = this.nodeMap.get(pinS.id);
+            const vGs = (nG ? nG.voltage : 0) - (nS ? nS.voltage : 0);
+            const vDs = (nD ? nD.voltage : 0) - (nS ? nS.voltage : 0);
+            const vTh = comp.Vth || 2.0;
+            const K = comp.K || 0.5;
+
+            if (pinId === pinD.id && nS) {
+              let gDS = 1e-9;
+              if (vGs >= vTh) {
+                const vGsEff = vGs - vTh;
+                if (vDs >= vGsEff) {
+                  // Saturation: ID = K/2 * (VGS-Vth)^2
+                  gDS = Math.min(10, Math.max(0.001, K * vGsEff * vGsEff / (2 * Math.max(0.01, vDs))));
+                } else {
+                  // Linear: gDS = K*(VGS-Vth)
+                  gDS = Math.min(10, Math.max(0.001, K * vGsEff));
+                }
+              }
+              totalConductance += gDS;
+              targetVoltageSum += gDS * nS.voltage;
+            } else if (pinId === pinS.id && nD) {
+              // Source node — minor conductance back to drain
+              const gDS = 1e-7;
+              totalConductance += gDS;
+              targetVoltageSum += gDS * (nD ? nD.voltage : 0);
+            }
+            // Gate draws no DC current
+          }
+
+          // Process 3-terminal: P-MOSFET (pins: G, D, S)
+          else if (comp.type === 'mosfet_p' && comp.pins.length === 3) {
+            const pinG = comp.pins[0]; const pinD = comp.pins[1]; const pinS = comp.pins[2];
+            const nG = this.nodeMap.get(pinG.id);
+            const nD = this.nodeMap.get(pinD.id);
+            const nS = this.nodeMap.get(pinS.id);
+            const vGs = (nG ? nG.voltage : 0) - (nS ? nS.voltage : 0);
+            const vDs = (nD ? nD.voltage : 0) - (nS ? nS.voltage : 0);
+            const vTh = comp.Vth || -2.0; // negative
+            const K = comp.K || 0.5;
+
+            if (pinId === pinD.id && nS) {
+              let gDS = 1e-9;
+              if (vGs <= vTh) { // P-MOSFET: VGS <= Vth
+                const vGsEff = vGs - vTh; // negative
+                if (vDs <= vGsEff) {
+                  gDS = Math.min(10, Math.max(0.001, K * vGsEff * vGsEff / (2 * Math.max(0.01, Math.abs(vDs)))));
+                } else {
+                  gDS = Math.min(10, Math.max(0.001, K * Math.abs(vGsEff)));
+                }
+              }
+              totalConductance += gDS;
+              targetVoltageSum += gDS * nS.voltage;
+            } else if (pinId === pinS.id && nD) {
+              totalConductance += 1e-7;
+              targetVoltageSum += 1e-7 * (nD ? nD.voltage : 0);
+            }
+          }
+
+          // Process 2-terminal: Inductor (L) — ichki qarshilik modeli
+          else if (comp.type === 'inductor' && comp.pins.length === 2) {
+            const otherPin = comp.pins[0].id === pinId ? comp.pins[1] : comp.pins[0];
+            const otherNode = this.nodeMap.get(otherPin.id);
+            if (otherNode) {
+              const Rl = 1.0; // Katushka ichki qarshilik ~1Ω
+              const g = 1 / Rl;
+              totalConductance += g;
+              targetVoltageSum += g * otherNode.voltage;
+            }
+          }
+
+          // Process 4-terminal: Transformer (pins: P1, P2, S1, S2)
+          else if (comp.type === 'transformer' && comp.pins.length === 4) {
+            const pinP1 = comp.pins[0]; const pinP2 = comp.pins[1];
+            const pinS1 = comp.pins[2]; const pinS2 = comp.pins[3];
+            const nP1 = this.nodeMap.get(pinP1.id);
+            const nP2 = this.nodeMap.get(pinP2.id);
+            const nS1 = this.nodeMap.get(pinS1.id);
+            const nS2 = this.nodeMap.get(pinS2.id);
+            const vP = (nP1 ? nP1.voltage : 0) - (nP2 ? nP2.voltage : 0);
+            const ratio = comp.ratio || 1.0;
+            const vSec = vP * ratio; // Ikkilamchi kuchlanish
+            const gLoad = 0.01; // Ekvivalent yuklanish o'tkazuvchanligi
+
+            if (pinId === pinS1.id && nS2) {
+              totalConductance += gLoad;
+              targetVoltageSum += gLoad * ((nS2 ? nS2.voltage : 0) + vSec);
+            } else if (pinId === pinS2.id && nS1) {
+              totalConductance += gLoad;
+              targetVoltageSum += gLoad * ((nS1 ? nS1.voltage : 0) - vSec);
+            } else if (pinId === pinP1.id && nP2) {
+              totalConductance += 1e-5; // Birlamchi uchun minimal yuklanish
+              targetVoltageSum += 1e-5 * nP2.voltage;
+            } else if (pinId === pinP2.id && nP1) {
+              totalConductance += 1e-5;
+              targetVoltageSum += 1e-5 * nP1.voltage;
+            }
+          }
+
           // Process 7-Segment LED Display (8 pins: a-g + GND)
           else if (comp.type === 'seven_segment' && comp.pins.length === 8) {
             const gndPin = comp.pins[7];
@@ -527,6 +661,67 @@ class CircuitEngine {
           } else {
             comp.current = 0;
           }
+        } else if (comp.type === 'transistor_pnp') {
+          // PNP: vEB = vE - vB > 0.65 o'tkazadi
+          const nE = this.nodeMap.get(comp.pins[0].id);
+          const nB = this.nodeMap.get(comp.pins[1].id);
+          const nC = this.nodeMap.get(comp.pins[2].id);
+          const vE2 = nE ? nE.voltage : 0;
+          const vB2 = nB ? nB.voltage : 0;
+          const vEB = vE2 - vB2;
+          if (vEB > 0.65) {
+            const ib = (vEB - 0.65) / 120;
+            comp.current = Math.min(2.0, (comp.beta || 100) * ib);
+          } else {
+            comp.current = 0;
+          }
+        } else if (comp.type === 'mosfet_n' || comp.type === 'mosfet_p') {
+          const nG = this.nodeMap.get(comp.pins[0].id);
+          const nD = this.nodeMap.get(comp.pins[1].id);
+          const nS = this.nodeMap.get(comp.pins[2].id);
+          const vG = nG ? nG.voltage : 0;
+          const vD = nD ? nD.voltage : 0;
+          const vS = nS ? nS.voltage : 0;
+          const vGs = vG - vS;
+          const vDs = vD - vS;
+          const vTh = comp.Vth || (comp.type === 'mosfet_n' ? 2.0 : -2.0);
+          const K = comp.K || 0.5;
+          if (comp.type === 'mosfet_n') {
+            if (vGs >= vTh) {
+              const vGsEff = vGs - vTh;
+              if (vDs >= vGsEff) {
+                comp.current = 0.5 * K * vGsEff * vGsEff; // Saturation
+              } else {
+                comp.current = K * (vGsEff * vDs - 0.5 * vDs * vDs); // Linear
+              }
+              comp.current = Math.min(comp.current, 5.0);
+            } else {
+              comp.current = 0;
+            }
+          } else { // P-MOSFET
+            if (vGs <= vTh) {
+              const vGsEff = vGs - vTh;
+              comp.current = Math.min(0.5 * K * vGsEff * vGsEff, 5.0);
+            } else {
+              comp.current = 0;
+            }
+          }
+          comp.voltageDrop = Math.abs(vDs);
+        } else if (comp.type === 'inductor') {
+          // RL tranzient: i(t) = (V/Rl)*(1 - e^(-Rl*t/L))
+          const Rl = 1.0;
+          const L = comp.inductance || 0.001;
+          const tau = L / Rl;
+          const vApp = comp.voltageDrop;
+          const iSteady = vApp / Rl;
+          comp.currentL = (comp.currentL || 0) + (iSteady - (comp.currentL || 0)) * (1 - Math.exp(-dt / tau));
+          comp.current = comp.currentL;
+        } else if (comp.type === 'transformer') {
+          // Transformator: Birlamchi tok yuklanishga qarab
+          const ratio = comp.ratio || 1.0;
+          const vSec = comp.voltageDrop * ratio;
+          comp.voltageDrop = Math.abs(vSec);
+          comp.current = Math.abs(comp.voltageDrop) / 50; // Taxminiy yuklanish
         }
       }
     }

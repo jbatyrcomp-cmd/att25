@@ -1402,6 +1402,11 @@ window.CircuitComponents = {
   Ldr: LdrComponent,
   Capacitor: CapacitorComponent,
   TransistorNpn: TransistorNpnComponent,
+  TransistorPnp: TransistorPNPComponent,
+  MOSFETn: MOSFETNComponent,
+  MOSFETp: MOSFETPComponent,
+  Inductor: InductorComponent,
+  Transformer: TransformerComponent,
   DcMotor: DcMotorComponent,
   LogicGate: LogicGateComponent,
   SevenSegment: SevenSegmentComponent,
@@ -1411,6 +1416,7 @@ window.CircuitComponents = {
   Diode: DiodeComponent,
   DcSource: DcSourceComponent
 };
+
 
 
 /* ==========================================================================
@@ -1724,7 +1730,519 @@ class DcSourceComponent extends CircuitComponent {
 
   drawBreadboard(ctx) { this.drawSchematic(ctx); }
 }
+/* ==========================================================================
+   19. PNP BIPOLAR TRANSISTOR (2N3906 / BC557)
+   Pinlar: Emitter(E) [0], Base(B) [1], Collector(C) [2]
+   ========================================================================== */
+class TransistorPNPComponent extends CircuitComponent {
+  constructor(x, y) {
+    super(null, 'transistor_pnp', 'PNP Tranzistor (2N3906)', x, y);
+    this.beta = 100;         // Kuchayish koeffitsienti hFE
+    this.radius = 32;
+    this.pins = [
+      { id: this.id + '_e', name: 'E', relX: 22, relY: -18, voltage: 0 },  // Emitter (yuqori)
+      { id: this.id + '_b', name: 'B', relX: -26, relY: 0, voltage: 0 },   // Base
+      { id: this.id + '_c', name: 'C', relX: 22, relY: 18, voltage: 0 }    // Collector (quyi)
+    ];
+  }
 
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
 
+    const vB = this.pins[1].voltage || 0;
+    const vE = this.pins[0].voltage || 0;
+    const conducting = (vE - vB) > 0.65;
+
+    // Terminal wires
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-26, 0); ctx.lineTo(-12, 0);
+    ctx.moveTo(12, -12); ctx.lineTo(22, -18);
+    ctx.moveTo(12, 12); ctx.lineTo(22, 18);
+    ctx.stroke();
+
+    // Body circle
+    ctx.fillStyle = '#1E293B';
+    ctx.strokeStyle = conducting ? '#A78BFA' : '#64748B';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 20, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+
+    // Base line (vertical)
+    ctx.strokeStyle = conducting ? '#A78BFA' : '#94A3B8';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-12, -18); ctx.lineTo(-12, 18);
+    ctx.stroke();
+
+    // Emitter line (with arrow INWARD for PNP)
+    ctx.beginPath();
+    ctx.moveTo(-12, -10); ctx.lineTo(12, -16);
+    ctx.stroke();
+    // PNP arrow (pointing inward toward base)
+    const angle1 = Math.atan2(-10 - (-16), -12 - 12);
+    ctx.save();
+    ctx.translate(-12 + 8, -10 - 3);
+    ctx.rotate(angle1);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(8, -4);
+    ctx.lineTo(8, 4);
+    ctx.closePath();
+    ctx.fillStyle = conducting ? '#A78BFA' : '#94A3B8';
+    ctx.fill();
+    ctx.restore();
+
+    // Collector line
+    ctx.strokeStyle = conducting ? '#A78BFA' : '#94A3B8';
+    ctx.beginPath();
+    ctx.moveTo(-12, 10); ctx.lineTo(12, 16);
+    ctx.stroke();
+
+    // Pin labels
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = 'bold 9px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.fillText('E', 28, -18);
+    ctx.fillText('B', -32, 4);
+    ctx.fillText('C', 28, 18);
+
+    // IC label
+    ctx.fillStyle = conducting ? '#A78BFA' : '#64748B';
+    ctx.font = 'bold 9px JetBrains Mono';
+    ctx.fillText('PNP', 0, 5);
+
+    // Current display
+    if (Math.abs(this.current) > 0.0001) {
+      ctx.fillStyle = '#A78BFA';
+      ctx.font = '9px JetBrains Mono';
+      ctx.fillText((Math.abs(this.current) * 1000).toFixed(1) + 'mA', 0, 34);
+    }
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+/* ==========================================================================
+   20. N-CHANNEL MOSFET (2N7000 / IRF540N)
+   Pinlar: Gate(G) [0], Drain(D) [1], Source(S) [2]
+   ========================================================================== */
+class MOSFETNComponent extends CircuitComponent {
+  constructor(x, y) {
+    super(null, 'mosfet_n', 'N-MOSFET (2N7000)', x, y);
+    this.Vth = 2.0;          // Threshold kuchlanish (V)
+    this.K = 0.5;            // Transconductance parametri (A/V²)
+    this.radius = 32;
+    this.pins = [
+      { id: this.id + '_g', name: 'G', relX: -26, relY: 0, voltage: 0 },   // Gate
+      { id: this.id + '_d', name: 'D', relX: 20, relY: -20, voltage: 0 },  // Drain
+      { id: this.id + '_s', name: 'S', relX: 20, relY: 20, voltage: 0 }    // Source
+    ];
+  }
+
+  // MOSFET mintaqasini aniqlash
+  getRegion(vGs, vDs) {
+    const vTh = this.Vth;
+    if (vGs < vTh) return 'cutoff';
+    if (vDs < (vGs - vTh)) return 'linear';
+    return 'saturation';
+  }
+
+  getCurrent(vGs, vDs) {
+    const K = this.K;
+    const vTh = this.Vth;
+    const region = this.getRegion(vGs, vDs);
+    if (region === 'cutoff') return 0;
+    if (region === 'linear') return K * ((vGs - vTh) * vDs - 0.5 * vDs * vDs);
+    return 0.5 * K * (vGs - vTh) ** 2; // Saturation
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    const vGs = (this.pins[0].voltage || 0) - (this.pins[2].voltage || 0);
+    const vDs = (this.pins[1].voltage || 0) - (this.pins[2].voltage || 0);
+    const region = this.getRegion(vGs, vDs);
+    const isOn = region !== 'cutoff';
+
+    // Terminals
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-26, 0); ctx.lineTo(-14, 0);     // Gate
+    ctx.moveTo(14, -10); ctx.lineTo(20, -20);   // Drain
+    ctx.moveTo(14, 10); ctx.lineTo(20, 20);     // Source
+    ctx.stroke();
+
+    // Body
+    ctx.fillStyle = '#1E293B';
+    ctx.strokeStyle = isOn ? '#F97316' : '#64748B';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 20, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+
+    // Gate insulator (dashed line)
+    ctx.strokeStyle = isOn ? '#F97316' : '#94A3B8';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath();
+    ctx.moveTo(-8, -18); ctx.lineTo(-8, 18);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Channel
+    ctx.beginPath();
+    ctx.moveTo(-4, -12); ctx.lineTo(14, -10);
+    ctx.moveTo(-4, 12); ctx.lineTo(14, 10);
+    if (isOn) {
+      ctx.moveTo(-4, -12); ctx.lineTo(-4, 12);
+    }
+    ctx.stroke();
+
+    // Arrow (N-channel: pointing inward)
+    ctx.fillStyle = isOn ? '#F97316' : '#94A3B8';
+    ctx.beginPath();
+    ctx.moveTo(-4, 0);
+    ctx.lineTo(-10, -5);
+    ctx.lineTo(-10, 5);
+    ctx.closePath();
+    ctx.fill();
+
+    // Labels
+    ctx.font = 'bold 8px JetBrains Mono';
+    ctx.fillStyle = '#94A3B8';
+    ctx.textAlign = 'center';
+    ctx.fillText('G', -32, 4);
+    ctx.fillText('D', 26, -18);
+    ctx.fillText('S', 26, 18);
+    ctx.fillStyle = isOn ? '#F97316' : '#64748B';
+    ctx.fillText('NMOS', 0, 5);
+
+    // Region badge
+    const regionColors = { cutoff: '#64748B', linear: '#38BDF8', saturation: '#F97316' };
+    ctx.fillStyle = regionColors[region];
+    ctx.font = '8px JetBrains Mono';
+    ctx.fillText(region.toUpperCase(), 0, 34);
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+/* ==========================================================================
+   21. P-CHANNEL MOSFET (IRF9540 / BS250)
+   Pinlar: Gate(G) [0], Drain(D) [1], Source(S) [2]
+   ========================================================================== */
+class MOSFETPComponent extends CircuitComponent {
+  constructor(x, y) {
+    super(null, 'mosfet_p', 'P-MOSFET (IRF9540)', x, y);
+    this.Vth = -2.0;
+    this.K = 0.5;
+    this.radius = 32;
+    this.pins = [
+      { id: this.id + '_g', name: 'G', relX: -26, relY: 0, voltage: 0 },
+      { id: this.id + '_d', name: 'D', relX: 20, relY: -20, voltage: 0 },
+      { id: this.id + '_s', name: 'S', relX: 20, relY: 20, voltage: 0 }
+    ];
+  }
+
+  getRegion(vGs, vDs) {
+    if (vGs > this.Vth) return 'cutoff';
+    if (vDs > (vGs - this.Vth)) return 'linear';
+    return 'saturation';
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    const vGs = (this.pins[0].voltage || 0) - (this.pins[2].voltage || 0);
+    const vDs = (this.pins[1].voltage || 0) - (this.pins[2].voltage || 0);
+    const isOn = this.getRegion(vGs, vDs) !== 'cutoff';
+
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-26, 0); ctx.lineTo(-14, 0);
+    ctx.moveTo(14, -10); ctx.lineTo(20, -20);
+    ctx.moveTo(14, 10); ctx.lineTo(20, 20);
+    ctx.stroke();
+
+    ctx.fillStyle = '#1E293B';
+    ctx.strokeStyle = isOn ? '#A78BFA' : '#64748B';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(0, 0, 20, 0, Math.PI * 2);
+    ctx.fill(); ctx.stroke();
+
+    ctx.strokeStyle = isOn ? '#A78BFA' : '#94A3B8';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath();
+    ctx.moveTo(-8, -18); ctx.lineTo(-8, 18);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.moveTo(-4, -12); ctx.lineTo(14, -10);
+    ctx.moveTo(-4, 12); ctx.lineTo(14, 10);
+    if (isOn) { ctx.moveTo(-4, -12); ctx.lineTo(-4, 12); }
+    ctx.stroke();
+
+    // P-channel arrow (pointing outward)
+    ctx.fillStyle = isOn ? '#A78BFA' : '#94A3B8';
+    ctx.beginPath();
+    ctx.moveTo(-10, 0);
+    ctx.lineTo(-4, -5);
+    ctx.lineTo(-4, 5);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.font = 'bold 8px JetBrains Mono';
+    ctx.fillStyle = '#94A3B8';
+    ctx.textAlign = 'center';
+    ctx.fillText('G', -32, 4);
+    ctx.fillText('D', 26, -18);
+    ctx.fillText('S', 26, 18);
+    ctx.fillStyle = isOn ? '#A78BFA' : '#64748B';
+    ctx.fillText('PMOS', 0, 5);
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+/* ==========================================================================
+   22. INDUCTOR / COIL — Katushka (L)
+   Pinlar: pin1 [0], pin2 [1]
+   ========================================================================== */
+class InductorComponent extends CircuitComponent {
+  constructor(x, y, inductance = 0.001) {
+    super(null, 'inductor', 'Induktivlik / Katushka', x, y);
+    this.inductance = inductance; // Henri (H)
+    this.inductanceLabel = inductance >= 1 ? inductance.toFixed(1) + ' H' :
+                           inductance >= 0.001 ? (inductance * 1000).toFixed(1) + ' mH' :
+                           (inductance * 1e6).toFixed(0) + ' µH';
+    this.radius = 32;
+    this.chargeVoltage = 0; // vL tranzient
+    this.currentL = 0;      // Katushka toki
+    this.pins = [
+      { id: this.id + '_1', name: '1', relX: -32, relY: 0, voltage: 0 },
+      { id: this.id + '_2', name: '2', relX: 32, relY: 0, voltage: 0 }
+    ];
+  }
+
+  // Ekvivalent qarshilik (induktivlik uchun AC impedansi ω×L)
+  getConductance(v) {
+    const Rl = 1.0; // Katushka ichki qarshilik (∼1Ω)
+    return 1 / Math.max(Rl, 1);
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    const energized = Math.abs(this.current) > 0.001;
+
+    // Terminal wires
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-32, 0); ctx.lineTo(-22, 0);
+    ctx.moveTo(22, 0); ctx.lineTo(32, 0);
+    ctx.stroke();
+
+    // Spiral coil — 4 ta yarim aylana
+    ctx.strokeStyle = energized ? '#FBBF24' : '#94A3B8';
+    ctx.lineWidth = 2.5;
+    if (energized) {
+      ctx.shadowColor = 'rgba(251,191,36,0.6)';
+      ctx.shadowBlur = 6;
+    }
+    ctx.beginPath();
+    const coilCenters = [-16, -8, 0, 8, 16];
+    for (let i = 0; i < coilCenters.length - 1; i++) {
+      ctx.arc(coilCenters[i] + 4, 0, 6, Math.PI, 0);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Mag-core (to'liq katushka uchun) — ikki parallel chiziq
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(-20, 9); ctx.lineTo(20, 9);
+    ctx.moveTo(-20, 12); ctx.lineTo(20, 12);
+    ctx.stroke();
+
+    // Value
+    ctx.fillStyle = '#F8FAFC';
+    ctx.font = '10px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.fillText(this.inductanceLabel, 0, -14);
+
+    // Current
+    if (Math.abs(this.current) > 0.001) {
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = '9px JetBrains Mono';
+      ctx.fillText((Math.abs(this.current) * 1000).toFixed(1) + 'mA', 0, 26);
+    }
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    // Silindrli katushka ko'rinishi
+    const energized = Math.abs(this.current) > 0.001;
+    ctx.fillStyle = '#1E293B';
+    ctx.strokeStyle = energized ? '#FBBF24' : '#475569';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(-22, -10, 44, 20, 4);
+    ctx.fill(); ctx.stroke();
+
+    // Spiral chiziqlar
+    ctx.strokeStyle = energized ? '#FBBF24' : '#94A3B8';
+    ctx.lineWidth = 1.5;
+    [-12, -4, 4, 12].forEach(cx => {
+      ctx.beginPath();
+      ctx.arc(cx, 0, 6, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+
+    // Terminal wires
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-32, 0); ctx.lineTo(-22, 0);
+    ctx.moveTo(22, 0); ctx.lineTo(32, 0);
+    ctx.stroke();
+
+    ctx.fillStyle = '#F8FAFC';
+    ctx.font = '9px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.fillText('L', 0, 0);
+
+    ctx.restore();
+  }
+}
+
+/* ==========================================================================
+   23. TRANSFORMER — Ideal Transformator (n1:n2)
+   Pinlar: Prim-1 [0], Prim-2 [1], Sec-1 [2], Sec-2 [3]
+   ========================================================================== */
+class TransformerComponent extends CircuitComponent {
+  constructor(x, y, n1 = 1, n2 = 1) {
+    super(null, 'transformer', `Transformator (${n1}:${n2})`, x, y);
+    this.n1 = n1; // Birlamchi o'ramlar soni
+    this.n2 = n2; // Ikkilamchi o'ramlar soni
+    this.ratio = n2 / n1; // Kuchlanish nisbati
+    this.radius = 42;
+    this.pins = [
+      { id: this.id + '_p1', name: 'P1', relX: -38, relY: -16, voltage: 0 }, // Birlamchi +
+      { id: this.id + '_p2', name: 'P2', relX: -38, relY: 16, voltage: 0 },  // Birlamchi -
+      { id: this.id + '_s1', name: 'S1', relX: 38, relY: -16, voltage: 0 },  // Ikkilamchi +
+      { id: this.id + '_s2', name: 'S2', relX: 38, relY: 16, voltage: 0 }    // Ikkilamchi -
+    ];
+  }
+
+  // Ikkilamchi kuchlanishni hisoblash
+  getSecVoltage() {
+    const vP = (this.pins[0].voltage || 0) - (this.pins[1].voltage || 0);
+    return vP * this.ratio;
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    const vPrim = Math.abs((this.pins[0].voltage || 0) - (this.pins[1].voltage || 0));
+    const active = vPrim > 0.5;
+
+    // Terminal wires
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-38, -16); ctx.lineTo(-26, -16);
+    ctx.moveTo(-38, 16); ctx.lineTo(-26, 16);
+    ctx.moveTo(26, -16); ctx.lineTo(38, -16);
+    ctx.moveTo(26, 16); ctx.lineTo(38, 16);
+    ctx.stroke();
+
+    // Primary coil (chap)
+    ctx.strokeStyle = active ? '#38BDF8' : '#64748B';
+    ctx.lineWidth = 2.5;
+    if (active) { ctx.shadowColor = 'rgba(56,189,248,0.5)'; ctx.shadowBlur = 5; }
+    ctx.beginPath();
+    [-16, -8, 0, 8].forEach(cy => {
+      ctx.arc(-22, cy, 6, Math.PI * 1.5, Math.PI * 0.5);
+    });
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Secondary coil (o'ng)
+    ctx.strokeStyle = active ? '#00FF87' : '#64748B';
+    if (active) { ctx.shadowColor = 'rgba(0,255,135,0.5)'; ctx.shadowBlur = 5; }
+    ctx.beginPath();
+    [-16, -8, 0, 8].forEach(cy => {
+      ctx.arc(22, cy, 6, -Math.PI * 0.5, Math.PI * 0.5);
+    });
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Core lines (markazda)
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-4, -22); ctx.lineTo(-4, 22);
+    ctx.moveTo(4, -22); ctx.lineTo(4, 22);
+    ctx.stroke();
+
+    // Polarity dots
+    ctx.fillStyle = '#F8FAFC';
+    ctx.beginPath(); ctx.arc(-24, -20, 3, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(24, -20, 3, 0, Math.PI * 2); ctx.fill();
+
+    // Labels
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '10px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${this.n1}:${this.n2}`, 0, 32);
+    ctx.fillStyle = '#38BDF8';
+    ctx.font = '9px JetBrains Mono';
+    ctx.fillText('P', -24, -28);
+    ctx.fillStyle = '#00FF87';
+    ctx.fillText('S', 24, -28);
+
+    // Ikkilamchi kuchlanish
+    if (active) {
+      const vSec = this.getSecVoltage();
+      ctx.fillStyle = '#00FF87';
+      ctx.font = '9px Plus Jakarta Sans';
+      ctx.fillText(`Vs=${vSec.toFixed(1)}V`, 0, -32);
+    }
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
 
 
