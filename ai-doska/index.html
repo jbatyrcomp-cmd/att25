@@ -161,6 +161,46 @@
 
     <!-- Laser pointer effekti qatlami -->
     <div id="laserPointerDot" class="laser-dot hidden"></div>
+
+    <!-- AI Formula Rejimi Yuqori Holat Ko'rsatkichi -->
+    <div id="formulaModeBanner" class="formula-mode-banner hidden">
+      <div class="fmode-badge-pulse"></div>
+      <div class="fmode-info">
+        <span class="fmode-title">✨ AI FORMULA REJIMI FAOL</span>
+        <span class="fmode-hint">— Doskaga matematik formula yozing (darajalar, kasrlar, ildiz, tenglamalar). AI fonda tahlil qiladi va tasdiqlashingiz bilan Word uslubiga o'tkazadi.</span>
+      </div>
+      <button id="btnExitFormulaMode" class="fmode-exit-btn" title="Rejimdan chiqish">&times;</button>
+    </div>
+
+    <!-- Jonli AI Formula Tahlil va Tasdiqlash Suzuvchi Nishoni -->
+    <div id="formulaLiveBadge" class="formula-live-badge hidden">
+      <!-- 1. Tahlil jarayoni (Loading state) -->
+      <div class="fbadge-loading" id="fbadgeLoading">
+        <div class="fbadge-spinner"></div>
+        <span>⏳ AI formulani tahlil qilmoqda...</span>
+      </div>
+
+      <!-- 2. Natija va Tasdiqlash holati (Ready state) -->
+      <div class="fbadge-ready hidden" id="fbadgeReady">
+        <div class="fbadge-header">
+          <span class="fbadge-word-tag">📄 MS WORD STANDART FORMULASI:</span>
+        </div>
+        <div id="fbadgeKatexPreview" class="fbadge-katex-preview"></div>
+        <div class="fbadge-actions">
+          <button id="btnConfirmLiveFormula" class="fbadge-btn confirm" title="Qo'lyozmani standart Word formulasiga almashtirish (Enter)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Tasdiqlash</span>
+          </button>
+          <button id="btnEditLiveFormula" class="fbadge-btn edit" title="LaTeX kodini tahrirlash">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Tahrirlash</span>
+          </button>
+          <button id="btnDismissLiveFormula" class="fbadge-btn close" title="Bekor qilish (Qo'lyozmani o'zgartirmasdan qoldirish - Esc)">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- ==========================================================================
@@ -279,6 +319,56 @@
         <path d="M4 4h16v2.5h-8.8l4.4 5.5-4.4 5.5H20V20H4v-2.5l5.2-6.5L4 4.5V4z"/>
       </svg>
       <span class="tool-shortcut">F</span>
+    </button>
+
+    <!-- AI Formula Rejimi (Qo'lyozma formulalarni tahrirlab Word uslubiga o'tkazish) -->
+    <button class="tool-btn" id="btnAiFormulaMode" data-tool="formula_mode" title="AI Formula Rejimi: Qo'lyozma formulalarni avtomatik tanish va Word uslubiga o'tkazish (Alt+F)">
+      <div class="ai-mode-icon-wrap" style="position: relative; display: flex; align-items: center; justify-content: center;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M4 4h16v2.5h-8.8l4.4 5.5-4.4 5.5H20V20H4v-2.5l5.2-6.5L4 4.5V4z"/>
+        </svg>
+        <span class="ai-sparkle-dot" style="position: absolute; top: -3px; right: -3px; font-size: 9px; line-height: 1;">✨</span>
+      </div>
+      <span class="tool-shortcut">fx AI</span>
+      <span class="feature-dot mode-dot"></span>
+    </button>
+
+    <!-- 2D Funksiya Grafigi (Graph Plotter) -->
+    <button class="tool-btn" id="btnGraphModalTool" title="2D Funksiya Grafigi chizish (G)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="20" x2="21" y2="20"/>
+        <line x1="3" y1="4" x2="3" y2="20"/>
+        <path d="M4 17c3-3 6-12 9-9s6 7 8 2"/>
+      </svg>
+      <span class="tool-shortcut">G</span>
+    </button>
+
+    <!-- Kod va Blok-sxema (Code Bridge) -->
+    <button class="tool-btn" id="btnCodeModalTool" title="Kod <-> Blok-sxema Transformatori (C)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="16 18 22 12 16 6"/>
+        <polyline points="8 6 2 12 8 18"/>
+      </svg>
+      <span class="tool-shortcut">C</span>
+    </button>
+
+    <!-- Interaktiv Quiz Card (Savol-Javob) -->
+    <button class="tool-btn" id="btnQuizModalTool" title="Interaktiv Bilim Test Kartochkasi (Q)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <span class="tool-shortcut">Q</span>
+    </button>
+
+    <!-- Magic Ink (Aqlli shakllarni tanish tugmasi) -->
+    <button class="tool-btn active-feature" id="btnMagicInkToggle" title="Magic Ink: Shakllarni avtomatik to'g'irlash (Yoqilgan)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 4l5 5L8 21H3v-5L15 4z"/>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L20 7l-5-5 1.5-1.5z"/>
+      </svg>
+      <span class="feature-dot"></span>
     </button>
 
     <!-- Tarmoq Tugunlari (ATT-25 Network Nodes) -->
@@ -630,7 +720,271 @@
   </div>
 
   <!-- ==========================================================================
-       8. MINIMAP (PASTKI O'NG BURCHAKDA DOSKA HARITASI)
+       9. 2D FUNKSIYA GRAFIGI VA MATEMATIK YECHUVCHI MODALI (GRAPH & SOLVER)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="graphModal">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">MATEMATIKA & GRAFIK</span>
+          <h2>2D Funksiya Grafigi va Tenglama Yechuvchi</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseGraph">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="formula-input-group">
+          <label for="graphFuncInput" class="formula-label">Funksiya ifodasi: y = f(x) yoki Tenglama:</label>
+          <input type="text" id="graphFuncInput" class="ai-input" placeholder="Masalan: x^2 - 4 yoki sin(x) yoki x^2 - 5x + 6 = 0" value="x^2 - 4">
+        </div>
+
+        <!-- Oraliqlar va Rang -->
+        <div style="display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 130px;">
+            <label class="setting-label" style="font-size: 11px;">X Minimal:</label>
+            <input type="number" id="graphMinX" class="ai-input" value="-6" style="padding: 6px 10px;">
+          </div>
+          <div style="flex: 1; min-width: 130px;">
+            <label class="setting-label" style="font-size: 11px;">X Maksimal:</label>
+            <input type="number" id="graphMaxX" class="ai-input" value="6" style="padding: 6px 10px;">
+          </div>
+          <div style="flex: 1; min-width: 130px;">
+            <label class="setting-label" style="font-size: 11px;">Chizma Rangi:</label>
+            <select id="graphColorSelect" class="ai-select" style="padding: 6px 10px;">
+              <option value="#00FF87" selected>🟢 Neon Yashil</option>
+              <option value="#38BDF8">🔵 Moviy Lazer</option>
+              <option value="#FACC15">🟡 Oltin Sariq</option>
+              <option value="#F43F5E">🔴 Pushti Qizil</option>
+              <option value="#A855F7">🟣 Binafsha</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Tezkor Funksiyalar -->
+        <div class="formula-presets-section" style="margin-top: 16px;">
+          <span class="formula-keypad-title">Tezkor Matematik Graflar:</span>
+          <div class="formula-presets-grid">
+            <button class="fpreset-btn" data-graph="x^2 - 4">📈 Parabola: y = x² - 4</button>
+            <button class="fpreset-btn" data-graph="sin(x)">〰️ Sinus: y = sin(x)</button>
+            <button class="fpreset-btn" data-graph="cos(x)">〰️ Kosinus: y = cos(x)</button>
+            <button class="fpreset-btn" data-graph="x^3 - 3*x">🌊 Kubik: y = x³ - 3x</button>
+            <button class="fpreset-btn" data-graph="2*x + 1">📐 Chiziqli: y = 2x + 1</button>
+            <button class="fpreset-btn" data-graph="sqrt(x)">🌱 Ildiz: y = √x</button>
+            <button class="fpreset-btn" data-graph="x^2 - 5x + 6 = 0">🧮 Kvadrat: x² - 5x + 6 = 0</button>
+            <button class="fpreset-btn" data-graph="U = I * R">⚡ Ohm: U = I * R</button>
+          </div>
+        </div>
+
+        <!-- Tugmalar -->
+        <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; flex-wrap: wrap;">
+          <button id="btnSolveMathSteps" class="action-pill-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid #38BDF8; color: #38BDF8; padding: 10px 18px;">
+            <span>🧮 Tenglamani Yechish (Qadamlar bilan)</span>
+          </button>
+          <button id="btnInsertGraph" class="btn-ai-primary" style="padding: 10px 22px;">
+            <span>Doskaga Grafik Chizish</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       10. KOD <-> BLOK-SXEMA TRANSFORMASIYASI (CODE BRIDGE MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="codeBridgeModal">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">DASTURLASH & ALGORITM</span>
+          <h2>Kod <-> Blok-sxema Transformatori</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseCodeBridge">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Python yoki JavaScript kodini vizual blok-sxemaga aylantiring yoki doskadagi blok-sxemadan toza kod oling:</p>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 14px; align-items: center;">
+          <label class="setting-label" style="margin: 0; font-size: 12px;">Til:</label>
+          <select id="codeLanguageSelect" class="ai-select" style="width: auto; padding: 6px 12px;">
+            <option value="python" selected>🐍 Python</option>
+            <option value="javascript">🟨 JavaScript</option>
+          </select>
+
+          <button class="fpreset-btn" id="btnCodePresetEven" style="margin-left: auto;">Juft/Toq (If-else)</button>
+          <button class="fpreset-btn" id="btnCodePresetFactorial">Faktorial (While)</button>
+        </div>
+
+        <div class="formula-input-group">
+          <textarea id="codeBridgeInput" class="formula-textarea" rows="6" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5;" placeholder="Kodingizni kiriting...">number = int(input())
+if number % 2 == 0:
+    print("Juft son")
+else:
+    print("Toq son")</textarea>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 18px; justify-content: space-between; flex-wrap: wrap;">
+          <button id="btnFlowchartToCode" class="action-pill-btn" style="background: rgba(168, 85, 247, 0.15); border: 1px solid #A855F7; color: #C084FC; padding: 10px 18px;">
+            <span>Doskadagi Blok-sxemadan Kod Olish</span>
+          </button>
+          <button id="btnCodeToFlowchart" class="btn-ai-primary" style="padding: 10px 22px;">
+            <span>Doskaga Blok-sxema Chizish</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       11. INTERAKTIV TEST KARTOCHKASI YARATISH (QUIZ CREATOR MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="quizModal">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">INTERAKTIV TEST</span>
+          <h2>Interaktiv Bilim Test Kartochkasi</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseQuiz">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">O'quvchilar va talabalar uchun doskaga bosiluvchi variantlar va yashirin to'g'ri javobga ega interaktiv kartochka qo'ying:</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label class="setting-label" style="font-size: 11px;">Mavzu / Fan:</label>
+            <input type="text" id="quizTopicInput" class="ai-input" value="TARMOQ PROTOKOLLARI" style="padding: 8px 12px;">
+          </div>
+          <div>
+            <label class="setting-label" style="font-size: 11px;">To'g'ri Javob:</label>
+            <select id="quizCorrectSelect" class="ai-select" style="padding: 8px 12px;">
+              <option value="0">Variant A</option>
+              <option value="1" selected>Variant B</option>
+              <option value="2">Variant C</option>
+              <option value="3">Variant D</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="formula-input-group" style="margin-bottom: 12px;">
+          <label class="formula-label">Savol matni:</label>
+          <input type="text" id="quizQuestionInput" class="ai-input" value="OSI modelining 3-qatlamida (Tarmoq qatlamida) qaysi protokol ishlaydi?" style="padding: 8px 12px;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+          <div>
+            <label class="setting-label" style="font-size: 11px;">A) Variant:</label>
+            <input type="text" id="quizOptA" class="ai-input" value="TCP (Transport)" style="padding: 6px 10px;">
+          </div>
+          <div>
+            <label class="setting-label" style="font-size: 11px;">B) Variant:</label>
+            <input type="text" id="quizOptB" class="ai-input" value="IP (Internet Protocol)" style="padding: 6px 10px;">
+          </div>
+          <div>
+            <label class="setting-label" style="font-size: 11px;">C) Variant:</label>
+            <input type="text" id="quizOptC" class="ai-input" value="HTTP (Ilova)" style="padding: 6px 10px;">
+          </div>
+          <div>
+            <label class="setting-label" style="font-size: 11px;">D) Variant:</label>
+            <input type="text" id="quizOptD" class="ai-input" value="Ethernet (Kanal)" style="padding: 6px 10px;">
+          </div>
+        </div>
+
+        <div class="formula-input-group">
+          <label class="formula-label">Izoh / Tushuntirish (Javob ochilganda ko'rinadi):</label>
+          <input type="text" id="quizExplanationInput" class="ai-input" value="IP (IPv4 va IPv6) protokoli paketlarni yo'naltirish bilan shug'ullanib, OSI ning 3-qatlamiga tegishli." style="padding: 8px 12px;">
+        </div>
+
+        <div class="formula-presets-section" style="margin-top: 14px;">
+          <span class="formula-keypad-title">Tayyor Test Savollari:</span>
+          <div class="formula-presets-grid">
+            <button class="fpreset-btn" data-quiz="osi">🌐 OSI 3-Qatlam</button>
+            <button class="fpreset-btn" data-quiz="quad">🧮 Kvadrat Tenglama</button>
+            <button class="fpreset-btn" data-quiz="ohm">🔌 Ohm Qonuni</button>
+            <button class="fpreset-btn" data-quiz="dsa">💻 Algoritm Murakkabligi</button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 18px;">
+          <button id="btnInsertQuizCard" class="btn-ai-primary" style="padding: 10px 22px;">
+            <span>Doskaga Test Joylashtirish</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       13. SUZUVCHI OCR HARAKATLAR PANELI (OCR FLOATING TOOLBAR)
+       ========================================================================== -->
+  <div id="ocrFloatingToolbar" class="ocr-floating-toolbar hidden">
+    <div class="ocr-pill-title">✍️ Tanlangan yozuv:</div>
+    <button class="ocr-pill-btn formula-btn" id="btnOcrToFormula" title="Qo'lda yozilgan formulani KaTeX LaTeX formatiga o'girish">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+        <path d="M4 4h16v2.5h-8.8l4.4 5.5-4.4 5.5H20V20H4v-2.5l5.2-6.5L4 4.5V4z"/>
+      </svg>
+      <span>Formulaga (LaTeX)</span>
+    </button>
+    <button class="ocr-pill-btn text-btn" id="btnOcrToText" title="Qo'lda yozilgan matnni standart matnga o'girish">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="4 7 4 4 20 4 20 7"/>
+        <line x1="9" y1="20" x2="15" y2="20"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+      </svg>
+      <span>Matnga</span>
+    </button>
+    <button class="ocr-pill-close" id="btnCloseOcrFloating" title="Yopish">&times;</button>
+  </div>
+
+  <!-- ==========================================================================
+       14. OCR TASDIQLASH VA JONLI PREVIEW MODALI (OCR CONFIRM MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="ocrConfirmModal">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">QO'LYOZMA OCR</span>
+          <h2>Qo'lyozmani Standartlashtirish</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseOcrConfirm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="ocr-comparison-grid">
+          <div class="ocr-source-box">
+            <span class="formula-preview-label">Qo'lda yozilgan chizma:</span>
+            <div class="ocr-img-wrap">
+              <img id="ocrSourcePreviewImg" src="" alt="Qo'lyozma chizma">
+            </div>
+          </div>
+          <div class="ocr-result-box">
+            <span class="formula-preview-label">Standart Formula (KaTeX):</span>
+            <div id="ocrFormulaLivePreview" class="formula-preview-box"></div>
+          </div>
+        </div>
+
+        <div class="formula-input-group" style="margin-top: 14px;">
+          <label for="ocrLatexResultInput" class="formula-label">Aniqlangan LaTeX kodi (kerak bo'lsa tahrirlang):</label>
+          <input type="text" id="ocrLatexResultInput" class="ai-input" value="">
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; flex-wrap: wrap; gap: 10px;">
+          <div id="ocrStatusBadge" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10B981;">
+            ✨ Gemini Vision orqali aniqlandi
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button id="btnCancelOcr" class="action-pill-btn">Bekor Qilish</button>
+            <button id="btnApplyOcrResult" class="btn-ai-primary" style="padding: 10px 22px;">
+              <span>✅ Doskaga Qo'yish</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       12. MINIMAP (PASTKI O'NG BURCHAKDA DOSKA HARITASI)
        ========================================================================== -->
   <div class="minimap-container" id="minimapContainer" title="Doska maydoni mini-xaritasi">
     <canvas id="minimapCanvas" width="140" height="90"></canvas>
@@ -644,6 +998,9 @@
   <script src="js/board.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/templates.js"></script>
+  <script src="js/math-solver.js"></script>
+  <script src="js/code-bridge.js"></script>
+  <script src="js/handwriting-ocr.js"></script>
   <script src="js/ai-engine.js"></script>
   <script src="js/app.js"></script>
 </body>

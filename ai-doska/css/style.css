@@ -554,6 +554,28 @@ body.board-body {
   box-shadow: 0 0 12px var(--accent-glow);
 }
 
+.tool-btn.active-feature {
+  color: var(--accent-primary);
+  border-color: rgba(0, 255, 135, 0.4);
+  background: rgba(0, 255, 135, 0.1);
+}
+
+.feature-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-primary);
+}
+
+.tool-btn:not(.active-feature) .feature-dot {
+  background: var(--text-muted);
+  box-shadow: none;
+}
+
 .tool-shortcut {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -1590,4 +1612,406 @@ body.board-body {
   color: var(--text-secondary);
   font-weight: 500;
 }
+
+/* ==========================================================================
+   OCR FLOATING TOOLBAR & CONFIRM MODAL STYLES
+   ========================================================================== */
+.ocr-floating-toolbar {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  background: var(--surface-panel);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--surface-panel-border);
+  border-radius: 30px;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(56, 189, 248, 0.25);
+  z-index: 120;
+  pointer-events: auto;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ocr-floating-toolbar.hidden {
+  display: none;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translate(-50%, -90%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+}
+
+.ocr-pill-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding-right: 4px;
+}
+
+.ocr-pill-btn {
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.ocr-pill-btn.formula-btn {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.ocr-pill-btn.formula-btn:hover {
+  background: #38BDF8;
+  color: #070C14;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.ocr-pill-btn.text-btn {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.ocr-pill-btn.text-btn:hover {
+  background: #10B981;
+  color: #070C14;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.ocr-pill-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.ocr-pill-close:hover {
+  color: var(--text-primary);
+}
+
+/* OCR Comparison Grid */
+.ocr-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ocr-source-box, .ocr-result-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ocr-img-wrap {
+  height: 140px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.ocr-img-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   AI FORMULA REJIMI (ACTIVE FORMULA MODE) & JONLI LIVE BADGE
+   ========================================================================== */
+#btnAiFormulaMode.active,
+.tool-btn.active-formula-mode {
+  background: rgba(168, 85, 247, 0.22) !important;
+  color: #C084FC !important;
+  border-color: #A855F7 !important;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.45) !important;
+}
+
+#btnAiFormulaMode .mode-dot {
+  background: #A855F7;
+  box-shadow: 0 0 8px #A855F7;
+}
+
+/* AI Formula Rejimi Yuqori Holat Ko'rsatkichi */
+.formula-mode-banner {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 30px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 16px rgba(168, 85, 247, 0.25);
+  z-index: 60;
+  pointer-events: auto;
+  animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.formula-mode-banner.hidden {
+  display: none;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translate(-50%, -12px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.fmode-badge-pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #A855F7;
+  box-shadow: 0 0 12px 3px #A855F7;
+  animation: pulseNeon 1.5s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes pulseNeon {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+.fmode-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.fmode-title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #C084FC;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.fmode-hint {
+  color: var(--text-secondary);
+  font-weight: 500;
+  max-width: 580px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fmode-exit-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.fmode-exit-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+/* Suzuvchi Jonli Formula Nishoni (Formula Live Badge) */
+.formula-live-badge {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  margin-top: -14px;
+  background: var(--surface-panel);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid rgba(168, 85, 247, 0.45);
+  border-radius: 14px;
+  padding: 10px 14px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 20px rgba(168, 85, 247, 0.3);
+  z-index: 85;
+  pointer-events: auto;
+  min-width: 200px;
+  max-width: 480px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  animation: badgePop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.formula-live-badge.hidden {
+  display: none;
+}
+
+@keyframes badgePop {
+  from { opacity: 0; transform: translate(-50%, -85%) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+}
+
+/* Loading State */
+.fbadge-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: #C084FC;
+  padding: 4px 6px;
+}
+
+.fbadge-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(168, 85, 247, 0.2);
+  border-top-color: #A855F7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Ready State */
+.fbadge-ready {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fbadge-ready.hidden {
+  display: none;
+}
+
+.fbadge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fbadge-word-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #38BDF8;
+  letter-spacing: 0.5px;
+}
+
+/* KaTeX Live Preview Box (MS Word Style) */
+.fbadge-katex-preview {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  color: #F8FAFC;
+  font-family: "Cambria Math", "Latin Modern Math", "STIX Two Math", "KaTeX_Main", "Times New Roman", serif;
+  font-size: 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Microsoft Word Equation Style Typography */
+.fbadge-katex-preview .katex,
+.formula-preview-box .katex,
+.katex-display {
+  font-family: "Cambria Math", "Latin Modern Math", "STIX Two Math", "KaTeX_Main", "Times New Roman", serif !important;
+  letter-spacing: 0.02em;
+}
+
+.fbadge-katex-preview .katex .frac-line,
+.formula-preview-box .katex .frac-line {
+  border-bottom-width: 0.06em !important;
+}
+
+.fbadge-katex-preview .katex .sqrt,
+.formula-preview-box .katex .sqrt {
+  font-size: 1.05em;
+}
+
+/* Actions in Live Badge */
+.fbadge-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.fbadge-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.fbadge-btn.confirm {
+  background: #10B981;
+  color: #064E3B;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.fbadge-btn.confirm:hover {
+  background: #059669;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+}
+
+.fbadge-btn.edit {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.fbadge-btn.edit:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #7DD3FC;
+  transform: translateY(-1px);
+}
+
+.fbadge-btn.close {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 6px 8px;
+  margin-left: auto;
+}
+
+.fbadge-btn.close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
 

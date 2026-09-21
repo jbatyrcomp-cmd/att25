@@ -201,6 +201,24 @@ class WhiteboardEngine {
     }
   }
 
+  replaceStrokesWithObject(strokesToRemove, newObject) {
+    if (!strokesToRemove || strokesToRemove.length === 0 || !newObject) return null;
+
+    this.saveState();
+
+    strokesToRemove.forEach(st => {
+      const idx = this.objects.indexOf(st);
+      if (idx !== -1) this.objects.splice(idx, 1);
+    });
+
+    if (!newObject.id) newObject.id = 'obj_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    this.objects.push(newObject);
+    this.selectedObject = newObject;
+
+    this.autoSaveToStorage();
+    return newObject;
+  }
+
   clearBoard() {
     if (this.objects.length === 0) return;
     this.saveState();
@@ -261,6 +279,18 @@ class WhiteboardEngine {
       case 'formula':
         return px >= obj.x - pad && px <= obj.x + (obj.width || 160) + pad &&
                py >= obj.y - pad && py <= obj.y + (obj.height || 64) + pad;
+
+      case 'graph':
+        return px >= obj.x - pad && px <= obj.x + (obj.width || 420) + pad &&
+               py >= obj.y - pad && py <= obj.y + (obj.height || 290) + pad;
+
+      case 'quiz_card':
+        return px >= obj.x - pad && px <= obj.x + (obj.width || 360) + pad &&
+               py >= obj.y - pad && py <= obj.y + (obj.height || 260) + pad;
+
+      case 'image':
+        return px >= obj.x - pad && px <= obj.x + (obj.width || 240) + pad &&
+               py >= obj.y - pad && py <= obj.y + (obj.height || 180) + pad;
 
       case 'net_node':
         return px >= obj.x - 30 && px <= obj.x + 30 &&
@@ -337,9 +367,12 @@ class WhiteboardEngine {
       if (obj.type === 'net_node') this.drawNetworkNode(ctx, obj);
     }
 
-    // e) Matnlar va Formulalar (oldinda)
+    // e) Rasmlar, Grafiklar, Test kartochkalari, Formulalar va Matnlar (oldinda)
     for (const obj of this.objects) {
-      if (obj.type === 'text') this.drawText(ctx, obj);
+      if (obj.type === 'image') this.drawImageObj(ctx, obj);
+      else if (obj.type === 'graph') this.drawGraph(ctx, obj);
+      else if (obj.type === 'quiz_card') this.drawQuizCard(ctx, obj);
+      else if (obj.type === 'text') this.drawText(ctx, obj);
       else if (obj.type === 'formula') this.drawFormula(ctx, obj);
     }
 
@@ -635,36 +668,34 @@ class WhiteboardEngine {
     ctx.restore();
   }
 
-  // 4b. Matematik Formula (KaTeX & Canvas Math)
+  // 4b. Matematik Formula (MS Word & KaTeX Math Editor Style)
   drawFormula(ctx, obj) {
     if (!obj.latex) return;
     ctx.save();
 
-    const color = obj.color || '#38BDF8';
+    const color = obj.color || (this.theme === 'light' ? '#0F172A' : '#FFFFFF');
     const fontSize = obj.fontSize || 26;
 
     // Ob'ekt o'lchamini dinamik baholash
     const textLen = obj.latex.length;
-    const estWidth = Math.max(160, Math.min(640, textLen * (fontSize * 0.55) + 48));
-    const estHeight = Math.max(64, fontSize * 2.5);
+    const estWidth = Math.max(140, Math.min(720, textLen * (fontSize * 0.58) + 40));
+    const estHeight = Math.max(56, fontSize * 2.2);
     obj.width = obj.width || estWidth;
     obj.height = obj.height || estHeight;
 
-    // Fon qutisi (Chiroyli doska ramkasi)
-    ctx.fillStyle = this.theme === 'chalkboard' ? 'rgba(10, 27, 20, 0.75)' : (this.theme === 'dark' ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.95)');
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
+    // MS Word uslubidagi fon qutisi: toza, nozik, shaffof doska foni
+    const isSelected = this.selectedObject === obj;
+    ctx.fillStyle = this.theme === 'chalkboard'
+      ? 'rgba(10, 27, 20, 0.65)'
+      : (this.theme === 'dark' ? 'rgba(15, 23, 42, 0.75)' : 'rgba(255, 255, 255, 0.85)');
+    
+    // Tanlanganda Word Equation ramkasi
+    ctx.strokeStyle = isSelected ? '#A855F7' : (this.theme === 'light' ? 'rgba(15, 23, 42, 0.15)' : 'rgba(255, 255, 255, 0.12)');
+    ctx.lineWidth = isSelected ? 1.5 : 1;
     ctx.beginPath();
-    ctx.roundRect(obj.x, obj.y, obj.width, obj.height, 8);
+    ctx.roundRect(obj.x, obj.y, obj.width, obj.height, 6);
     ctx.fill();
     ctx.stroke();
-
-    // Yuqori burchakdagi kichik '∑ FORMULA' nishoni
-    ctx.fillStyle = color;
-    ctx.font = '700 9px "JetBrains Mono", monospace';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'top';
-    ctx.fillText('∑ FORMULA', obj.x + 8, obj.y + 6);
 
     // KaTeX orqali SVG tasvir tayyorlash yoki qayta foydalanish
     if (typeof window !== 'undefined' && window.katex) {
@@ -673,7 +704,12 @@ class WhiteboardEngine {
           const rawHtml = window.katex.renderToString(obj.latex, { displayMode: true, throwOnError: false });
           const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="${obj.width}" height="${obj.height}">
             <foreignObject width="100%" height="100%">
-              <div xmlns="http://www.w3.org/1999/xhtml" style="color:${color}; font-size:${fontSize}px; display:flex; align-items:center; justify-content:center; height:100%; margin:0; padding:0; font-family:serif;">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="color:${color}; font-size:${fontSize}px; display:flex; align-items:center; justify-content:center; height:100%; margin:0; padding:0 8px; font-family:'Cambria Math', 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', serif; text-rendering:geometricPrecision;">
+                <style>
+                  @import url('https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css');
+                  .katex { font-family: 'Cambria Math', 'Latin Modern Math', 'STIX Two Math', 'Times New Roman', serif !important; }
+                  .frac-line { border-bottom-width: 0.05em !important; }
+                </style>
                 ${rawHtml}
               </div>
             </foreignObject>
@@ -695,13 +731,13 @@ class WhiteboardEngine {
       }
 
       if (obj._img && obj._img.complete && obj._img.naturalWidth > 0) {
-        ctx.drawImage(obj._img, obj.x, obj.y + 6, obj.width, obj.height - 6);
+        ctx.drawImage(obj._img, obj.x, obj.y, obj.width, obj.height);
         ctx.restore();
         return;
       }
     }
 
-    // Fallback Canvas Math matni
+    // Fallback Canvas Math matni (Word Equation uslubida darajalar va kasrlar)
     ctx.fillStyle = color;
     ctx.font = `600 ${fontSize}px "Cambria Math", "Latin Modern Math", "Georgia", serif`;
     ctx.textAlign = 'center';
@@ -710,6 +746,7 @@ class WhiteboardEngine {
     let cleanText = obj.latex
       .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1 / $2)')
       .replace(/\\sqrt\{([^}]+)\}/g, '√($1)')
+      .replace(/\\sqrt\[(\d+)\]\{([^}]+)\}/g, '$1√($2)')
       .replace(/\\sum_\{([^}]+)\}\^\{([^}]+)\}/g, '∑($1..$2)')
       .replace(/\\int_\{([^}]+)\}\^\{([^}]+)\}/g, '∫($1..$2)')
       .replace(/\\int/g, '∫')
@@ -726,11 +763,407 @@ class WhiteboardEngine {
       .replace(/\\pm/g, '±')
       .replace(/\\cdot/g, '·')
       .replace(/\\log_2/g, 'log₂')
+      .replace(/\^0/g, '⁰')
+      .replace(/\^1/g, '¹')
       .replace(/\^2/g, '²')
       .replace(/\^3/g, '³')
-      .replace(/_i/g, 'ᵢ');
+      .replace(/\^4/g, '⁴')
+      .replace(/\^5/g, '⁵')
+      .replace(/\^6/g, '⁶')
+      .replace(/\^7/g, '⁷')
+      .replace(/\^8/g, '⁸')
+      .replace(/\^9/g, '⁹')
+      .replace(/\^n/g, 'ⁿ')
+      .replace(/\^x/g, 'ˣ')
+      .replace(/_0/g, '₀')
+      .replace(/_1/g, '₁')
+      .replace(/_2/g, '₂')
+      .replace(/_3/g, '₃')
+      .replace(/_4/g, '₄')
+      .replace(/_5/g, '₅')
+      .replace(/_6/g, '₆')
+      .replace(/_7/g, '₇')
+      .replace(/_8/g, '₈')
+      .replace(/_9/g, '₉')
+      .replace(/_i/g, 'ᵢ')
+      .replace(/_j/g, 'ⱼ')
+      .replace(/_k/g, 'ₖ')
+      .replace(/_n/g, 'ₙ');
 
-    ctx.fillText(cleanText, obj.x + obj.width / 2, obj.y + obj.height / 2 + 4);
+    ctx.fillText(cleanText, obj.x + obj.width / 2, obj.y + obj.height / 2);
+    ctx.restore();
+  }
+
+  // 4c. 2D Funksiya Grafigi (Graph Plotter)
+  drawGraph(ctx, obj) {
+    ctx.save();
+    const w = obj.width || 420;
+    const h = obj.height || 290;
+    const x = obj.x;
+    const y = obj.y;
+    const color = obj.color || '#00FF87';
+    const rangeX = obj.rangeX || [-6, 6];
+    const rangeY = obj.rangeY || [-4, 6];
+
+    // 1. Tashqi shaffof fon qutisi (Dark glass card)
+    ctx.fillStyle = this.theme === 'chalkboard' ? 'rgba(10, 27, 20, 0.88)' : (this.theme === 'dark' ? 'rgba(15, 23, 42, 0.92)' : 'rgba(255, 255, 255, 0.95)');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, 12);
+    ctx.fill();
+    ctx.stroke();
+
+    // Yuqori sarlavha paneli
+    ctx.fillStyle = color;
+    ctx.font = '700 11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(`📈 GRAFIK: ${obj.title || ('y = ' + obj.funcStr)}`, x + 14, y + 10);
+
+    // Kichik oraliq ko'rsatgichi
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '500 10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(`x ∈ [${rangeX[0]}, ${rangeX[1]}]`, x + w - 14, y + 10);
+
+    // 2. Chizma maydoni (Plot Area)
+    const padL = 36;
+    const padR = 16;
+    const padT = 32;
+    const padB = 26;
+    const pX = x + padL;
+    const pY = y + padT;
+    const pW = w - padL - padR;
+    const pH = h - padT - padB;
+
+    // Chizma foni
+    ctx.fillStyle = this.theme === 'light' ? 'rgba(241, 245, 249, 0.7)' : 'rgba(0, 0, 0, 0.35)';
+    ctx.beginPath();
+    ctx.roundRect(pX, pY, pW, pH, 6);
+    ctx.fill();
+
+    // To'r va o'qlarni chizish
+    const xMin = rangeX[0], xMax = rangeX[1];
+    const yMin = rangeY[0], yMax = rangeY[1];
+
+    const toScreenX = (val) => pX + ((val - xMin) / (xMax - xMin)) * pW;
+    const toScreenY = (val) => pY + pH - ((val - yMin) / (yMax - yMin)) * pH;
+
+    // Katakchalar (Grid)
+    ctx.strokeStyle = this.theme === 'light' ? 'rgba(100, 116, 139, 0.15)' : 'rgba(255, 255, 255, 0.07)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let gx = Math.ceil(xMin); gx <= Math.floor(xMax); gx++) {
+      const sx = toScreenX(gx);
+      ctx.moveTo(sx, pY);
+      ctx.lineTo(sx, pY + pH);
+    }
+    for (let gy = Math.ceil(yMin); gy <= Math.floor(yMax); gy++) {
+      const sy = toScreenY(gy);
+      ctx.moveTo(pX, sy);
+      ctx.lineTo(pX + pW, sy);
+    }
+    ctx.stroke();
+
+    // Asosiy koordinata o'qlari (X = 0 va Y = 0)
+    const originXScreen = toScreenX(0);
+    const originYScreen = toScreenY(0);
+
+    ctx.strokeStyle = this.theme === 'light' ? 'rgba(71, 85, 105, 0.6)' : 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    if (originYScreen >= pY && originYScreen <= pY + pH) {
+      ctx.moveTo(pX, originYScreen);
+      ctx.lineTo(pX + pW, originYScreen);
+    }
+    if (originXScreen >= pX && originXScreen <= pX + pW) {
+      ctx.moveTo(originXScreen, pY);
+      ctx.lineTo(originXScreen, pY + pH);
+    }
+    ctx.stroke();
+
+    // O'q belgilari (X, Y yozuvlari)
+    ctx.fillStyle = '#CBD5E1';
+    ctx.font = '600 9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'bottom';
+    if (originXScreen >= pX && originXScreen <= pX + pW) {
+      ctx.fillText('Y', originXScreen + 4, pY + 12);
+    }
+    if (originYScreen >= pY && originYScreen <= pY + pH) {
+      ctx.textAlign = 'right';
+      ctx.fillText('X', pX + pW - 4, originYScreen - 4);
+    }
+
+    // 3. Funksiya egri chizig'ini hisoblash va chizish
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(pX, pY, pW, pH); // Plot maydonidan chiqib ketmasligi uchun clip
+    ctx.clip();
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 6;
+
+    const evalFn = (xVal) => {
+      if (window.MathSolver && typeof window.MathSolver.eval === 'function') {
+        return window.MathSolver.eval(obj.funcStr, xVal);
+      }
+      try {
+        let expr = obj.funcStr
+          .replace(/(\d+)x/g, '$1*x')
+          .replace(/x\^(\d+)/g, 'Math.pow(x, $1)')
+          .replace(/x\^2/g, 'x*x')
+          .replace(/x\^3/g, 'x*x*x')
+          .replace(/sin/g, 'Math.sin')
+          .replace(/cos/g, 'Math.cos')
+          .replace(/tan/g, 'Math.tan')
+          .replace(/sqrt/g, 'Math.sqrt')
+          .replace(/abs/g, 'Math.abs');
+        const fn = new Function('x', `return ${expr};`);
+        const v = fn(xVal);
+        return Number.isFinite(v) ? v : null;
+      } catch (e) {
+        return null;
+      }
+    };
+
+    let isDrawing = false;
+    ctx.beginPath();
+    const stepPx = 1.5;
+    for (let px = pX; px <= pX + pW; px += stepPx) {
+      const xVal = xMin + ((px - pX) / pW) * (xMax - xMin);
+      const yVal = evalFn(xVal);
+
+      if (yVal !== null && Number.isFinite(yVal)) {
+        const py = toScreenY(yVal);
+        if (!isDrawing) {
+          ctx.moveTo(px, py);
+          isDrawing = true;
+        } else {
+          if (py < pY - 150 || py > pY + pH + 150) {
+            isDrawing = false;
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+      } else {
+        isDrawing = false;
+      }
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  // 4d. Interaktiv Bilim Test Kartochkasi (Quiz Flashcard)
+  drawQuizCard(ctx, obj) {
+    ctx.save();
+    const w = obj.width || 360;
+    const x = obj.x;
+    const y = obj.y;
+    const topic = obj.topic || 'BILIM TESTI';
+    const question = obj.question || 'Savol matni kiritilmagan';
+    const options = obj.options || ['A) Variant 1', 'B) Variant 2', 'C) Variant 3', 'D) Variant 4'];
+    const correctIdx = obj.correctIndex !== undefined ? obj.correctIndex : 0;
+    const selectedIdx = obj.selectedIndex;
+    const revealed = !!obj.revealed;
+
+    const headerH = 38;
+    const qLineH = 18;
+    const estQLines = Math.ceil(question.length / 38);
+    const qH = Math.max(36, estQLines * qLineH + 12);
+    const optH = options.length * 36;
+    const expH = (revealed && obj.explanation) ? 55 : 0;
+    const btnH = 36;
+    const totalH = headerH + qH + optH + btnH + expH + 24;
+    obj.height = totalH;
+
+    // Karta foni
+    ctx.fillStyle = this.theme === 'chalkboard' ? 'rgba(10, 27, 20, 0.92)' : (this.theme === 'dark' ? 'rgba(15, 23, 42, 0.94)' : 'rgba(255, 255, 255, 0.96)');
+    ctx.strokeStyle = revealed ? '#10B981' : '#38BDF8';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, totalH, 12);
+    ctx.fill();
+    ctx.stroke();
+
+    // Yuqori sarlavha paneli
+    ctx.fillStyle = revealed ? 'rgba(16, 185, 129, 0.15)' : 'rgba(56, 189, 248, 0.15)';
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, headerH, [12, 12, 0, 0]);
+    ctx.fill();
+
+    // Badge va mavzu
+    ctx.fillStyle = revealed ? '#10B981' : '#38BDF8';
+    ctx.font = '700 11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`❓ AI TEST • ${topic.toUpperCase()}`, x + 14, y + headerH / 2);
+
+    // Savol matni
+    let curY = y + headerH + 10;
+    ctx.fillStyle = this.theme === 'light' ? '#0F172A' : '#F8FAFC';
+    ctx.font = '600 13px "Plus Jakarta Sans", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    this.wrapText(ctx, question, x + 14, curY, w - 28, qLineH);
+
+    curY += qH;
+
+    // Variantlar (Options)
+    options.forEach((opt, idx) => {
+      const optY = curY + idx * 36;
+      const isSelected = selectedIdx === idx;
+      const isCorrect = correctIdx === idx;
+
+      let boxBg = this.theme === 'light' ? 'rgba(241, 245, 249, 0.8)' : 'rgba(255, 255, 255, 0.05)';
+      let boxBorder = 'rgba(255, 255, 255, 0.1)';
+      let textColor = this.theme === 'light' ? '#334155' : '#E2E8F0';
+
+      if (revealed) {
+        if (isCorrect) {
+          boxBg = 'rgba(16, 185, 129, 0.2)';
+          boxBorder = '#10B981';
+          textColor = '#10B981';
+        } else if (isSelected && !isCorrect) {
+          boxBg = 'rgba(239, 68, 68, 0.2)';
+          boxBorder = '#EF4444';
+          textColor = '#EF4444';
+        }
+      } else if (isSelected) {
+        boxBg = 'rgba(56, 189, 248, 0.18)';
+        boxBorder = '#38BDF8';
+        textColor = '#38BDF8';
+      }
+
+      ctx.fillStyle = boxBg;
+      ctx.strokeStyle = boxBorder;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(x + 14, optY, w - 28, 28, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      // Radio tugma nishoni
+      ctx.fillStyle = boxBorder;
+      ctx.beginPath();
+      ctx.arc(x + 28, optY + 14, 6, 0, Math.PI * 2);
+      ctx.stroke();
+      if (isSelected || (revealed && isCorrect)) {
+        ctx.fillStyle = (revealed && isCorrect) ? '#10B981' : (isSelected && !isCorrect && revealed ? '#EF4444' : '#38BDF8');
+        ctx.beginPath();
+        ctx.arc(x + 28, optY + 14, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Variant matni
+      ctx.fillStyle = textColor;
+      ctx.font = '500 12px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      const labelText = opt.length > 40 ? opt.substring(0, 38) + '...' : opt;
+      ctx.fillText(labelText, x + 44, optY + 14);
+    });
+
+    curY += optH + 8;
+
+    // Javobni ko'rish tugmasi
+    ctx.fillStyle = revealed ? 'rgba(16, 185, 129, 0.25)' : 'rgba(56, 189, 248, 0.25)';
+    ctx.strokeStyle = revealed ? '#10B981' : '#38BDF8';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(x + 14, curY, w - 28, 28, 6);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = revealed ? '#10B981' : '#38BDF8';
+    ctx.font = '700 11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(revealed ? '✅ JAVOB OCHILGAN (YOPISH UCHUN BOSING)' : '👁️ TO‘G‘RI JAVOBNI KO‘RSATISH', x + w / 2, curY + 14);
+
+    // Agar ochilgan bo'lsa izoh qutisi
+    if (revealed && obj.explanation) {
+      curY += 34;
+      ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+      ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+      ctx.beginPath();
+      ctx.roundRect(x + 14, curY, w - 28, 42, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = '500 11px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      this.wrapText(ctx, `💡 Izoh: ${obj.explanation}`, x + 20, curY + 6, w - 40, 15);
+    }
+
+    ctx.restore();
+  }
+
+  // 4e. Rasm Ob'ekti (Pasted / Uploaded Image)
+  drawImageObj(ctx, obj) {
+    if (!obj.src) return;
+    ctx.save();
+    const w = obj.width || 240;
+    const h = obj.height || 180;
+    const x = obj.x;
+    const y = obj.y;
+
+    if (!obj._img) {
+      const img = new Image();
+      img.onload = () => {
+        obj._img = img;
+        if (!obj.width && img.naturalWidth) {
+          obj.width = Math.min(480, img.naturalWidth);
+          obj.height = Math.round(img.naturalHeight * (obj.width / img.naturalWidth));
+        }
+      };
+      img.src = obj.src;
+    }
+
+    if (obj._img && obj._img.complete && obj._img.naturalWidth > 0) {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, 8);
+      ctx.clip();
+      ctx.drawImage(obj._img, x, y, w, h);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+      ctx.strokeStyle = '#38BDF8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '500 12px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🖼️ Rasm yuklanmoqda...', x + w / 2, y + h / 2);
+    }
+
+    if (obj.caption) {
+      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.beginPath();
+      ctx.roundRect(x + 8, y + h - 26, w - 16, 20, 4);
+      ctx.fill();
+
+      ctx.fillStyle = '#F8FAFC';
+      ctx.font = '600 10px "Plus Jakarta Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(obj.caption, x + w / 2, y + h - 16);
+    }
     ctx.restore();
   }
 
@@ -805,6 +1238,12 @@ class WhiteboardEngine {
       case 'text':
       case 'formula':
         return { x: obj.x, y: obj.y, width: obj.width || 180, height: obj.height || 64 };
+      case 'graph':
+        return { x: obj.x, y: obj.y, width: obj.width || 420, height: obj.height || 290 };
+      case 'quiz_card':
+        return { x: obj.x, y: obj.y, width: obj.width || 360, height: obj.height || 260 };
+      case 'image':
+        return { x: obj.x, y: obj.y, width: obj.width || 240, height: obj.height || 180 };
       case 'net_node':
         return { x: obj.x - 30, y: obj.y - 30, width: 60, height: 60 };
       case 'stroke': {
@@ -962,6 +1401,10 @@ class WhiteboardEngine {
       else if (['rect', 'circle', 'diamond', 'triangle', 'line', 'arrow'].includes(obj.type)) this.drawShape(tCtx, obj);
       else if (obj.type === 'net_node') this.drawNetworkNode(tCtx, obj);
       else if (obj.type === 'text') this.drawText(tCtx, obj);
+      else if (obj.type === 'formula') this.drawFormula(tCtx, obj);
+      else if (obj.type === 'graph') this.drawGraph(tCtx, obj);
+      else if (obj.type === 'quiz_card') this.drawQuizCard(tCtx, obj);
+      else if (obj.type === 'image') this.drawImageObj(tCtx, obj);
     });
     tCtx.restore();
 

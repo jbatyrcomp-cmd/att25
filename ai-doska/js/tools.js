@@ -35,9 +35,23 @@ class ToolManager {
     // Laser pointer elementi
     this.laserDot = document.getElementById('laserPointerDot');
 
+    // Aqlli Shakllarni aniqlash (Magic Ink / AI Shape Recognition)
+    this.magicInkEnabled = true;
+
+    // AI Formula Rejimi (Active Real-time Handwriting Math OCR Mode)
+    this.formulaModeActive = false;
+    this.activeFormulaSession = null;
+    this.formulaModeBanner = document.getElementById('formulaModeBanner');
+    this.formulaLiveBadge = document.getElementById('formulaLiveBadge');
+    this.fbadgeLoading = document.getElementById('fbadgeLoading');
+    this.fbadgeReady = document.getElementById('fbadgeReady');
+    this.fbadgeKatexPreview = document.getElementById('fbadgeKatexPreview');
+
     this.bindCanvasEvents();
     this.bindToolbarEvents();
+    this.bindFormulaModeEvents();
     this.bindKeyboardShortcuts();
+    this.bindImageDropAndPaste();
   }
 
   /* ==========================================================================
@@ -62,6 +76,8 @@ class ToolManager {
         this.engine.panX -= e.deltaX;
         this.engine.panY -= e.deltaY;
       }
+      this.updateOcrToolbarPosition();
+      this.updateFormulaBadgePosition();
     }, { passive: false });
 
     // Kontekst menyuni bloklash (chizish qulay bo'lishi uchun)
@@ -87,14 +103,68 @@ class ToolManager {
     if (this.currentTool === 'select') {
       const hit = this.engine.hitTest(wx, wy);
       if (hit) {
+        // Agar bosilgan ob'ekt interaktiv Quiz Card bo'lsa
+        if (hit.type === 'quiz_card') {
+          const hx = hit.x, hy = hit.y, hw = hit.width || 360;
+          const relX = wx - hx;
+          const relY = wy - hy;
+          const qLineH = 18;
+          const estQLines = Math.ceil((hit.question || '').length / 38);
+          const qH = Math.max(36, estQLines * qLineH + 12);
+          const headerH = 38;
+          const optStartY = headerH + qH;
+          const opts = hit.options || [];
+
+          // Variantlar bosildimi?
+          let optionClicked = false;
+          for (let i = 0; i < opts.length; i++) {
+            const optY = optStartY + i * 36;
+            if (relY >= optY && relY <= optY + 28 && relX >= 14 && relX <= hw - 14) {
+              hit.selectedIndex = i;
+              this.engine.saveState();
+              if (typeof window.toast === 'function') {
+                window.toast(`Variant tanlandi: ${opts[i]}`);
+              }
+              optionClicked = true;
+              break;
+            }
+          }
+
+          if (optionClicked) {
+            this.engine.selectedObject = hit;
+            return;
+          }
+
+          // Javobni ko'rsatish / yashirish tugmasi bosildimi?
+          const btnY = optStartY + opts.length * 36 + 8;
+          if (relY >= btnY && relY <= btnY + 28 && relX >= 14 && relX <= hw - 14) {
+            hit.revealed = !hit.revealed;
+            this.engine.saveState();
+            if (typeof window.toast === 'function') {
+              window.toast(hit.revealed ? "✅ To'g'ri javob ochildi" : "Javob yashirildi");
+            }
+            this.engine.selectedObject = hit;
+            return;
+          }
+        }
+
         this.engine.selectedObject = hit;
         this.isDraggingObject = true;
         this.dragOffset = {
           x: wx - (hit.x !== undefined ? hit.x : hit.x1),
           y: wy - (hit.y !== undefined ? hit.y : hit.y1)
         };
+
+        // Agar tanlangan element chizma (stroke) bo'lsa, atrofidagi barcha bog'liq chizmalarni klasterlab OCR panelini ko'rsatish
+        if (hit.type === 'stroke') {
+          const cluster = this.getClusteredStrokes(hit);
+          this.showOcrFloatingToolbar(cluster);
+        } else {
+          this.hideOcrFloatingToolbar();
+        }
       } else {
         this.engine.selectedObject = null;
+        this.hideOcrFloatingToolbar();
       }
       return;
     }
@@ -244,6 +314,8 @@ class ToolManager {
       this.engine.panX += dx;
       this.engine.panY += dy;
       this.startScreenPos = { x: e.clientX, y: e.clientY };
+      this.updateOcrToolbarPosition();
+      this.updateFormulaBadgePosition();
       return;
     }
 
@@ -276,6 +348,9 @@ class ToolManager {
         const dy = ny - obj.y1;
         obj.x1 = nx; obj.y1 = ny;
         obj.x2 += dx; obj.y2 += dy;
+      }
+      if (obj.type === 'stroke') {
+        this.updateOcrToolbarPosition();
       }
       return;
     }
@@ -319,11 +394,205 @@ class ToolManager {
     this.isDraggingObject = false;
 
     if (this.currentDrawingObject) {
+      // 1. AI Formula Rejimi faol bo'lsa: formulani fonda tahlil qilish
+      if (this.formulaModeActive && this.currentDrawingObject.type === 'stroke' && !this.currentDrawingObject.isHighlighter) {
+        this.handleFormulaStrokeComplete(this.currentDrawingObject);
+        this.engine.saveState();
+        this.currentDrawingObject = null;
+        this.updateViewportCursor();
+        return;
+      }
+
+      // 2. Magic Ink: erkin chizilgan qalam shaklini geometrik shaklga aylantirish
+      if (this.magicInkEnabled && this.currentDrawingObject.type === 'stroke' && !this.currentDrawingObject.isHighlighter) {
+        const magicShape = this.tryMagicInkRecognition(this.currentDrawingObject);
+        if (magicShape) {
+          this.engine.removeObject(this.currentDrawingObject, false);
+          this.engine.addObject(magicShape, false);
+          this.engine.selectedObject = magicShape;
+          this.engine.saveState();
+          this.currentDrawingObject = null;
+          this.updateViewportCursor();
+          if (typeof window.toast === 'function') {
+            window.toast(`✨ Magic Ink: ${magicShape.magicName || 'Shakl'} tanildi!`);
+          }
+          return;
+        }
+      }
+
       this.engine.saveState(); // Yangi chizilgan shaklni saqlash
       this.currentDrawingObject = null;
     }
 
     this.updateViewportCursor();
+  }
+
+  /* ==========================================================================
+     MAGIC INK (AQLLI SHAKLLARNI TANISH)
+     ========================================================================== */
+  tryMagicInkRecognition(strokeObj) {
+    const pts = strokeObj.points;
+    if (!pts || pts.length < 8) return null;
+
+    // 1. Bounding box va xarakteristikalar
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let pathLen = 0;
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i];
+      if (p.x < minX) minX = p.x;
+      if (p.x > maxX) maxX = p.x;
+      if (p.y < minY) minY = p.y;
+      if (p.y > maxY) maxY = p.y;
+      if (i > 0) {
+        pathLen += Math.hypot(p.x - pts[i - 1].x, p.y - pts[i - 1].y);
+      }
+    }
+
+    const w = maxX - minX;
+    const h = maxY - minY;
+    if (w < 16 && h < 16) return null; // Juda kichik nuqta/chiziqcha
+
+    const diag = Math.hypot(w, h);
+    const startP = pts[0];
+    const endP = pts[pts.length - 1];
+    const dStartEnd = Math.hypot(endP.x - startP.x, endP.y - startP.y);
+
+    const isClosed = dStartEnd < Math.min(60, diag * 0.35);
+
+    const color = strokeObj.color || this.currentColor;
+    const strokeWidth = strokeObj.width || this.currentSize;
+    const filled = this.isFilled;
+    const fillColor = filled ? this.getFillColor() : 'transparent';
+
+    if (isClosed) {
+      // Markaz va o'rtacha radius
+      const cx = (minX + maxX) / 2;
+      const cy = (minY + maxY) / 2;
+      const rx = w / 2;
+      const ry = h / 2;
+
+      // Aylanasimonlikni tekshirish (Circularity test)
+      let radialDiffSum = 0;
+      for (const p of pts) {
+        const d = Math.hypot((p.x - cx) / (rx || 1), (p.y - cy) / (ry || 1));
+        radialDiffSum += Math.abs(d - 1.0);
+      }
+      const avgRadialDiff = radialDiffSum / pts.length;
+
+      // a) Agar barcha nuqtalar markazdan taxminan bir xil uzoqlikda bo'lsa -> Aylana / Ellips
+      if (avgRadialDiff < 0.22) {
+        return {
+          type: 'circle',
+          x: minX,
+          y: minY,
+          radiusX: rx,
+          radiusY: ry,
+          color,
+          strokeWidth,
+          filled,
+          fillColor,
+          magicName: "Aylana"
+        };
+      }
+
+      // b) Burchaklar (Corners) tahlili
+      const step = Math.max(2, Math.floor(pts.length / 16));
+      let cornerCount = 0;
+      for (let i = step; i < pts.length - step; i += step) {
+        const prev = pts[i - step];
+        const curr = pts[i];
+        const next = pts[i + step];
+
+        const v1x = curr.x - prev.x, v1y = curr.y - prev.y;
+        const v2x = next.x - curr.x, v2y = next.y - curr.y;
+        const l1 = Math.hypot(v1x, v1y), l2 = Math.hypot(v2x, v2y);
+
+        if (l1 > 3 && l2 > 3) {
+          const dot = (v1x * v2x + v1y * v2y) / (l1 * l2);
+          const clampedDot = Math.max(-1, Math.min(1, dot));
+          const angleDeg = Math.acos(clampedDot) * (180 / Math.PI);
+          if (angleDeg > 45 && angleDeg < 135) {
+            cornerCount++;
+          }
+        }
+      }
+
+      // Uchburchak
+      if (cornerCount >= 2 && cornerCount <= 4 && pathLen < diag * 3.5) {
+        if (cornerCount === 3 || (cornerCount === 2 && pts.length < 32)) {
+          return {
+            type: 'triangle',
+            x: minX,
+            y: minY,
+            width: w,
+            height: h,
+            color,
+            strokeWidth,
+            filled,
+            fillColor,
+            magicName: "Uchburchak"
+          };
+        }
+      }
+
+      // To'g'ri to'rtburchak
+      return {
+        type: 'rect',
+        x: minX,
+        y: minY,
+        width: w,
+        height: h,
+        color,
+        strokeWidth,
+        filled,
+        fillColor,
+        magicName: "To'g'ri to'rtburchak"
+      };
+    } else {
+      // Ochiq chizma: Chiziq yoki Strelka
+      const straightRatio = pathLen / (dStartEnd || 1);
+
+      if (straightRatio < 1.35 && dStartEnd > 24) {
+        // Oxirgi 25% qismida burilish / strelka uchi bormi?
+        const lastIdx = Math.floor(pts.length * 0.75);
+        let hasFlick = false;
+        for (let i = lastIdx; i < pts.length - 1; i++) {
+          const p = pts[i];
+          const dToStart = Math.hypot(p.x - startP.x, p.y - startP.y);
+          const dNextToStart = Math.hypot(pts[i+1].x - startP.x, pts[i+1].y - startP.y);
+          if (dNextToStart < dToStart - 4) {
+            hasFlick = true;
+            break;
+          }
+        }
+
+        if (hasFlick) {
+          return {
+            type: 'arrow',
+            x1: startP.x,
+            y1: startP.y,
+            x2: endP.x,
+            y2: endP.y,
+            color,
+            strokeWidth,
+            magicName: "Yo'naltirilgan Strelka"
+          };
+        } else {
+          return {
+            type: 'line',
+            x1: startP.x,
+            y1: startP.y,
+            x2: endP.x,
+            y2: endP.y,
+            color,
+            strokeWidth,
+            magicName: "To'g'ri Chiziq"
+          };
+        }
+      }
+    }
+
+    return null;
   }
 
   /* ==========================================================================
@@ -480,6 +749,15 @@ class ToolManager {
       return;
     }
 
+    if (toolName === 'formula_mode') {
+      this.toggleFormulaMode();
+      return;
+    }
+
+    if (toolName !== 'pen' && this.formulaLiveBadge && !this.formulaLiveBadge.classList.contains('hidden')) {
+      this.dismissFormulaSession();
+    }
+
     this.currentTool = toolName;
 
     // Asosiy toolbar tugmalarini yangilash
@@ -547,6 +825,30 @@ class ToolManager {
         }
       }
 
+      // Alt+F: AI Formula Rejimini yoqish/o'chirish
+      if (e.altKey && e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        this.toggleFormulaMode();
+        return;
+      }
+
+      // Enter: Agar formula tayyor bo'lsa uni tasdiqlash
+      if (e.key === 'Enter' && !e.shiftKey) {
+        if (this.formulaLiveBadge && !this.formulaLiveBadge.classList.contains('hidden') && this.fbadgeReady && !this.fbadgeReady.classList.contains('hidden')) {
+          e.preventDefault();
+          this.confirmFormulaSession();
+          return;
+        }
+      }
+
+      // Escape: Formulani bekor qilish
+      if (e.key === 'Escape') {
+        if (this.formulaLiveBadge && !this.formulaLiveBadge.classList.contains('hidden')) {
+          this.dismissFormulaSession();
+          return;
+        }
+      }
+
       // Asboblar klavishlari
       const key = e.key.toLowerCase();
       if (key === 'v') this.setTool('select');
@@ -567,6 +869,370 @@ class ToolManager {
         this.updateViewportCursor();
       }
     });
+  }
+
+  /* ==========================================================================
+     VISION & RASM YUKLASH (CLIPBOARD PASTE & DRAG-AND-DROP)
+     ========================================================================== */
+  bindImageDropAndPaste() {
+    // 1. Clipboard Paste (Ctrl+V)
+    window.addEventListener('paste', (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+      const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          this.handleImageFile(file);
+          e.preventDefault();
+          break;
+        }
+      }
+    });
+
+    // 2. Drag and Drop
+    const vp = this.viewport;
+    if (!vp) return;
+
+    vp.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+    });
+
+    vp.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          if (files[i].type.startsWith('image/')) {
+            this.handleImageFile(files[i], e.clientX, e.clientY);
+            break;
+          }
+        }
+      }
+    });
+  }
+
+  handleImageFile(file, screenX, screenY) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const src = ev.target.result;
+      const center = (screenX !== undefined && screenY !== undefined)
+        ? this.engine.screenToWorld(screenX, screenY)
+        : this.engine.screenToWorld(this.engine.width / 2, this.engine.height / 2);
+
+      const imgObj = {
+        type: 'image',
+        x: Math.round(center.x - 160),
+        y: Math.round(center.y - 120),
+        width: 320,
+        height: 240,
+        src: src,
+        caption: file.name ? file.name.substring(0, 24) : 'Rasm'
+      };
+
+      this.engine.saveState();
+      this.engine.addObject(imgObj);
+      this.engine.selectedObject = imgObj;
+      if (typeof window.toast === 'function') {
+        window.toast(`🖼️ Rasm doskaga muvaffaqiyatli qo'yildi!`);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ==========================================================================
+     QO'LYOZMA KLASTERLASH VA SUZUVCHI OCR PANELI
+     ========================================================================== */
+  getClusteredStrokes(initialStroke, maxDist = 60) {
+    const allStrokes = this.engine.objects.filter(o => o.type === 'stroke');
+    const cluster = new Set([initialStroke]);
+    let added = true;
+
+    while (added) {
+      added = false;
+      for (const s of allStrokes) {
+        if (!cluster.has(s)) {
+          const sBounds = this.engine.getObjectBounds(s);
+          if (!sBounds) continue;
+
+          for (const c of cluster) {
+            const cBounds = this.engine.getObjectBounds(c);
+            if (!cBounds) continue;
+
+            const dx = Math.max(0, Math.max(sBounds.x - (cBounds.x + cBounds.width), cBounds.x - (sBounds.x + sBounds.width)));
+            const dy = Math.max(0, Math.max(sBounds.y - (cBounds.y + cBounds.height), cBounds.y - (sBounds.y + sBounds.height)));
+            const dist = Math.hypot(dx, dy);
+
+            if (dist <= maxDist) {
+              cluster.add(s);
+              added = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    return Array.from(cluster);
+  }
+
+  showOcrFloatingToolbar(strokes) {
+    this.selectedStrokesForOcr = strokes;
+    const toolbar = document.getElementById('ocrFloatingToolbar');
+    if (!toolbar || !strokes || strokes.length === 0) return;
+
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    strokes.forEach(s => {
+      const b = this.engine.getObjectBounds(s);
+      if (b) {
+        if (b.x < minX) minX = b.x;
+        if (b.y < minY) minY = b.y;
+        if (b.x + b.width > maxX) maxX = b.x + b.width;
+        if (b.y + b.height > maxY) maxY = b.y + b.height;
+      }
+    });
+
+    if (!Number.isFinite(minX)) return;
+
+    const screenTopLeft = this.engine.worldToScreen(minX, minY);
+    const screenBotRight = this.engine.worldToScreen(maxX, maxY);
+
+    toolbar.classList.remove('hidden');
+    toolbar.style.left = `${(screenTopLeft.x + screenBotRight.x) / 2}px`;
+    toolbar.style.top = `${Math.max(70, screenTopLeft.y - 36)}px`;
+  }
+
+  hideOcrFloatingToolbar() {
+    const toolbar = document.getElementById('ocrFloatingToolbar');
+    if (toolbar) toolbar.classList.add('hidden');
+    this.selectedStrokesForOcr = null;
+  }
+
+  updateOcrToolbarPosition() {
+    if (this.selectedStrokesForOcr && this.selectedStrokesForOcr.length > 0) {
+      this.showOcrFloatingToolbar(this.selectedStrokesForOcr);
+    }
+  }
+
+  /* ==========================================================================
+     AI FORMULA REJIMI METODLARI (ACTIVE REAL-TIME MATH OCR)
+     ========================================================================== */
+  bindFormulaModeEvents() {
+    const btnMode = document.getElementById('btnAiFormulaMode');
+    if (btnMode) {
+      btnMode.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleFormulaMode();
+      });
+    }
+
+    const btnExit = document.getElementById('btnExitFormulaMode');
+    if (btnExit) {
+      btnExit.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleFormulaMode(false);
+      });
+    }
+
+    document.getElementById('btnConfirmLiveFormula')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.confirmFormulaSession();
+    });
+
+    document.getElementById('btnEditLiveFormula')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.editFormulaSession();
+    });
+
+    document.getElementById('btnDismissLiveFormula')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.dismissFormulaSession();
+    });
+  }
+
+  toggleFormulaMode(forceState = null) {
+    this.formulaModeActive = forceState !== null ? forceState : !this.formulaModeActive;
+
+    const btnMode = document.getElementById('btnAiFormulaMode');
+    if (btnMode) {
+      btnMode.classList.toggle('active', this.formulaModeActive);
+      btnMode.classList.toggle('active-formula-mode', this.formulaModeActive);
+    }
+
+    if (this.formulaModeBanner) {
+      this.formulaModeBanner.classList.toggle('hidden', !this.formulaModeActive);
+    }
+
+    if (this.formulaModeActive) {
+      this.setTool('pen');
+      if (typeof window.toast === 'function') {
+        window.toast("✨ AI Formula Rejimi faollashtirildi! Doskaga formula yozing...");
+      }
+    } else {
+      this.dismissFormulaSession();
+      if (typeof window.toast === 'function') {
+        window.toast("AI Formula Rejimi o'chirildi.");
+      }
+    }
+  }
+
+  handleFormulaStrokeComplete(stroke) {
+    if (!this.activeFormulaSession) {
+      this.activeFormulaSession = {
+        strokes: [],
+        timer: null,
+        recognizedLatex: '',
+        bounds: null
+      };
+    }
+
+    this.activeFormulaSession.strokes.push(stroke);
+
+    // Suzuvchi tahlil nishonini ko'rsatish
+    this.showFormulaLiveBadgeLoading();
+
+    // Debounce: foydalanuvchi keyingi belgilarni yozayotgan bo'lsa kutish
+    if (this.activeFormulaSession.timer) {
+      clearTimeout(this.activeFormulaSession.timer);
+    }
+
+    const session = this.activeFormulaSession;
+    session.timer = setTimeout(async () => {
+      if (!this.formulaModeActive || !this.activeFormulaSession || this.activeFormulaSession !== session) return;
+
+      try {
+        if (window.handwritingOCR) {
+          const res = await window.handwritingOCR.recognizeFormula(session.strokes);
+          if (!this.activeFormulaSession || this.activeFormulaSession !== session) return;
+
+          session.recognizedLatex = res.latex;
+          session.bounds = res.bounds;
+
+          this.showFormulaLiveBadgeReady(res.latex);
+        }
+      } catch (err) {
+        console.warn("Formula OCR xatosi:", err);
+      }
+    }, 850);
+  }
+
+  showFormulaLiveBadgeLoading() {
+    if (!this.formulaLiveBadge || !this.activeFormulaSession) return;
+    this.updateFormulaBadgePosition();
+    this.formulaLiveBadge.classList.remove('hidden');
+    this.fbadgeLoading?.classList.remove('hidden');
+    this.fbadgeReady?.classList.add('hidden');
+  }
+
+  showFormulaLiveBadgeReady(latex) {
+    if (!this.formulaLiveBadge || !this.activeFormulaSession) return;
+
+    if (this.fbadgeKatexPreview) {
+      if (typeof window.katex !== 'undefined') {
+        try {
+          this.fbadgeKatexPreview.innerHTML = window.katex.renderToString(latex, { displayMode: true, throwOnError: false });
+        } catch (e) {
+          this.fbadgeKatexPreview.textContent = latex;
+        }
+      } else {
+        this.fbadgeKatexPreview.textContent = latex;
+      }
+    }
+
+    this.fbadgeLoading?.classList.add('hidden');
+    this.fbadgeReady?.classList.remove('hidden');
+    this.updateFormulaBadgePosition();
+  }
+
+  updateFormulaBadgePosition() {
+    if (!this.formulaLiveBadge || !this.activeFormulaSession || this.activeFormulaSession.strokes.length === 0) return;
+
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    this.activeFormulaSession.strokes.forEach(s => {
+      const b = this.engine.getObjectBounds(s);
+      if (b) {
+        if (b.x < minX) minX = b.x;
+        if (b.y < minY) minY = b.y;
+        if (b.x + b.width > maxX) maxX = b.x + b.width;
+        if (b.y + b.height > maxY) maxY = b.y + b.height;
+      }
+    });
+
+    if (!Number.isFinite(minX)) return;
+    this.activeFormulaSession.bounds = { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+
+    const centerScreen = this.engine.worldToScreen((minX + maxX) / 2, minY);
+    this.formulaLiveBadge.style.left = `${Math.max(160, Math.min(window.innerWidth - 160, centerScreen.x))}px`;
+    this.formulaLiveBadge.style.top = `${Math.max(80, centerScreen.y)}px`;
+  }
+
+  confirmFormulaSession() {
+    if (!this.activeFormulaSession || !this.activeFormulaSession.recognizedLatex) return;
+    const session = this.activeFormulaSession;
+    const b = session.bounds || { x: 100, y: 100, width: 220, height: 60 };
+
+    const formulaObj = {
+      type: 'formula',
+      x: b.x,
+      y: b.y,
+      width: Math.max(140, b.width),
+      height: Math.max(56, b.height),
+      latex: session.recognizedLatex,
+      color: this.currentColor || (this.engine.theme === 'light' ? '#0F172A' : '#FFFFFF'),
+      fontSize: 26
+    };
+
+    this.engine.replaceStrokesWithObject(session.strokes, formulaObj);
+    this.dismissFormulaSession();
+
+    if (typeof window.toast === 'function') {
+      window.toast("✅ Formula Word standartiga muvaffaqiyatli o'tkazildi!");
+    }
+  }
+
+  editFormulaSession() {
+    if (!this.activeFormulaSession) return;
+    const session = this.activeFormulaSession;
+    const ocrConfirmModal = document.getElementById('ocrConfirmModal');
+    const ocrLatexResultInput = document.getElementById('ocrLatexResultInput');
+    const ocrFormulaLivePreview = document.getElementById('ocrFormulaLivePreview');
+    const ocrSourcePreviewImg = document.getElementById('ocrSourcePreviewImg');
+
+    if (ocrLatexResultInput) ocrLatexResultInput.value = session.recognizedLatex;
+    if (ocrFormulaLivePreview && typeof window.katex !== 'undefined') {
+      try {
+        ocrFormulaLivePreview.innerHTML = window.katex.renderToString(session.recognizedLatex, { displayMode: true, throwOnError: false });
+      } catch (e) {
+        ocrFormulaLivePreview.textContent = session.recognizedLatex;
+      }
+    }
+
+    if (window.handwritingOCR && session.strokes.length > 0) {
+      const raster = window.handwritingOCR.renderStrokesToImage(session.strokes);
+      if (raster && ocrSourcePreviewImg) ocrSourcePreviewImg.src = raster.dataUrl;
+    }
+
+    // Set globally for confirmation button in modal
+    if (typeof window.setActiveOcrStrokes === 'function') {
+      window.setActiveOcrStrokes(session.strokes, session.bounds);
+    }
+
+    ocrConfirmModal?.classList.remove('hidden');
+    this.dismissFormulaSession();
+  }
+
+  dismissFormulaSession() {
+    if (this.activeFormulaSession?.timer) {
+      clearTimeout(this.activeFormulaSession.timer);
+    }
+    this.activeFormulaSession = null;
+    if (this.formulaLiveBadge) {
+      this.formulaLiveBadge.classList.add('hidden');
+    }
   }
 }
 

@@ -8,11 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const engine = new WhiteboardEngine('whiteboardCanvas', 'minimapCanvas');
   const toolManager = new ToolManager(engine);
   const aiEngine = new AIBoardEngine(engine);
+  const mathSolver = new MathSolver(engine);
+  const codeBridge = new CodeBridge(engine);
+  const handwritingOCR = new HandwritingOCR(engine, aiEngine);
 
   // Global ob'ektlar (debug va qulaylik uchun)
   window.boardEngine = engine;
   window.toolManager = toolManager;
   window.aiEngine = aiEngine;
+  window.mathSolver = mathSolver;
+  window.codeBridge = codeBridge;
+  window.handwritingOCR = handwritingOCR;
 
   // 2. Mahalliy xotiradan yuklash (yoki boshlang'ich shablon)
   const hasSaved = engine.loadFromStorage();
@@ -300,6 +306,422 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
+     MAGIC INK TOGGLE
+     ========================================================================== */
+  const btnMagicInkToggle = document.getElementById('btnMagicInkToggle');
+  if (btnMagicInkToggle) {
+    btnMagicInkToggle.addEventListener('click', () => {
+      toolManager.magicInkEnabled = !toolManager.magicInkEnabled;
+      btnMagicInkToggle.classList.toggle('active-feature', toolManager.magicInkEnabled);
+      toast(`✨ Magic Ink: ${toolManager.magicInkEnabled ? "Faollashtirildi (Qo'lda chizilgan shakllar avtomatik to'g'irlanadi)" : "O'chirildi"}`);
+    });
+  }
+
+  /* ==========================================================================
+     2D FUNKSIYA GRAFIGI VA TENGLAMA YECHUVCHI MODALI
+     ========================================================================== */
+  const graphModal = document.getElementById('graphModal');
+  const btnGraphModalTool = document.getElementById('btnGraphModalTool');
+  const btnCloseGraph = document.getElementById('btnCloseGraph');
+  const graphFuncInput = document.getElementById('graphFuncInput');
+  const graphMinX = document.getElementById('graphMinX');
+  const graphMaxX = document.getElementById('graphMaxX');
+  const graphColorSelect = document.getElementById('graphColorSelect');
+  const btnInsertGraph = document.getElementById('btnInsertGraph');
+  const btnSolveMathSteps = document.getElementById('btnSolveMathSteps');
+
+  if (btnGraphModalTool && graphModal) {
+    btnGraphModalTool.addEventListener('click', () => {
+      graphModal.classList.remove('hidden');
+      graphFuncInput?.focus();
+    });
+  }
+  if (btnCloseGraph && graphModal) {
+    btnCloseGraph.addEventListener('click', () => graphModal.classList.add('hidden'));
+  }
+
+  document.querySelectorAll('#graphModal .fpreset-btn[data-graph]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const g = btn.getAttribute('data-graph');
+      if (graphFuncInput) graphFuncInput.value = g;
+    });
+  });
+
+  if (btnInsertGraph && graphFuncInput) {
+    btnInsertGraph.addEventListener('click', () => {
+      const funcStr = graphFuncInput.value.trim();
+      if (!funcStr) {
+        toast("Iltimos, funksiya ifodasini kiriting!");
+        graphFuncInput.focus();
+        return;
+      }
+      const minX = parseFloat(graphMinX?.value) || -6;
+      const maxX = parseFloat(graphMaxX?.value) || 6;
+      const color = graphColorSelect?.value || '#00FF87';
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+
+      const graphObj = {
+        type: 'graph',
+        x: Math.round(center.x - 210),
+        y: Math.round(center.y - 145),
+        width: 420,
+        height: 290,
+        funcStr: funcStr,
+        title: `y = ${funcStr}`,
+        color: color,
+        rangeX: [minX, maxX],
+        rangeY: [-4, 6]
+      };
+
+      engine.saveState();
+      engine.addObject(graphObj);
+      engine.selectedObject = graphObj;
+      graphModal.classList.add('hidden');
+      toast("📈 2D Funksiya grafigi doskaga muvaffaqiyatli chizildi!");
+    });
+  }
+
+  if (btnSolveMathSteps && graphFuncInput) {
+    btnSolveMathSteps.addEventListener('click', () => {
+      const expr = graphFuncInput.value.trim();
+      if (!expr) {
+        toast("Iltimos, yechish uchun tenglamani kiriting!");
+        graphFuncInput.focus();
+        return;
+      }
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      const solution = mathSolver.solve(expr);
+      if (solution && solution.steps && solution.steps.length > 0) {
+        mathSolver.renderSolutionOnBoard(solution, center.x - 240, center.y - 180);
+        graphModal.classList.add('hidden');
+        toast(`🧮 "${solution.type.toUpperCase()}" yechimi bosqichma-bosqich doskaga joylashtirildi!`);
+      } else {
+        toast("⚠️ Bu tenglama uchun yechim qadamlari hisoblanmadi.");
+      }
+    });
+  }
+
+  /* ==========================================================================
+     KOD <-> BLOK-SXEMA TRANSFORMASIYASI MODALI
+     ========================================================================== */
+  const codeBridgeModal = document.getElementById('codeBridgeModal');
+  const btnCodeModalTool = document.getElementById('btnCodeModalTool');
+  const btnCloseCodeBridge = document.getElementById('btnCloseCodeBridge');
+  const codeBridgeInput = document.getElementById('codeBridgeInput');
+  const codeLanguageSelect = document.getElementById('codeLanguageSelect');
+  const btnCodeToFlowchart = document.getElementById('btnCodeToFlowchart');
+  const btnFlowchartToCode = document.getElementById('btnFlowchartToCode');
+  const btnCodePresetEven = document.getElementById('btnCodePresetEven');
+  const btnCodePresetFactorial = document.getElementById('btnCodePresetFactorial');
+
+  if (btnCodeModalTool && codeBridgeModal) {
+    btnCodeModalTool.addEventListener('click', () => {
+      codeBridgeModal.classList.remove('hidden');
+      codeBridgeInput?.focus();
+    });
+  }
+  if (btnCloseCodeBridge && codeBridgeModal) {
+    btnCloseCodeBridge.addEventListener('click', () => codeBridgeModal.classList.add('hidden'));
+  }
+
+  if (btnCodePresetEven && codeBridgeInput) {
+    btnCodePresetEven.addEventListener('click', () => {
+      codeBridgeInput.value = `number = int(input())\nif number % 2 == 0:\n    print("Juft son")\nelse:\n    print("Toq son")`;
+    });
+  }
+  if (btnCodePresetFactorial && codeBridgeInput) {
+    btnCodePresetFactorial.addEventListener('click', () => {
+      codeBridgeInput.value = `n = 5\nfact = 1\nwhile n > 1:\n    fact = fact * n\n    n = n - 1\nprint(fact)`;
+    });
+  }
+
+  if (btnCodeToFlowchart && codeBridgeInput) {
+    btnCodeToFlowchart.addEventListener('click', () => {
+      const code = codeBridgeInput.value.trim();
+      if (!code) {
+        toast("Iltimos, kod matnini kiriting!");
+        codeBridgeInput.focus();
+        return;
+      }
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      codeBridge.codeToFlowchart(code, center.x, center.y - 180);
+      codeBridgeModal.classList.add('hidden');
+      toast("💻 Algoritm blok-sxemasi doskaga chizildi!");
+    });
+  }
+
+  if (btnFlowchartToCode && codeBridgeInput) {
+    btnFlowchartToCode.addEventListener('click', () => {
+      const lang = codeLanguageSelect ? codeLanguageSelect.value : 'python';
+      const code = codeBridge.flowchartToCode(lang);
+      codeBridgeInput.value = code;
+      toast(`✅ Doskadagi elementlardan ${lang.toUpperCase()} kodi tuzildi!`);
+    });
+  }
+
+  /* ==========================================================================
+     INTERAKTIV BILIM TESTI MODALI
+     ========================================================================== */
+  const quizModal = document.getElementById('quizModal');
+  const btnQuizModalTool = document.getElementById('btnQuizModalTool');
+  const btnCloseQuiz = document.getElementById('btnCloseQuiz');
+  const quizTopicInput = document.getElementById('quizTopicInput');
+  const quizQuestionInput = document.getElementById('quizQuestionInput');
+  const quizCorrectSelect = document.getElementById('quizCorrectSelect');
+  const quizOptA = document.getElementById('quizOptA');
+  const quizOptB = document.getElementById('quizOptB');
+  const quizOptC = document.getElementById('quizOptC');
+  const quizOptD = document.getElementById('quizOptD');
+  const quizExplanationInput = document.getElementById('quizExplanationInput');
+  const btnInsertQuizCard = document.getElementById('btnInsertQuizCard');
+
+  if (btnQuizModalTool && quizModal) {
+    btnQuizModalTool.addEventListener('click', () => {
+      quizModal.classList.remove('hidden');
+      quizQuestionInput?.focus();
+    });
+  }
+  if (btnCloseQuiz && quizModal) {
+    btnCloseQuiz.addEventListener('click', () => quizModal.classList.add('hidden'));
+  }
+
+  document.querySelectorAll('#quizModal .fpreset-btn[data-quiz]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = btn.getAttribute('data-quiz');
+      if (q === 'osi') {
+        quizTopicInput.value = 'TARMOQ PROTOKOLLARI';
+        quizQuestionInput.value = 'OSI modelining 3-qatlamida (Tarmoq qatlamida) qaysi protokol ishlaydi?';
+        quizOptA.value = 'TCP (Transport)';
+        quizOptB.value = 'IP (Internet Protocol)';
+        quizOptC.value = 'HTTP (Ilova)';
+        quizOptD.value = 'Ethernet (Kanal)';
+        quizCorrectSelect.value = '1';
+        quizExplanationInput.value = 'IP protokoli paketlarni marshrutlash bilan shug‘ullanadi va OSI ning 3-qatlamida ishlaydi.';
+      } else if (q === 'quad') {
+        quizTopicInput.value = 'MATEMATIKA & ALGEBRA';
+        quizQuestionInput.value = 'Kvadrat tenglama D > 0 bo‘lganda nechta haqiqiy ildizga ega bo‘ladi?';
+        quizOptA.value = '2 ta turli haqiqiy ildiz';
+        quizOptB.value = '1 ta karrali ildiz';
+        quizOptC.value = 'Haqiqiy ildizga ega emas';
+        quizOptD.value = 'Cheksiz ko‘p ildiz';
+        quizCorrectSelect.value = '0';
+        quizExplanationInput.value = 'Diskriminant musbat (D > 0) bo‘lsa, tenglama doimo 2 ta haqiqiy ildizga ega bo‘ladi.';
+      } else if (q === 'ohm') {
+        quizTopicInput.value = 'FIZIKA & ELEKTR';
+        quizQuestionInput.value = 'Zanjir qismi uchun Ohm qonunining to‘g‘ri ifodasini toping:';
+        quizOptA.value = 'I = U * R';
+        quizOptB.value = 'R = I * U';
+        quizOptC.value = 'I = U / R';
+        quizOptD.value = 'U = I / R';
+        quizCorrectSelect.value = '2';
+        quizExplanationInput.value = 'Tok kuchi (I) kuchlanishga (U) to‘g‘ri, qarshilikka (R) teskari proportsionaldir.';
+      } else if (q === 'dsa') {
+        quizTopicInput.value = 'ALGORITMLAR & DSA';
+        quizQuestionInput.value = 'Massivning ixtiyoriy indeksidagi elementiga kirish vaqti qanday baholanadi?';
+        quizOptA.value = 'O(n)';
+        quizOptB.value = 'O(1) — O‘zgarmas vaqt';
+        quizOptC.value = 'O(log n)';
+        quizOptD.value = 'O(n^2)';
+        quizCorrectSelect.value = '1';
+        quizExplanationInput.value = 'Massiv xotirada ketma-ket joylashgani uchun indeks orqali to‘g‘ridan-to‘g‘ri O(1) vaqtda o‘qiladi.';
+      }
+    });
+  });
+
+  if (btnInsertQuizCard) {
+    btnInsertQuizCard.addEventListener('click', () => {
+      const topic = quizTopicInput?.value.trim() || 'BILIM TESTI';
+      const question = quizQuestionInput?.value.trim();
+      if (!question) {
+        toast("Iltimos, savol matnini kiriting!");
+        quizQuestionInput?.focus();
+        return;
+      }
+      const options = [
+        quizOptA?.value.trim() || 'A) Variant',
+        quizOptB?.value.trim() || 'B) Variant',
+        quizOptC?.value.trim() || 'C) Variant',
+        quizOptD?.value.trim() || 'D) Variant'
+      ];
+      const correctIndex = parseInt(quizCorrectSelect?.value, 10) || 0;
+      const explanation = quizExplanationInput?.value.trim() || '';
+
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      const quizObj = {
+        type: 'quiz_card',
+        x: Math.round(center.x - 180),
+        y: Math.round(center.y - 130),
+        width: 360,
+        topic,
+        question,
+        options,
+        correctIndex,
+        selectedIndex: null,
+        revealed: false,
+        explanation
+      };
+
+      engine.saveState();
+      engine.addObject(quizObj);
+      engine.selectedObject = quizObj;
+      quizModal.classList.add('hidden');
+      toast("❓ Interaktiv test kartochkasi doskaga joylashtirildi!");
+    });
+  }
+
+  /* ==========================================================================
+     QO'LYOZMA OCR VA FORMULALARNI STANDARTLASHTIRISH
+     ========================================================================== */
+  const ocrFloatingToolbar = document.getElementById('ocrFloatingToolbar');
+  const btnOcrToFormula = document.getElementById('btnOcrToFormula');
+  const btnOcrToText = document.getElementById('btnOcrToText');
+  const btnCloseOcrFloating = document.getElementById('btnCloseOcrFloating');
+
+  const ocrConfirmModal = document.getElementById('ocrConfirmModal');
+  const btnCloseOcrConfirm = document.getElementById('btnCloseOcrConfirm');
+  const btnCancelOcr = document.getElementById('btnCancelOcr');
+  const btnApplyOcrResult = document.getElementById('btnApplyOcrResult');
+  const ocrSourcePreviewImg = document.getElementById('ocrSourcePreviewImg');
+  const ocrFormulaLivePreview = document.getElementById('ocrFormulaLivePreview');
+  const ocrLatexResultInput = document.getElementById('ocrLatexResultInput');
+  const ocrStatusBadge = document.getElementById('ocrStatusBadge');
+
+  let activeOcrStrokes = null;
+  let activeOcrBounds = null;
+
+  window.setActiveOcrStrokes = (strokes, bounds) => {
+    activeOcrStrokes = strokes;
+    activeOcrBounds = bounds;
+  };
+
+  if (btnCloseOcrFloating) {
+    btnCloseOcrFloating.addEventListener('click', () => {
+      toolManager.hideOcrFloatingToolbar();
+    });
+  }
+
+  // 1. Qo'lyozmani KaTeX formulaga aylantirish
+  if (btnOcrToFormula) {
+    btnOcrToFormula.addEventListener('click', async () => {
+      const strokes = toolManager.selectedStrokesForOcr;
+      if (!strokes || strokes.length === 0) {
+        toast("⚠️ Tanish uchun chizmalar tanlanmadi.");
+        return;
+      }
+
+      toast("⏳ Qo'lda yozilgan formula tahlil qilinmoqda...");
+      try {
+        const res = await handwritingOCR.recognizeFormula(strokes);
+        activeOcrStrokes = strokes;
+        activeOcrBounds = res.bounds;
+
+        if (ocrSourcePreviewImg) ocrSourcePreviewImg.src = res.previewUrl;
+        if (ocrLatexResultInput) ocrLatexResultInput.value = res.latex;
+        if (ocrStatusBadge) {
+          ocrStatusBadge.innerHTML = res.mode === 'gemini'
+            ? `✨ Google Gemini Vision orqali 99% aniqlikda tanildi`
+            : `⚡ Avtonom evristik qolip orqali tanildi (Offline)`;
+        }
+
+        // KaTeX render
+        if (ocrFormulaLivePreview) {
+          if (typeof window.katex !== 'undefined') {
+            try {
+              ocrFormulaLivePreview.innerHTML = window.katex.renderToString(res.latex, { displayMode: true, throwOnError: false });
+            } catch (e) {
+              ocrFormulaLivePreview.textContent = res.latex;
+            }
+          } else {
+            ocrFormulaLivePreview.textContent = res.latex;
+          }
+        }
+
+        toolManager.hideOcrFloatingToolbar();
+        ocrConfirmModal?.classList.remove('hidden');
+      } catch (err) {
+        toast(`❌ Xatolik: ${err.message}`);
+      }
+    });
+  }
+
+  // Jonli KaTeX tahrirlash (LaTeX input o'zgarganda)
+  if (ocrLatexResultInput && ocrFormulaLivePreview) {
+    ocrLatexResultInput.addEventListener('input', () => {
+      const val = ocrLatexResultInput.value.trim();
+      if (typeof window.katex !== 'undefined') {
+        try {
+          ocrFormulaLivePreview.innerHTML = window.katex.renderToString(val, { displayMode: true, throwOnError: false });
+        } catch (e) {
+          ocrFormulaLivePreview.textContent = val;
+        }
+      } else {
+        ocrFormulaLivePreview.textContent = val;
+      }
+    });
+  }
+
+  // Formulani doskaga tatbiq etish (Replace strokes with Word-style KaTeX formula)
+  if (btnApplyOcrResult) {
+    btnApplyOcrResult.addEventListener('click', () => {
+      if (!activeOcrStrokes || !activeOcrBounds) return;
+      const finalLatex = ocrLatexResultInput ? ocrLatexResultInput.value.trim() : '';
+      if (!finalLatex) {
+        toast("Iltimos, formula LaTeX kodini kiriting!");
+        return;
+      }
+
+      const formulaObj = {
+        type: 'formula',
+        x: activeOcrBounds.x,
+        y: activeOcrBounds.y,
+        width: Math.max(140, activeOcrBounds.width),
+        height: Math.max(56, activeOcrBounds.height),
+        latex: finalLatex,
+        color: toolManager.currentColor || (engine.theme === 'light' ? '#0F172A' : '#FFFFFF'),
+        fontSize: 26
+      };
+
+      engine.replaceStrokesWithObject(activeOcrStrokes, formulaObj);
+      ocrConfirmModal?.classList.add('hidden');
+      activeOcrStrokes = null;
+      activeOcrBounds = null;
+      toast("✅ Qo'lyozma Word standart formulasiga o'tkazildi!");
+    });
+  }
+
+  if (btnCloseOcrConfirm) btnCloseOcrConfirm.addEventListener('click', () => ocrConfirmModal?.classList.add('hidden'));
+  if (btnCancelOcr) btnCancelOcr.addEventListener('click', () => ocrConfirmModal?.classList.add('hidden'));
+
+  // 2. Qo'lyozmani standart matnga aylantirish
+  if (btnOcrToText) {
+    btnOcrToText.addEventListener('click', async () => {
+      const strokes = toolManager.selectedStrokesForOcr;
+      if (!strokes || strokes.length === 0) return;
+
+      toast("⏳ Yozuv matni tahlil qilinmoqda...");
+      try {
+        const res = await handwritingOCR.recognizeText(strokes);
+        const bounds = res.bounds;
+
+        const textObj = {
+          type: 'text',
+          x: bounds.x,
+          y: bounds.y,
+          text: res.text,
+          color: toolManager.currentColor || '#F8FAFC',
+          fontSize: 20
+        };
+
+        engine.replaceStrokesWithObject(strokes, textObj);
+        toolManager.hideOcrFloatingToolbar();
+        toast(`📝 Yozuv matnga aylantirildi: "${res.text}"`);
+      } catch (err) {
+        toast(`❌ Xatolik: ${err.message}`);
+      }
+    });
+  }
+
+  /* ==========================================================================
      AI YON PANELI (AI DRAWER)
      ========================================================================== */
   const aiDrawer = document.getElementById('aiDrawer');
@@ -442,16 +864,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === templatesModal) templatesModal.classList.add('hidden');
     if (e.target === exportModal) exportModal.classList.add('hidden');
     if (e.target === formulaModal) formulaModal.classList.add('hidden');
+    if (e.target === graphModal) graphModal.classList.add('hidden');
+    if (e.target === codeBridgeModal) codeBridgeModal.classList.add('hidden');
+    if (e.target === quizModal) quizModal.classList.add('hidden');
+    if (e.target === ocrConfirmModal) ocrConfirmModal.classList.add('hidden');
   });
 
-  // Global hotkey: Ctrl+I orqali AI panelini ochish
+  // Global hotkeys
   window.addEventListener('keydown', (e) => {
+    if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+    // Ctrl+I: AI panelini ochish
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
       e.preventDefault();
       aiDrawer.classList.toggle('open');
       if (aiDrawer.classList.contains('open')) {
         aiPromptInput.focus();
       }
+    }
+    // G: 2D Funksiya grafigi modali
+    else if (e.key.toLowerCase() === 'g') {
+      btnGraphModalTool?.click();
+    }
+    // C: Kod <-> Blok-sxema modali
+    else if (e.key.toLowerCase() === 'c') {
+      btnCodeModalTool?.click();
+    }
+    // Q: Quiz kartochkasi modali
+    else if (e.key.toLowerCase() === 'q') {
+      btnQuizModalTool?.click();
     }
   });
 });
