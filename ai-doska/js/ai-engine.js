@@ -92,6 +92,9 @@ class AIBoardEngine {
     if (p.includes('swot') || p.includes('kuchli') || p.includes('zaif')) {
       return BoardTemplates.swot.generate(ox - 240, oy - 160);
     }
+    if (p.includes('formula') || p.includes('matematik') || p.includes('fizika') || p.includes('tenglama') || p.includes('pifagor') || p.includes('eynshteyn') || p.includes('integral')) {
+      return BoardTemplates.math_formulas.generate(ox - 320, oy - 180);
+    }
 
     // 2. Mindmap (Aqliy daraxt) generatsiyasi
     if (genType === 'mindmap' || p.includes('mindmap') || p.includes('aql') || p.includes('reja')) {
@@ -283,6 +286,7 @@ Qo'llab-quvvatlanadigan ob'ekt tiplari:
 - {"type": "line", "x1": raqam, "y1": raqam, "x2": raqam, "y2": raqam, "color": hex, "strokeWidth": 2}
 - {"type": "sticky", "x": raqam, "y": raqam, "width": 180, "height": 130, "bgColor": "#FEF08A"|"#BAE6FD"|"#BBF7D0", "textColor": "#1E293B", "text": "matn"}
 - {"type": "text", "x": raqam, "y": raqam, "text": "matn", "color": "#F8FAFC", "fontSize": 14, "fontWeight": 700}
+- {"type": "formula", "x": raqam, "y": raqam, "latex": "a^2 + b^2 = c^2", "color": "#38BDF8", "fontSize": 26}
 - {"type": "net_node", "x": raqam, "y": raqam, "nodeType": "router"|"switch"|"server"|"cloud"|"pc", "label": "nomi", "ip": "192.168.1.x"}
 
 Markaz koordinatasi: (${ox}, ${oy}). Ob'ektlar bir-birini yopib qo'ymasligi, chiroyli tartibda joylashishi kerak.`;
@@ -327,6 +331,7 @@ Markaz koordinatasi: (${ox}, ${oy}). Ob'ektlar bir-birini yopib qo'ymasligi, chi
     const textPieces = [];
     objects.forEach(obj => {
       if (obj.type === 'text' && obj.text) textPieces.push(`[Matn]: ${obj.text}`);
+      else if (obj.type === 'formula' && obj.latex) textPieces.push(`[Matematik Formula]: ${obj.latex}`);
       else if (obj.type === 'sticky' && obj.text) textPieces.push(`[Stiker]: ${obj.text}`);
       else if (obj.type === 'net_node') textPieces.push(`[Tarmoq Qurilmasi]: ${obj.label} (${obj.nodeType.toUpperCase()}) - ${obj.ip || ''}`);
       else if (['rect', 'circle', 'diamond'].includes(obj.type)) textPieces.push(`[Shakl]: ${obj.type}`);

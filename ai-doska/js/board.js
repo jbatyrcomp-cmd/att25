@@ -258,8 +258,9 @@ class WhiteboardEngine {
         return this.distToSegment(px, py, obj.x1, obj.y1, obj.x2, obj.y2) <= (obj.strokeWidth / 2 + 10);
 
       case 'text':
-        return px >= obj.x - pad && px <= obj.x + (obj.width || 120) + pad &&
-               py >= obj.y - pad && py <= obj.y + (obj.height || 36) + pad;
+      case 'formula':
+        return px >= obj.x - pad && px <= obj.x + (obj.width || 160) + pad &&
+               py >= obj.y - pad && py <= obj.y + (obj.height || 64) + pad;
 
       case 'net_node':
         return px >= obj.x - 30 && px <= obj.x + 30 &&
@@ -336,9 +337,10 @@ class WhiteboardEngine {
       if (obj.type === 'net_node') this.drawNetworkNode(ctx, obj);
     }
 
-    // e) Matnlar (oldinda)
+    // e) Matnlar va Formulalar (oldinda)
     for (const obj of this.objects) {
       if (obj.type === 'text') this.drawText(ctx, obj);
+      else if (obj.type === 'formula') this.drawFormula(ctx, obj);
     }
 
     // 4. Tanlangan ob'ekt atrofidagi ramka (Selection Bounding Box)
@@ -618,7 +620,7 @@ class WhiteboardEngine {
     else if (obj.nodeType === 'firewall') icon = '🛡️';
     ctx.fillText(icon, x, y);
 
-    // Label & IP
+    // Labels
     ctx.fillStyle = '#F8FAFC';
     ctx.font = '700 11px "Plus Jakarta Sans", sans-serif';
     ctx.textAlign = 'center';
@@ -630,6 +632,105 @@ class WhiteboardEngine {
       ctx.font = '500 10px "JetBrains Mono", monospace';
       ctx.fillText(obj.ip, x, y + size + 20);
     }
+    ctx.restore();
+  }
+
+  // 4b. Matematik Formula (KaTeX & Canvas Math)
+  drawFormula(ctx, obj) {
+    if (!obj.latex) return;
+    ctx.save();
+
+    const color = obj.color || '#38BDF8';
+    const fontSize = obj.fontSize || 26;
+
+    // Ob'ekt o'lchamini dinamik baholash
+    const textLen = obj.latex.length;
+    const estWidth = Math.max(160, Math.min(640, textLen * (fontSize * 0.55) + 48));
+    const estHeight = Math.max(64, fontSize * 2.5);
+    obj.width = obj.width || estWidth;
+    obj.height = obj.height || estHeight;
+
+    // Fon qutisi (Chiroyli doska ramkasi)
+    ctx.fillStyle = this.theme === 'chalkboard' ? 'rgba(10, 27, 20, 0.75)' : (this.theme === 'dark' ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.95)');
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(obj.x, obj.y, obj.width, obj.height, 8);
+    ctx.fill();
+    ctx.stroke();
+
+    // Yuqori burchakdagi kichik '∑ FORMULA' nishoni
+    ctx.fillStyle = color;
+    ctx.font = '700 9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText('∑ FORMULA', obj.x + 8, obj.y + 6);
+
+    // KaTeX orqali SVG tasvir tayyorlash yoki qayta foydalanish
+    if (typeof window !== 'undefined' && window.katex) {
+      if (!obj._img || obj._lastLatex !== obj.latex || obj._lastColor !== color || obj._lastSize !== fontSize) {
+        try {
+          const rawHtml = window.katex.renderToString(obj.latex, { displayMode: true, throwOnError: false });
+          const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="${obj.width}" height="${obj.height}">
+            <foreignObject width="100%" height="100%">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="color:${color}; font-size:${fontSize}px; display:flex; align-items:center; justify-content:center; height:100%; margin:0; padding:0; font-family:serif;">
+                ${rawHtml}
+              </div>
+            </foreignObject>
+          </svg>`;
+          const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const img = new Image();
+          img.onload = () => {
+            obj._img = img;
+            URL.revokeObjectURL(url);
+          };
+          img.src = url;
+          obj._lastLatex = obj.latex;
+          obj._lastColor = color;
+          obj._lastSize = fontSize;
+        } catch (e) {
+          console.warn('Formula render error:', e);
+        }
+      }
+
+      if (obj._img && obj._img.complete && obj._img.naturalWidth > 0) {
+        ctx.drawImage(obj._img, obj.x, obj.y + 6, obj.width, obj.height - 6);
+        ctx.restore();
+        return;
+      }
+    }
+
+    // Fallback Canvas Math matni
+    ctx.fillStyle = color;
+    ctx.font = `600 ${fontSize}px "Cambria Math", "Latin Modern Math", "Georgia", serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    let cleanText = obj.latex
+      .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1 / $2)')
+      .replace(/\\sqrt\{([^}]+)\}/g, '√($1)')
+      .replace(/\\sum_\{([^}]+)\}\^\{([^}]+)\}/g, '∑($1..$2)')
+      .replace(/\\int_\{([^}]+)\}\^\{([^}]+)\}/g, '∫($1..$2)')
+      .replace(/\\int/g, '∫')
+      .replace(/\\sum/g, '∑')
+      .replace(/\\lim/g, 'lim')
+      .replace(/\\alpha/g, 'α')
+      .replace(/\\beta/g, 'β')
+      .replace(/\\pi/g, 'π')
+      .replace(/\\theta/g, 'θ')
+      .replace(/\\omega/g, 'ω')
+      .replace(/\\Delta/g, 'Δ')
+      .replace(/\\lambda/g, 'λ')
+      .replace(/\\infty/g, '∞')
+      .replace(/\\pm/g, '±')
+      .replace(/\\cdot/g, '·')
+      .replace(/\\log_2/g, 'log₂')
+      .replace(/\^2/g, '²')
+      .replace(/\^3/g, '³')
+      .replace(/_i/g, 'ᵢ');
+
+    ctx.fillText(cleanText, obj.x + obj.width / 2, obj.y + obj.height / 2 + 4);
     ctx.restore();
   }
 
@@ -702,7 +803,8 @@ class WhiteboardEngine {
           height: Math.abs(obj.y2 - obj.y1)
         };
       case 'text':
-        return { x: obj.x, y: obj.y, width: obj.width || 80, height: obj.height || 24 };
+      case 'formula':
+        return { x: obj.x, y: obj.y, width: obj.width || 180, height: obj.height || 64 };
       case 'net_node':
         return { x: obj.x - 30, y: obj.y - 30, width: 60, height: 60 };
       case 'stroke': {

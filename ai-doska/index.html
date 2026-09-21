@@ -11,6 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- KaTeX for high-precision LaTeX formula rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
   <link rel="stylesheet" href="css/style.css">
   <meta name="theme-color" content="#0F172A">
 </head>
@@ -268,6 +272,14 @@
         <span class="tool-shortcut">N</span>
       </button>
     </div>
+
+    <!-- Matematik Formula (Formula / fx) -->
+    <button class="tool-btn" id="btnFormulaTool" data-tool="formula" title="Matematik Formula qo'yish (F)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <path d="M4 4h16v2.5h-8.8l4.4 5.5-4.4 5.5H20V20H4v-2.5l5.2-6.5L4 4.5V4z"/>
+      </svg>
+      <span class="tool-shortcut">F</span>
+    </button>
 
     <!-- Tarmoq Tugunlari (ATT-25 Network Nodes) -->
     <div class="tool-popover-anchor">
@@ -527,6 +539,91 @@
               <input type="file" id="importJsonInput" accept=".json" style="display:none;">
             </label>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       8. MATEMATIK FORMULA MODALI (FORMULA EDITOR MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="formulaModal">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">MATEMATIKA & FIZIKA</span>
+          <h2>Matematik Formula Muharriri</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseFormula">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Jonli Ko'rinish (Live Preview Box) -->
+        <div class="formula-preview-container">
+          <span class="formula-preview-label">Jonli Ko'rinish:</span>
+          <div id="formulaLivePreview" class="formula-preview-box">
+            $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+          </div>
+        </div>
+
+        <!-- LaTeX Matn Kiritish -->
+        <div class="formula-input-group">
+          <label for="formulaLatexInput" class="formula-label">LaTeX / Matematik Ifoda:</label>
+          <textarea id="formulaLatexInput" class="formula-textarea" rows="2" placeholder="Masalan: x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}">x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</textarea>
+        </div>
+
+        <!-- Tezkor Ramzlar Paneli (Virtual Keypad) -->
+        <div class="formula-keypad-section">
+          <span class="formula-keypad-title">Tezkor Ramzlar va Amallar:</span>
+          <div class="formula-keys-grid">
+            <button class="fkey-btn" data-insert="\frac{a}{b}">\frac{a}{b} (Kasr)</button>
+            <button class="fkey-btn" data-insert="x^{2}">x² (Daraja)</button>
+            <button class="fkey-btn" data-insert="x_{i}">xᵢ (Indeks)</button>
+            <button class="fkey-btn" data-insert="\sqrt{x}">√x (Ildiz)</button>
+            <button class="fkey-btn" data-insert="\int_{a}^{b} f(x)dx">∫ Integral</button>
+            <button class="fkey-btn" data-insert="\sum_{i=1}^{n} x_i">∑ Yig'indi</button>
+            <button class="fkey-btn" data-insert="\lim_{x \to \infty}">lim Chegara</button>
+            <button class="fkey-btn" data-insert="\pm">±</button>
+            <button class="fkey-btn" data-insert="\alpha">α Alpha</button>
+            <button class="fkey-btn" data-insert="\beta">β Beta</button>
+            <button class="fkey-btn" data-insert="\pi">π Pi</button>
+            <button class="fkey-btn" data-insert="\lambda">λ Lambda</button>
+            <button class="fkey-btn" data-insert="\omega">ω Omega</button>
+            <button class="fkey-btn" data-insert="\Delta">Δ Delta</button>
+            <button class="fkey-btn" data-insert="\infty">∞</button>
+            <button class="fkey-btn" data-insert="\approx">≈</button>
+          </div>
+        </div>
+
+        <!-- Mashhur Qoliplar (Preset Formulas) -->
+        <div class="formula-presets-section">
+          <span class="formula-keypad-title">Mashhur Qonun va Formulalar:</span>
+          <div class="formula-presets-grid">
+            <button class="fpreset-btn" data-latex="a^2 + b^2 = c^2">📐 Pifagor: a² + b² = c²</button>
+            <button class="fpreset-btn" data-latex="E = mc^2">⚡ Eynshteyn: E = mc²</button>
+            <button class="fpreset-btn" data-latex="I = \frac{U}{R}">🔌 Ohm: I = U / R</button>
+            <button class="fpreset-btn" data-latex="C = B \log_2(1 + \text{SNR})">📡 Shennon Axborot Sig'imi</button>
+            <button class="fpreset-btn" data-latex="x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}">🧮 Kvadrat Tenglama</button>
+            <button class="fpreset-btn" data-latex="e^{i\pi} + 1 = 0">✨ Eyler Tengligi: e^(iπ)+1=0</button>
+            <button class="fpreset-btn" data-latex="F = m \cdot a">🍎 Nyuton II: F = m · a</button>
+            <button class="fpreset-btn" data-latex="P = U \cdot I = I^2 \cdot R">💡 Elektr Quvvati: P = U · I</button>
+          </div>
+        </div>
+
+        <!-- Amallar qatori: O'lcham va Joylashtirish -->
+        <div class="formula-actions-row">
+          <div class="formula-size-pick">
+            <span>O'lcham:</span>
+            <select id="formulaFontSize" class="ai-select" style="width: auto;">
+              <option value="20">Kichik (20px)</option>
+              <option value="26" selected>O'rtacha (26px)</option>
+              <option value="34">Katta (34px)</option>
+              <option value="44">Juda katta (44px)</option>
+            </select>
+          </div>
+          <button id="btnInsertFormula" class="btn-ai-primary" style="padding: 10px 22px; font-size: 13px;">
+            <span>Doskaga Joylashtirish</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
     </div>

@@ -245,7 +245,63 @@ const BoardTemplates = {
 
       return objects;
     }
+  },
+
+  // 7. Matematika va Fizika Asosiy Formulalari
+  math_formulas: {
+    id: 'math_formulas',
+    title: '📐 Matematika va Fizika Formulalari',
+    desc: 'Pifagor, Eynshteyn (E=mc²), Ohm qonuni, Kvadrat tenglama, Eyler tengligi, Shennon sig‘imi',
+    icon: '📐',
+    generate: (originX = -320, originY = -220) => {
+      const objects = [];
+      const formulas = [
+        { latex: 'a^2 + b^2 = c^2', title: 'Pifagor Teoremasi', color: '#10B981', desc: 'To‘g‘ri burchakli uchburchak' },
+        { latex: 'E = mc^2', title: 'Eynshteyn Formulasi', color: '#38BDF8', desc: 'Massa va energiya' },
+        { latex: 'I = \\frac{U}{R}', title: 'Ohm Qonuni', color: '#F59E0B', desc: 'Zanjir qismidagi tok kuchi' },
+        { latex: 'x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}', title: 'Kvadrat Tenglama', color: '#EF4444', desc: 'Ildizlarni topish formulasi' },
+        { latex: 'C = B \\log_2(1 + \\text{SNR})', title: 'Shennon Sig‘imi', color: '#A855F7', desc: 'Tarmoq kanal o‘tkazuvchanligi' },
+        { latex: 'e^{i\\pi} + 1 = 0', title: 'Eyler Tengligi', color: '#EC4899', desc: 'Matematikaning 5 ta muhim soni' }
+      ];
+
+      const cols = 2;
+      const w = 310;
+      const h = 100;
+      const gapX = 30;
+      const gapY = 24;
+
+      formulas.forEach((f, i) => {
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        const x = originX + col * (w + gapX);
+        const y = originY + row * (h + gapY);
+
+        objects.push({
+          type: 'formula',
+          x: x,
+          y: y,
+          width: w,
+          height: h,
+          latex: f.latex,
+          color: f.color,
+          fontSize: 24
+        });
+
+        objects.push({
+          type: 'text',
+          x: x + 10,
+          y: y + h - 20,
+          text: `• ${f.title}: ${f.desc}`,
+          color: '#94A3B8',
+          fontSize: 11,
+          fontWeight: 600
+        });
+      });
+
+      return objects;
+    }
   }
 };
 
 window.BoardTemplates = BoardTemplates;
+

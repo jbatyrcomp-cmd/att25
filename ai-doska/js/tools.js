@@ -474,6 +474,12 @@ class ToolManager {
   }
 
   setTool(toolName) {
+    if (toolName === 'formula') {
+      const modal = document.getElementById('formulaModal');
+      if (modal) modal.classList.remove('hidden');
+      return;
+    }
+
     this.currentTool = toolName;
 
     // Asosiy toolbar tugmalarini yangilash
@@ -551,6 +557,7 @@ class ToolManager {
       else if (key === 's') this.setTool(this.currentShape || 'shape_rect');
       else if (key === 't') this.setTool('text');
       else if (key === 'n') this.setTool('sticky');
+      else if (key === 'f') document.getElementById('btnFormulaTool')?.click();
       else if (key === 'l') this.setTool('laser');
     });
 

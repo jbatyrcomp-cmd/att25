@@ -204,6 +204,102 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
+     MATEMATIK FORMULA MODALI
+     ========================================================================== */
+  const formulaModal = document.getElementById('formulaModal');
+  const btnFormulaTool = document.getElementById('btnFormulaTool');
+  const btnCloseFormula = document.getElementById('btnCloseFormula');
+  const formulaLatexInput = document.getElementById('formulaLatexInput');
+  const formulaLivePreview = document.getElementById('formulaLivePreview');
+  const btnInsertFormula = document.getElementById('btnInsertFormula');
+  const formulaFontSize = document.getElementById('formulaFontSize');
+
+  const updateFormulaPreview = () => {
+    if (!formulaLivePreview || !formulaLatexInput) return;
+    const latex = formulaLatexInput.value.trim();
+    if (!latex) {
+      formulaLivePreview.innerHTML = '<span style="opacity:0.4;">Formula kiriting...</span>';
+      return;
+    }
+    if (typeof window !== 'undefined' && window.katex) {
+      try {
+        formulaLivePreview.innerHTML = window.katex.renderToString(latex, { displayMode: true, throwOnError: false });
+        return;
+      } catch (e) {
+        // Fallback
+      }
+    }
+    formulaLivePreview.textContent = latex;
+  };
+
+  if (btnFormulaTool && formulaModal) {
+    btnFormulaTool.addEventListener('click', () => {
+      formulaModal.classList.remove('hidden');
+      updateFormulaPreview();
+      formulaLatexInput?.focus();
+    });
+  }
+
+  if (btnCloseFormula && formulaModal) {
+    btnCloseFormula.addEventListener('click', () => formulaModal.classList.add('hidden'));
+  }
+
+  if (formulaLatexInput) {
+    formulaLatexInput.addEventListener('input', updateFormulaPreview);
+  }
+
+  // Keypad tugmalari
+  document.querySelectorAll('#formulaModal .fkey-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const snip = btn.getAttribute('data-insert');
+      if (!formulaLatexInput || !snip) return;
+      const start = formulaLatexInput.selectionStart;
+      const end = formulaLatexInput.selectionEnd;
+      const text = formulaLatexInput.value;
+      formulaLatexInput.value = text.substring(0, start) + snip + text.substring(end);
+      formulaLatexInput.selectionStart = formulaLatexInput.selectionEnd = start + snip.length;
+      formulaLatexInput.focus();
+      updateFormulaPreview();
+    });
+  });
+
+  // Preset formulalar
+  document.querySelectorAll('#formulaModal .fpreset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const latex = btn.getAttribute('data-latex');
+      if (!formulaLatexInput || !latex) return;
+      formulaLatexInput.value = latex;
+      updateFormulaPreview();
+    });
+  });
+
+  // Doskaga joylashtirish
+  if (btnInsertFormula && formulaLatexInput) {
+    btnInsertFormula.addEventListener('click', () => {
+      const latex = formulaLatexInput.value.trim();
+      if (!latex) {
+        toast("Iltimos, formula kiriting!");
+        formulaLatexInput.focus();
+        return;
+      }
+      const size = parseInt(formulaFontSize?.value, 10) || 26;
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+
+      engine.addObject({
+        type: 'formula',
+        x: Math.round(center.x - 140),
+        y: Math.round(center.y - 40),
+        latex: latex,
+        color: toolManager.currentColor || '#38BDF8',
+        fontSize: size
+      });
+
+      formulaModal.classList.add('hidden');
+      toast("📐 Matematik formula doskaga joylashtirildi!");
+    });
+  }
+
+  /* ==========================================================================
      AI YON PANELI (AI DRAWER)
      ========================================================================== */
   const aiDrawer = document.getElementById('aiDrawer');
@@ -345,6 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {
     if (e.target === templatesModal) templatesModal.classList.add('hidden');
     if (e.target === exportModal) exportModal.classList.add('hidden');
+    if (e.target === formulaModal) formulaModal.classList.add('hidden');
   });
 
   // Global hotkey: Ctrl+I orqali AI panelini ochish
