@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="chalkboard">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATT-25 | AI Doska — Interaktiv Aqlli Maydon</title>
+  <meta name="description" content="ATT-25 yo'nalishining mustaqil AI Doskasi: cheksiz canvas, diagrammalar, tarmoq sxemalari, stikerlar va Sun'iy Intellekt yordamchisi.">
+
+  <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono, Oswald -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="theme-color" content="#0F172A">
+</head>
+<body class="board-body">
+
+  <!-- ==========================================================================
+       1. TOP NAVIGATION / UTILITY BAR
+       ========================================================================== -->
+  <header class="top-nav-bar">
+    <div class="nav-left">
+      <a href="../index.html" class="portal-back-btn" title="Asosiy ATT-25 Portaliga qaytish">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Portal</span>
+      </a>
+
+      <div class="brand-divider"></div>
+
+      <div class="board-branding">
+        <div class="board-logo-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <path d="M8 12h8M12 8v8"/>
+          </svg>
+        </div>
+        <div class="board-title-group">
+          <span class="board-app-name">AI DOSKA</span>
+          <input type="text" id="boardTitleInput" class="board-title-input" value="Akademik Loyiha #1" title="Doska nomini o'zgartirish uchun bosing">
+        </div>
+      </div>
+    </div>
+
+    <!-- Markaziy boshqaruv: Undo/Redo & Zoom -->
+    <div class="nav-center">
+      <div class="btn-cluster">
+        <button id="btnUndo" class="nav-icon-btn" title="Orqaga qaytarish (Ctrl+Z)" disabled>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 7v6h6M3 13a9 9 0 0 1 15.36-6.36L21 9"/>
+          </svg>
+        </button>
+        <button id="btnRedo" class="nav-icon-btn" title="Oldinga qaytarish (Ctrl+Y)" disabled>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 7v6h-6M21 13a9 9 0 0 0-15.36-6.36L3 9"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <div class="zoom-cluster">
+        <button id="btnZoomOut" class="nav-icon-btn" title="Uzoqlashtirish (Ctrl+ -)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+        <button id="btnZoomReset" class="zoom-indicator" title="100% ga qaytarish">100%</button>
+        <button id="btnZoomIn" class="nav-icon-btn" title="Yaqinlashtirish (Ctrl+ +)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <!-- Grid Rejimi -->
+      <div class="dropdown-wrapper">
+        <button id="btnGridSelect" class="nav-text-btn" title="Doska to'ri">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span id="currentGridLabel">Nuqtalar</span>
+        </button>
+        <div class="dropdown-menu" id="gridMenu">
+          <button class="dropdown-item active" data-grid="dots">⚫ Nuqtali to'r</button>
+          <button class="dropdown-item" data-grid="lines">📏 Katakli to'r</button>
+          <button class="dropdown-item" data-grid="clean">⬜ Toza doska</button>
+        </div>
+      </div>
+
+      <!-- Mavzu Tanlash -->
+      <div class="dropdown-wrapper">
+        <button id="btnThemeSelect" class="nav-text-btn" title="Doska mavzusi">
+          <span class="theme-badge-dot"></span>
+          <span id="currentThemeLabel">Maktab Doskasi</span>
+        </button>
+        <div class="dropdown-menu" id="themeMenu">
+          <button class="dropdown-item active" data-theme="chalkboard">🟢 Maktab Doskasi (Chalkboard)</button>
+          <button class="dropdown-item" data-theme="dark">⬛ Cyber Dark (Matrix)</button>
+          <button class="dropdown-item" data-theme="light">⚪ Zamonaviy Oq (Whiteboard)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- O'ng tomondagi amallar: Shablonlar, AI, Eksport -->
+    <div class="nav-right">
+      <button id="btnOpenTemplates" class="action-pill-btn" title="Tayyor shablonlar (OSI, Mindmap, Algoritmlar)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        <span>Shablonlar</span>
+      </button>
+
+      <button id="btnToggleAi" class="action-pill-btn ai-sparkle-btn" title="AI Assistentni ochish / yopish">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z"/>
+        </svg>
+        <span>AI Assistent</span>
+        <span class="ai-badge-live">ON</span>
+      </button>
+
+      <button id="btnOpenExport" class="action-pill-btn primary-btn" title="Doskani rasm yoki fayl sifatida saqlash">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        <span>Eksport</span>
+      </button>
+
+      <button id="btnClearBoard" class="nav-icon-btn danger-hover" title="Doskani tozalash">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       2. CANVAS WORKSPACE (CHEKSIZ MAYDON)
+       ========================================================================== -->
+  <main class="canvas-viewport" id="canvasViewport">
+    <canvas id="whiteboardCanvas"></canvas>
+    
+    <!-- Matn va stikerlarni jonli tahrirlash qatlami -->
+    <div id="textEditorOverlay" class="text-editor-overlay hidden">
+      <textarea id="inlineTextInput" spellcheck="false" placeholder="Matn kiriting..."></textarea>
+    </div>
+
+    <!-- Laser pointer effekti qatlami -->
+    <div id="laserPointerDot" class="laser-dot hidden"></div>
+  </main>
+
+  <!-- ==========================================================================
+       3. FLOATING MAIN TOOLBAR (ASOSIY ASBOBLAR PANELI)
+       ========================================================================== -->
+  <aside class="floating-toolbar" id="mainToolbar" role="toolbar" aria-label="Doska asboblari">
+    <!-- Tanlash / Ko'chirish -->
+    <button class="tool-btn active" data-tool="select" title="Tanlash va Ko'chirish (V)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+        <path d="M4 2l11 11-4.5.5 3 6.5-2.5 1-3-6.5L4 18V2z"/>
+      </svg>
+      <span class="tool-shortcut">V</span>
+    </button>
+
+    <!-- Erkin harakatlanish (Hand / Pan) -->
+    <button class="tool-btn" data-tool="pan" title="Doskani siljitish / Qo'l vositasi (Space / H)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v7M10 10.5V6a2 2 0 0 0-4 0v8a7 7 0 0 0 14 0v-4a2 2 0 0 0-4 0"/>
+      </svg>
+      <span class="tool-shortcut">H</span>
+    </button>
+
+    <div class="toolbar-divider"></div>
+
+    <!-- Qalam (Freehand Pen) -->
+    <button class="tool-btn" data-tool="pen" title="Qalam / Bo'r (P)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+        <path d="M2 2l7.586 7.586"/>
+        <circle cx="11" cy="11" r="2"/>
+      </svg>
+      <span class="tool-shortcut">P</span>
+    </button>
+
+    <!-- Marker / Highlighter -->
+    <button class="tool-btn" data-tool="highlighter" title="Marker / Yorqinlashtiruvchi (M)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 11l-6 6v3h3l6-6"/>
+        <path d="M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>
+      </svg>
+      <span class="tool-shortcut">M</span>
+    </button>
+
+    <!-- O'chirg'ich (Eraser) -->
+    <button class="tool-btn" data-tool="eraser" title="O'chirg'ich (E)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 20H7L3 16c-1-1-1-2.5 0-3.5L14 2c1-1 2.5-1 3.5 0l4 4c1 1 1 2.5 0 3.5L10 21"/>
+        <path d="M6 13l7 7"/>
+      </svg>
+      <span class="tool-shortcut">E</span>
+    </button>
+
+    <div class="toolbar-divider"></div>
+
+    <!-- Shakllar popoveri -->
+    <div class="tool-popover-anchor">
+      <button class="tool-btn" id="btnShapeTool" data-tool="shape_rect" title="Geometrik Shakllar (S)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" id="currentShapeIcon">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+        </svg>
+        <span class="tool-shortcut">S</span>
+      </button>
+      <div class="popover-menu" id="shapeMenu">
+        <button class="popover-item active" data-shape="shape_rect" title="To'rtburchak">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          <span>To'rtburchak</span>
+        </button>
+        <button class="popover-item" data-shape="shape_circle" title="Aylana / Ellips">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+          <span>Aylana</span>
+        </button>
+        <button class="popover-item" data-shape="shape_diamond" title="Romb">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 22 12 12 22 2 12"/></svg>
+          <span>Romb</span>
+        </button>
+        <button class="popover-item" data-shape="shape_triangle" title="Uchburchak">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 3 22 21 2 21"/></svg>
+          <span>Uchburchak</span>
+        </button>
+        <button class="popover-item" data-shape="shape_line" title="To'g'ri chiziq">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="20" x2="20" y2="4"/></svg>
+          <span>Chiziq</span>
+        </button>
+        <button class="popover-item" data-shape="shape_arrow" title="Yo'naltirilgan Strelka">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="10 5 19 5 19 14"/></svg>
+          <span>Strelka</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Matn vositasi -->
+    <button class="tool-btn" data-tool="text" title="Matn yozish (T)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="4 7 4 4 20 4 20 7"/>
+        <line x1="9" y1="20" x2="15" y2="20"/>
+        <line x1="12" y1="4" x2="12" y2="20"/>
+      </svg>
+      <span class="tool-shortcut">T</span>
+    </button>
+
+    <!-- Rangli Stiker (Sticky Note) -->
+    <div class="tool-popover-anchor">
+      <button class="tool-btn" data-tool="sticky" title="Stiker qo'yish (N)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/>
+          <path d="M15 3v6h6"/>
+        </svg>
+        <span class="tool-shortcut">N</span>
+      </button>
+    </div>
+
+    <!-- Tarmoq Tugunlari (ATT-25 Network Nodes) -->
+    <div class="tool-popover-anchor">
+      <button class="tool-btn" id="btnNetNodeTool" title="Tarmoq Qurilmasi joylashtirish">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="6" height="6" rx="1"/>
+          <rect x="16" y="2" width="6" height="6" rx="1"/>
+          <rect x="9" y="16" width="6" height="6" rx="1"/>
+          <path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/>
+          <line x1="12" y1="13" x2="12" y2="16"/>
+        </svg>
+      </button>
+      <div class="popover-menu" id="netNodeMenu">
+        <button class="popover-item" data-node="router">🌐 Router (Marshrutizator)</button>
+        <button class="popover-item" data-node="switch">🔀 Switch (Kommutator)</button>
+        <button class="popover-item" data-node="server">🖥️ Server Klasteri</button>
+        <button class="popover-item" data-node="cloud">☁️ Internet / Bulut</button>
+        <button class="popover-item" data-node="pc">💻 Ishchi Stansiya (PC)</button>
+        <button class="popover-item" data-node="firewall">🛡️ Xavfsizlik Devori (Firewall)</button>
+      </div>
+    </div>
+
+    <!-- Lazer ko'rsatkich (Laser Pointer) -->
+    <button class="tool-btn" data-tool="laser" title="Lazer ko'rsatkich (L)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        <line x1="12" y1="2" x2="12" y2="6"/>
+        <line x1="12" y1="18" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="6" y2="12"/>
+        <line x1="18" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span class="tool-shortcut">L</span>
+    </button>
+  </aside>
+
+  <!-- ==========================================================================
+       4. CONTEXTUAL STYLE BAR (RANG, QALINLIK, SHRIFT SOZLAMALARI)
+       ========================================================================== -->
+  <aside class="floating-stylebar" id="styleBar">
+    <div class="style-group">
+      <span class="style-label">Rang:</span>
+      <div class="color-palette" id="colorPalette">
+        <button class="color-swatch active" data-color="#00FF87" style="background:#00FF87;" title="Matrix Yashil"></button>
+        <button class="color-swatch" data-color="#38BDF8" style="background:#38BDF8;" title="Neon Moviy"></button>
+        <button class="color-swatch" data-color="#FACC15" style="background:#FACC15;" title="Kuyosh Sariq"></button>
+        <button class="color-swatch" data-color="#F43F5E" style="background:#F43F5E;" title="Pushti Qizil"></button>
+        <button class="color-swatch" data-color="#A855F7" style="background:#A855F7;" title="Binafsha"></button>
+        <button class="color-swatch" data-color="#FFFFFF" style="background:#FFFFFF;" title="Oq Bo'r"></button>
+        <button class="color-swatch" data-color="#64748B" style="background:#64748B;" title="Kulrang"></button>
+      </div>
+    </div>
+
+    <div class="style-divider"></div>
+
+    <div class="style-group">
+      <span class="style-label">Qalinlik:</span>
+      <div class="size-selector" id="strokeSizeSelector">
+        <button class="size-btn" data-size="2" title="Yupqa"><span style="height:2px;"></span></button>
+        <button class="size-btn active" data-size="4" title="O'rtacha"><span style="height:4px;"></span></button>
+        <button class="size-btn" data-size="8" title="Qalin"><span style="height:8px;"></span></button>
+        <button class="size-btn" data-size="16" title="Katta"><span style="height:12px;"></span></button>
+      </div>
+    </div>
+
+    <div class="style-divider"></div>
+
+    <div class="style-group" id="fillModeGroup">
+      <span class="style-label">Shakl:</span>
+      <button class="toggle-pill-btn active" id="btnToggleFill" title="Ichini bo'yash">
+        <span class="fill-preview-box"></span>
+        <span id="fillLabel">Shaffof</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       5. SMART AI ASSISTANT DRAWER (AI YON PANELI)
+       ========================================================================== -->
+  <aside class="ai-drawer" id="aiDrawer">
+    <div class="ai-drawer-header">
+      <div class="ai-header-title">
+        <div class="ai-avatar-pulse">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Aqlli AI Assistent</h3>
+          <span class="ai-status-text">⚡ Doska tahlilchisi va generatori</span>
+        </div>
+      </div>
+      <button class="drawer-close-btn" id="btnCloseAi" title="Yopish">&times;</button>
+    </div>
+
+    <!-- AI Tab navigation -->
+    <div class="ai-tabs">
+      <button class="ai-tab active" data-tab="aiGenerate">🪄 Generatsiya</button>
+      <button class="ai-tab" data-tab="aiAnalyze">🔍 Doska Tahlili</button>
+      <button class="ai-tab" data-tab="aiSettings">⚙️ Sozlamalar</button>
+    </div>
+
+    <!-- TAB 1: Diagramma & Mindmap Generatori -->
+    <div class="ai-pane active" id="paneAiGenerate">
+      <div class="ai-input-card">
+        <label for="aiPromptInput" class="ai-card-label">AI ga buyruq bering (Prompt):</label>
+        <textarea id="aiPromptInput" class="ai-textarea" rows="3" placeholder="Masalan: Menga 3 qatlamli tarmoq arxitekturasi sxemasini chizib ber..."></textarea>
+        <div class="ai-actions-row">
+          <select id="aiGenType" class="ai-select">
+            <option value="diagram">📊 Blok Sxema</option>
+            <option value="mindmap">🧠 Mindmap (Aqliy daraxt)</option>
+            <option value="sticky_cluster">📑 Stikerlar to'plami</option>
+            <option value="network">🌐 Tarmoq Topologiyasi</option>
+          </select>
+          <button id="btnAiRunGenerate" class="btn-ai-primary">
+            <span>Doskaga Chizish</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="ai-section-title">⚡ Tezkor Akademik Mavzular:</div>
+      <div class="ai-chips-grid">
+        <button class="ai-chip" data-preset="osi">🌐 OSI 7 Qatlamli Modeli</button>
+        <button class="ai-chip" data-preset="star_net">⭐ Yulduzsimon Tarmoq Sxemasi</button>
+        <button class="ai-chip" data-preset="client_server">💻 Client-Server Arxitekturasi</button>
+        <button class="ai-chip" data-preset="tcp_handshake">🤝 TCP 3-Way Handshake</button>
+        <button class="ai-chip" data-preset="flowchart">🔄 Algoritm Blok-Sxemasi</button>
+        <button class="ai-chip" data-preset="swot">📈 SWOT Tahlil Matritsasi</button>
+        <button class="ai-chip" data-preset="net_security">🛡️ Tarmoq Xavfsizligi Mindmapi</button>
+      </div>
+
+      <div id="aiGenStatus" class="ai-status-box hidden"></div>
+    </div>
+
+    <!-- TAB 2: Doska Tahlili va Xulosa -->
+    <div class="ai-pane" id="paneAiAnalyze">
+      <div class="ai-analyze-intro">
+        <p>AI doskadagi barcha chizmalar, stikerlar va yozuvlarni ko'rib chiqib, ularning ilmiy konspektini tayyorlaydi yoki xatolarini tekshiradi.</p>
+        <div class="ai-analyze-buttons">
+          <button id="btnAiSummarize" class="btn-ai-secondary">
+            <span>📝 Konspekt Tuzish</span>
+          </button>
+          <button id="btnAiExplain" class="btn-ai-secondary">
+            <span>💡 Doskani Tushuntirish</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="ai-result-area" id="aiAnalysisResult">
+        <div class="ai-empty-state">
+          <span>Doskada biror sxema yoki yozuvlar yarating va yuqoridagi tugmalardan birini bosing.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Sozlamalar va Gemini API -->
+    <div class="ai-pane" id="paneAiSettings">
+      <div class="ai-setting-block">
+        <label class="setting-label">AI Ishlash Rejimi:</label>
+        <div class="setting-radio-group">
+          <label class="radio-card">
+            <input type="radio" name="aiMode" value="offline" checked>
+            <div class="radio-content">
+              <strong>⚡ Tezkor Avtonom Rejim</strong>
+              <span>Internet yoki API kalit talab qilinmaydi. O'rnatilgan aqlli shablonlar asosida ishlaydi.</span>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="aiMode" value="gemini">
+            <div class="radio-content">
+              <strong>✨ Google Gemini API (Cheksiz AI)</strong>
+              <span>Har qanday erkin mavzuda jonli diagrammalar chizish uchun Gemini kalitingizni ulang.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="ai-setting-block" id="geminiKeyBlock" style="opacity: 0.5;">
+        <label for="geminiApiKeyInput" class="setting-label">Google Gemini API Kaliti:</label>
+        <input type="password" id="geminiApiKeyInput" class="ai-input" placeholder="AIzaSy...">
+        <span class="setting-hint">Kalit faqat brauzeringizning LocalStorage-da saqlanadi va serverga jo'natilmaydi.</span>
+        <button id="btnSaveApiKey" class="btn-save-key">Kalitni Saqlash</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       6. SHABLONLAR MODALI (TEMPLATES MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="templatesModal">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">KUTUBXONA</span>
+          <h2>Tayyor O'quv va Tarmoq Shablonlari</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseTemplates">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Dars yoki loyihangiz uchun kerakli shablonni tanlang. U darhol doskaga professional tarzda joylashtiriladi:</p>
+        <div class="templates-grid" id="templatesGrid">
+          <!-- Shablon kartochkalari js/templates.js orqali render bo'ladi -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       7. EKSPORT MODALI (EXPORT MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="exportModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">SAQLASH</span>
+          <h2>Doskani Eksport Qilish</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseExport">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="export-options-grid">
+          <div class="export-card" id="exportPngCard">
+            <div class="export-icon">🖼️</div>
+            <div class="export-info">
+              <h4>PNG Formatida Rasm</h4>
+              <p>Prezentatsiya va konspektlar uchun tiniq rasm (oq yoki to'q fon bilan)</p>
+            </div>
+            <button class="btn-export-action" id="btnExportPng">Yuklab Olish</button>
+          </div>
+
+          <div class="export-card" id="exportSvgCard">
+            <div class="export-icon">📐</div>
+            <div class="export-info">
+              <h4>SVG Vektorli Shakl</h4>
+              <p>Sifatini yo'qotmaydigan cheksiz masshtabli vektor chizma</p>
+            </div>
+            <button class="btn-export-action" id="btnExportSvg">Yuklab Olish</button>
+          </div>
+
+          <div class="export-card" id="exportJsonCard">
+            <div class="export-icon">💾</div>
+            <div class="export-info">
+              <h4>JSON Loyiha Fayli</h4>
+              <p>Doskani keyinchalik qayta ochish va davom ettirish uchun to'liq saqlash</p>
+            </div>
+            <button class="btn-export-action" id="btnExportJson">Faylni Saqlash</button>
+          </div>
+
+          <div class="export-card" id="importJsonCard">
+            <div class="export-icon">📂</div>
+            <div class="export-info">
+              <h4>JSON Loyihani Ochish</h4>
+              <p>Oldin saqlangan doska faylini yuklash</p>
+            </div>
+            <label class="btn-export-action file-label">
+              Fayl Tanlash
+              <input type="file" id="importJsonInput" accept=".json" style="display:none;">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       8. MINIMAP (PASTKI O'NG BURCHAKDA DOSKA HARITASI)
+       ========================================================================== -->
+  <div class="minimap-container" id="minimapContainer" title="Doska maydoni mini-xaritasi">
+    <canvas id="minimapCanvas" width="140" height="90"></canvas>
+    <div class="minimap-viewport" id="minimapViewport"></div>
+  </div>
+
+  <!-- Toast Bildirishnomalar -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/board.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/ai-engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
