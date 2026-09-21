@@ -38,24 +38,25 @@ body.sim-center-body {
 .sim-hub-topbar {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 10px 20px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+  gap: 12px;
+  flex-wrap: nowrap;
 }
 
 .sim-hub-brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .sim-hub-crest {
-  width: 36px;
-  height: 42px;
+  width: 34px;
+  height: 40px;
   background: linear-gradient(145deg, #0D2616, #061109);
   border: 1.5px solid var(--sim-accent);
   clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
@@ -63,22 +64,24 @@ body.sim-center-body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 12px rgba(0, 230, 118, 0.35);
+  flex-shrink: 0;
 }
 
 .sim-hub-crest svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   fill: var(--sim-accent);
 }
 
 .sim-hub-title {
   font-family: var(--font-editorial);
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 800;
   color: #FFF;
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .sim-hub-title span {
@@ -86,43 +89,49 @@ body.sim-center-body {
 }
 
 .sim-hub-subtitle {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--text-dim);
   font-weight: 600;
   letter-spacing: 0.8px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Tabs Navigation */
 .sim-tabs-strip {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   background: var(--bg-surface-2, #050D07);
   padding: 4px;
   border: 1px solid var(--sim-line);
   border-radius: 6px;
   overflow-x: auto;
   max-width: 100%;
+  flex-shrink: 1;
+  min-width: 0;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.sim-tabs-strip::-webkit-scrollbar { display: none; }
 
 .hub-tab-btn {
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-dim);
   font-family: var(--font-editorial);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  padding: 8px 16px;
+  letter-spacing: 0.5px;
+  padding: 7px 12px;
   border-radius: 4px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .hub-tab-btn:hover {
@@ -149,7 +158,8 @@ body.sim-center-body {
 .hub-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .hub-btn {
@@ -157,9 +167,9 @@ body.sim-center-body {
   border: 1px solid var(--sim-line);
   color: #FFF;
   font-family: var(--font-display);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 7px 14px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
@@ -167,11 +177,34 @@ body.sim-center-body {
   align-items: center;
   gap: 6px;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .hub-btn:hover {
   border-color: var(--sim-accent);
   color: var(--sim-accent);
+}
+
+/* Hub Responsive Breakpoints */
+@media (max-width: 1200px) {
+  .sim-hub-topbar { padding: 6px 12px; gap: 8px; }
+  .hub-tab-btn { padding: 6px 10px; font-size: 11px; }
+  .sim-hub-title { font-size: 16px; }
+  .sim-hub-subtitle { display: none; }
+}
+
+@media (max-width: 900px) {
+  .sim-hub-crest { width: 28px; height: 32px; }
+  .sim-hub-crest svg { width: 14px; height: 14px; }
+  .sim-hub-title { font-size: 14px; }
+  .hub-btn .hub-btn-lbl { display: none; }
+  .hub-btn { padding: 6px 8px; }
+  .hub-tab-btn { padding: 5px 8px; font-size: 10.5px; }
+}
+
+@media (max-width: 640px) {
+  .sim-hub-brand div { display: none; }
+  .sim-hub-topbar { padding: 4px 6px; gap: 6px; }
 }
 
 /* Main Tab Content Viewport */

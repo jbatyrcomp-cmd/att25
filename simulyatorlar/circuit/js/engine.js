@@ -261,6 +261,15 @@ class CircuitEngine {
             } else if (comp.type === 'capacitor') {
               // Equivalent conductance for capacitor transient (R_int = 20 ohm)
               g = 1 / 20;
+            } else if (comp.type === 'ammeter') {
+              // Ampermetr — deyarli nol qarshilik (0.001Ω)
+              g = 1 / (comp.resistance || 0.001);
+            } else if (comp.type === 'voltmeter') {
+              // Voltmetr — deyarli cheksiz qarshilik (1MΩ)
+              g = 1 / (comp.resistance || 1000000);
+            } else if (comp.type === 'diode') {
+              // Diod — bir yo'nalishli o'tkazish
+              g = comp.getConductance ? comp.getConductance(node.voltage - otherNode.voltage) : 1e-9;
             } else if (comp.getConductance) {
               g = comp.getConductance(node.voltage - otherNode.voltage);
             } else {
@@ -452,7 +461,7 @@ class CircuitEngine {
           comp.current = iCap;
           const capVal = comp.capacitance || 0.0001; // 100 uF
           comp.chargeVoltage = (comp.chargeVoltage || 0) + (iCap * dt) / capVal;
-        } else if (comp.type === 'led' || comp.type === 'diode') {
+        } else if (comp.type === 'led') {
           const vf = comp.forwardVoltage || 1.8;
           if (comp.voltageDrop > vf) {
             const rd = comp.internalResistance || 15;
@@ -461,11 +470,44 @@ class CircuitEngine {
             comp.current = 0;
           }
           // LED burnout protection / pop (> 45mA)
-          if (comp.type === 'led' && comp.current > 0.045) {
+          if (comp.current > 0.045) {
             comp.isBlown = true;
             comp.isBurned = true;
             comp.current = 0;
           }
+        } else if (comp.type === 'diode') {
+          // 1N4007 yarimo'tkazgich diod: Vf = 0.7V
+          const vf = comp.forwardVoltage || 0.7;
+          if (comp.voltageDrop > vf) {
+            const rd = comp.internalResistance || 2;
+            comp.current = (comp.voltageDrop - vf) / rd;
+          } else {
+            comp.current = 0; // Teskari yo'nalish — tok o'tmaydi
+          }
+        } else if (comp.type === 'ammeter') {
+          // Ampermetr: serie ulanadi, ichki qarshilik ≈ 0 (0.001Ω)
+          // Zanjirdagi tok kuchini O'lchaydi
+          comp.current = comp.voltageDrop / (comp.resistance || 0.001);
+          comp.overloaded = (Math.abs(comp.current) > (comp.maxCurrent || 5.0));
+        } else if (comp.type === 'voltmeter') {
+          // Voltmetr: parallel ulanadi, ichki qarshilik ≈ ∞ (1MΩ)
+          // Zanjirga deyarli ta'sir qilmaydi
+          comp.current = comp.voltageDrop / (comp.resistance || 1000000);
+          comp.overloaded = (Math.abs(comp.voltageDrop) > (comp.maxVoltage || 50.0));
+        } else if (comp.type === 'dc_source') {
+          // Sozlanuvchi DC manba — batareya kabi ishlaydi
+          let loadCurrent = 0;
+          const n1 = this.nodeMap.get(comp.pins[0].id);
+          if (n1) {
+            for (const pId of n1.pins) {
+              if (pId === comp.pins[0].id) continue;
+              const { comp: c2 } = this.getPinById(pId);
+              if (c2 && c2 !== comp && c2.current) {
+                loadCurrent += Math.abs(c2.current);
+              }
+            }
+          }
+          comp.current = loadCurrent;
         } else if (comp.type === 'buzzer') {
           comp.current = comp.voltageDrop > 1.5 ? comp.voltageDrop / (comp.resistance || 80) : 0;
         } else if (comp.type === 'motor') {

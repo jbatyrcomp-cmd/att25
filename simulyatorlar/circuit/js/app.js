@@ -207,6 +207,13 @@ function addComponent(type, x, y) {
   else if (type === 'seven_segment') comp = new CircuitComponents.SevenSegment(x, y);
   else if (type === 'timer_555') comp = new CircuitComponents.Timer555(x, y);
   else if (type === 'arduino_uno') comp = new ArduinoComponent(x, y);
+  // === YANGI KOMPONENTLAR ===
+  else if (type === 'ammeter') comp = new CircuitComponents.Ammeter(x, y);
+  else if (type === 'voltmeter') comp = new CircuitComponents.Voltmeter(x, y);
+  else if (type === 'diode') comp = new CircuitComponents.Diode(x, y);
+  else if (type === 'dc_source_5v') comp = new CircuitComponents.DcSource(x, y, 5.0);
+  else if (type === 'dc_source_12v') comp = new CircuitComponents.DcSource(x, y, 12.0);
+  else if (type === 'dc_source_3v3') comp = new CircuitComponents.DcSource(x, y, 3.3);
 
   if (comp) {
     engine.addComponent(comp);
@@ -456,8 +463,92 @@ function selectComponent(comp) {
       openArduinoCodeModal(comp);
     });
     inspProps.appendChild(grp);
+
+  } else if (comp.type === 'ammeter') {
+    const r = comp.getReading ? comp.getReading() : { val: '0.00', unit: 'mA' };
+    const grp = document.createElement('div');
+    grp.className = 'prop-group';
+    const aColor = comp.overloaded ? '#EF4444' : '#38BDF8';
+    grp.innerHTML = `
+      <div class="prop-label">Ampermetr O'qishi</div>
+      <div style="font-size:1.6rem;font-weight:800;color:${aColor};letter-spacing:-1px;margin:8px 0;font-family:'JetBrains Mono',monospace;">
+        ${comp.overloaded ? 'OL' : r.val} <span style="font-size:1rem;">${comp.overloaded ? 'OVERLOAD' : r.unit}</span>
+      </div>
+      <div style="font-size:0.73rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:6px;">
+        Ketma-ket (serie) ulash kerak<br>
+        A+ = tok kelish tomoni, A- = tok ketish tomoni<br>
+        Ichki R: <b>0.001 Ohm</b> | Max: <b>${comp.maxCurrent || 5}A</b>
+      </div>
+    `;
+    inspProps.appendChild(grp);
+
+  } else if (comp.type === 'voltmeter') {
+    const r = comp.getReading ? comp.getReading() : { val: '0.000', unit: 'V' };
+    const grp = document.createElement('div');
+    grp.className = 'prop-group';
+    const vColor = comp.overloaded ? '#EF4444' : '#A78BFA';
+    grp.innerHTML = `
+      <div class="prop-label">Voltmetr O'qishi</div>
+      <div style="font-size:1.6rem;font-weight:800;color:${vColor};letter-spacing:-1px;margin:8px 0;font-family:'JetBrains Mono',monospace;">
+        ${comp.overloaded ? 'OL' : r.val} <span style="font-size:1rem;">${comp.overloaded ? 'OVERLOAD' : r.unit}</span>
+      </div>
+      <div style="font-size:0.73rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:6px;">
+        Element ustiga parallel ulang<br>
+        V+ = yuqori potensial, V- = GND tomoni<br>
+        Ichki R: <b>1 MOhm</b> | Max: <b>${comp.maxVoltage || 50}V</b>
+      </div>
+    `;
+    inspProps.appendChild(grp);
+
+  } else if (comp.type === 'diode') {
+    const isCond = (comp.voltageDrop || 0) > (comp.forwardVoltage || 0.7);
+    const grp = document.createElement('div');
+    grp.className = 'prop-group';
+    grp.innerHTML = `
+      <div class="prop-label">Diod 1N4007 Holati</div>
+      <div style="font-size:1rem;font-weight:700;color:${isCond ? '#FBBF24' : '#64748B'};margin:8px 0;">
+        ${isCond ? 'To\'g\'ri yo\'nalish — tok o\'tyapti' : 'Teskari yo\'nalish — blok'}
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-muted);">
+        V_drop: <b style="color:var(--cyan);">${(comp.voltageDrop || 0).toFixed(3)} V</b><br>
+        Vf: <b>${comp.forwardVoltage || 0.7} V</b> | Rf: <b>${comp.internalResistance || 2} Ohm</b>
+      </div>
+    `;
+    inspProps.appendChild(grp);
+
+  } else if (comp.type === 'dc_source') {
+    const grp = document.createElement('div');
+    grp.className = 'prop-group';
+    grp.innerHTML = `
+      <div class="prop-label">Kuchlanish: <span>${comp.voltage} V</span></div>
+      <input type="range" class="prop-input" min="1" max="30" step="0.5" value="${comp.voltage}">
+      <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+        <button class="btn-action" style="font-size:0.72rem;padding:4px 10px;" data-v="3.3">3.3V</button>
+        <button class="btn-action" style="font-size:0.72rem;padding:4px 10px;" data-v="5">5V</button>
+        <button class="btn-action" style="font-size:0.72rem;padding:4px 10px;" data-v="9">9V</button>
+        <button class="btn-action" style="font-size:0.72rem;padding:4px 10px;" data-v="12">12V</button>
+        <button class="btn-action" style="font-size:0.72rem;padding:4px 10px;" data-v="24">24V</button>
+      </div>
+    `;
+    const spanEl = grp.querySelector('span');
+    const slider = grp.querySelector('input');
+    slider.addEventListener('input', (e) => {
+      comp.voltage = parseFloat(e.target.value);
+      comp.name = 'DC Manba ' + comp.voltage + 'V';
+      spanEl.textContent = comp.voltage + ' V';
+    });
+    grp.querySelectorAll('button[data-v]').forEach(b => {
+      b.addEventListener('click', () => {
+        comp.voltage = parseFloat(b.dataset.v);
+        comp.name = 'DC Manba ' + comp.voltage + 'V';
+        slider.value = comp.voltage;
+        spanEl.textContent = comp.voltage + ' V';
+      });
+    });
+    inspProps.appendChild(grp);
   }
 }
+
 
 if (btnCloseInspector) {
   btnCloseInspector.addEventListener('click', () => {

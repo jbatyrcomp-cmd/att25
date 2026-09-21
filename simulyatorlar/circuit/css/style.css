@@ -183,8 +183,13 @@ html, body {
 .top-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  flex-shrink: 1;
 }
+.top-actions::-webkit-scrollbar { display: none; }
 
 .btn-action {
   background: var(--bg-card);
@@ -193,13 +198,27 @@ html, body {
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 6px 11px;
   border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1280px) {
+  .top-actions .btn-action span { display: none; }
+  .btn-action { padding: 6px 9px; }
+  .brand-subtitle { display: none; }
+}
+
+@media (max-width: 768px) {
+  #topBar { padding: 0 8px; height: 50px; }
+  .brand-title { font-size: 0.95rem; }
+  .mode-btn { padding: 5px 8px; font-size: 0.75rem; }
 }
 
 .btn-action svg {

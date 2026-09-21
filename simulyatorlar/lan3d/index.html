@@ -43,24 +43,24 @@
   <div id="actions">
     <button class="actbtn" id="modelsCatalogBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.45); font-weight:700;" title="3D Qurilmalar va modellar katalogi">
       <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-      Qurilmalar
+      <span class="btn-lbl">Qurilmalar</span>
     </button>
     <a href="../index.html" class="actbtn" id="homeHubBtn" target="_top" style="color:var(--accent); border-color:var(--line-bright); text-decoration:none;" title="Simulyatorlar markaziga qaytish">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      Markaz
+      <span class="btn-lbl">Markaz</span>
     </a>
     <a href="../hardware3d/index.html" class="actbtn" id="hardwareSimBtn" target="_top" style="color:#00FF87; border-color:rgba(0,255,135,0.35); text-decoration:none;" title="Kompyuter sxemalari va atributlari simulyatori">
       <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
-      Hardware 3D
+      <span class="btn-lbl">Hardware 3D</span>
     </a>
     <a href="../../index.html" class="actbtn" id="homePortalBtn" target="_top" style="color:var(--wired); border-color:rgba(111,227,196,0.35); text-decoration:none;" title="Boshqaruv portaliga qaytish">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Portal
+      <span class="btn-lbl">Portal</span>
     </a>
     <div class="dropdown" id="topoDropdown">
       <button class="actbtn" id="topoBtn" style="color:var(--accent); border-color:rgba(255,180,84,0.35);" title="Tayyor bog'lanish shablonlari">
         <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-        Topologiyalar ▼
+        <span class="btn-lbl">Topologiyalar ▼</span>
       </button>
       <div class="topo-menu" id="topoMenu">
         <div class="topo-cat-title">🏢 Ko‘p Xonali Binolar (Multi-Room)</div>
@@ -93,12 +93,12 @@
     </div>
     <button class="actbtn" id="connectModeBtn">
       <svg viewBox="0 0 24 24"><path d="M6 12h12M14 8l4 4-4 4"/></svg>
-      Ulash rejimi
+      <span class="btn-lbl">Ulash rejimi</span>
     </button>
     <div class="dropdown" id="cableDropdown">
       <button class="actbtn" id="cableMenuBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Ulash uchun kabel turini tanlash">
         <svg viewBox="0 0 24 24"><path d="M12 2v6m0 8v6M8 8h8v8H8z"/></svg>
-        Kabellar ▼
+        <span class="btn-lbl">Kabellar ▼</span>
       </button>
       <div class="topo-menu" id="cableMenu" style="min-width:270px;">
         <div class="topo-cat-title">⚡ Avtomatik / MDI-X</div>
@@ -120,21 +120,21 @@
     </div>
     <button class="actbtn" id="wifiToolbarBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Wi-Fi boshqaruvi va sozlamalari">
       <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
-      Wi-Fi
+      <span class="btn-lbl">Wi-Fi</span>
     </button>
     <button class="actbtn" id="vlanToolbarBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="VLAN (Virtual LAN) va 802.1Q Port Boshqaruvi" onclick="openVlanModal()">
       <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" rx="1.5"/><rect x="13" y="2" width="9" height="9" rx="1.5"/><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><path d="M6.5 11v2m11-2v2M11 6.5h2m-2 11h2"/></svg>
-      VLAN
+      <span class="btn-lbl">VLAN</span>
     </button>
     <button class="actbtn" id="vlanViewToggleBtn" style="color:#6FE3C4; border-color:rgba(111,227,196,0.35);" title="3D Sahna VLAN Ranglari Ko'rinishini Yoqish/O'chirish" onclick="toggleVlanView()">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-      VLAN Ranglari
+      <span class="btn-lbl">VLAN Ranglari</span>
     </button>
     <!-- 🏗️ Xona Qurish Dropdown -->
     <div class="dropdown" id="roomDropdown">
       <button class="actbtn" id="roomBtn" style="color:#FBBF24; border-color:rgba(251,191,36,0.35);" title="3D Xona qurish va o'lchamlarini sozlash">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Xona ▼
+        <span class="btn-lbl">Xona ▼</span>
       </button>
       <div class="topo-menu" id="roomMenu" style="min-width:215px;">
         <div class="topo-cat-title">➕ Yangi Xona Qurish</div>
@@ -147,39 +147,39 @@
     </div>
     <button class="actbtn" id="msgModeBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Kompyuterlararo xabar yuborish">
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Xabar
+      <span class="btn-lbl">Xabar</span>
     </button>
     <button class="actbtn" id="pduModeBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.35);" title="Fayl va PDU paket almashish simulyatsiyasi">
       <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      Fayl / PDU
+      <span class="btn-lbl">Fayl / PDU</span>
     </button>
     <button class="actbtn" id="ciscoTerminalBtn" style="color:#00FF87; border-color:rgba(0,255,135,0.35);" title="Cisco IOS CLI Terminalini ochish">
       <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-      Cisco CLI
+      <span class="btn-lbl">Cisco CLI</span>
     </button>
     <button class="actbtn" id="simDockBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Cisco Packet Tracer simulyatsiya jurnali">
       <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Event List
+      <span class="btn-lbl">Event List</span>
     </button>
     <button class="actbtn" id="camModeBtn" style="color:#00FF87; border-color:rgba(0,255,135,0.4);" title="Virtual xona ichida 1-shaxs nomidan yurish (WASD)">
       <svg viewBox="0 0 24 24"><path d="M13 4v16M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>
-      Xonada Yurish (WASD)
+      <span class="btn-lbl">Xonada Yurish</span>
     </button>
     <button class="actbtn" id="lightModeBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.35);" title="Laboratoriya kunduzgi / Kiber qorong‘i yoritish rejimini almashtirish">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      Yorug‘lik
+      <span class="btn-lbl">Yorug‘lik</span>
     </button>
     <button class="actbtn" id="collabToolbarBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Bir nechta foydalanuvchi birgalikda ishlaydigan Umumiy Virtual Xona">
       <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Umumiy Xona
+      <span class="btn-lbl">Umumiy Xona</span>
     </button>
-    <button class="actbtn warn" id="clearBtn">
+    <button class="actbtn warn" id="clearBtn" title="Barcha qurilma va ulanishlarni tozalash">
       <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
-      Tozalash
+      <span class="btn-lbl">Tozalash</span>
     </button>
     <button class="actbtn" id="lanFsBtn" style="color:var(--accent); border-color:var(--line-bright);" title="Simulyatorni to'liq ekranga yoyish">
       <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-      To'liq Ekran
+      <span class="btn-lbl">To'liq Ekran</span>
     </button>
 
     <!-- ─── Yangi tugmalar guruhi ─── -->
@@ -196,26 +196,26 @@
     <!-- Loyiha (Saqlash/Yuklash) -->
     <button class="actbtn" id="storageBtn" style="color:#6FE3C4; border-color:rgba(111,227,196,0.35);" title="Loyihani saqlash / yuklash">
       <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-      Loyiha
+      <span class="btn-lbl">Loyiha</span>
     </button>
 
     <!-- Subnet Kalkulyator -->
     <button class="actbtn" id="subnetBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Subnet kalkulyator">
       <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="11" y2="18"/></svg>
-      Subnet
+      <span class="btn-lbl">Subnet</span>
     </button>
 
     <!-- Quiz rejimi -->
     <button class="actbtn" id="quizBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.35);" title="Bilim sinash rejimi">
       <svg viewBox="0 0 24 24"><path d="M12 22V12M12 12C10.9 12 10 11.1 10 10V4h4v6c0 1.1-.9 2-2 2z"/><path d="M16 7l-4-4-4 4"/><circle cx="12" cy="18" r="2"/></svg>
-      Quiz
+      <span class="btn-lbl">Quiz</span>
     </button>
 
     <!-- Eksport -->
     <div class="dropdown" style="position:relative;">
       <button class="actbtn" id="exportBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Eksport" onclick="openExportDropdown()">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Eksport ▼
+        <span class="btn-lbl">Eksport ▼</span>
       </button>
       <div class="topo-menu" id="exportDropdown" style="min-width:180px;">
         <button class="topo-item" onclick="captureSceneSnapshot()">📷 PNG Screenshot</button>

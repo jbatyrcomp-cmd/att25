@@ -39,7 +39,8 @@ html, body {
 /* Toolbar */
 #toolbar {
   position: fixed; top: 12px; left: 12px; right: 12px; z-index: 20;
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;
+  max-width: calc(100vw - 24px);
   pointer-events: none;
 }
 #toolbar > * { pointer-events: auto; }
@@ -47,23 +48,26 @@ html, body {
 #brand {
   background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent);
   padding: 6px 12px; border-radius: 4px; display: flex; flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6); flex-shrink: 0;
 }
-#brand b { font-family: 'Oswald', sans-serif; font-size: 15px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink); }
+#brand b { font-family: 'Oswald', sans-serif; font-size: 15px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
 #brand b span { color: var(--accent); }
-#brand span.sub { font-size: 9.5px; color: var(--ink-dim); font-weight: 600; }
+#brand span.sub { font-size: 9.5px; color: var(--ink-dim); font-weight: 600; white-space: nowrap; }
 
 /* Modes / Architecture Selector */
 #modesBar {
   display: flex; gap: 4px; background: var(--panel); border: 1px solid var(--line);
-  padding: 4px; border-radius: 6px; overflow-x: auto; max-width: 100%;
+  padding: 4px; border-radius: 6px; overflow-x: auto; flex-shrink: 1; min-width: 0;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
 }
+#modesBar::-webkit-scrollbar { display: none; }
+
 .modebtn {
   background: transparent; border: 1px solid transparent; color: var(--ink-dim);
   font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 11px;
   border-radius: 4px; cursor: pointer; white-space: nowrap; transition: all 0.15s ease;
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
 }
 .modebtn:hover { background: var(--panel-2); color: var(--ink); }
 .modebtn.active {
@@ -72,17 +76,40 @@ html, body {
 }
 
 /* Actions */
-#actions { display: flex; gap: 6px; margin-left: auto; }
+#actions {
+  display: flex; gap: 5px; margin-left: auto; flex-shrink: 0;
+  overflow-x: auto; scrollbar-width: none;
+}
+#actions::-webkit-scrollbar { display: none; }
+
 .actbtn {
-  display: flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 6px;
+  display: flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 6px;
   background: var(--panel); border: 1px solid var(--line); color: var(--ink);
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 700;
-  cursor: pointer; transition: all 0.15s; text-decoration: none; white-space: nowrap;
+  cursor: pointer; transition: all 0.15s; text-decoration: none; white-space: nowrap; flex-shrink: 0;
 }
-.actbtn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.actbtn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; }
 .actbtn:hover { border-color: var(--accent); color: var(--accent); }
 .actbtn.pulse-on { background: rgba(0, 230, 118, 0.15); border-color: var(--accent); color: var(--accent); }
 .actbtn.mini { font-size: 10.5px; padding: 4px 8px; }
+
+/* Responsive Media Queries for Hardware 3D */
+@media (max-width: 1250px) {
+  #actions .actbtn span { display: none; }
+  .actbtn { padding: 6px 8px; }
+  .modebtn { padding: 5px 8px; font-size: 10.5px; }
+}
+
+@media (max-width: 800px) {
+  #brand span.sub { display: none; }
+  #brand b { font-size: 13px; }
+  .modebtn { padding: 4px 6px; font-size: 10px; }
+}
+
+@media (max-width: 600px) {
+  #toolbar { top: 6px; left: 6px; right: 6px; gap: 4px; }
+  #brand b span { display: none; }
+}
 
 /* Attribute Inspector Panel */
 #panel {

@@ -1405,7 +1405,326 @@ window.CircuitComponents = {
   DcMotor: DcMotorComponent,
   LogicGate: LogicGateComponent,
   SevenSegment: SevenSegmentComponent,
-  Timer555: Timer555Component
+  Timer555: Timer555Component,
+  Ammeter: AmmeterComponent,
+  Voltmeter: VoltmeterComponent,
+  Diode: DiodeComponent,
+  DcSource: DcSourceComponent
 };
+
+
+/* ==========================================================================
+   17. AMMETER (AMPERMETR — Serie ulanadi, tok kuchini o'lchaydi)
+   Internal resistance: 0.001 Ω (amalda ideal)
+   ========================================================================== */
+class AmmeterComponent extends CircuitComponent {
+  constructor(x, y) {
+    super(null, 'ammeter', 'Ampermetr (A)', x, y);
+    this.resistance = 0.001; // ~0 Ohm — ideal ammeter
+    this.radius = 30;
+    this.maxCurrent = 5.0; // 5A maksimum o'lchash chegarasi
+    this.overloaded = false;
+    this.pins = [
+      { id: this.id + '_p', name: 'A+', relX: -28, relY: 0, voltage: 0 },
+      { id: this.id + '_n', name: 'A-', relX: 28, relY: 0, voltage: 0 }
+    ];
+  }
+
+  getConductance() {
+    return 1 / this.resistance; // Juda katta o'tkazuvchanlik
+  }
+
+  getReading() {
+    const I = Math.abs(this.current || 0);
+    this.overloaded = (I > this.maxCurrent);
+    if (I >= 1.0) return { val: I.toFixed(3), unit: 'A' };
+    if (I >= 0.001) return { val: (I * 1000).toFixed(2), unit: 'mA' };
+    return { val: (I * 1000000).toFixed(1), unit: 'µA' };
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    // Terminal wires
+    ctx.strokeStyle = this.overloaded ? '#EF4444' : '#38BDF8';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-28, 0); ctx.lineTo(-18, 0);
+    ctx.moveTo(18, 0); ctx.lineTo(28, 0);
+    ctx.stroke();
+
+    // Circle body
+    const glowColor = this.overloaded ? '#EF4444' : '#38BDF8';
+    ctx.strokeStyle = glowColor;
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = this.overloaded ? 12 : 6;
+    ctx.beginPath();
+    ctx.arc(0, 0, 18, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // "A" label
+    ctx.fillStyle = glowColor;
+    ctx.font = 'bold 14px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('A', 0, 0);
+
+    // Reading display
+    const r = this.getReading();
+    ctx.fillStyle = this.overloaded ? '#EF4444' : '#F8FAFC';
+    ctx.font = this.overloaded ? 'bold 9px JetBrains Mono' : '9px JetBrains Mono';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(this.overloaded ? '⚠ OL' : `${r.val} ${r.unit}`, 0, 36);
+
+    // Polarity markers
+    ctx.font = 'bold 10px JetBrains Mono';
+    ctx.fillStyle = '#00FF87';
+    ctx.textAlign = 'left';
+    ctx.fillText('+', -28, -6);
+    ctx.fillStyle = '#EF4444';
+    ctx.textAlign = 'right';
+    ctx.fillText('−', 28, -6);
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+/* ==========================================================================
+   18. VOLTMETER (VOLTMETR — Parallel ulanadi, kuchlanishni o'lchaydi)
+   Internal resistance: 1,000,000 Ω (10MΩ — ideal voltmeter)
+   ========================================================================== */
+class VoltmeterComponent extends CircuitComponent {
+  constructor(x, y) {
+    super(null, 'voltmeter', 'Voltmetr (V)', x, y);
+    this.resistance = 1000000; // 1MΩ — ideal voltmeter
+    this.radius = 30;
+    this.maxVoltage = 50.0; // 50V maksimum
+    this.overloaded = false;
+    this.pins = [
+      { id: this.id + '_p', name: 'V+', relX: -28, relY: 0, voltage: 0 },
+      { id: this.id + '_n', name: 'V-', relX: 28, relY: 0, voltage: 0 }
+    ];
+  }
+
+  getConductance() {
+    return 1 / this.resistance; // Juda kichik tok o'tkazadi
+  }
+
+  getReading() {
+    const V = this.voltageDrop || 0;
+    this.overloaded = (Math.abs(V) > this.maxVoltage);
+    if (Math.abs(V) >= 1.0) return { val: V.toFixed(3), unit: 'V' };
+    if (Math.abs(V) >= 0.001) return { val: (V * 1000).toFixed(2), unit: 'mV' };
+    return { val: '0.00', unit: 'V' };
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    // Terminal wires
+    ctx.strokeStyle = this.overloaded ? '#EF4444' : '#A78BFA';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-28, 0); ctx.lineTo(-18, 0);
+    ctx.moveTo(18, 0); ctx.lineTo(28, 0);
+    ctx.stroke();
+
+    // Circle body
+    const glowColor = this.overloaded ? '#EF4444' : '#A78BFA';
+    ctx.strokeStyle = glowColor;
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur = this.overloaded ? 12 : 6;
+    ctx.beginPath();
+    ctx.arc(0, 0, 18, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // "V" label
+    ctx.fillStyle = glowColor;
+    ctx.font = 'bold 14px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('V', 0, 0);
+
+    // Reading display
+    const r = this.getReading();
+    ctx.fillStyle = this.overloaded ? '#EF4444' : '#F8FAFC';
+    ctx.font = this.overloaded ? 'bold 9px JetBrains Mono' : '9px JetBrains Mono';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(this.overloaded ? '⚠ OL' : `${r.val} ${r.unit}`, 0, 36);
+
+    // Polarity markers
+    ctx.font = 'bold 10px JetBrains Mono';
+    ctx.fillStyle = '#00FF87';
+    ctx.textAlign = 'left';
+    ctx.fillText('+', -28, -6);
+    ctx.fillStyle = '#EF4444';
+    ctx.textAlign = 'right';
+    ctx.fillText('−', 28, -6);
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+/* ==========================================================================
+   19. DIODE (1N4007 Yarimo'tkazgich diod — faqat bir yo'nalishda tok o'tkazadi)
+   Forward voltage: 0.7V | Reverse blocking
+   ========================================================================== */
+class DiodeComponent extends CircuitComponent {
+  constructor(x, y) {
+    super(null, 'diode', 'Diod (1N4007)', x, y);
+    this.forwardVoltage = 0.7;   // Kремний diod Vf
+    this.internalResistance = 2; // Forward resistance (Ω)
+    this.radius = 30;
+    this.pins = [
+      { id: this.id + '_a', name: 'Anod (+)', relX: -28, relY: 0, voltage: 0 },
+      { id: this.id + '_k', name: 'Katod (-)', relX: 28, relY: 0, voltage: 0 }
+    ];
+  }
+
+  getConductance(vDrop) {
+    const v = (vDrop !== undefined) ? vDrop : (this.voltageDrop || 0);
+    if (v > this.forwardVoltage) {
+      return 1 / this.internalResistance; // Forward bias — tok o'tkazadi
+    }
+    return 1e-9; // Reverse bias — deyarli tok o'tkazmasmaydi
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    const isConducting = (this.voltageDrop || 0) > this.forwardVoltage;
+    const bodyColor = isConducting ? '#FBBF24' : '#94A3B8';
+    const glowIntensity = isConducting ? 8 : 0;
+
+    // Terminal wires
+    ctx.strokeStyle = '#38BDF8';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-28, 0); ctx.lineTo(-14, 0);
+    ctx.moveTo(14, 0); ctx.lineTo(28, 0);
+    ctx.stroke();
+
+    // Triangle (Anode body)
+    ctx.fillStyle = bodyColor;
+    ctx.strokeStyle = bodyColor;
+    ctx.lineWidth = 2;
+    ctx.shadowColor = bodyColor;
+    ctx.shadowBlur = glowIntensity;
+    ctx.beginPath();
+    ctx.moveTo(-14, -14);
+    ctx.lineTo(-14, 14);
+    ctx.lineTo(14, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Cathode bar
+    ctx.strokeStyle = bodyColor;
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.moveTo(14, -14); ctx.lineTo(14, 14);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Polarity labels
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '9px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('A', -16, -18);
+    ctx.fillText('K', 16, -18);
+
+    // Status
+    ctx.fillStyle = isConducting ? '#FBBF24' : '#475569';
+    ctx.font = '9px JetBrains Mono';
+    ctx.fillText(isConducting ? `↑ ${(this.current * 1000).toFixed(1)}mA` : 'BLOCK', 0, 32);
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+/* ==========================================================================
+   20. DC SOURCE (Sozlanuvchi to'g'ridan-to'g'ri tok manbai — 1..30V)
+   ========================================================================== */
+class DcSourceComponent extends CircuitComponent {
+  constructor(x, y, voltage = 5.0) {
+    super(null, 'dc_source', `DC Manba ${voltage}V`, x, y);
+    this.voltage = voltage;
+    this.radius = 34;
+    this.pins = [
+      { id: this.id + '_p', name: '+', relX: -26, relY: 0, voltage: 0 },
+      { id: this.id + '_n', name: '-', relX: 26, relY: 0, voltage: 0 }
+    ];
+  }
+
+  drawSchematic(ctx) {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate((this.rotation * Math.PI) / 180);
+
+    // Terminal wires
+    ctx.strokeStyle = '#F8FAFC';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(-36, 0); ctx.lineTo(-18, 0);
+    ctx.moveTo(18, 0); ctx.lineTo(36, 0);
+    ctx.stroke();
+
+    // Outer circle
+    ctx.strokeStyle = '#F97316';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = '#F97316';
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(0, 0, 18, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Inner symbol: sine-like wave replaced by DC flat line with arrow
+    ctx.strokeStyle = '#F97316';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-10, 0); ctx.lineTo(10, 0);
+    ctx.moveTo(6, -4); ctx.lineTo(10, 0); ctx.lineTo(6, 4);
+    ctx.stroke();
+
+    // Polarity
+    ctx.fillStyle = '#00FF87';
+    ctx.font = 'bold 11px JetBrains Mono';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('+', -26, -10);
+    ctx.fillStyle = '#EF4444';
+    ctx.fillText('−', 26, -10);
+
+    // Value
+    ctx.fillStyle = '#F8FAFC';
+    ctx.font = '11px Plus Jakarta Sans';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText(`${this.voltage}V DC`, 0, 36);
+
+    ctx.restore();
+  }
+
+  drawBreadboard(ctx) { this.drawSchematic(ctx); }
+}
+
+
 
 

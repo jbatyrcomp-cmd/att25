@@ -6,11 +6,12 @@ function initDeviceWifi(rec){
   const isRouter = (rec.type === 'router');
   const isLaptop = (rec.type === 'laptop');
   const isPhone = (rec.type === 'phone');
+  const isTablet = (rec.type === 'tablet');
   const isPrinter = (rec.type === 'printer');
 
   rec.wifi = {
     isAp: isRouter,
-    enabled: isRouter || isLaptop || isPhone || isPrinter,
+    enabled: isRouter || isLaptop || isPhone || isTablet || isPrinter,
     ssid: isRouter ? (rec.name.replace(/\s+/g, '_') + "_WiFi") : (rec.name.replace(/\s+/g, '_') + "_Hotspot"),
     security: 'wpa2',
     password: 'admin',
@@ -21,8 +22,8 @@ function initDeviceWifi(rec){
     hidden: false,
     connectedClients: [],
 
-    hasAdapter: isLaptop || isPhone || isPrinter,
-    adapterEnabled: isLaptop || isPhone || isPrinter,
+    hasAdapter: isLaptop || isPhone || isTablet || isPrinter,
+    adapterEnabled: isLaptop || isPhone || isTablet || isPrinter,
     connectedApId: null,
     connectedSsid: null,
     hotspotMode: false,
@@ -98,6 +99,111 @@ function renderSignalBarsHtml(bars){
     </div>
   `;
 }
+
+/* ==========================================================================
+   3D WI-FI COVERAGE RANGE VISUALIZER
+   ========================================================================== */
+let wifiRangeMesh = null;
+let wifiRangeDevId = null;
+
+function showWifiRangeRing(apId){
+  const dev = devices.get(apId);
+  if(!dev || !dev.wifi || !(dev.wifi.isAp || dev.wifi.hotspotMode)){
+    hideWifiRangeRing();
+    return;
+  }
+  wifiRangeDevId = apId;
+  const radius = dev.wifi.radius || 10;
+  const color = dev.wifi.hotspotMode ? 0xFFB454 : 0x38BDF8;
+
+  if(!wifiRangeMesh){
+    const geo = new THREE.RingGeometry(Math.max(0.1, radius - 0.08), radius, 64);
+    const mat = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.55,
+      side: THREE.DoubleSide
+    });
+    wifiRangeMesh = new THREE.Mesh(geo, mat);
+    wifiRangeMesh.rotation.x = -Math.PI / 2;
+    scene.add(wifiRangeMesh);
+  } else {
+    wifiRangeMesh.geometry.dispose();
+    wifiRangeMesh.geometry = new THREE.RingGeometry(Math.max(0.1, radius - 0.08), radius, 64);
+    wifiRangeMesh.material.color.setHex(color);
+    wifiRangeMesh.visible = true;
+  }
+  wifiRangeMesh.position.set(dev.group.position.x, 0.04, dev.group.position.z);
+}
+
+function hideWifiRangeRing(){
+  if(wifiRangeMesh) wifiRangeMesh.visible = false;
+  wifiRangeDevId = null;
+}
+
+function updateWifiRangeRing(){
+  if(wifiRangeMesh && wifiRangeMesh.visible && wifiRangeDevId){
+    const dev = devices.get(wifiRangeDevId);
+    if(dev){
+      wifiRangeMesh.position.set(dev.group.position.x, 0.04, dev.group.position.z);
+    } else {
+      hideWifiRangeRing();
+    }
+  }
+}
+
+function updateDeviceWifiRssi(devId){
+  const dev = devices.get(devId);
+  if(!dev || !dev.wifi) return;
+
+  if(dev.wifi.connectedApId){
+    const apDev = devices.get(dev.wifi.connectedApId);
+    if(apDev && apDev.wifi){
+      const dist = getWifiDistance(dev.id, apDev.id);
+      const maxR = (apDev.wifi.radius || 10) * 1.15;
+      dev.wifi.signalRssi = calcRssi(dist);
+
+      if(dist > maxR * 1.5){
+        disconnectWifi(dev.id);
+        toast(`⚠️ ${dev.name}: Wi-Fi qamrov doirasidan chiqib ketdi va aloqa uzildi`, 'warn');
+      } else if(dist > maxR){
+        if(!dev.wifi._rangeWarn){
+          dev.wifi._rangeWarn = true;
+          toast(`⚠️ ${dev.name}: Wi-Fi signali juda zaif!`, 'warn');
+        }
+      } else {
+        dev.wifi._rangeWarn = false;
+      }
+    }
+  }
+
+  if(dev.wifi.isAp || dev.wifi.hotspotMode){
+    if(dev.wifi.connectedClients && dev.wifi.connectedClients.length > 0){
+      const maxR = (dev.wifi.radius || 10) * 1.15;
+      const clientsToDisconnect = [];
+
+      dev.wifi.connectedClients.forEach(cl => {
+        const clientDev = devices.get(cl.devId);
+        if(clientDev && clientDev.wifi){
+          const dist = getWifiDistance(dev.id, clientDev.id);
+          clientDev.wifi.signalRssi = calcRssi(dist);
+          cl.rssi = clientDev.wifi.signalRssi;
+
+          if(dist > maxR * 1.5){
+            clientsToDisconnect.push(cl.devId);
+          }
+        }
+      });
+
+      clientsToDisconnect.forEach(clId => {
+        disconnectWifi(clId);
+        const clDev = devices.get(clId);
+        toast(`⚠️ ${clDev ? clDev.name : 'Qurilma'}: Wi-Fi qamrov doirasidan chiqib ketdi va uzildi`, 'warn');
+      });
+    }
+  }
+}
+
 
 function openWifiModal(devId){
   if(devices.size === 0){
@@ -235,15 +341,15 @@ function renderScannedNetworks(){
     const lockIcon = net.security === 'open' ? '🔓 Ochiq' : '🔒 ' + net.security.toUpperCase();
     // Range tashqarisidagi AP uchun disabled tugma
     const connectBtn = isConnected
-      ? `<button class="actbtn warn" style="font-size:10px; padding:3px 8px;" onclick="window.disconnectWifiClient('${activeWifiDevId}')">Uzish</button>`
+      ? `<button class="actbtn warn wifi-disconnect-btn" style="font-size:10px; padding:3px 8px;">Uzish</button>`
       : net.inRange
-        ? `<button class="actbtn on" style="font-size:10px; padding:3px 10px; background:#38BDF8; color:#03140A; border-color:#38BDF8; font-weight:700;" onclick="window.promptWifiConnect('${net.apId}', '${escapeHtml(net.ssid)}', '${net.security}')">Ulanish</button>`
+        ? `<button class="actbtn on wifi-connect-btn" data-ap-id="${net.apId}" data-security="${net.security}" style="font-size:10px; padding:3px 10px; background:#38BDF8; color:#03140A; border-color:#38BDF8; font-weight:700;">Ulanish</button>`
         : `<button class="actbtn" style="font-size:10px; padding:3px 10px; opacity:0.45; cursor:not-allowed;" disabled title="Signal juda zaif — qurilmani yaqinroq olib keling">📵 Signal zaif</button>`;
     return `
       <div class="wifi-net-item">
         <div class="wifi-net-info">
           <div class="wifi-net-title">
-            <span>${net.ssid}</span>
+            <span>${escapeHtml(net.ssid)}</span>
             <span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(56,189,248,0.15); color:#38BDF8;">${net.band}</span>
             ${isConnected ? '<span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(0,255,135,0.15); color:#00FF87;">Ulangan</span>' : ''}
             ${!net.inRange && !isConnected ? '<span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(239,68,68,0.15); color:#EF4444;">Range tashqarida</span>' : ''}
@@ -259,6 +365,23 @@ function renderScannedNetworks(){
       </div>
     `;
   }).join('');
+
+  // Xavfsiz hodisa tinglovchilari (Event Listeners)
+  wifiScannedList.querySelectorAll('.wifi-connect-btn').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      const apId = btn.dataset.apId;
+      const net = networks.find(n => n.apId === apId);
+      if(net){
+        promptWifiConnect(net.apId, net.ssid, net.security);
+      }
+    });
+  });
+
+  wifiScannedList.querySelectorAll('.wifi-disconnect-btn').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      disconnectWifi(activeWifiDevId);
+    });
+  });
 }
 
 function scanWifiNetworks(clientDevId){
@@ -356,7 +479,19 @@ function connectWifi(clientDevId, apId, inputPassword){
 
   if(client.type !== 'router'){
     client.ipMode = 'dhcp';
-    client.ip = nextIP();
+    // Smart DHCP: Router subnetiga mos bo'sh IP berish
+    if(ap.ip && /^\d+\.\d+\.\d+\.\d+$/.test(ap.ip)){
+      const parts = ap.ip.split('.');
+      const prefix = parts.slice(0, 3).join('.');
+      let hostNum = 10;
+      const usedIps = new Set([...devices.values()].map(d => d.ip));
+      while(usedIps.has(`${prefix}.${hostNum}`) && hostNum < 254){
+        hostNum++;
+      }
+      client.ip = `${prefix}.${hostNum}`;
+    } else {
+      client.ip = nextIP();
+    }
     client.mask = '255.255.255.0';
     client.gw = ap.ip;
     if(client.label) client.label.querySelector('.ip').textContent = client.ip;
@@ -515,6 +650,9 @@ if(wifiTxTabs){
         dev.wifi.txPower = parseInt(btn.dataset.tx);
         dev.wifi.radius = (dev.wifi.txPower === 25 ? 4 : dev.wifi.txPower === 50 ? 7 : 11);
         toast(`Signal quvvati: ${dev.wifi.txPower}% (Radius: ${dev.wifi.radius}m)`);
+        if(wifiRangeDevId === activeWifiDevId){
+          showWifiRangeRing(activeWifiDevId);
+        }
       }
     });
   });

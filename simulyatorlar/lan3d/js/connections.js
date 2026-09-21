@@ -33,15 +33,30 @@ function addConnection(a, b, opts = {}){
   const ra = devices.get(a), rb = devices.get(b);
   if(!ra || !rb) return;
 
+  const wan = (ra.type === "router" && rb.type === "modem") || (ra.type === "modem" && rb.type === "router") || (opts.cableType === 'wan');
+  const wireless = !wan && (opts.wireless || opts.cableType === 'wireless' || TYPES[ra.type].forcesWireless || TYPES[rb.type].forcesWireless || (opts.portA && opts.portA === 'WLAN0') || (opts.portB && opts.portB === 'WLAN0'));
+
   // Resolve ports
   let portA = opts.portA ? ra.ports.find(p => p.id === opts.portA) : null;
+  if(wireless && (!portA || portA.type !== 'wireless')){
+    portA = ra.ports.find(p => p.type === 'wireless' || p.id === 'WLAN0');
+    if(!portA){
+      portA = { id: 'WLAN0', name: 'Wi-Fi (WLAN0)', type: 'wireless', connectedTo: null };
+      ra.ports.push(portA);
+    }
+  }
   if(!portA) portA = ra.ports.find(p => !p.connectedTo) || ra.ports[0];
 
   let portB = opts.portB ? rb.ports.find(p => p.id === opts.portB) : null;
+  if(wireless && (!portB || portB.type !== 'wireless')){
+    portB = rb.ports.find(p => p.type === 'wireless' || p.id === 'WLAN0');
+    if(!portB){
+      portB = { id: 'WLAN0', name: 'Wi-Fi (WLAN0)', type: 'wireless', connectedTo: null };
+      rb.ports.push(portB);
+    }
+  }
   if(!portB) portB = rb.ports.find(p => !p.connectedTo) || rb.ports[0];
 
-  const wan = (ra.type === "router" && rb.type === "modem") || (ra.type === "modem" && rb.type === "router") || portA.type === 'wan' || portB.type === 'wan';
-  const wireless = !wan && (TYPES[ra.type].forcesWireless || TYPES[rb.type].forcesWireless || portA.type === 'wireless' || portB.type === 'wireless');
   const dist = ra.group.position.distanceTo(rb.group.position);
   const sag = wireless ? Math.min(dist * 0.22, 1.4) : -Math.min(dist * 0.12, 0.8);
 
@@ -107,6 +122,44 @@ function addConnection(a, b, opts = {}){
   // Link ports
   portA.connectedTo = { devId: b, portId: portB.id, connId: id };
   portB.connectedTo = { devId: a, portId: portA.id, connId: id };
+
+  // Wi-Fi holatini sinxronlash (AP va Client)
+  if(wireless){
+    let apDev = null, clientDev = null;
+    if(ra.wifi && (ra.wifi.isAp || ra.wifi.hotspotMode)){
+      apDev = ra; clientDev = rb;
+    } else if(rb.wifi && (rb.wifi.isAp || rb.wifi.hotspotMode)){
+      apDev = rb; clientDev = ra;
+    }
+
+    if(apDev && clientDev){
+      if(!clientDev.wifi && typeof initDeviceWifi === 'function') initDeviceWifi(clientDev);
+      if(clientDev.wifi){
+        // Adapter yo'q bo'lsa avtomatik yoqish (topologiya orqali ulanganda)
+        if(!clientDev.wifi.hasAdapter){
+          clientDev.wifi.hasAdapter = true;
+          clientDev.wifi.adapterEnabled = true;
+          if(!clientDev.ports.some(p => p.id === 'WLAN0')){
+            clientDev.ports.push({ id: 'WLAN0', name: 'Wi-Fi (WLAN0)', type: 'wireless', connectedTo: null });
+          }
+        }
+        clientDev.wifi.connectedApId = apDev.id;
+        clientDev.wifi.connectedSsid = apDev.wifi.ssid;
+        const curDist = (typeof getWifiDistance === 'function') ? getWifiDistance(clientDev.id, apDev.id) : dist;
+        clientDev.wifi.signalRssi = (typeof calcRssi === 'function') ? calcRssi(curDist) : -50;
+      }
+      if(!apDev.wifi.connectedClients) apDev.wifi.connectedClients = [];
+      if(!apDev.wifi.connectedClients.some(c => c.devId === clientDev.id)){
+        apDev.wifi.connectedClients.push({
+          devId: clientDev.id,
+          name: clientDev.name,
+          ip: clientDev.ip,
+          mac: clientDev.mac,
+          rssi: clientDev.wifi ? clientDev.wifi.signalRssi : -50
+        });
+      }
+    }
+  }
 
   const packets = [];
   const pn = wan ? 2 : 1;

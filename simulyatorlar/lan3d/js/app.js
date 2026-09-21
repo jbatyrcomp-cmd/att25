@@ -51,12 +51,21 @@ function selectDevice(id){
   selRing.visible = true;
   openPanel();
   refreshPanel();
+  if(typeof showWifiRangeRing === 'function'){
+    const rec = devices.get(id);
+    if(rec && rec.wifi && (rec.wifi.isAp || rec.wifi.hotspotMode)){
+      showWifiRangeRing(id);
+    } else {
+      hideWifiRangeRing();
+    }
+  }
 }
 
 function closePanel(){
   if(panel) panel.classList.remove('show');
   selRing.visible = false;
   selectedDeviceId = null;
+  if(typeof hideWifiRangeRing === 'function') hideWifiRangeRing();
 }
 
 function openPanel(){
@@ -188,7 +197,15 @@ function refreshPanel(){
       if(pWifiSsid) pWifiSsid.textContent = rec.wifi.connectedSsid || '(Mavjud emas)';
       if(pWifiSignalRow){
         pWifiSignalRow.style.display = rec.wifi.connectedSsid ? 'flex' : 'none';
-        if(pWifiSignal) pWifiSignal.textContent = rec.wifi.connectedSsid ? `📶 ${rec.wifi.signalRssi} dBm` : '—';
+        if(pWifiSignal){
+          let curRssi = rec.wifi.signalRssi;
+          if(rec.wifi.connectedApId && typeof getWifiDistance === 'function' && typeof calcRssi === 'function'){
+            const dist = getWifiDistance(rec.id, rec.wifi.connectedApId);
+            curRssi = calcRssi(dist);
+            rec.wifi.signalRssi = curRssi;
+          }
+          pWifiSignal.textContent = rec.wifi.connectedSsid ? `📶 ${curRssi} dBm` : '—';
+        }
       }
     } else {
       pWifiStatusCard.style.display = 'none';
@@ -478,6 +495,9 @@ canvas.addEventListener('pointermove', (e)=>{
         rec.group.position.x = pt.x;
         rec.group.position.z = pt.z;
 
+        // Update range ring if dragging the active AP
+        if(typeof updateWifiRangeRing === 'function') updateWifiRangeRing();
+
         // Broadcast move in multiplayer
         if(typeof Multiplayer !== 'undefined' && Multiplayer.active){
           Multiplayer.broadcast({
@@ -514,6 +534,12 @@ window.addEventListener('pointerup', (e)=>{
   try{ canvas.releasePointerCapture(e.pointerId); }catch(err){}
   if(dragDeviceId && !dragMoved){
     selectDevice(dragDeviceId);
+  }
+  if(dragDeviceId && dragMoved){
+    if(typeof updateDeviceWifiRssi === 'function'){
+      updateDeviceWifiRssi(dragDeviceId);
+    }
+    if(selectedDeviceId === dragDeviceId) refreshPanel();
   }
   dragDeviceId = null; dragMoved = false;
   orbiting = false;

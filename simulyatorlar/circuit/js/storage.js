@@ -112,6 +112,19 @@ class CircuitStorage {
           if (cData.code) comp.code = cData.code;
         }
       }
+      // === YANGI KOMPONENTLAR ===
+      else if (type === 'ammeter') {
+        comp = new CircuitComponents.Ammeter(x, y);
+      }
+      else if (type === 'voltmeter') {
+        comp = new CircuitComponents.Voltmeter(x, y);
+      }
+      else if (type === 'diode') {
+        comp = new CircuitComponents.Diode(x, y);
+      }
+      else if (type === 'dc_source') {
+        comp = new CircuitComponents.DcSource(x, y, cData.voltage || 5.0);
+      }
 
       if (comp) {
         comp.rotation = cData.rotation || 0;
