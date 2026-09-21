@@ -1389,33 +1389,7 @@ class Timer555Component extends CircuitComponent {
   }
 }
 
-// Global registry
-window.CircuitComponents = {
-  Battery: BatteryComponent,
-  Resistor: ResistorComponent,
-  Bulb: BulbComponent,
-  Led: LedComponent,
-  Switch: SwitchComponent,
-  Buzzer: BuzzerComponent,
-  Ground: GroundComponent,
-  Potentiometer: PotentiometerComponent,
-  Ldr: LdrComponent,
-  Capacitor: CapacitorComponent,
-  TransistorNpn: TransistorNpnComponent,
-  TransistorPnp: TransistorPNPComponent,
-  MOSFETn: MOSFETNComponent,
-  MOSFETp: MOSFETPComponent,
-  Inductor: InductorComponent,
-  Transformer: TransformerComponent,
-  DcMotor: DcMotorComponent,
-  LogicGate: LogicGateComponent,
-  SevenSegment: SevenSegmentComponent,
-  Timer555: Timer555Component,
-  Ammeter: AmmeterComponent,
-  Voltmeter: VoltmeterComponent,
-  Diode: DiodeComponent,
-  DcSource: DcSourceComponent
-};
+
 
 
 
@@ -2244,5 +2218,34 @@ class TransformerComponent extends CircuitComponent {
 
   drawBreadboard(ctx) { this.drawSchematic(ctx); }
 }
+
+// Global registry (barcha sinflar e'lon qilingandan so'ng)
+window.CircuitComponents = {
+  Battery: BatteryComponent,
+  Resistor: ResistorComponent,
+  Bulb: BulbComponent,
+  Led: LedComponent,
+  Switch: SwitchComponent,
+  Buzzer: BuzzerComponent,
+  Ground: GroundComponent,
+  Potentiometer: PotentiometerComponent,
+  Ldr: LdrComponent,
+  Capacitor: CapacitorComponent,
+  TransistorNpn: TransistorNpnComponent,
+  TransistorPnp: TransistorPNPComponent,
+  MOSFETn: MOSFETNComponent,
+  MOSFETp: MOSFETPComponent,
+  Inductor: InductorComponent,
+  Transformer: TransformerComponent,
+  DcMotor: DcMotorComponent,
+  LogicGate: LogicGateComponent,
+  SevenSegment: SevenSegmentComponent,
+  Timer555: Timer555Component,
+  Ammeter: AmmeterComponent,
+  Voltmeter: VoltmeterComponent,
+  Diode: DiodeComponent,
+  DcSource: DcSourceComponent
+};
+
 
 

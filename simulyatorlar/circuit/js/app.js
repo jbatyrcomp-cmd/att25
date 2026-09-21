@@ -64,10 +64,16 @@ let engine = new CircuitEngine();
 let breadboard3d = null;
 let multimeter = new DigitalMultimeter(engine);
 let oscilloscope = new VirtualOscilloscope('scopeCanvas');
-let functionGenerator = new FunctionGenerator();
-let acAnalysis = new ACAnalysis(engine);
-let dcSweep = new DCSweepAnalysis(engine);
-let transientAn = new TransientAnalysis(engine);
+
+// Analysis tool instances — xatoli yuklanmasa ham asosiy app ishlasin
+let functionGenerator = null;
+let acAnalysis = null;
+let dcSweep = null;
+let transientAn = null;
+try { if (typeof FunctionGenerator !== 'undefined') functionGenerator = new FunctionGenerator(); } catch(e) { console.warn('FunctionGenerator init error:', e); }
+try { if (typeof ACAnalysis !== 'undefined') acAnalysis = new ACAnalysis(engine); } catch(e) { console.warn('ACAnalysis init error:', e); }
+try { if (typeof DCSweepAnalysis !== 'undefined') dcSweep = new DCSweepAnalysis(engine); } catch(e) { console.warn('DCSweepAnalysis init error:', e); }
+try { if (typeof TransientAnalysis !== 'undefined') transientAn = new TransientAnalysis(engine); } catch(e) { console.warn('TransientAnalysis init error:', e); }
 
 let selectedComp = null;
 let selectedWire = null;
