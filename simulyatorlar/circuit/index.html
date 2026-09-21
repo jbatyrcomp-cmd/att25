@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sxema Quruvchi & 3D Elektronika Laboratoriyasi | ATT-25 Circuit Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Three.js & OrbitControls for 3D Breadboard -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+<div id="app">
+  <!-- Top Navigation & Toolbar -->
+  <header id="topBar">
+    <div class="brand-section">
+      <a href="../index.html" class="brand-badge" target="_top">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div>
+          <div class="brand-title">ATT-25 <span>CIRCUIT LAB</span></div>
+          <span class="brand-subtitle">Sxemotexnika & 3D Mikroelektronika</span>
+        </div>
+      </a>
+
+      <!-- 3-in-1 Mode Switcher (Schematic <-> 3D Breadboard <-> Split View) -->
+      <div class="mode-toggle-box">
+        <button class="mode-btn active" id="btnModeSchematic" title="2D Standart Sxema Chizmasi">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          📐 Sxema
+        </button>
+        <button class="mode-btn" id="btnModeBreadboard" title="Haqiqiy 3D Maket Plata Laboratoriyasi">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="7" cy="10" r="1"/><circle cx="12" cy="10" r="1"/><circle cx="17" cy="10" r="1"/><circle cx="7" cy="14" r="1"/><circle cx="12" cy="14" r="1"/><circle cx="17" cy="14" r="1"/></svg>
+          🔌 3D Maket
+        </button>
+        <button class="mode-btn" id="btnModeSplit" title="Yonma-yon (Split View: 2D Sxema + 3D Maket birga)">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>
+          ⚡ Split View
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Presets Dropdown & Top Actions -->
+    <div class="top-actions">
+      <!-- 200 Circuit Templates Modal Button -->
+      <button class="btn-action gold-badge" id="btnTemplatesModal" title="200 ta tayyor elektronika shablonlari">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><polyline points="10 6 14 10 10 14"/></svg>
+        <span>📚 200 ta Shablon</span>
+      </button>
+
+      <!-- 1-Click Presets -->
+      <div class="presets-dropdown-box">
+        <button class="btn-action gold-badge" id="btnPresetsDropdown">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>⚡ Sxemalar ▾</span>
+        </button>
+        <div class="presets-menu" id="presetsMenu">
+          <div class="preset-opt" data-preset="simple_bulb">💡 Oddiy Chiroq (9V + Lampochka)</div>
+          <div class="preset-opt" data-preset="switch_bulb">🔘 Kalitli Zanjir (9V + Kalit + Chiroq)</div>
+          <div class="preset-opt" data-preset="ohms_law">⚡ Ohm Qonuni (9V + 220Ω Rezistor)</div>
+          <div class="preset-opt" data-preset="safe_led">🔴 Xavfsiz LED (9V + 330Ω + LED)</div>
+          <div class="preset-opt" data-preset="parallel_bulbs">💡💡 Parallel Chiroqlar (2x Chiroq)</div>
+          <div class="preset-opt" data-preset="buzzer_alarm">🔔 Signalizatsiya (9V + Kalit + Buzzer)</div>
+        </div>
+      </div>
+
+      <!-- Save & Load Dropdowns -->
+      <div class="presets-dropdown-box">
+        <button class="btn-action" id="btnSaveDropdown" title="Sxemani Saqlash">
+          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <span>💾 Saqlash ▾</span>
+        </button>
+        <div class="presets-menu" id="saveMenu">
+          <div class="preset-opt" id="optSaveFile">📁 Faylga saqlash (.json)</div>
+          <div class="preset-opt" id="optSaveBrowser">💾 Brauzerda saqlash</div>
+          <div class="preset-opt" id="optExportImage">📸 Rasm qilib yuklash (PNG)</div>
+        </div>
+      </div>
+
+      <div class="presets-dropdown-box">
+        <button class="btn-action" id="btnLoadDropdown" title="Sxemani Ochish">
+          <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span>📂 Ochish ▾</span>
+        </button>
+        <div class="presets-menu" id="loadMenu">
+          <div class="preset-opt" id="optLoadFile">📁 Fayldan yuklash (.json)</div>
+          <div class="preset-opt" id="optLoadBrowser">📋 Saqlanganlar ro‘yxati</div>
+        </div>
+      </div>
+
+      <button class="btn-action sim-play" id="btnSimPlay">
+        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Simulyatsiya: Faol</span>
+      </button>
+
+      <button class="btn-action gold-badge" id="btnLabs">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="12 6 12 12 16 14"/></svg>
+        <span>Laboratoriya Darslari</span>
+      </button>
+
+      <button class="btn-action" id="btnDmmToggle">
+        <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="3"/><line x1="8" y1="7" x2="16" y2="7"/><circle cx="12" cy="14" r="3"/></svg>
+        <span>Multimetr</span>
+      </button>
+
+      <button class="btn-action" id="btnScopeToggle">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 12h3l2-5 3 10 2-5h3"/></svg>
+        <span>Otsillograf</span>
+      </button>
+
+      <button class="btn-action" id="btnTroubleshoot" title="Nosozlikni Qidirish va Tuzatish Sinovi">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span>Nosozlikni Top</span>
+      </button>
+
+      <button class="btn-action gold-badge" id="btnReport" title="Laboratoriya Hisobotini Shakllantirish">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>📄 Hisobot</span>
+      </button>
+
+      <button class="btn-action" id="btnResetBurned" style="display:none; color:var(--danger); border-color:var(--danger);" title="Kuygan qismlarni yangisiga almashtirish">
+        <svg viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        <span>🔄 Tiklash</span>
+      </button>
+
+      <button class="btn-action" id="btnClear" title="Sxemani tozalash">
+        <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+        <span>Tozalash</span>
+      </button>
+
+      <button class="btn-action active-pulse" id="btnSound">
+        <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span>Ovoz: Yoqiq</span>
+      </button>
+
+      <a href="../index.html" class="btn-action" target="_top" style="color:var(--accent); border-color:var(--border-active);">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Markaz</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Short Circuit Warning Banner -->
+  <div class="short-circuit-warning" id="shortWarning">
+    <span>⚠️</span> QISQA TUTASHUV (KЗ)!
+  </div>
+
+  <!-- Main Workspace -->
+  <div id="workspace">
+    <!-- Component Palette (Left Drawer) -->
+    <aside id="palette">
+      <div class="palette-header">
+        <span class="palette-title">ELEMENTLAR KUTUBXONASI</span>
+      </div>
+
+      <div class="palette-list">
+        <!-- Power Sources -->
+        <div class="palette-category">
+          <div class="cat-title">⚡ Quvvat Manbalari</div>
+          <div class="comp-item" draggable="true" data-type="battery_9v" title="Bosib qo‘ying yoki surib olib keling">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="14" rx="2"/><circle cx="9" cy="4" r="1.5"/><rect x="14" y="3" width="3" height="3"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">9V Batareya</span>
+              <span class="comp-sub">Krona DC Manba</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="battery_1v5" title="Bosib qo‘ying yoki surib olib keling">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"/><rect x="10" y="2" width="4" height="2"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">1.5V Batareya</span>
+              <span class="comp-sub">AA / AAA Element</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="ground" title="0V Tuproqlash">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="4" x2="12" y2="12"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/><line x1="10" y1="20" x2="14" y2="20"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Tuproqlash (GND)</span>
+              <span class="comp-sub">0V Malumot Potensiali</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passive Components -->
+        <div class="palette-category">
+          <div class="cat-title">🛡️ Passiv Elementlar</div>
+          <div class="comp-item" draggable="true" data-type="resistor" title="Rezistor 220 Ω">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M2 12h4l2-5 4 10 4-10 2 5h4"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Rezistor (220 Ω)</span>
+              <span class="comp-sub">Tok cheklovchi</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="resistor_1k" title="Rezistor 1 kΩ">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M2 12h4l2-5 4 10 4-10 2 5h4"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Rezistor (1 kΩ)</span>
+              <span class="comp-sub">Yuqori qarshilik</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="potentiometer" title="Potensiometr (10 kΩ)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><line x1="12" y1="12" x2="16" y2="8"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Potensiometr (10 kΩ)</span>
+              <span class="comp-sub">Sozlanuvchi qarshilik</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="ldr" title="Fotorezistor (LDR)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><line x1="5" y1="5" x2="9" y2="9"/><line x1="12" y1="2" x2="12" y2="5"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Fotorezistor (LDR)</span>
+              <span class="comp-sub">Yorug‘lik datchigi</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="capacitor" title="Kondensator (100 µF)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="10" y1="4" x2="10" y2="20"/><path d="M14 4a12 12 0 0 1 0 16"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Kondensator (100 µF)</span>
+              <span class="comp-sub">Sig‘im / Filtr</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls & Outputs -->
+        <div class="palette-category">
+          <div class="cat-title">💡 Boshqaruv & Chiqarish</div>
+          <div class="comp-item" draggable="true" data-type="switch" title="Kalit (Switch)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><line x1="5" y1="12" x2="15" y2="6"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Kalit (Switch)</span>
+              <span class="comp-sub">SPST Pereklyuchatel</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="bulb" title="Qizdirma Lampochka">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M7 7l10 10M7 17L17 7"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Lampochka</span>
+              <span class="comp-sub">Qizdirma chiroq 6V</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="led" title="Qizil LED">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><polygon points="6 6 18 12 6 18 6 6"/><line x1="18" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">LED (Qizil)</span>
+              <span class="comp-sub">Yorug‘lik diodi 1.8V</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="led_green" title="Yashil LED">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><polygon points="6 6 18 12 6 18 6 6"/><line x1="18" y1="6" x2="18" y2="18"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">LED (Yashil)</span>
+              <span class="comp-sub">Yorug‘lik diodi 2.1V</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="buzzer" title="Pyezo Buzzer">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="6" width="6" height="12"/><polygon points="10 9 18 4 18 20 10 15 10 9"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Pyezo Buzzer</span>
+              <span class="comp-sub">Tovush signali</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="transistor_npn" title="NPN Tranzistor (2N2222)">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><line x1="6" y1="12" x2="12" y2="12"/><line x1="12" y1="6" x2="12" y2="18"/><line x1="12" y1="9" x2="18" y2="5"/><line x1="12" y1="15" x2="18" y2="19"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">NPN Tranzistor</span>
+              <span class="comp-sub">2N2222 Elektron kalit</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="motor" title="DC Elektrodvigatel">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M10 8h4l-2 8"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Elektrodvigatel</span>
+              <span class="comp-sub">DC Motor + Parrak</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Digital Logic & ICs -->
+        <div class="palette-category">
+          <div class="cat-title">🔲 Raqamli Mantiq & IC</div>
+          <div class="comp-item" draggable="true" data-type="gate_and" title="VA (AND) Element">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M5 6h6a6 6 0 0 1 0 12H5z"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">AND (VA)</span>
+              <span class="comp-sub">Mantiqiy ko‘paytirish</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="gate_or" title="YOKI (OR) Element">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M5 5c4 4 4 10 0 14 6 0 12-4 14-7-2-3-8-7-14-7z"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">OR (YOKI)</span>
+              <span class="comp-sub">Mantiqiy qo‘shish</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="gate_not" title="EMAS (NOT) Invertor">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><polygon points="6 4 16 12 6 20 6 4"/><circle cx="19" cy="12" r="2"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">NOT (EMAS)</span>
+              <span class="comp-sub">Invertor</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="gate_nand" title="VA-EMAS (NAND) Element">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 6h5a6 6 0 0 1 0 12H4z"/><circle cx="18" cy="12" r="2"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">NAND (VA-EMAS)</span>
+              <span class="comp-sub">Inkor ko‘paytirish</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="gate_xor" title="XOR (Inkor YOKI) Element">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><path d="M2 5c4 4 4 10 0 14M5 5c4 4 4 10 0 14 6 0 12-4 14-7-2-3-8-7-14-7z"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">XOR Element</span>
+              <span class="comp-sub">Taqqoslash ventili</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="seven_segment" title="7-Segmentli LED Displey">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8v5H8zm0 5h8v5H8z"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">7-Segment Displey</span>
+              <span class="comp-sub">Raqamli LED indikator</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="timer_555" title="NE555 Taymer Mikrosxemasi">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"/><circle cx="12" cy="7" r="1.5"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">NE555 Taymer</span>
+              <span class="comp-sub">DIP-8 Generator IC</span>
+            </div>
+          </div>
+
+          <div class="comp-item" draggable="true" data-type="arduino_uno" title="Arduino Uno R3 Mikrokontroller platasi">
+            <div class="comp-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="#00878F" stroke-width="2"/><circle cx="8" cy="9" r="1.5" fill="#38BDF8"/><circle cx="16" cy="9" r="1.5" fill="#00FF87"/><rect x="7" y="13" width="10" height="3" fill="#0F172A"/></svg>
+            </div>
+            <div class="comp-info">
+              <span class="comp-name">Arduino Uno R3</span>
+              <span class="comp-sub">C++ / ATmega328P</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 2D Canvas Workspace (Schematic Mode) -->
+    <main id="canvasContainer">
+      <canvas id="circuitCanvas"></canvas>
+
+      <!-- Floating Canvas Controls -->
+      <div class="canvas-floating-controls">
+        <!-- Ambient Light (Day/Night) Control -->
+        <div class="ambient-light-control" id="ambientLightControl">
+          <button class="ambient-btn active" id="btnAmbientDay" title="Kunduzgi yorug'lik (100%)">☀️ Kun</button>
+          <input type="range" class="ambient-slider" id="ambientLightSlider" min="0" max="1" step="0.05" value="0.8" title="Atrofdagi yorug'lik darajasi (Kun / Tun)">
+          <button class="ambient-btn" id="btnAmbientNight" title="Tungi qorong'ulik (0%)">🌙 Tun</button>
+          <span class="ambient-val-badge" id="ambientValText">80%</span>
+        </div>
+
+        <div class="wire-color-picker">
+          <span style="font-size:0.75rem; color:var(--text-muted); margin-right:4px;">Sim:</span>
+          <button class="color-dot" style="background:#EF4444;" data-color="#EF4444" title="Qizil (+)"></button>
+          <button class="color-dot active" style="background:#38BDF8;" data-color="#38BDF8" title="Moviy"></button>
+          <button class="color-dot" style="background:#00FF87;" data-color="#00FF87" title="Yashil"></button>
+          <button class="color-dot" style="background:#FBBF24;" data-color="#FBBF24" title="Sariq"></button>
+          <button class="color-dot" style="background:#1E293B;" data-color="#1E293B" title="Qora (-)"></button>
+        </div>
+        <span style="font-size:0.75rem; color:var(--text-muted);">Tok: <b>+ dan - ga</b> (An'anaviy)</span>
+      </div>
+
+      <!-- Live Interactive Circuit Controls HUD -->
+      <div class="live-controls-hud" id="liveControlsHud"></div>
+
+      <!-- Quick Action Floating Bubble for Selected Component -->
+      <div class="quick-action-bubble" id="quickActionBubble">
+        <button class="bubble-btn" id="bubbleRotateBtn" title="90° Burish">🔄</button>
+        <button class="bubble-btn" id="bubbleConfigBtn" title="Xususiyatlarini ochish">⚙️</button>
+        <button class="bubble-btn danger" id="bubbleDeleteBtn" title="O‘chirish">🗑️</button>
+      </div>
+    </main>
+
+    <!-- 3D Breadboard Workspace (Three.js WebGL Mode) -->
+    <div id="breadboard3dContainer">
+      <div class="bb3d-hint">
+        <span>🖱️ <b>3D Boshqaruv:</b> Aylantirish: Chap tugma • Surish: O'ng tugma • Sim tortish: Pin ustiga bosing • Kalit/Arduino ustiga bosish</span>
+      </div>
+
+      <!-- 3D Floating Wire Color Toolbar -->
+      <div class="wire-color-toolbar-3d" id="wireColorToolbar3D">
+        <span class="toolbar-title"><svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg> 3D Sim Rangi:</span>
+        <div class="color-options-3d">
+          <button class="color-dot-3d active" data-color="#38BDF8" style="background:#38BDF8;" title="Moviy (Signallar)"></button>
+          <button class="color-dot-3d" data-color="#EF4444" style="background:#EF4444;" title="Qizil (+5V Musbat)"></button>
+          <button class="color-dot-3d" data-color="#0F172A" style="background:#0F172A; border:1px solid #475569;" title="Qora (GND Manfiy)"></button>
+          <button class="color-dot-3d" data-color="#00FF87" style="background:#00FF87;" title="Yashil (GND/Signal)"></button>
+          <button class="color-dot-3d" data-color="#FBBF24" style="background:#FBBF24;" title="Sariq (Signal)"></button>
+          <button class="color-dot-3d" data-color="#F97316" style="background:#F97316;" title="To'q sariq"></button>
+          <button class="color-dot-3d" data-color="#FFFFFF" style="background:#FFFFFF;" title="Oq"></button>
+        </div>
+        <span class="hint-3d-wire">💡 1-pinni, so'ng 2-pinni bosing</span>
+      </div>
+    </div>
+
+    <!-- Component Inspector Panel (Right Drawer) -->
+    <aside id="inspector">
+      <div class="inspector-header">
+        <span class="inspector-title" id="inspTitle">Komponent Xususiyatlari</span>
+        <button class="btn-close-panel" id="btnCloseInspector">✕</button>
+      </div>
+      <div class="inspector-body" id="inspProps">
+        <!-- Dynamically injected -->
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Floating Digital Multimeter HUD -->
+<div class="instrument-window show" id="dmmWindow">
+  <div class="instrument-header">
+    <span class="instrument-title">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="3"/></svg>
+      RAQAMLI MULTIMETR
+    </span>
+  </div>
+  <div class="dmm-screen">
+    <div class="dmm-val" id="dmmVal">0.00</div>
+    <div class="dmm-unit" id="dmmUnit">V DC</div>
+  </div>
+  <div class="dmm-dial">
+    <button class="dial-btn active" data-mode="voltage">V (Volt)</button>
+    <button class="dial-btn" data-mode="current">A (Tok)</button>
+    <button class="dial-btn" data-mode="resistance">Ω (Om)</button>
+    <button class="dial-btn" data-mode="continuity">🔊 Kontur</button>
+  </div>
+</div>
+
+<!-- Floating 2-Channel Oscilloscope HUD -->
+<div class="instrument-window" id="scopeWindow">
+  <div class="instrument-header">
+    <span class="instrument-title">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 12h3l2-5 3 10 2-5h3"/></svg>
+      2-KANALLI OTSILLOGRAF
+    </span>
+  </div>
+  <canvas id="scopeCanvas" width="380" height="180"></canvas>
+  <div class="scope-controls">
+    <span>Volts/Div: 2.0 V</span>
+    <span>TimeBase: 10 ms</span>
+    <span>Trigger: Auto</span>
+  </div>
+</div>
+
+<!-- Guided Labs Modal -->
+<div class="modal-backdrop" id="labsModal">
+  <div class="modal-dialog">
+    <div class="modal-head">
+      <h2>
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--gold)" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="12 6 12 12 16 14"/></svg>
+        Amaliy Sxemotexnika & Laboratoriya Darslari
+      </h2>
+      <button class="btn-close-panel" id="closeLabsModal">✕</button>
+    </div>
+    <div class="modal-content" id="labsList">
+      <!-- Injected by labs.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Troubleshooting Challenges Modal -->
+<div class="modal-backdrop" id="troubleshootModal">
+  <div class="modal-dialog">
+    <div class="modal-head">
+      <h2>
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--danger)" fill="none" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Nosozlikni Qidirish va Tuzatish Sinovi (Troubleshooting)
+      </h2>
+      <button class="btn-close-panel" id="closeTroubleshootModal">✕</button>
+    </div>
+    <div class="modal-content" id="troubleshootList">
+      <!-- Injected by app.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Lab Report Generator Modal -->
+<div class="modal-backdrop" id="reportModal">
+  <div class="modal-dialog" style="max-width: 800px;">
+    <div class="modal-head">
+      <h2>
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--gold)" fill="none" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Laboratoriya Ishi Hisoboti (Protokol)
+      </h2>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-action gold-badge" id="btnPrintReport">🖨️ Chop Etish / PDF</button>
+        <button class="btn-close-panel" id="closeReportModal">✕</button>
+      </div>
+    </div>
+    <div class="modal-content" id="reportContent">
+      <!-- Injected by app.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Saved Circuits Browser Modal -->
+<div class="modal-backdrop" id="savedCircuitsModal">
+  <div class="modal-dialog" style="max-width: 550px;">
+    <div class="modal-head">
+      <h2>
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--cyan)" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Brauzerda Saqlangan Sxemalar
+      </h2>
+      <button class="btn-close-panel" id="closeSavedCircuitsModal">✕</button>
+    </div>
+    <div class="modal-content" id="savedCircuitsList">
+      <!-- Injected by app.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Arduino Code Editor Modal -->
+<div class="modal-backdrop" id="arduinoCodeModal">
+  <div class="modal-dialog" style="max-width: 850px; width: 90vw;">
+    <div class="modal-head" style="border-bottom: 1px solid rgba(0, 135, 143, 0.3);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="display:inline-flex; padding:4px 8px; border-radius:6px; background:rgba(0,135,143,0.2); color:#38BDF8; font-family:'JetBrains Mono', monospace; font-size:0.75rem; font-weight:bold; border:1px solid rgba(0,135,143,0.4);">UNO R3</span>
+        <h2 style="font-size:1.15rem; margin:0;">Arduino Dasturlash Muharriri (C++)</h2>
+      </div>
+      <button class="btn-close-panel" id="closeArduinoModal">✕</button>
+    </div>
+    <div class="modal-content" style="padding: 16px; display:flex; flex-direction:column; gap:12px;">
+      <!-- Toolbar -->
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; background:rgba(15,23,42,0.6); padding:10px 14px; border-radius:8px; border:1px solid var(--border);">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-size:0.85rem; color:var(--text-muted);">Namuna loyihalar:</label>
+          <select id="arduinoExampleSelect" style="background:var(--bg-card); color:var(--text-main); border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-size:0.85rem;">
+            <option value="blink">1. LED Miltillash (Blink - D13)</option>
+            <option value="traffic">2. Svetofor Loyihasi (D13, D12, D11)</option>
+            <option value="button">3. Tugmacha va LED (Input Pullup)</option>
+            <option value="pwm">4. PWM Dimmer (AnalogRead A0 & PWM D9)</option>
+            <option value="seven_segment">5. 7-Segmentli Hisoblagich (0-9 sanovchi)</option>
+          </select>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-action" id="arduinoRunBtn" style="background:linear-gradient(135deg, #00878F, #00FF87); color:#020617; font-weight:bold; border:none;">
+            ▶ Yuklash & Ishga tushirish
+          </button>
+          <button class="btn-action" id="arduinoStopBtn" style="color:var(--danger); border-color:var(--danger);">
+            ⏹ To'xtatish
+          </button>
+          <button class="btn-action" id="arduinoClearLogBtn">
+            🧹 Tozalash
+          </button>
+        </div>
+      </div>
+
+      <!-- Code Editor Textarea -->
+      <div style="position:relative;">
+        <textarea id="arduinoCodeTextarea" spellcheck="false" style="width:100%; height:260px; background:#070C18; color:#00FF87; font-family:'JetBrains Mono', monospace; font-size:0.88rem; padding:12px; border-radius:8px; border:1px solid var(--border-active); resize:vertical; outline:none; line-height:1.5; box-shadow:inset 0 2px 8px rgba(0,0,0,0.5);"></textarea>
+      </div>
+
+      <!-- Serial Monitor Pane -->
+      <div style="background:#020617; border-radius:8px; border:1px solid var(--border); overflow:hidden;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--border); font-size:0.8rem;">
+          <span style="color:var(--text-muted); font-family:'JetBrains Mono', monospace;">📟 Serial Monitor (9600 baud)</span>
+          <span id="arduinoRunStatus" style="color:#38BDF8; font-size:0.75rem;">Tayyor</span>
+        </div>
+        <pre id="arduinoSerialOutput" style="margin:0; padding:10px 14px; height:110px; overflow-y:auto; font-family:'JetBrains Mono', monospace; font-size:0.8rem; color:#38BDF8; white-space:pre-wrap; line-height:1.4;"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 200 Ready-Made Circuit Templates Modal -->
+<div class="tmpl-modal-backdrop" id="templatesModal">
+  <div class="tmpl-modal-container">
+    <!-- Modal Header -->
+    <div class="tmpl-modal-header">
+      <div class="tmpl-header-left">
+        <div class="tmpl-modal-icon">📚</div>
+        <div>
+          <h2 class="tmpl-modal-title">Tayyor Sxemalar Kutubxonasi</h2>
+          <p class="tmpl-modal-subtitle">200 ta interaktiv elektronika va sxemotexnika shablonlari</p>
+        </div>
+      </div>
+      <div class="tmpl-header-right">
+        <span class="tmpl-count-badge" id="tmplCountBadge">200 ta shablon</span>
+        <button class="tmpl-close-btn" id="btnTmplClose" title="Yopish (Esc)">✕</button>
+      </div>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="tmpl-toolbar">
+      <div class="tmpl-search-box">
+        <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="tmplSearchInput" placeholder="Sxema nomi, raqami (#81), komponent yoki mavzu bo'yicha qidirish..." autocomplete="off">
+      </div>
+
+      <div class="tmpl-diff-filter" id="tmplDiffFilter">
+        <span class="filter-label">Daraja:</span>
+        <button class="diff-btn active" data-diff="all">Barchasi</button>
+        <button class="diff-btn" data-diff="beginner">🟢 Boshlang'ich</button>
+        <button class="diff-btn" data-diff="intermediate">🟡 O'rta</button>
+        <button class="diff-btn" data-diff="advanced">🔴 Murakkab</button>
+      </div>
+    </div>
+
+    <!-- Category Pills Bar -->
+    <div class="tmpl-category-bar" id="tmplCategoryBar">
+      <!-- Injected by templates_modal.js -->
+    </div>
+
+    <!-- Templates Grid Body -->
+    <div class="tmpl-grid-container" id="tmplGridContainer">
+      <!-- Injected by templates_modal.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Template Details / Theory Modal -->
+<div class="tmpl-detail-backdrop" id="tmplDetailModal">
+  <div class="tmpl-detail-container">
+    <div class="tmpl-detail-header">
+      <div>
+        <span class="detail-badge" id="detailBadge">Kategoriya</span>
+        <h3 class="detail-title" id="detailTitle">Sxema Nomi</h3>
+      </div>
+      <button class="tmpl-close-btn" id="btnDetailClose">✕</button>
+    </div>
+
+    <div class="tmpl-detail-body">
+      <div class="detail-section">
+        <h4>📝 Tavsif</h4>
+        <p id="detailDesc"></p>
+      </div>
+
+      <div class="detail-section">
+        <h4>🔬 Nazariy Asosi & Fizik Qoidalar</h4>
+        <p id="detailTheory"></p>
+      </div>
+
+      <div class="detail-section">
+        <h4>📋 Tajriba Ko'rsatmalari</h4>
+        <ul id="detailInstructions" class="detail-steps"></ul>
+      </div>
+    </div>
+
+    <div class="tmpl-detail-footer">
+      <button class="btn-action gold-badge" id="btnDetailLoad" style="padding:10px 24px; font-size:0.95rem;">
+        ⚡ Ushbu Sxemani Ish Maydoniga Yuklash
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Message -->
+<div id="toast"></div>
+
+<!-- Scripts in proper dependency order -->
+<script src="js/engine.js?v=5"></script>
+<script src="js/components.js?v=5"></script>
+<script src="js/arduino.js?v=5"></script>
+<script src="js/breadboard3d.js?v=5"></script>
+<script src="js/instruments.js?v=5"></script>
+<script src="js/storage.js?v=5"></script>
+<script src="js/labs.js?v=5"></script>
+<script src="js/templates_data.js?v=5"></script>
+<script src="js/templates_modal.js?v=5"></script>
+<script src="js/live_controls.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
+
+</body>
+</html>

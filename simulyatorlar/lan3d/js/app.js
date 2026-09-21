@@ -1,5 +1,6 @@
 /* ==========================================================================
-   APP INITIALIZATION, CONTROLS, PANEL, EVENT LISTENERS & ANIMATION LOOP
+   APP INITIALIZATION, DUAL CONTROLS (ORBIT & FPS WALKTHROUGH),
+   POINTER LOCK, KEYBOARD WASD, MULTIPLAYER HOOKS & ANIMATION LOOP
    ========================================================================== */
 
 /* Build Device Tray in Toolbar */
@@ -8,9 +9,21 @@ if(tray){
   ORDER.forEach(t=>{
     const b = document.createElement('button');
     b.className = 'devbtn';
-    b.title = "Qo'shish: " + TYPES[t].label;
+    b.title = `${TYPES[t].label} modelini tanlash (Shift + Bosish: tezkor qo'shish)`;
     b.innerHTML = ICONS[t] + `<span>${TYPES[t].label}</span>`;
-    b.addEventListener('click', ()=>addDevice(t));
+    b.addEventListener('click', (e)=>{
+      if(e.shiftKey){
+        const rec = addDevice(t);
+        if(rec && typeof Multiplayer !== 'undefined' && Multiplayer.active){
+          Multiplayer.broadcast({
+            type: 'topo_add_device',
+            deviceData: { id: rec.id, type: rec.type, name: rec.name, x: rec.group.position.x, z: rec.group.position.z, ip: rec.ip }
+          });
+        }
+      } else {
+        openModelPickerForType(t);
+      }
+    });
     tray.appendChild(b);
   });
 }
@@ -70,7 +83,11 @@ if(delDeviceBtn){
     if(!selectedDeviceId) return;
     const rec = devices.get(selectedDeviceId);
     if(confirm("O'chirilsinmi: " + rec.name + "?")){
-      removeDevice(selectedDeviceId);
+      const devId = selectedDeviceId;
+      removeDevice(devId);
+      if(typeof Multiplayer !== 'undefined' && Multiplayer.active){
+        Multiplayer.broadcast({ type: 'topo_remove_device', deviceId: devId });
+      }
     }
   });
 }
@@ -100,6 +117,29 @@ function refreshPanel(){
       if(pIpInput) pIpInput.disabled = false;
       if(pMaskInput) pMaskInput.disabled = false;
       if(pGwInput) pGwInput.disabled = false;
+    }
+  }
+
+  // Update 3D Model Switcher in panel
+  const pModelSelect = document.getElementById('pModelSelect');
+  const pModelContainer = document.getElementById('pModelSelectContainer');
+  if(pModelSelect && pModelContainer){
+    if(typeof MODELS_DB !== 'undefined' && MODELS_DB[rec.type]){
+      pModelContainer.style.display = 'block';
+      pModelSelect.innerHTML = '';
+      const cat = MODELS_DB[rec.type];
+      Object.keys(cat).forEach(k => {
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = cat[k].name;
+        if(rec.modelKey === k) opt.selected = true;
+        pModelSelect.appendChild(opt);
+      });
+      pModelSelect.onchange = function(){
+        changeDeviceModel(rec.id, this.value);
+      };
+    } else {
+      pModelContainer.style.display = 'none';
     }
   }
 
@@ -155,13 +195,20 @@ function refreshPanel(){
     }
   }
 
-  // Update Wi-Fi adapter toggle section for desktop/server
+  // Update Wi-Fi adapter toggle section for desktop/server/tablet
   if(pWifiAdapterToggleSection){
-    if((rec.type === 'desktop' || rec.type === 'server') && (!rec.wifi || !rec.wifi.hasAdapter)){
+    const canHaveAdapter = rec.type === 'desktop' || rec.type === 'server' || rec.type === 'tablet';
+    if(canHaveAdapter && (!rec.wifi || !rec.wifi.hasAdapter)){
       pWifiAdapterToggleSection.style.display = 'block';
     } else {
       pWifiAdapterToggleSection.style.display = 'none';
     }
+  }
+
+  // Update VLAN section for switch/router in panel
+  const pVlanSection = document.getElementById('pVlanSection');
+  if(pVlanSection){
+    pVlanSection.style.display = (rec.type === 'switch' || rec.type === 'router') ? 'block' : 'none';
   }
 
   refreshConnList();
@@ -187,8 +234,10 @@ function refreshConnList(){
     const colorHex = "#" + c.color.toString(16).padStart(6, '0');
     const myPort = c.a === rec.id ? c.portA : c.portB;
     const otherPort = c.a === rec.id ? c.portB : c.portA;
+    const pObj = rec.ports ? rec.ports.find(p => p.id === myPort) : null;
+    const vlanStr = (pObj && pObj.mode === 'trunk') ? ' [TRUNK]' : (pObj && pObj.vlan) ? ` [VLAN ${pObj.vlan}]` : '';
     const cableName = c.cableType === 'fiber' ? 'Fiber 10G' : c.cableType === 'crossover' ? 'Cross' : c.cableType === 'straight' ? 'Straight' : c.wireless ? 'Wi-Fi' : 'WAN';
-    row.innerHTML = `<span class="lbl"><span class="seg" style="background:${colorHex}"></span><b>[${myPort || 'Port'}]</b> ${other.name} <b>[${otherPort || 'Port'}]</b> <span style="font-size:9px; color:var(--ink-dim);">(${cableName})</span></span>`;
+    row.innerHTML = `<span class="lbl"><span class="seg" style="background:${colorHex}"></span><b>[${myPort || 'Port'}${vlanStr}]</b> ${other.name} <b>[${otherPort || 'Port'}]</b> <span style="font-size:9px; color:var(--ink-dim);">(${cableName})</span></span>`;
     const btn = document.createElement('button');
     btn.textContent = '✕';
     btn.title = "Ulanishni o'chirish";
@@ -255,7 +304,127 @@ if(ipModeStatic && ipModeDhcp){
 }
 
 /* ==========================================================================
-   CANVAS POINTER & DRAG INTERACTION
+   KEYBOARD WASD & FPS WALKTHROUGH CONTROLS
+   ========================================================================== */
+const keys = {
+  forward: false,
+  backward: false,
+  left: false,
+  right: false,
+  sprint: false,
+  jump: false
+};
+
+window.addEventListener('keydown', (e)=>{
+  // Don't intercept when typing in text inputs or Cisco CLI terminal
+  if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+
+  switch(e.code){
+    case 'KeyW':
+    case 'ArrowUp':
+      keys.forward = true; break;
+    case 'KeyS':
+    case 'ArrowDown':
+      keys.backward = true; break;
+    case 'KeyA':
+    case 'ArrowLeft':
+      keys.left = true; break;
+    case 'KeyD':
+    case 'ArrowRight':
+      keys.right = true; break;
+    case 'ShiftLeft':
+    case 'ShiftRight':
+      keys.sprint = true; break;
+    case 'Space':
+      keys.jump = true; break;
+    case 'KeyC':
+      isCrouched = !isCrouched; break;
+    case 'KeyE':
+      // Interaction in FPS mode
+      if(isFpsMode){
+        const devId = pickDevice();
+        if(devId){
+          selectDevice(devId);
+          // If router or switch, open CLI directly
+          const rec = devices.get(devId);
+          if(rec && (rec.type === 'router' || rec.type === 'switch')){
+            openCiscoTerminal(devId);
+          }
+        }
+      }
+      break;
+    case 'KeyT':
+      // Focus multiplayer chat
+      if(typeof Multiplayer !== 'undefined' && Multiplayer.active){
+        const chatInput = document.getElementById('collabChatInput');
+        if(chatInput){
+          e.preventDefault();
+          chatInput.focus();
+        }
+      }
+      break;
+    case 'Escape':
+      closePanel();
+      if(document.pointerLockElement === canvas){
+        document.exitPointerLock();
+      }
+      break;
+  }
+});
+
+window.addEventListener('keyup', (e)=>{
+  switch(e.code){
+    case 'KeyW':
+    case 'ArrowUp':
+      keys.forward = false; break;
+    case 'KeyS':
+    case 'ArrowDown':
+      keys.backward = false; break;
+    case 'KeyA':
+    case 'ArrowLeft':
+      keys.left = false; break;
+    case 'KeyD':
+    case 'ArrowRight':
+      keys.right = false; break;
+    case 'ShiftLeft':
+    case 'ShiftRight':
+      keys.sprint = false; break;
+    case 'Space':
+      keys.jump = false; break;
+  }
+});
+
+/* Pointer Lock event listeners */
+canvas.addEventListener('click', ()=>{
+  if(isFpsMode && document.pointerLockElement !== canvas){
+    try {
+      canvas.requestPointerLock();
+    } catch(err){}
+  }
+});
+
+document.addEventListener('pointerlockchange', ()=>{
+  const isLocked = document.pointerLockElement === canvas;
+  const crosshair = document.getElementById('crosshair');
+  if(crosshair){
+    crosshair.classList.toggle('locked', isLocked);
+  }
+});
+
+/* Mouse move for FPS camera orientation (Pointer Lock or Drag) */
+document.addEventListener('mousemove', (e)=>{
+  if(!isFpsMode) return;
+  if(document.pointerLockElement === canvas){
+    const sens = 0.0024;
+    fpsYaw -= e.movementX * sens;
+    fpsPitch -= e.movementY * sens;
+    fpsPitch = Math.max(-1.45, Math.min(1.45, fpsPitch));
+    updateCamera();
+  }
+});
+
+/* ==========================================================================
+   CANVAS POINTER & DRAG INTERACTION (ORBIT & FPS)
    ========================================================================== */
 let dragDeviceId = null, dragMoved = false, dragStart = { x: 0, y: 0 };
 let orbiting = false, lastX = 0, lastY = 0;
@@ -269,12 +438,20 @@ canvas.addEventListener('pointerdown', (e)=>{
   if(devId){
     if(connectMode){
       handleConnectClick(devId);
+      // connectMode da drag/orbit boshlashdan oldin pointer ni ozod qilish
+      try{ canvas.releasePointerCapture(e.pointerId); }catch(err){}
       return;
     }
-    dragDeviceId = devId;
-    dragMoved = false;
-    dragStart.x = e.clientX; dragStart.y = e.clientY;
-    return;
+    if(!isFpsMode){
+      dragDeviceId = devId;
+      dragMoved = false;
+      dragStart.x = e.clientX; dragStart.y = e.clientY;
+      return;
+    } else {
+      // In FPS mode, clicking an aimed device selects it
+      selectDevice(devId);
+      return;
+    }
   }
 
   if(!connectMode){
@@ -288,7 +465,7 @@ canvas.addEventListener('pointerdown', (e)=>{
 canvas.addEventListener('pointermove', (e)=>{
   e.preventDefault();
   setMouse(e);
-  if(dragDeviceId){
+  if(dragDeviceId && !isFpsMode){
     const dx = e.clientX - dragStart.x, dy = e.clientY - dragStart.y;
     if(Math.hypot(dx, dy) > 4) dragMoved = true;
     if(dragMoved){
@@ -300,6 +477,16 @@ canvas.addEventListener('pointermove', (e)=>{
         if(len > maxR){ pt.x *= maxR / len; pt.z *= maxR / len; }
         rec.group.position.x = pt.x;
         rec.group.position.z = pt.z;
+
+        // Broadcast move in multiplayer
+        if(typeof Multiplayer !== 'undefined' && Multiplayer.active){
+          Multiplayer.broadcast({
+            type: 'topo_move_device',
+            deviceId: dragDeviceId,
+            x: pt.x,
+            z: pt.z
+          });
+        }
       }
     }
     return;
@@ -307,10 +494,19 @@ canvas.addEventListener('pointermove', (e)=>{
   if(orbiting){
     const dx = e.clientX - lastX, dy = e.clientY - lastY;
     lastX = e.clientX; lastY = e.clientY;
-    camTheta -= dx * 0.006;
-    camPhi   -= dy * 0.006;
-    camPhi = Math.max(0.18, Math.min(Math.PI / 2 - 0.05, camPhi));
-    updateCamera();
+
+    if(!isFpsMode){
+      camTheta -= dx * 0.006;
+      camPhi   -= dy * 0.006;
+      camPhi = Math.max(0.18, Math.min(Math.PI / 2 - 0.05, camPhi));
+      updateCamera();
+    } else if(document.pointerLockElement !== canvas){
+      // Manual drag-look when pointer lock is not active
+      fpsYaw -= dx * 0.004;
+      fpsPitch -= dy * 0.004;
+      fpsPitch = Math.max(-1.45, Math.min(1.45, fpsPitch));
+      updateCamera();
+    }
   }
 });
 
@@ -324,9 +520,10 @@ window.addEventListener('pointerup', (e)=>{
 });
 
 canvas.addEventListener('wheel', (e)=>{
+  if(isFpsMode) return;
   e.preventDefault();
   camRadius += e.deltaY * 0.01;
-  camRadius = Math.max(6, Math.min(30, camRadius));
+  camRadius = Math.max(6, Math.min(42, camRadius));
   updateCamera();
 }, { passive: false });
 
@@ -344,8 +541,26 @@ function handleConnectClick(devId){
 }
 
 /* ==========================================================================
-   TOOLBAR BUTTON HOOKS
+   TOOLBAR BUTTON HOOKS & CONTROLLERS
    ========================================================================== */
+const camModeBtn = document.getElementById('camModeBtn');
+if(camModeBtn){
+  camModeBtn.addEventListener('click', ()=>setCameraMode(!isFpsMode));
+}
+
+const lightModeBtn = document.getElementById('lightModeBtn');
+if(lightModeBtn){
+  lightModeBtn.addEventListener('click', ()=>toggleLightingMode());
+}
+
+const collabToolbarBtn = document.getElementById('collabToolbarBtn');
+if(collabToolbarBtn){
+  collabToolbarBtn.addEventListener('click', ()=>{
+    const modal = document.getElementById('collabModal');
+    if(modal) modal.classList.toggle('show');
+  });
+}
+
 const connectBtn = document.getElementById('connectModeBtn');
 if(connectBtn){
   connectBtn.addEventListener('click', ()=>{
@@ -385,6 +600,15 @@ if(panelPduBtn) panelPduBtn.addEventListener('click', ()=>{
   if(selectedDeviceId) openPduModal(selectedDeviceId);
 });
 
+/* Xabar tugmalari */
+const msgModeBtn = document.getElementById('msgModeBtn');
+if(msgModeBtn) msgModeBtn.addEventListener('click', ()=> openMessageModal());
+
+const panelMsgBtn = document.getElementById('panelMsgBtn');
+if(panelMsgBtn) panelMsgBtn.addEventListener('click', ()=>{
+  if(selectedDeviceId) openMessageModal(selectedDeviceId);
+});
+
 /* Wi-Fi & Panel hooks */
 const wifiToolbarBtn = document.getElementById('wifiToolbarBtn');
 if(wifiToolbarBtn) wifiToolbarBtn.addEventListener('click', ()=>openWifiModal());
@@ -398,6 +622,43 @@ const pAddWifiAdapterBtn = document.getElementById('pAddWifiAdapterBtn');
 if(pAddWifiAdapterBtn) pAddWifiAdapterBtn.addEventListener('click', ()=>{
   if(selectedDeviceId) addWifiAdapter(selectedDeviceId);
 });
+
+/* ── Panel VLAN tugmasi ── */
+const panelVlanBtn = document.getElementById('panelVlanBtn');
+if(panelVlanBtn) panelVlanBtn.addEventListener('click', ()=>{
+  if(selectedDeviceId && typeof openVlanModal === 'function') openVlanModal(selectedDeviceId);
+});
+
+/* ── Loyiha (Storage) tugmasi ── */
+const storageBtn = document.getElementById('storageBtn');
+if(storageBtn) storageBtn.addEventListener('click', openStorageModal);
+
+/* ── Subnet Kalkulyator tugmasi ── */
+const subnetBtn = document.getElementById('subnetBtn');
+if(subnetBtn) subnetBtn.addEventListener('click', ()=>{
+  if(subnetPanelOpen) closeSubnetPanel();
+  else openSubnetPanel();
+});
+
+/* ── Quiz tugmasi ── */
+const quizBtn = document.getElementById('quizBtn');
+if(quizBtn) quizBtn.addEventListener('click', openQuizModal);
+
+/* ── Undo/Redo tugmalari ── */
+const histUndoBtn = document.getElementById('historyUndoBtn');
+if(histUndoBtn) histUndoBtn.addEventListener('click', undo);
+
+const histRedoBtn = document.getElementById('historyRedoBtn');
+if(histRedoBtn) histRedoBtn.addEventListener('click', redo);
+
+/* ── Autosave (qurilma / ulanish o'zgarishida) ── */
+// addDevice va removeDevice wraplash orqali autosave
+const _origAddDevice = addDevice;
+window.addDevice = function(...args){
+  const r = _origAddDevice(...args);
+  if(r && typeof triggerAutosave === 'function') triggerAutosave();
+  return r;
+};
 
 /* Fullscreen Toggle */
 const lanFsBtn = document.getElementById('lanFsBtn');
@@ -416,14 +677,384 @@ if(lanFsBtn) {
 }
 
 /* ==========================================================================
-   ANIMATION LOOP
+   MODELLAR KATALOGI (3D HARDWARE & CABLES CATALOG) CONTROLLER
+   ========================================================================== */
+const modelsCatalogBtn = document.getElementById('modelsCatalogBtn');
+const modelsCatalogModal = document.getElementById('modelsCatalogModal');
+const modelsCatalogClose = document.getElementById('modelsCatalogClose');
+const modelsCatalogGrid = document.getElementById('modelsCatalogGrid');
+const catalogCategoryTabs = document.getElementById('catalogCategoryTabs');
+const catalogSearchInput = document.getElementById('catalogSearchInput');
+
+let currentCatalogCat = 'all';
+let currentCatalogBrand = 'all';
+let currentCatalogSearch = '';
+
+function openModelPickerForType(type){
+  currentCatalogCat = type || 'all';
+  currentCatalogBrand = 'all';
+  currentCatalogSearch = '';
+  if(catalogSearchInput) catalogSearchInput.value = '';
+
+  const catalogBrandTabs = document.getElementById('catalogBrandTabs');
+  if(catalogBrandTabs){
+    catalogBrandTabs.querySelectorAll('.proto-btn').forEach(b => b.classList.toggle('active', b.dataset.brand === 'all'));
+  }
+
+  // Update tabs active state
+  if(catalogCategoryTabs){
+    catalogCategoryTabs.querySelectorAll('.proto-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.cat === currentCatalogCat);
+    });
+  }
+
+  // Update modal title to highlight selected device type
+  const modalTitle = document.querySelector('#modelsCatalogModal .modal-head h3');
+  if(modalTitle){
+    if(type && type !== 'all'){
+      const label = TYPES[type] ? TYPES[type].label : type;
+      modalTitle.textContent = `${label} — 3D Modelini Tanlang`;
+    } else {
+      modalTitle.textContent = '3D Qurilmalar va Kabellar Modellar Katalogi';
+    }
+  }
+
+  if(modelsCatalogModal){
+    modelsCatalogModal.classList.add('show');
+    renderModelsCatalog();
+  }
+}
+
+function renderModelsCatalog(){
+  if(!modelsCatalogGrid || typeof MODELS_DB === 'undefined') return;
+  modelsCatalogGrid.innerHTML = '';
+
+  const q = currentCatalogSearch.toLowerCase().trim();
+
+  // 1. Render Cables if selected
+  if(currentCatalogCat === 'all' || currentCatalogCat === 'cables'){
+    if(typeof CABLE_TYPES_DB !== 'undefined'){
+      Object.keys(CABLE_TYPES_DB).forEach(k => {
+        const c = CABLE_TYPES_DB[k];
+        if(q && !c.name.toLowerCase().includes(q) && !c.desc.toLowerCase().includes(q)) return;
+
+        const card = document.createElement('div');
+        card.className = 'model-card cable-card';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="cable-color-dot" style="background:${c.hexColor || '#FFF'}; box-shadow:0 0 8px ${c.hexColor};"></span>
+              <b style="font-size:12.5px; color:var(--ink);">${c.name}</b>
+            </div>
+            <span class="mono" style="font-size:9.5px; padding:2px 6px; border-radius:4px; background:rgba(255,180,84,0.15); color:var(--accent); font-weight:700;">${c.speed}</span>
+          </div>
+          <p style="font-size:11px; color:var(--ink-dim); line-height:1.4; margin-bottom:8px;">${c.desc}</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+            <span style="font-size:10px; color:#A78BFA; font-weight:600;">Ulagich: ${c.connectorType}</span>
+            <span style="font-size:10px; color:var(--ink-dim);">Ulash rejimida tanlanadi</span>
+          </div>
+        `;
+        modelsCatalogGrid.appendChild(card);
+      });
+    }
+  }
+
+  // 2. Render Hardware Devices
+  if(currentCatalogCat !== 'cables'){
+    Object.keys(MODELS_DB).forEach(cat => {
+      if(currentCatalogCat !== 'all' && currentCatalogCat !== cat) return;
+      const models = MODELS_DB[cat];
+
+      Object.keys(models).forEach(mKey => {
+        const m = models[mKey];
+        if(currentCatalogBrand !== 'all' && !m.brand.toLowerCase().includes(currentCatalogBrand.toLowerCase())) return;
+        if(q && !m.name.toLowerCase().includes(q) && !m.brand.toLowerCase().includes(q) && !m.desc.toLowerCase().includes(q)) return;
+
+        const card = document.createElement('div');
+        card.className = 'model-card';
+        const portTags = m.ports.map(p => `<span class="port-tag">${p}</span>`).join('');
+
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+            <div>
+              <span class="brand-badge">${m.brand}</span>
+              <b style="font-size:12.5px; color:var(--ink); display:block; margin-top:2px;">${m.name}</b>
+            </div>
+            <span class="cat-badge">${TYPES[cat] ? TYPES[cat].label : cat}</span>
+          </div>
+          <p style="font-size:11px; color:var(--ink-dim); line-height:1.4; margin:6px 0 10px;">${m.desc}</p>
+          <div style="display:flex; align-items:center; gap:4px; margin-bottom:10px; flex-wrap:wrap;">
+            <span style="font-size:10px; color:var(--ink-dim); margin-right:4px;">Portlar:</span>
+            ${portTags}
+          </div>
+          <button class="actbtn on add-model-btn" style="width:100%; justify-content:center; padding:6px; font-size:11.5px; font-weight:700;">
+            ➕ Maydonga Qo‘shish
+          </button>
+        `;
+
+        card.querySelector('.add-model-btn').addEventListener('click', ()=>{
+          const newRec = addDevice(cat, mKey);
+          if(newRec && typeof Multiplayer !== 'undefined' && Multiplayer.active){
+            Multiplayer.broadcast({
+              type: 'topo_add_device',
+              deviceData: { id: newRec.id, type: newRec.type, name: newRec.name, x: newRec.group.position.x, z: newRec.group.position.z, ip: newRec.ip }
+            });
+          }
+          if(modelsCatalogModal) modelsCatalogModal.classList.remove('show');
+        });
+
+        modelsCatalogGrid.appendChild(card);
+      });
+    });
+  }
+
+  if(modelsCatalogGrid.children.length === 0){
+    modelsCatalogGrid.innerHTML = `<div class="empty" style="grid-column:1/-1; padding:30px; font-size:12px; color:var(--ink-dim);">Mos keluvchi model topilmadi.</div>`;
+  }
+}
+
+if(modelsCatalogBtn){
+  modelsCatalogBtn.addEventListener('click', ()=>{
+    openModelPickerForType('all');
+  });
+}
+
+if(modelsCatalogClose){
+  modelsCatalogClose.addEventListener('click', ()=>{
+    if(modelsCatalogModal) modelsCatalogModal.classList.remove('show');
+  });
+}
+
+if(catalogCategoryTabs){
+  catalogCategoryTabs.querySelectorAll('.proto-btn').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      catalogCategoryTabs.querySelectorAll('.proto-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCatalogCat = btn.dataset.cat || 'all';
+      const modalTitle = document.querySelector('#modelsCatalogModal .modal-head h3');
+      if(modalTitle){
+        if(currentCatalogCat !== 'all' && currentCatalogCat !== 'cables' && TYPES[currentCatalogCat]){
+          modalTitle.textContent = `${TYPES[currentCatalogCat].label} — 3D Modelini Tanlang`;
+        } else if(currentCatalogCat === 'cables'){
+          modalTitle.textContent = 'Aloqa Kabellari Rusumlari (7)';
+        } else {
+          modalTitle.textContent = '3D Qurilmalar va Kabellar Modellar Katalogi';
+        }
+      }
+      renderModelsCatalog();
+    });
+  });
+}
+
+const catalogBrandTabs = document.getElementById('catalogBrandTabs');
+if(catalogBrandTabs){
+  catalogBrandTabs.querySelectorAll('.proto-btn').forEach(btn => {
+    btn.addEventListener('click', ()=>{
+      catalogBrandTabs.querySelectorAll('.proto-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCatalogBrand = btn.dataset.brand || 'all';
+      renderModelsCatalog();
+    });
+  });
+}
+
+if(catalogSearchInput){
+  catalogSearchInput.addEventListener('input', (e)=>{
+    currentCatalogSearch = e.target.value;
+    renderModelsCatalog();
+  });
+}
+
+/* ==========================================================================
+   MULTIPLAYER MODAL & CHAT UI HOOKS
+   ========================================================================== */
+const collabModalCloseBtn = document.getElementById('collabModalClose');
+if(collabModalCloseBtn){
+  collabModalCloseBtn.addEventListener('click', ()=>{
+    const m = document.getElementById('collabModal');
+    if(m) m.classList.remove('show');
+  });
+}
+
+const collabJoinBtn = document.getElementById('collabJoinBtn');
+if(collabJoinBtn){
+  collabJoinBtn.addEventListener('click', ()=>{
+    const roomInput = document.getElementById('collabRoomInput');
+    const nameInput = document.getElementById('collabNameInput');
+    const room = roomInput ? roomInput.value.trim() : 'ATT-LAB-01';
+    const name = nameInput ? nameInput.value.trim() : '';
+    Multiplayer.joinRoom(room, name);
+    const m = document.getElementById('collabModal');
+    if(m) m.classList.remove('show');
+  });
+}
+
+const collabLeaveBtn = document.getElementById('collabLeaveBtn');
+if(collabLeaveBtn){
+  collabLeaveBtn.addEventListener('click', ()=>{
+    Multiplayer.leaveRoom();
+  });
+}
+
+const collabChatSendBtn = document.getElementById('collabChatSendBtn');
+const collabChatInput = document.getElementById('collabChatInput');
+if(collabChatSendBtn && collabChatInput){
+  const send = ()=>{
+    const val = collabChatInput.value;
+    if(val){
+      Multiplayer.sendChat(val);
+      collabChatInput.value = '';
+    }
+  };
+  collabChatSendBtn.addEventListener('click', send);
+  collabChatInput.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter') send();
+  });
+}
+
+/* Remote Topology Helpers for Multiplayer Sync */
+window.addDeviceFromData = function(data){
+  if(!data || devices.has(data.id)) return;
+  const dev = addDevice(data.type, data.modelKey);
+  if(!dev) return;
+
+  // ID ni server yuborgan id ga moslashtirish (multiplayer sync uchun)
+  const oldId = dev.id;
+  dev.id = data.id;
+  devices.delete(oldId);
+  devices.set(dev.id, dev);
+
+  // Qurilma nomini va IP ni yangilash
+  if(data.name) dev.name = data.name;
+  if(data.ip){ dev.ip = data.ip; }
+  if(data.x !== undefined) dev.group.position.x = data.x;
+  if(data.z !== undefined) dev.group.position.z = data.z;
+
+  // Barcha pick meshlarni yangi id ga yangilash
+  dev.group.traverse(o => { if(o.isMesh) o.userData.deviceId = data.id; });
+
+  // Label ni yangilash
+  if(dev.label){
+    dev.label.querySelector('.nm').textContent = dev.name;
+    dev.label.querySelector('.ip').textContent = dev.ip;
+  }
+  if(typeof updateConnectionsGeometry === 'function') updateConnectionsGeometry();
+  if(typeof updateRings === 'function') updateRings();
+  if(typeof updateLabels === 'function') updateLabels();
+
+  toast(`➕ Boshqa talaba yangi qurilma qo'shdi: ${dev.name}`);
+};
+
+window.moveDeviceRemote = function(devId, x, z){
+  const dev = devices.get(devId);
+  if(dev){
+    dev.group.position.x = x;
+    dev.group.position.z = z;
+    if(typeof updateConnectionsGeometry === 'function') updateConnectionsGeometry();
+    if(typeof updateRings === 'function') updateRings();
+    if(typeof updateLabels === 'function') updateLabels();
+  }
+};
+
+window.connectDevicesRemote = function(aId, bId, opts){
+  if(devices.has(aId) && devices.has(bId)){
+    const optObj = (typeof opts === 'object' && opts !== null)
+      ? opts
+      : { cableType: opts || 'auto' };
+    addConnection(aId, bId, optObj);
+  }
+};
+
+window.removeDeviceRemote = function(devId){
+  if(devices.has(devId)){
+    removeDevice(devId);
+  }
+};
+
+window.removeConnectionRemote = function(connId){
+  if(connections.has(connId)){
+    removeConnection(connId);
+  }
+};
+
+window.spawnPacketVisualRemote = function(fromId, toId, colorHex, protocol){
+  let c = getConnectionBetween(fromId, toId);
+  if(c && c.packets){
+    const col = colorHex ? parseInt(colorHex.replace('#', '0x')) : 0x00FF87;
+    c.packets.push({
+      t: 0,
+      speed: 0.35,
+      mesh: (typeof getPacketMesh === 'function') ? getPacketMesh(col) : null
+    });
+  }
+};
+
+/* ==========================================================================
+   ANIMATION LOOP & PHYSICS UPDATE
    ========================================================================== */
 const clock = new THREE.Clock();
+
+function updateFpsMovement(dt){
+  if(!isFpsMode) return;
+
+  const speed = keys.sprint ? 9.0 : 4.8;
+  const moveDir = new THREE.Vector3();
+
+  // Forward & Backward along horizontal camera plane
+  if(keys.forward)  moveDir.z -= 1;
+  if(keys.backward) moveDir.z += 1;
+  if(keys.left)     moveDir.x -= 1;
+  if(keys.right)    moveDir.x += 1;
+
+  if(moveDir.lengthSq() > 0){
+    moveDir.normalize();
+
+    // Rotate movement vector by current FPS Yaw
+    const sinY = Math.sin(fpsYaw);
+    const cosY = Math.cos(fpsYaw);
+    const worldX = moveDir.x * cosY - moveDir.z * sinY;
+    const worldZ = moveDir.x * sinY + moveDir.z * cosY;
+
+    fpsVel.x += worldX * speed * dt * 10;
+    fpsVel.z += worldZ * speed * dt * 10;
+  }
+
+  // Apply friction / damping
+  fpsVel.x *= Math.max(0, 1 - 10 * dt);
+  fpsVel.z *= Math.max(0, 1 - 10 * dt);
+
+  // Update position with room boundary collision constraints
+  fpsPos.x += fpsVel.x * dt;
+  fpsPos.z += fpsVel.z * dt;
+
+  fpsPos.x = Math.max(-ARENA_HALF_W, Math.min(ARENA_HALF_W, fpsPos.x));
+  fpsPos.z = Math.max(-ARENA_HALF_L, Math.min(ARENA_HALF_L, fpsPos.z));
+
+  updateCamera();
+
+  // Update Crosshair aim & target HUD
+  const crosshair = document.getElementById('crosshair');
+  const targetBadge = document.getElementById('fpsTargetBadge');
+  const devId = pickDevice();
+  if(devId){
+    const dev = devices.get(devId);
+    if(crosshair) crosshair.classList.add('locked');
+    if(targetBadge){
+      targetBadge.style.display = 'block';
+      targetBadge.innerHTML = `<b>[E]</b> ${dev.name} <span style="font-size:9.5px; opacity:0.8;">(${TYPES[dev.type].label}) — Boshqarish</span>`;
+    }
+  } else {
+    if(crosshair) crosshair.classList.remove('locked');
+    if(targetBadge) targetBadge.style.display = 'none';
+  }
+}
 
 function animate(){
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.05);
 
+  updateFpsMovement(dt);
+  updateRackLeds(clock.elapsedTime);
   updateConnectionsGeometry();
   updatePackets(dt);
   update3DTransfers(dt);
@@ -432,17 +1063,30 @@ function animate(){
   updateWifiCoverageVisual();
   spawnWifiPulses(dt);
   updateWifiPulses(dt);
+  updateMiniRadar();
 
   renderer.render(scene, camera);
+}
+
+// Initialize Multiplayer
+if(typeof Multiplayer !== 'undefined'){
+  Multiplayer.init();
 }
 
 /* Check URL query on start (e.g. ?topo=star) */
 const urlParams = new URLSearchParams(window.location.search);
 const qTopo = urlParams.get('topo') || window.location.hash.replace('#', '');
-if(qTopo && ['star', 'ring', 'bus', 'tree', 'mesh', 'office'].includes(qTopo)){
-  loadTopology(qTopo);
+// 'seed' ham ro'yxatga qo'shildi
+if(qTopo && ['star', 'ring', 'bus', 'tree', 'mesh', 'office', 'seed'].includes(qTopo)){
+  if(qTopo === 'seed'){
+    seed();
+  } else {
+    loadTopology(qTopo);
+  }
 } else {
-  seed();
+  // Autosave tekshirish (storage.js yoqlangan bo'lsa)
+  const autoLoaded = (typeof loadAutosave === 'function') && loadAutosave();
+  if(!autoLoaded) seed();
 }
 
 animate();

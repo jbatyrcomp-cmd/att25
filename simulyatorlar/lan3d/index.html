@@ -6,17 +6,45 @@
 <title>LAN 3D Simulyator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=1.6">
 </head>
 <body>
 
 <canvas id="scene"></canvas>
 <div id="labels"></div>
 
+<!-- First Person HUD & Crosshair -->
+<div id="crosshair" style="display:none;">
+  <div class="ch-line ch-top"></div>
+  <div class="ch-line ch-bottom"></div>
+  <div class="ch-line ch-left"></div>
+  <div class="ch-line ch-right"></div>
+  <div class="ch-dot"></div>
+  <div id="fpsTargetBadge" style="display:none;"></div>
+</div>
+
+<div id="fpsControlsHud" class="fps-hud">
+  <span><b>W A S D</b> Yurish</span> · 
+  <span><b>Sichqoncha</b> 360° Qarash</span> · 
+  <span><b>Shift</b> Yugurish</span> · 
+  <span><b>E</b> / Bosish — Boshqarish</span> · 
+  <span><b>C</b> Egilish</span> · 
+  <span><b>ESC</b> Chiqish</span>
+</div>
+
+<!-- Mini Radar / Arena Compass -->
+<div id="miniRadar" style="display:none;">
+  <canvas id="radarCanvas" width="105" height="105"></canvas>
+  <div class="radar-title">VIRTUAL MAYDON</div>
+</div>
+
 <div id="toolbar">
   <div id="brand"><b>LAN 3D Simulyator</b><span>Qurilmalarni qo‘shing va tarmoqni quring</span></div>
-  <div id="devtray"></div>
   <div id="actions">
+    <button class="actbtn" id="modelsCatalogBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.45); font-weight:700;" title="3D Qurilmalar va modellar katalogi">
+      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      Qurilmalar
+    </button>
     <a href="../index.html" class="actbtn" id="homeHubBtn" target="_top" style="color:var(--accent); border-color:var(--line-bright); text-decoration:none;" title="Simulyatorlar markaziga qaytish">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       Markaz
@@ -35,12 +63,31 @@
         Topologiyalar ▼
       </button>
       <div class="topo-menu" id="topoMenu">
+        <div class="topo-cat-title">🏢 Ko‘p Xonali Binolar (Multi-Room)</div>
+        <button class="topo-item" data-topo="multi_room_office">🏢 4 Xonali Korporativ Ofis (VLAN 10/20/30/99)</button>
+        <button class="topo-item" data-topo="multi_room_campus">🏫 3 Xonali Universitet Campus (Lab, Ustoz, Server)</button>
+
+        <div class="topo-cat-title">🏷️ VLAN & L2/L3 Routing</div>
+        <button class="topo-item" data-topo="vlan_roas">🏢 VLAN & Router-on-a-Stick (802.1Q)</button>
+        <button class="topo-item" data-topo="vlan_svi_l3">⚡ L3 Switch Inter-VLAN (SVI Wire-Speed)</button>
+        <button class="topo-item" data-topo="vlan_voice_data">☎️ Voice & Data VLAN (Cisco Phone + PC)</button>
+        <button class="topo-item" data-topo="vlan_3building">🌐 3-Binoli 802.1Q Campus Trunk</button>
+        <button class="topo-item" data-topo="vlan_trunk">🔀 Multi-Switch 802.1Q Trunk</button>
+        <button class="topo-item" data-topo="vlan_guest_isolation">🛡️ Mehmonlar va Korporativ Izolatsiya</button>
+
+        <div class="topo-cat-title">⚡ Data Center & Enterprise</div>
+        <button class="topo-item" data-topo="datacenter_leafspine">⚡ Data Center Leaf-Spine (Fat-Tree)</button>
+        <button class="topo-item" data-topo="dmz_secure">🛡️ DMZ & Xavfsiz Server Farm</button>
+        <button class="topo-item" data-topo="p2p_wan">🌉 Point-to-Point (P2P) Site-to-Site WAN</button>
+
+        <div class="topo-cat-title">📶 Simsiz & Klassik Topologiyalar</div>
+        <button class="topo-item" data-topo="smart_office_iot">📱 Smart Office IoT (Wi-Fi 7 & 5G)</button>
+        <button class="topo-item" data-topo="office">🏠 Uy / Ofis Gibrid (LAN & Wi-Fi)</button>
         <button class="topo-item" data-topo="star">⭐ Yulduz (Star)</button>
+        <button class="topo-item" data-topo="tree">🌳 Daraxt (Tree / Ierarxik)</button>
         <button class="topo-item" data-topo="ring">⭕ Halqa (Ring)</button>
         <button class="topo-item" data-topo="bus">🚌 Shina (Bus)</button>
-        <button class="topo-item" data-topo="tree">🌳 Daraxt (Tree / Ierarxik)</button>
         <button class="topo-item" data-topo="mesh">🕸️ To‘r (Full Mesh)</button>
-        <button class="topo-item" data-topo="office">🏠 Uy / Ofis (LAN & Wi-Fi)</button>
         <button class="topo-item" data-topo="seed">🔄 Boshlang‘ich tarmoq</button>
       </div>
     </div>
@@ -48,10 +95,56 @@
       <svg viewBox="0 0 24 24"><path d="M6 12h12M14 8l4 4-4 4"/></svg>
       Ulash rejimi
     </button>
+    <div class="dropdown" id="cableDropdown">
+      <button class="actbtn" id="cableMenuBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Ulash uchun kabel turini tanlash">
+        <svg viewBox="0 0 24 24"><path d="M12 2v6m0 8v6M8 8h8v8H8z"/></svg>
+        Kabellar ▼
+      </button>
+      <div class="topo-menu" id="cableMenu" style="min-width:270px;">
+        <div class="topo-cat-title">⚡ Avtomatik / MDI-X</div>
+        <button class="topo-item" onclick="selectActiveCable('auto')">⚡ Avtomatik (Auto MDI/MDI-X)</button>
+        
+        <div class="topo-cat-title">🔌 Mis (Twisted Pair / Ethernet)</div>
+        <button class="topo-item" onclick="selectActiveCable('cat6')"><span class="cable-dot" style="background:#38BDF8; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Cat6 UTP (Gigabit Ethernet)</button>
+        <button class="topo-item" onclick="selectActiveCable('cat7')"><span class="cable-dot" style="background:#818CF8; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Cat7 S/FTP (10G Ekranli)</button>
+        <button class="topo-item" onclick="selectActiveCable('crossover')"><span class="cable-dot" style="background:#F59E0B; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Crossover (Bir xil sath qurilmalari)</button>
+
+        <div class="topo-cat-title">💡 Optik tola & Yuqori tezlik (Fiber / DAC)</div>
+        <button class="topo-item" onclick="selectActiveCable('fiber_single')"><span class="cable-dot" style="background:#FACC15; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Optik Single-mode OS2 (10G/40G Sariq)</button>
+        <button class="topo-item" onclick="selectActiveCable('fiber_multi')"><span class="cable-dot" style="background:#2DD4BF; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Optik Multi-mode OM4 (10G/100G Havo rang)</button>
+        <button class="topo-item" onclick="selectActiveCable('dac_twinax')"><span class="cable-dot" style="background:#94A3B8; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Direct Attach Copper (DAC 10G SFP+)</button>
+
+        <div class="topo-cat-title">🛠️ Boshqaruv & Konfiguratsiya</div>
+        <button class="topo-item" onclick="selectActiveCable('console')"><span class="cable-dot" style="background:#00FF87; display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;"></span>Cisco Console (Rollover RJ45-DB9)</button>
+      </div>
+    </div>
     <button class="actbtn" id="wifiToolbarBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Wi-Fi boshqaruvi va sozlamalari">
       <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
       Wi-Fi
     </button>
+    <button class="actbtn" id="vlanToolbarBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="VLAN (Virtual LAN) va 802.1Q Port Boshqaruvi" onclick="openVlanModal()">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" rx="1.5"/><rect x="13" y="2" width="9" height="9" rx="1.5"/><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><path d="M6.5 11v2m11-2v2M11 6.5h2m-2 11h2"/></svg>
+      VLAN
+    </button>
+    <button class="actbtn" id="vlanViewToggleBtn" style="color:#6FE3C4; border-color:rgba(111,227,196,0.35);" title="3D Sahna VLAN Ranglari Ko'rinishini Yoqish/O'chirish" onclick="toggleVlanView()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      VLAN Ranglari
+    </button>
+    <!-- 🏗️ Xona Qurish Dropdown -->
+    <div class="dropdown" id="roomDropdown">
+      <button class="actbtn" id="roomBtn" style="color:#FBBF24; border-color:rgba(251,191,36,0.35);" title="3D Xona qurish va o'lchamlarini sozlash">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Xona ▼
+      </button>
+      <div class="topo-menu" id="roomMenu" style="min-width:215px;">
+        <div class="topo-cat-title">➕ Yangi Xona Qurish</div>
+        <button class="topo-item" onclick="createPresetRoom('small')">📐 Kichik Ofis (5m × 4m)</button>
+        <button class="topo-item" onclick="createPresetRoom('medium')">🏢 O‘rtacha Ofis (7m × 5m)</button>
+        <button class="topo-item" onclick="createPresetRoom('large')">🏛️ Katta Zal / Lab (9m × 7m)</button>
+        <button class="topo-item" onclick="createPresetRoom('server')">🛡️ Serverxona (6m × 5m)</button>
+        <button class="topo-item" onclick="createPresetRoom('custom')">✨ Maxsus Bo‘sh Xona</button>
+      </div>
+    </div>
     <button class="actbtn" id="msgModeBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Kompyuterlararo xabar yuborish">
       <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Xabar
@@ -68,14 +161,70 @@
       <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       Event List
     </button>
+    <button class="actbtn" id="camModeBtn" style="color:#00FF87; border-color:rgba(0,255,135,0.4);" title="Virtual xona ichida 1-shaxs nomidan yurish (WASD)">
+      <svg viewBox="0 0 24 24"><path d="M13 4v16M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>
+      Xonada Yurish (WASD)
+    </button>
+    <button class="actbtn" id="lightModeBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.35);" title="Laboratoriya kunduzgi / Kiber qorong‘i yoritish rejimini almashtirish">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      Yorug‘lik
+    </button>
+    <button class="actbtn" id="collabToolbarBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Bir nechta foydalanuvchi birgalikda ishlaydigan Umumiy Virtual Xona">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Umumiy Xona
+    </button>
     <button class="actbtn warn" id="clearBtn">
       <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
       Tozalash
     </button>
-    <button class="actbtn" id="lanFsBtn" style="color:var(--accent); border-color:var(--line-bright);" title="Simulyatorni to‘liq ekranga yoyish">
+    <button class="actbtn" id="lanFsBtn" style="color:var(--accent); border-color:var(--line-bright);" title="Simulyatorni to'liq ekranga yoyish">
       <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-      To‘liq Ekran
+      To'liq Ekran
     </button>
+
+    <!-- ─── Yangi tugmalar guruhi ─── -->
+    <div class="toolbar-sep"></div>
+
+    <!-- Undo / Redo -->
+    <button class="actbtn" id="historyUndoBtn" disabled title="Bekor qilish (Ctrl+Z)" style="padding:5px 9px; opacity:0.35;">
+      <svg viewBox="0 0 24 24" width="15" height="15"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+    </button>
+    <button class="actbtn" id="historyRedoBtn" disabled title="Takrorlash (Ctrl+Y)" style="padding:5px 9px; opacity:0.35;">
+      <svg viewBox="0 0 24 24" width="15" height="15"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 0 4-4h12"/></svg>
+    </button>
+
+    <!-- Loyiha (Saqlash/Yuklash) -->
+    <button class="actbtn" id="storageBtn" style="color:#6FE3C4; border-color:rgba(111,227,196,0.35);" title="Loyihani saqlash / yuklash">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Loyiha
+    </button>
+
+    <!-- Subnet Kalkulyator -->
+    <button class="actbtn" id="subnetBtn" style="color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Subnet kalkulyator">
+      <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="11" y2="18"/></svg>
+      Subnet
+    </button>
+
+    <!-- Quiz rejimi -->
+    <button class="actbtn" id="quizBtn" style="color:#FFB454; border-color:rgba(255,180,84,0.35);" title="Bilim sinash rejimi">
+      <svg viewBox="0 0 24 24"><path d="M12 22V12M12 12C10.9 12 10 11.1 10 10V4h4v6c0 1.1-.9 2-2 2z"/><path d="M16 7l-4-4-4 4"/><circle cx="12" cy="18" r="2"/></svg>
+      Quiz
+    </button>
+
+    <!-- Eksport -->
+    <div class="dropdown" style="position:relative;">
+      <button class="actbtn" id="exportBtn" style="color:#A78BFA; border-color:rgba(167,139,250,0.35);" title="Eksport" onclick="openExportDropdown()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Eksport ▼
+      </button>
+      <div class="topo-menu" id="exportDropdown" style="min-width:180px;">
+        <button class="topo-item" onclick="captureSceneSnapshot()">📷 PNG Screenshot</button>
+        <button class="topo-item" onclick="exportTopologySvg()">🗺️ 2D SVG Diagramma</button>
+        <button class="topo-item" onclick="exportCiscoConfig(null)">📄 Cisco Config (.txt)</button>
+        <button class="topo-item" onclick="exportNetworkReport()">📊 Tarmoq Hisoboti</button>
+        <button class="topo-item" onclick="exportProjectFile()">💾 .lan3d Fayl</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -90,6 +239,10 @@
   <div>
     <label>Qurilma nomi</label>
     <input type="text" id="pNameInput" maxlength="24">
+  </div>
+  <div id="pModelSelectContainer" style="margin-top:2px;">
+    <label>3D Model varianti</label>
+    <select id="pModelSelect" class="ip-field-input" style="width:100%; cursor:pointer; background:var(--panel-2); color:var(--ink);"></select>
   </div>
 
   <!-- Editable IP Configuration Card -->
@@ -147,6 +300,12 @@
         ➕ Wi-Fi Adapter (WLAN0) qo‘shish
       </button>
     </div>
+    <div id="pVlanSection" style="display:none;">
+      <button class="panel-act-btn" id="panelVlanBtn" style="background:rgba(167,139,250,0.1); color:#A78BFA; border:1px solid rgba(167,139,250,0.35); font-size:11px;">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="1.5"/><rect x="13" y="2" width="9" height="9" rx="1.5"/><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/></svg>
+        VLAN & 802.1Q Port Boshqaruvi
+      </button>
+    </div>
     <button class="panel-act-btn msg" id="panelMsgBtn">
       <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       Kompyuterga Xabar Yuborish
@@ -172,6 +331,122 @@
     <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
     Qurilmani o‘chirish
   </button>
+</aside>
+
+<!-- 3D Room Inspector Panel -->
+<aside id="roomPanel" class="inspector-panel">
+  <div class="ptop">
+    <div>
+      <h2 id="roomTitle">Xona</h2>
+      <div class="type" id="roomSubTitle">3D Xona Sozlamalari</div>
+    </div>
+    <button class="xbtn" id="roomCloseBtn">✕</button>
+  </div>
+
+  <div>
+    <label>Xona nomi</label>
+    <input type="text" id="roomNameInput" maxlength="30" placeholder="Masalan: Buxgalteriya">
+  </div>
+
+  <!-- Width & Depth Resizing -->
+  <div class="ip-config-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+      <label style="margin-bottom:0; font-weight:700;">📐 O‘lchamlari (Metr)</label>
+      <span class="mono" id="roomDimensionsBadge" style="color:var(--accent); font-size:11px;">6.0m × 5.0m</span>
+    </div>
+
+    <!-- Width Slider & Buttons -->
+    <div style="margin-bottom:10px;">
+      <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
+        <span style="color:var(--ink-dim);">Kenglik (Width):</span>
+        <span class="mono" id="roomWidthVal">6.0m</span>
+      </div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button type="button" class="actbtn" id="roomWidthMinusBtn" style="padding:3px 8px; font-size:13px; font-weight:bold;">−</button>
+        <input type="range" id="roomWidthRange" min="3" max="25" step="0.5" value="6" style="flex:1; cursor:pointer;">
+        <button type="button" class="actbtn" id="roomWidthPlusBtn" style="padding:3px 8px; font-size:13px; font-weight:bold;">+</button>
+      </div>
+    </div>
+
+    <!-- Depth Slider & Buttons -->
+    <div style="margin-bottom:4px;">
+      <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
+        <span style="color:var(--ink-dim);">Uzunlik (Depth):</span>
+        <span class="mono" id="roomDepthVal">5.0m</span>
+      </div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <button type="button" class="actbtn" id="roomDepthMinusBtn" style="padding:3px 8px; font-size:13px; font-weight:bold;">−</button>
+        <input type="range" id="roomDepthRange" min="3" max="25" step="0.5" value="5" style="flex:1; cursor:pointer;">
+        <button type="button" class="actbtn" id="roomDepthPlusBtn" style="padding:3px 8px; font-size:13px; font-weight:bold;">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Palette -->
+  <div>
+    <label>Xona Rangi / Mavzusi</label>
+    <div class="room-color-palette" id="roomColorPalette" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:4px;"></div>
+  </div>
+
+  <!-- VLAN Binding -->
+  <div>
+    <label>Biriktirilgan VLAN</label>
+    <select id="roomVlanSelect" class="ip-field-input" style="width:100%; cursor:pointer; background:var(--panel-2); color:var(--ink);"></select>
+  </div>
+
+  <!-- Delete Room -->
+  <div style="margin-top:auto; padding-top:10px;">
+    <button class="actbtn warn" id="roomDeleteBtn" style="width:100%; justify-content:center; color:var(--danger); border-color:rgba(255,87,87,0.35);">
+      🗑️ Xonani O‘chirish
+    </button>
+  </div>
+</aside>
+
+<!-- 3D Cable Inspector Panel -->
+<aside id="cablePanel" class="inspector-panel">
+  <div class="ptop">
+    <div>
+      <h2 id="cableTitle">Tarmoq Kabeli</h2>
+      <div class="type" id="cableTypeBadge" style="color:#38BDF8;">CAT6 UTP</div>
+    </div>
+    <button class="xbtn" id="cableCloseBtn">✕</button>
+  </div>
+
+  <div>
+    <label>Bog‘langan qurilmalar va portlar:</label>
+    <div id="cableEndpointsVal" class="mono" style="font-size:11px; padding:6px 10px; background:var(--panel-2); border-radius:6px; border:1px solid var(--line); color:var(--ink);"></div>
+  </div>
+
+  <!-- Physical Specs Card -->
+  <div class="ip-config-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+      <label style="margin-bottom:0; font-weight:700;">📏 Fizik Xarakteristikalari</label>
+      <span class="mono" id="cableSpeedVal" style="color:var(--accent); font-size:11px;">1 Gbps</span>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:5px;">
+      <span style="color:var(--ink-dim);">Kabel uzunligi:</span>
+      <span class="mono" id="cableLengthVal" style="color:var(--ink); font-weight:600;">5.2 metr</span>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
+      <span style="color:var(--ink-dim);">Signal kechikishi (Latency):</span>
+      <span class="mono" id="cableDelayVal" style="color:#00FF87; font-weight:600;">0.026 ms</span>
+    </div>
+  </div>
+
+  <!-- Cable Type Switcher (Only compatible cables allowed) -->
+  <div>
+    <label>Kabel turini almashtirish:</label>
+    <select id="cableChangeSelect" class="ip-field-input" style="width:100%; cursor:pointer; background:var(--panel-2); color:var(--ink);"></select>
+  </div>
+
+  <!-- Delete Connection -->
+  <div style="margin-top:auto; padding-top:10px;">
+    <button class="actbtn warn" id="cableDeleteBtn" style="width:100%; justify-content:center; color:var(--danger); border-color:rgba(255,87,87,0.35);">
+      🔌 Ushbu Kabelni Uzish
+    </button>
+  </div>
 </aside>
 
 <div id="legend">
@@ -270,12 +545,7 @@
 
       <div>
         <label>Kabel turi (Transmission Media):</label>
-        <div class="proto-tabs" id="cableTypeTabs">
-          <button class="proto-btn active" data-cable="auto">⚡ Avtomatik (Auto)</button>
-          <button class="proto-btn" data-cable="straight">🔌 To‘g‘ri kabel (Straight)</button>
-          <button class="proto-btn" data-cable="crossover">🔀 Krossover (Cross)</button>
-          <button class="proto-btn" data-cable="fiber">💡 Optik tola (Fiber 10G)</button>
-        </div>
+        <div id="cableSelectGrid" class="cable-select-grid"></div>
       </div>
 
       <div class="sim-transfer-preview" id="cablePreview">
@@ -559,18 +829,352 @@
   </div>
 </div>
 
+<!-- ==========================================================================
+     UMUMIY VIRTUAL XONA (MULTIPLAYER COLLABORATIVE ROOM) MODAL
+     ========================================================================== -->
+<div class="sim-modal-overlay" id="collabModal">
+  <div class="sim-modal-box" style="max-width:470px;">
+    <div class="modal-head">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="#A78BFA" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span style="font-weight:800; font-size:14px; color:var(--ink);">Umumiy Virtual Xona (Multiplayer Collab)</span>
+      </div>
+      <button class="xbtn" id="collabModalClose">✕</button>
+    </div>
+    <div class="modal-body" style="gap:12px;">
+      <p style="font-size:11.5px; color:var(--ink-dim); line-height:1.5; margin:0;">
+        Real vaqtda bir xonada tarmoq quring, 3D avatarlarni ko‘ring, kabellarni ulang va jamoaviy tajriba o‘tkazing! (P2P WebRTC Online & LAN)
+      </p>
+
+      <!-- Room Connect Form -->
+      <div style="background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:8px;">
+        <div>
+          <label style="font-size:11px; font-weight:700; color:var(--ink); margin-bottom:4px; display:block;">Xona Nomi / Kodi:</label>
+          <input type="text" id="collabRoomInput" class="ip-field-input" value="ATT-LAB-01" placeholder="Masalan: ATT-LAB-01" style="font-weight:700; text-transform:uppercase;">
+        </div>
+        <div>
+          <label style="font-size:11px; font-weight:700; color:var(--ink); margin-bottom:4px; display:block;">Ismingiz / Nikneym:</label>
+          <input type="text" id="collabNameInput" class="ip-field-input" placeholder="Ismingizni kiriting...">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:4px;">
+          <button class="actbtn on" id="collabJoinBtn" style="flex:1; justify-content:center; background:#A78BFA; border-color:#A78BFA; color:#0A0D14; font-weight:800;">
+            🚀 Xonaga Kirish / Yaratish
+          </button>
+          <button class="actbtn warn" id="collabLeaveBtn" style="justify-content:center;">
+            Chiqish
+          </button>
+        </div>
+      </div>
+
+      <!-- Current Room Info, Role & Copy Link -->
+      <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:8px 10px; border-radius:8px; border:1px solid var(--line);">
+        <div>
+          <div style="font-size:11px; color:var(--ink-dim);">Faol Xona: <b id="collabRoomCodeDisplay" style="color:var(--accent);">Ulanmagan</b></div>
+          <div style="font-size:10px; margin-top:2px;" id="collabRoleBadge"><span class="collab-role-tag guest">Mehmon</span></div>
+        </div>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button class="actbtn" id="collabCopyLinkBtn" style="font-size:10.5px; padding:4px 8px;" title="Xonaga taklif qilish havolasini nusxalash">
+            🔗 Havola
+          </button>
+          <span id="collabStatusBadge" style="font-size:10px; font-weight:700; color:var(--ink-dim);">Offlayn</span>
+        </div>
+      </div>
+
+      <!-- Admin / Host Control Panel (Visible only to Room Creator/Admin) -->
+      <div id="collabAdminSection" style="display:none; flex-direction:column; gap:8px; background:rgba(167,139,250,0.06); border:1px solid rgba(167,139,250,0.3); border-radius:8px; padding:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="color:#A78BFA; font-size:11.5px;">👑 Xona Admini Boshqaruvi:</b>
+          <span class="collab-admin-badge">ADMIN</span>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="actbtn" id="collabLockBtn" style="font-size:10.5px; padding:4px 8px; color:#FBBF24; border-color:rgba(251,191,36,0.35);">
+            🔒 Topologiyani Qulflash
+          </button>
+          <button class="actbtn" id="collabTeleportBtn" style="font-size:10.5px; padding:4px 8px; color:#38BDF8; border-color:rgba(56,189,248,0.35);" title="Barcha talabalarni men turgan joyga to'plash">
+            📍 Barchani To‘plash
+          </button>
+          <button class="actbtn warn" id="collabMuteAllBtn" onclick="Multiplayer.muteAllStudents()" style="font-size:10.5px; padding:4px 8px;" title="Barcha talabalar mikrofonini o'chirish">
+            🔇 Barchani O‘chirish
+          </button>
+          <button class="actbtn warn" id="collabClearRoomBtn" style="font-size:10.5px; padding:4px 8px;" title="Xona topologiyasini tozalash">
+            🧹 Xonani Tozalash
+          </button>
+        </div>
+      </div>
+
+      <!-- Voice Chat Status & Controls Card -->
+      <div id="collabVoiceCard" style="background:rgba(0,255,135,0.05); border:1px solid rgba(0,255,135,0.25); border-radius:8px; padding:10px; display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span id="collabVoicePulseDot" class="pulse-dot" style="background:#00FF87;"></span>
+            <b style="font-size:11.5px; color:var(--ink);">🎙️ Ovozli Muloqot (Konferensiya)</b>
+          </div>
+          <button class="actbtn on" id="collabModalMicBtn" onclick="Multiplayer.toggleMute()" style="font-size:11px; padding:3px 8px;">
+            🎙️ Mikrofon: YOQILGAN [M]
+          </button>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:10.5px; color:var(--ink-dim);">Ovoz darajasi:</span>
+          <div class="collab-vu-bar" style="flex:1;">
+            <div id="collabModalVuFill" class="collab-vu-fill" style="width:0%;"></div>
+          </div>
+          <span style="font-size:10px; color:var(--ink-dim);">[V] Bosib gapirish</span>
+        </div>
+      </div>
+
+      <!-- Quick Emotes Reactions -->
+      <div>
+        <label style="font-size:11px; font-weight:700; color:var(--ink); margin-bottom:5px; display:block;">Tezkor Reaksiyalar (3D Emote):</label>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="actbtn" onclick="Multiplayer.sendEmote('👍')" style="font-size:14px; padding:4px 10px;">👍 Zo‘r</button>
+          <button type="button" class="actbtn" onclick="Multiplayer.sendEmote('⚠️')" style="font-size:14px; padding:4px 10px;">⚠️ Xato</button>
+          <button type="button" class="actbtn" onclick="Multiplayer.sendEmote('❓')" style="font-size:14px; padding:4px 10px;">❓ Savol</button>
+          <button type="button" class="actbtn" onclick="Multiplayer.sendEmote('🎯')" style="font-size:14px; padding:4px 10px;">🎯 Tayyor</button>
+          <button type="button" class="actbtn" onclick="Multiplayer.triggerSpatialPing()" style="font-size:11px; padding:4px 8px; color:#00FF87; border-color:rgba(0,255,135,0.35);" title="3D maydonda belgi qo'yish (G tugmasi)">📍 Belgilash [G]</button>
+        </div>
+      </div>
+
+      <!-- Participants List -->
+      <div>
+        <label style="font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px; display:block;">Xonadagi Qatnashuvchilar va Ovoz Sozlamalari:</label>
+        <div id="collabParticipantsList" class="inbox-list" style="max-height:130px;">
+          <div class="empty" style="font-size:10.5px; color:var(--ink-dim); padding:6px;">Hozircha faqat siz</div>
+        </div>
+      </div>
+
+      <div style="font-size:10px; color:var(--ink-dim); text-align:center; padding-top:2px;">
+        💡 <b>[M]</b> — Mikrofonni o‘chirish/yoqish · <b>[V]</b> — Bosib gapirish · <b>[G]</b> — 3D belgi · <b>[T]</b> — Chat
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     IN-ROOM TEAM CHAT OVERLAY ([T] Chat)
+     ========================================================================== -->
+<div id="collabChatOverlay" class="collab-chat-overlay" style="display:none;">
+  <div class="collab-chat-head">
+    <span style="font-weight:700; font-size:11.5px; color:#A78BFA; display:flex; align-items:center; gap:5px;">
+      <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Jamoaviy Chat ([T])
+    </span>
+    <div style="display:flex; gap:4px; align-items:center;">
+      <button class="actbtn on" id="collabChatMicBtn" onclick="Multiplayer.toggleMute()" style="padding:1px 6px; font-size:11px;" title="Mikrofon [M]">🎙️</button>
+      <button class="actbtn" onclick="Multiplayer.sendEmote('👍')" style="padding:1px 5px; font-size:11px;">👍</button>
+      <button class="actbtn" onclick="Multiplayer.sendEmote('🎯')" style="padding:1px 5px; font-size:11px;">🎯</button>
+    </div>
+  </div>
+  
+  <!-- Voice Status Bar inside Chat Overlay -->
+  <div class="collab-chat-voice-bar">
+    <div style="display:flex; align-items:center; gap:5px; font-size:10.5px;">
+      <span id="collabChatVoiceDot" class="pulse-dot" style="background:#00FF87; width:6px; height:6px;"></span>
+      <span id="collabChatVoiceText" style="color:#00FF87; font-weight:700;">Ovoz: Faol</span>
+    </div>
+    <div class="collab-vu-bar" style="width:70px;">
+      <div id="collabChatVuFill" class="collab-vu-fill" style="width:0%;"></div>
+    </div>
+  </div>
+
+  <div id="collabChatMessages" class="collab-chat-body"></div>
+  <div class="collab-chat-foot">
+    <input type="text" id="collabChatInput" placeholder="Xabar yozing... (Enter)">
+    <button id="collabChatSendBtn">Yuborish</button>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     MODELLAR KATALOGI (3D HARDWARE & CABLES CATALOG) MODAL
+     ========================================================================== -->
+<div class="sim-modal-overlay" id="modelsCatalogModal">
+  <div class="sim-modal-box" style="max-width:760px; max-height:88vh;">
+    <div class="modal-head">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="#FFB454" fill="none" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <h3>3D Qurilmalar va Kabellar Modellar Katalogi</h3>
+      </div>
+      <button class="xbtn" id="modelsCatalogClose">✕</button>
+    </div>
+    <div class="modal-body" style="gap:12px; overflow-y:hidden;">
+      <!-- Category Filter Tabs -->
+      <div class="proto-tabs" id="catalogCategoryTabs" style="flex-wrap:wrap; gap:4px;">
+        <button class="proto-btn active" data-cat="all">Barchasi (45+7)</button>
+        <button class="proto-btn" data-cat="desktop">Kompyuterlar (10)</button>
+        <button class="proto-btn" data-cat="laptop">Noutbuklar (4)</button>
+        <button class="proto-btn" data-cat="printer">Printerlar & MFP (4)</button>
+        <button class="proto-btn" data-cat="phone">Telefonlar (8)</button>
+        <button class="proto-btn" data-cat="tablet">Planshetlar (5)</button>
+        <button class="proto-btn" data-cat="modem">Modemlar (2)</button>
+        <button class="proto-btn" data-cat="router">Routerlar (4)</button>
+        <button class="proto-btn" data-cat="switch">Switchlar (4)</button>
+        <button class="proto-btn" data-cat="server">Serverlar (4)</button>
+        <button class="proto-btn" data-cat="iot">IoT & Kameralar (4)</button>
+        <button class="proto-btn" data-cat="cables">Kabellar Rusumlari (7)</button>
+      </div>
+
+      <!-- Search Input -->
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="catalogSearchInput" class="ip-field-input" placeholder="Model nomi, brend yoki port bo‘yicha qidirish..." style="padding:7px 12px; font-size:12px;">
+      </div>
+
+      <!-- Brand Filter Badges -->
+      <div id="catalogBrandTabs" style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top:4px;">
+        <span style="font-size:11px; color:var(--ink-dim); font-weight:700;">Brendlar:</span>
+        <button class="proto-btn active" data-brand="all" style="padding:2px 8px; font-size:10.5px;">Barchasi</button>
+        <button class="proto-btn" data-brand="Apple" style="padding:2px 8px; font-size:10.5px; color:#F8FAFC;">🍏 Apple</button>
+        <button class="proto-btn" data-brand="Samsung" style="padding:2px 8px; font-size:10.5px; color:#38BDF8;">📱 Samsung</button>
+        <button class="proto-btn" data-brand="Xiaomi" style="padding:2px 8px; font-size:10.5px; color:#F97316;">🔴 Xiaomi / Redmi</button>
+        <button class="proto-btn" data-brand="Acer" style="padding:2px 8px; font-size:10.5px; color:#00FF87;">⚡ Acer Predator</button>
+        <button class="proto-btn" data-brand="HP" style="padding:2px 8px; font-size:10.5px; color:#38BDF8;">🖨️ HP</button>
+        <button class="proto-btn" data-brand="Cisco" style="padding:2px 8px; font-size:10.5px; color:#00FF87;">🌐 Cisco</button>
+        <button class="proto-btn" data-brand="Dell" style="padding:2px 8px; font-size:10.5px; color:#A78BFA;">💻 Dell</button>
+      </div>
+
+      <!-- Models Grid -->
+      <div id="modelsCatalogGrid" class="models-catalog-grid" style="max-height:50vh; overflow-y:auto;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     STORAGE MODAL — Loyihani Saqlash / Yuklash
+     ========================================================= -->
+<div class="sim-modal-overlay modal" id="storageModal">
+  <div class="sim-modal-box modal-box" style="max-width:520px;">
+    <div class="modal-head">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="#6FE3C4" fill="none" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span style="font-weight:800;font-size:14px;">Loyihani Saqlash / Yuklash</span>
+      </div>
+      <button class="xbtn" onclick="closeStorageModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <label class="actbtn" style="flex:1;text-align:center;cursor:pointer;font-size:11px;padding:6px;">
+          📥 .lan3d Fayldan Yuklash
+          <input type="file" accept=".lan3d,.json" style="display:none;" onchange="importProjectFile(this.files[0])">
+        </label>
+      </div>
+      <div id="storageSlotsContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     SUBNET PANEL — Yonbosh panel
+     ========================================================= -->
+<div id="subnetPanel" class="side-panel">
+  <div class="side-panel-head">
+    <span style="font-weight:800;font-size:13px;">🔢 Subnet Kalkulyator</span>
+    <button class="xbtn" onclick="closeSubnetPanel()">✕</button>
+  </div>
+  <div class="side-panel-body">
+    <div style="margin-bottom:10px;">
+      <label style="font-size:11px;color:var(--ink-dim);">IP Manzil</label>
+      <input type="text" id="subnetIpInput" class="ip-field-input" value="192.168.1.1" placeholder="192.168.1.1" style="width:100%;box-sizing:border-box;margin-top:3px;">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:11px;color:var(--ink-dim);">Subnet Mask (yoki /CIDR)</label>
+      <input type="text" id="subnetMaskInput" class="ip-field-input" value="255.255.255.0" placeholder="255.255.255.0 yoki /24" style="width:100%;box-sizing:border-box;margin-top:3px;">
+    </div>
+    <div id="subnetResults"></div>
+  </div>
+</div>
+
+<!-- =========================================================
+     VLAN MODAL — VLAN Boshqaruvi & 802.1Q Port Matritsasi
+     ========================================================= -->
+<div class="sim-modal-overlay modal" id="vlanModal">
+  <div class="sim-modal-box modal-box" style="max-width:680px;">
+    <div class="modal-head">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="#A78BFA" fill="none" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="1.5"/><rect x="13" y="2" width="9" height="9" rx="1.5"/><rect x="2" y="13" width="9" height="9" rx="1.5"/><rect x="13" y="13" width="9" height="9" rx="1.5"/><path d="M6.5 11v2m11-2v2M11 6.5h2m-2 11h2"/></svg>
+        <span style="font-weight:800;font-size:15px;">VLAN & 802.1Q Port Boshqaruv Matritsasi</span>
+      </div>
+      <button class="xbtn" id="vlanCloseBtn">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Switch tanlash -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.08);">
+        <label style="font-size:12px; font-weight:700; color:var(--accent);">Kommutator (Switch):</label>
+        <select id="vlanSwitchSelect" class="ip-field-input" style="min-width:240px; padding:4px 8px;"></select>
+      </div>
+
+      <!-- 1. VLAN Ro'yxati -->
+      <div style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:12px; font-weight:700; color:var(--ink);">📋 VLAN Ro‘yxati:</span>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <input type="number" id="newVlanIdInput" placeholder="ID (masalan 40)" min="2" max="4094" style="width:110px; font-size:11px; padding:3px 6px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; color:var(--ink);">
+            <input type="text" id="newVlanNameInput" placeholder="Nomi (MEHMONLAR)" style="width:130px; font-size:11px; padding:3px 6px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:4px; color:var(--ink);">
+            <input type="color" id="newVlanColorInput" value="#EC4899" style="width:28px; height:24px; padding:0; border:none; background:transparent; cursor:pointer;" title="VLAN rangi">
+            <button class="tq-btn" onclick="onAddNewVlan()" style="padding:3px 8px; font-size:11px; background:rgba(111,227,196,0.2); border-color:#6FE3C4; color:#6FE3C4;">+ Qo‘shish</button>
+          </div>
+        </div>
+        <div style="max-height:150px; overflow-y:auto; border:1px solid rgba(255,255,255,0.08); border-radius:6px;">
+          <table class="sim-table" style="width:100%;">
+            <thead>
+              <tr>
+                <th style="width:70px;">VLAN ID</th>
+                <th>Nomi</th>
+                <th style="width:90px;">Portlar soni</th>
+                <th style="width:120px;">Amallar</th>
+              </tr>
+            </thead>
+            <tbody id="vlanTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 2. Port Matritsasi -->
+      <div style="margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div>
+            <span style="font-size:12px; font-weight:700; color:var(--ink);">🔌 24+2 Switch Port Matritsasi:</span>
+            <div style="font-size:10px; color:var(--ink-dim); margin-top:2px;">Bosing: Tanlangan VLAN ni berish | Shift+Klik: Access/Trunk almashtirish</div>
+          </div>
+          <div style="display:flex; gap:5px;">
+            <button class="tq-btn" onclick="applyVlanPreset('half')" style="font-size:10.5px; padding:2px 6px;" title="1-12: VLAN 10 (Talabalar), 13-24: VLAN 20 (O'qituvchilar)">Preset: 10 / 20</button>
+            <button class="tq-btn" onclick="applyVlanPreset('three')" style="font-size:10.5px; padding:2px 6px;" title="1-8: VLAN 10, 9-16: VLAN 20, 17-22: VLAN 30, Gi: Trunk">Preset: 10/20/30</button>
+            <button class="tq-btn" onclick="applyVlanPreset('reset')" style="font-size:10.5px; padding:2px 6px; color:#EF4444;" title="Barcha portlarni VLAN 1 ga qaytarish">Reset (VLAN 1)</button>
+          </div>
+        </div>
+        <div id="vlanPortMatrix" class="vlan-port-matrix"></div>
+      </div>
+
+      <!-- 3. Router-on-a-Stick (Inter-VLAN) -->
+      <div>
+        <div style="font-size:12px; font-weight:700; color:var(--ink); margin-bottom:6px;">🔄 Router-on-a-Stick (Inter-VLAN Sub-interfeyslar):</div>
+        <div id="vlanRoasSubinterfaces"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Scripts Modular Architecture -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/scene.js"></script>
+<script src="js/models_db.js"></script>
 <script src="js/devices.js"></script>
-<script src="js/connections.js"></script>
+<script src="js/connections.js?v=1.3"></script>
 <script src="js/cisco_sim.js"></script>
-<script src="js/cisco_cli.js"></script>
+<script src="js/cisco_cli.js?v=1.2"></script>
 <script src="js/messaging.js"></script>
 <script src="js/wifi.js"></script>
-<script src="js/topologies.js"></script>
-<script src="js/app.js"></script>
+<script src="js/vlan.js"></script>
+<script src="js/rooms.js?v=1.2"></script>
+<script src="js/topologies.js?v=1.2"></script>
+<script src="js/multiplayer.js?v=2.2"></script>
+<!-- Yangi modullar -->
+<script src="js/history.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/subnet_calc.js"></script>
+<script src="js/export.js"></script>
+<script src="js/dhcp.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/app.js?v=1.3"></script>
 
 </body>
 </html>

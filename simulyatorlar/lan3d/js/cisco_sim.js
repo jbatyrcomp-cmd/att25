@@ -2,30 +2,103 @@
    CISCO PACKET TRACER SIMULATION ENGINE, ROUTING & SIMULATION DOCK
    ========================================================================== */
 
-/* BFS Shortest Path Algorithm across Network Topology */
+/* Route Highlight — Ping/Traceroute da kabellarni miltillatish */
+function highlightRoute(path, color = 0x00FF87) {
+  if (!path || path.length < 2) return;
+  const highlightedMeshes = [];
+
+  for (let i = 0; i < path.length - 1; i++) {
+    const conn = getConnectionBetween(path[i], path[i + 1]);
+    if (!conn || !conn.mesh) continue;
+
+    const origMat = conn.mesh.material;
+    const hlMat   = origMat.clone();
+    hlMat.color   = new THREE.Color(color);
+    if (hlMat.emissive) hlMat.emissive = new THREE.Color(color);
+    hlMat.emissiveIntensity = 2.5;
+    conn.mesh.material = hlMat;
+    highlightedMeshes.push({ conn, origMat, hlMat });
+
+    // Device LED larni ham miltillatish
+    const dev = devices.get(path[i]);
+    if (dev && typeof flashDeviceLeds === 'function') flashDeviceLeds(dev);
+  }
+
+  // 2.2 sekund keyin asl rangga qaytarish
+  setTimeout(() => {
+    highlightedMeshes.forEach(({ conn, origMat, hlMat }) => {
+      if (conn.mesh) conn.mesh.material = origMat;
+      hlMat.dispose();
+    });
+  }, 2200);
+}
+
+/* BFS Shortest Path Algorithm across Network Topology (VLAN & L3 Aware) */
 function findNetworkPath(srcId, dstId){
   if(srcId === dstId) return null;
+
+  const srcDev = devices.get(srcId);
+  const dstDev = devices.get(dstId);
+  if(!srcDev || !dstDev) return null;
+
+  // VLAN a'zoliklarini aniqlash
+  const srcVlanInfo = typeof getDeviceVlan === 'function' ? getDeviceVlan(srcId) : null;
+  const dstVlanInfo = typeof getDeviceVlan === 'function' ? getDeviceVlan(dstId) : null;
+
+  const srcVlan = srcVlanInfo ? srcVlanInfo.vlanId : 1;
+  const dstVlan = dstVlanInfo ? dstVlanInfo.vlanId : 1;
+  const isDifferentVlan = (srcVlanInfo && dstVlanInfo && srcVlan !== dstVlan);
+
+  // Standart BFS qidiruvi
   const queue = [[srcId]];
   const visited = new Set([srcId]);
+  let validPath = null;
+
   while(queue.length > 0){
     const path = queue.shift();
     const curr = path[path.length - 1];
-    if(curr === dstId) return path;
+
+    if(curr === dstId){
+      // Agar turli VLAN bo'lsa, yo'lda kamida bitta Router bo'lishi shart (RoaS / Inter-VLAN)!
+      if(isDifferentVlan){
+        const hasRouter = path.some(id => {
+          const d = devices.get(id);
+          return d && d.type === 'router';
+        });
+        if(hasRouter){
+          validPath = path;
+          break;
+        }
+      } else {
+        // Bir xil VLAN yoki VLAN siz: L2 aloqa
+        validPath = path;
+        break;
+      }
+    }
+
     const neighbors = [];
     connections.forEach(c=>{
       if(c.a === curr && !visited.has(c.b)) neighbors.push(c.b);
       if(c.b === curr && !visited.has(c.a)) neighbors.push(c.a);
     });
+
     for(const n of neighbors){
       visited.add(n);
       queue.push([...path, n]);
     }
   }
-  return null;
+
+  // Agar turli VLAN bo'lib, to'g'ridan-to'g'ri L2 yo'l topilsa lekin router bo'lmasa -> bloklanadi!
+  if(isDifferentVlan && !validPath){
+    console.warn(`[VLAN Isolation] ${srcDev.name} (VLAN ${srcVlan}) va ${dstDev.name} (VLAN ${dstVlan}) o'rtasida Router yo'q. Paket bloklandi.`);
+    return null;
+  }
+
+  return validPath;
 }
 
 function logSimEvent(srcName, dstName, type, currentHopName, status, info){
-  const timeStr = (typeof clock !== 'undefined' ? clock.getElapsedTime().toFixed(2) : "0.00") + "s";
+  const timeStr = (typeof clock !== 'undefined' ? clock.elapsedTime.toFixed(2) : "0.00") + "s";
   const ev = { id: simEventIdCounter++, time: timeStr, srcName, dstName, type, currentHopName, status, info };
   simEventsLog.unshift(ev);
   if(simEventsLog.length > 80) simEventsLog.pop();
@@ -88,8 +161,15 @@ function startPacketTransfer(opts){
 
   const path = findNetworkPath(srcId, dstId);
   if(!path || path.length < 2){
-    toast("⚠️ Xatolik: " + srcDev.name + " va " + dstDev.name + " o‘rtasida aloqa mavjud emas!");
-    logSimEvent(srcDev.name, dstDev.name, type, "—", "Xatolik: Aloqa yo‘q", "Destination Host Unreachable");
+    const srcVlanInfo = typeof getDeviceVlan === 'function' ? getDeviceVlan(srcId) : null;
+    const dstVlanInfo = typeof getDeviceVlan === 'function' ? getDeviceVlan(dstId) : null;
+    if(srcVlanInfo && dstVlanInfo && srcVlanInfo.vlanId !== dstVlanInfo.vlanId){
+      toast(`⚠️ VLAN Izolatsiyasi: ${srcDev.name} (VLAN ${srcVlanInfo.vlanId}) va ${dstDev.name} (VLAN ${dstVlanInfo.vlanId}) turli VLAN larda va yo‘lda Router yo‘q!`);
+      logSimEvent(srcDev.name, dstDev.name, type, "—", "Bloklandi: VLAN Izolatsiyasi", `VLAN ${srcVlanInfo.vlanId} ↮ VLAN ${dstVlanInfo.vlanId} (Inter-VLAN Router talab etiladi)`);
+    } else {
+      toast("⚠️ Xatolik: " + srcDev.name + " va " + dstDev.name + " o‘rtasida aloqa mavjud emas!");
+      logSimEvent(srcDev.name, dstDev.name, type, "—", "Xatolik: Aloqa yo‘q", "Destination Host Unreachable");
+    }
     if(onComplete) onComplete(false);
     return false;
   }
@@ -152,7 +232,21 @@ function update3DTransfers(dt){
       if(tr.currentHopIndex < tr.hops.length){
         const nextHop = tr.hops[tr.currentHopIndex];
         const nextDev = devices.get(nextHop.to);
-        logSimEvent(tr.srcName, tr.dstName, tr.type, hopDst ? hopDst.name : '—', "Tranzit uzatish", `➔ ${nextDev ? nextDev.name : '—'}`);
+        const fromDev = devices.get(nextHop.from);
+        
+        // Trunk hop tekshirish
+        let isTrunkHop = false;
+        if(fromDev && fromDev.type === 'switch' && fromDev.ports){
+          const p = fromDev.ports.find(x => x.id === nextHop.conn.portA || x.id === nextHop.conn.portB);
+          if(p && p.mode === 'trunk') isTrunkHop = true;
+        }
+        if(!isTrunkHop && nextDev && nextDev.type === 'switch' && nextDev.ports){
+          const p = nextDev.ports.find(x => x.id === nextHop.conn.portA || x.id === nextHop.conn.portB);
+          if(p && p.mode === 'trunk') isTrunkHop = true;
+        }
+
+        const tagInfo = isTrunkHop ? " [802.1Q Trunk Tag]" : "";
+        logSimEvent(tr.srcName, tr.dstName, tr.type, hopDst ? hopDst.name : '—', isTrunkHop ? "802.1Q Trunk" : "Tranzit uzatish", `➔ ${nextDev ? nextDev.name : '—'}${tagInfo}`);
       } else {
         if(!tr.isReturnAck){
           logSimEvent(tr.srcName, tr.dstName, tr.type, tr.dstName, "Manzilga yetdi", "ACK tasdig‘i qaytarilmoqda");

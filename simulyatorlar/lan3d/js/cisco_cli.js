@@ -63,7 +63,9 @@ function updateTermPrompt(){
   if(dev.cisco.mode === 'user') termPrompt.textContent = `${h}>`;
   else if(dev.cisco.mode === 'priv') termPrompt.textContent = `${h}#`;
   else if(dev.cisco.mode === 'config') termPrompt.textContent = `${h}(config)#`;
+  else if(dev.cisco.mode === 'config-vlan') termPrompt.textContent = `${h}(config-vlan)#`;
   else if(dev.cisco.mode === 'config-if') termPrompt.textContent = `${h}(config-if)#`;
+  else if(dev.cisco.mode === 'config-subif') termPrompt.textContent = `${h}(config-subif)#`;
 }
 
 function openCiscoTerminal(devId){
@@ -239,24 +241,76 @@ function executeTerminalCommand(rawCmd){
         return;
       }
       if((c0 === 'interface' || c0 === 'int') && parts[1]){
-        dev.cisco.mode = 'config-if';
-        dev.cisco.currInt = parts[1];
-        if(!dev.cisco.interfaces[dev.cisco.currInt]){
-          dev.cisco.interfaces[dev.cisco.currInt] = { ip: 'unassigned', mask: '', status: 'down' };
+        const intName = parts[1];
+        if(intName.includes('.')){
+          // Subinterface (Router-on-a-Stick: masalan Gi0/0.10)
+          dev.cisco.mode = 'config-subif';
+          dev.cisco.currSubInt = intName;
+          if(!dev.cisco.interfaces[intName]){
+            dev.cisco.interfaces[intName] = { ip: 'unassigned', mask: '', status: 'up', encapsulation: '' };
+          }
+          updateTermPrompt();
+          return;
+        } else {
+          dev.cisco.mode = 'config-if';
+          dev.cisco.currInt = intName;
+          if(!dev.cisco.interfaces[dev.cisco.currInt]){
+            dev.cisco.interfaces[dev.cisco.currInt] = { ip: 'unassigned', mask: '', status: 'down' };
+          }
+          updateTermPrompt();
+          return;
         }
-        updateTermPrompt();
-        return;
       }
       if(c0 === 'vlan' && parts[1]){
         const vlanId = parseInt(parts[1]);
-        if(!isNaN(vlanId)){
-          printTerm(`VLAN ${vlanId} yaratildi / tahrirlanmoqda`);
+        if(!isNaN(vlanId) && vlanId >= 1 && vlanId <= 4094){
+          dev.cisco.mode = 'config-vlan';
+          dev.cisco.currVlan = vlanId;
+          if(typeof addVlan === 'function'){
+            addVlan(dev, vlanId, `VLAN_${vlanId}`);
+          }
+          updateTermPrompt();
+          printTerm(`% VLAN ${vlanId} yaratildi / tahrirlanmoqda`);
+        } else {
+          printTerm(`% Invalid input: VLAN ID must be 1-4094`, 'err');
+        }
+        return;
+      }
+      if(c0 === 'no' && c1 === 'vlan' && parts[2]){
+        const vlanId = parseInt(parts[2]);
+        if(vlanId === 1){
+          printTerm(`% Default VLAN 1 may not be deleted`, 'err');
+        } else if(typeof removeVlan === 'function'){
+          removeVlan(dev, vlanId);
+          printTerm(`% VLAN ${vlanId} deleted`);
         }
         return;
       }
     }
 
-    // 4. Interface Config Mode
+    // 4. VLAN Config Mode
+    if(dev.cisco.mode === 'config-vlan'){
+      if(c0 === 'exit'){
+        dev.cisco.mode = 'config';
+        updateTermPrompt();
+        return;
+      }
+      if(c0 === 'end'){
+        dev.cisco.mode = 'priv';
+        updateTermPrompt();
+        return;
+      }
+      if(c0 === 'name' && parts[1]){
+        const vlanName = parts.slice(1).join('_').toUpperCase();
+        if(typeof addVlan === 'function'){
+          addVlan(dev, dev.cisco.currVlan, vlanName);
+        }
+        printTerm(`% VLAN ${dev.cisco.currVlan} name set to ${vlanName}`);
+        return;
+      }
+    }
+
+    // 5. Interface Config Mode
     if(dev.cisco.mode === 'config-if'){
       if(c0 === 'exit'){
         dev.cisco.mode = 'config';
@@ -267,6 +321,46 @@ function executeTerminalCommand(rawCmd){
         dev.cisco.mode = 'priv';
         updateTermPrompt();
         return;
+      }
+      if(c0 === 'switchport'){
+        // Switchport buyruqlari
+        const intKey = dev.cisco.currInt;
+        // Normalize port key (masalan Fa0/1, Gi0/1)
+        let matchedPort = dev.ports ? dev.ports.find(p => p.id.toLowerCase() === intKey.toLowerCase() || p.name.toLowerCase().includes(intKey.toLowerCase())) : null;
+        const portId = matchedPort ? matchedPort.id : intKey;
+
+        if(c1 === 'mode' && parts[2]){
+          const mode = parts[2].toLowerCase();
+          if(mode === 'access' || mode === 'trunk'){
+            if(typeof setPortMode === 'function') setPortMode(dev, portId, mode);
+            printTerm(`% Interface ${intKey} mode set to ${mode.toUpperCase()}`);
+          } else {
+            printTerm(`% Incomplete or invalid command: use 'access' or 'trunk'`, 'err');
+          }
+          return;
+        }
+        if(c1 === 'access' && parts[2] === 'vlan' && parts[3]){
+          const vlanId = parseInt(parts[3]);
+          if(!isNaN(vlanId)){
+            if(typeof setPortVlan === 'function') setPortVlan(dev, portId, vlanId);
+            printTerm(`% Interface ${intKey} access vlan set to ${vlanId}`);
+          }
+          return;
+        }
+        if(c1 === 'trunk'){
+          if(parts[2] === 'allowed' && parts[3] === 'vlan'){
+            const allowed = parts.slice(4).join('');
+            if(typeof setPortTrunkAllowed === 'function') setPortTrunkAllowed(dev, portId, allowed || 'all');
+            printTerm(`% Interface ${intKey} trunk allowed vlans: ${allowed || 'all'}`);
+            return;
+          }
+          if(parts[2] === 'native' && parts[3] === 'vlan' && parts[4]){
+            const nVlan = parseInt(parts[4]);
+            if(matchedPort) matchedPort.nativeVlan = nVlan;
+            printTerm(`% Interface ${intKey} trunk native vlan set to ${nVlan}`);
+            return;
+          }
+        }
       }
       if(c0 === 'ip' && c1 === 'address' && parts[2]){
         const newIp = parts[2];
@@ -292,11 +386,63 @@ function executeTerminalCommand(rawCmd){
       }
     }
 
+    // 6. Sub-interface Config Mode (Router-on-a-Stick)
+    if(dev.cisco.mode === 'config-subif'){
+      if(c0 === 'exit'){
+        dev.cisco.mode = 'config';
+        updateTermPrompt();
+        return;
+      }
+      if(c0 === 'end'){
+        dev.cisco.mode = 'priv';
+        updateTermPrompt();
+        return;
+      }
+      if(c0 === 'encapsulation' && (c1 === 'dot1q' || c1 === 'dot1q') && parts[2]){
+        const vlanId = parseInt(parts[2]);
+        if(!isNaN(vlanId)){
+          const subKey = dev.cisco.currSubInt;
+          if(!dev.cisco.interfaces[subKey]) dev.cisco.interfaces[subKey] = { ip: 'unassigned', mask: '', status: 'up' };
+          dev.cisco.interfaces[subKey].encapsulation = `dot1Q ${vlanId}`;
+          
+          // Router subinterface modeliga kiritish
+          if(typeof addRouterSubinterface === 'function'){
+            const basePort = subKey.split('.')[0] || 'GigabitEthernet0/0';
+            const subId = subKey.split('.')[1] || vlanId;
+            addRouterSubinterface(dev, basePort, subId, vlanId, dev.cisco.interfaces[subKey].ip || 'unassigned');
+          }
+          printTerm(`% 802.1Q encapsulation configured for VLAN ${vlanId}`);
+        }
+        return;
+      }
+      if(c0 === 'ip' && c1 === 'address' && parts[2]){
+        const newIp = parts[2];
+        const newMask = parts[3] || '255.255.255.0';
+        const subKey = dev.cisco.currSubInt;
+        if(!dev.cisco.interfaces[subKey]) dev.cisco.interfaces[subKey] = { status: 'up' };
+        dev.cisco.interfaces[subKey].ip = newIp;
+        dev.cisco.interfaces[subKey].mask = newMask;
+        
+        if(dev.subinterfaces && dev.subinterfaces[subKey]){
+          dev.subinterfaces[subKey].ip = newIp;
+          dev.subinterfaces[subKey].mask = newMask;
+        }
+        printTerm(`% Subinterface ${subKey} IP: ${newIp} ${newMask}`);
+        return;
+      }
+      if(c0 === 'no' && c1 === 'shutdown'){
+        const subKey = dev.cisco.currSubInt;
+        if(dev.cisco.interfaces[subKey]) dev.cisco.interfaces[subKey].status = 'up';
+        printTerm(`%LINK-5-CHANGED: Interface ${subKey}, changed state to up`, 'info');
+        return;
+      }
+    }
+
     // Show commands
     if(cmd.startsWith('sh ip int') || cmd === 'show ip interface brief'){
       printTerm('Interface              IP-Address      OK? Method Status                Protocol');
       Object.entries(dev.cisco.interfaces).forEach(([intName, data])=>{
-        const ipStr = data.ip.padEnd(16);
+        const ipStr = (data.ip || 'unassigned').padEnd(16);
         const statusStr = (data.status === 'up' ? 'up' : 'down').padEnd(22);
         printTerm(`${intName.padEnd(23)}${ipStr}YES manual ${statusStr}${data.status}`);
       });
@@ -325,9 +471,31 @@ function executeTerminalCommand(rawCmd){
     if(cmd.startsWith('sh vlan') || cmd === 'show vlan brief'){
       printTerm('VLAN Name                             Status    Ports');
       printTerm('---- -------------------------------- --------- -------------------------------');
-      dev.cisco.vlans.forEach(v => {
-        printTerm(`${String(v.id).padEnd(5)}${v.name.padEnd(33)}active    ${v.ports.join(', ')}`);
+      const vList = (dev.vlans && dev.vlans.length > 0) ? dev.vlans : (dev.cisco.vlans || []);
+      vList.forEach(v => {
+        const portList = (dev.ports || []).filter(p => p.mode === 'access' && p.vlan === v.id).map(p => p.id.replace('FastEthernet', 'Fa').replace('GigabitEthernet', 'Gi'));
+        printTerm(`${String(v.id).padEnd(5)}${v.name.padEnd(33)}active    ${portList.join(', ')}`);
       });
+      return;
+    }
+
+    if(cmd.startsWith('sh int trunk') || cmd === 'show interfaces trunk'){
+      printTerm('Port        Mode         Encapsulation  Status        Native vlan');
+      printTerm('================================================================');
+      const trunkPorts = (dev.ports || []).filter(p => p.mode === 'trunk');
+      if(trunkPorts.length === 0){
+        printTerm('No ports configured as trunk.');
+      } else {
+        trunkPorts.forEach(tp => {
+          printTerm(`${tp.id.padEnd(12)}on           802.1q         trunking      ${tp.nativeVlan || 1}`);
+        });
+        printTerm('\nPort        Vlans allowed on trunk');
+        printTerm('----------------------------------------------------------------');
+        trunkPorts.forEach(tp => {
+          printTerm(`${tp.id.padEnd(12)}${Array.isArray(tp.allowedVlans) ? tp.allowedVlans.join(',') : '1-4094'}`);
+        });
+      }
+      printTerm('');
       return;
     }
 
@@ -336,17 +504,32 @@ function executeTerminalCommand(rawCmd){
       printTerm(`Gateway of last resort is not set\n`);
       printTerm(`C    192.168.1.0/24 is directly connected, GigabitEthernet0/0`);
       printTerm(`L    ${dev.ip}/32 is directly connected, GigabitEthernet0/0`);
+      if(dev.subinterfaces){
+        Object.entries(dev.subinterfaces).forEach(([subKey, sub]) => {
+          if(sub.ip && sub.ip !== 'unassigned'){
+            const subnet = sub.ip.split('.').slice(0, 3).join('.') + '.0/24';
+            printTerm(`C    ${subnet} is directly connected, ${subKey}`);
+            printTerm(`L    ${sub.ip}/32 is directly connected, ${subKey}`);
+          }
+        });
+      }
       return;
     }
 
     if(cmd.startsWith('sh run') || cmd === 'show running-config'){
-      printTerm('Building configuration...\n\nCurrent configuration : 1842 bytes\n!');
+      printTerm('Building configuration...\n\nCurrent configuration : 2140 bytes\n!');
       printTerm(`version 15.1\nservice timestamps log datetime msec\n!`);
       printTerm(`hostname ${dev.cisco.hostname}\n!`);
       printTerm(`ip routing\n!`);
+      if(dev.vlans){
+        dev.vlans.forEach(v => {
+          if(v.id !== 1) printTerm(`vlan ${v.id}\n name ${v.name}\n!`);
+        });
+      }
       Object.entries(dev.cisco.interfaces).forEach(([iName, data])=>{
         printTerm(`interface ${iName}`);
-        if(data.ip !== 'unassigned') printTerm(` ip address ${data.ip} ${data.mask}`);
+        if(data.encapsulation) printTerm(` encapsulation ${data.encapsulation}`);
+        if(data.ip && data.ip !== 'unassigned') printTerm(` ip address ${data.ip} ${data.mask}`);
         else printTerm(` no ip address`);
         if(data.status === 'down') printTerm(` shutdown`);
         printTerm('!');
@@ -409,11 +592,17 @@ function executeTerminalCommand(rawCmd){
       return;
     }
 
+    const path = findNetworkPath(dev.id, targetDev.id);
+    const hops = path ? path.length - 1 : 0;
+    // RTT: hop count * 2ms + random 0-3ms
+    const rttBase = hops * 2;
+    const genRtt = () => rttBase + Math.floor(Math.random() * 4);
+
     if(dev.cisco.isCisco){
       printTerm(`\nType escape sequence to abort.`);
       printTerm(`Sending 5, 100-byte ICMP Echos to ${targetDev.ip}, timeout is 2 seconds:`);
     } else {
-      printTerm(`\nPinging ${targetDev.ip} with 32 bytes of data:`);
+      printTerm(`\nPinging ${targetDev.ip} [${targetDev.name}] with 32 bytes of data:`);
     }
 
     startPacketTransfer({
@@ -424,17 +613,22 @@ function executeTerminalCommand(rawCmd){
       fileSize: '64 bytes',
       onComplete: (success) => {
         if(success){
+          // Route highlight
+          if(path && typeof highlightRoute === 'function') highlightRoute(path);
+          const rtts = Array.from({length:4}, genRtt);
+          const min = Math.min(...rtts), max = Math.max(...rtts);
+          const avg = Math.round(rtts.reduce((a,b)=>a+b,0)/rtts.length);
           if(dev.cisco.isCisco){
             printTerm('!!!!!', 'bold');
-            printTerm('Success rate is 100 percent (5/5), round-trip min/avg/max = 1/2/4 ms\n', 'info');
+            printTerm(`Success rate is 100 percent (5/5), round-trip min/avg/max = ${min}/${avg}/${max} ms\n`, 'info');
           } else {
-            for(let p = 1; p <= 4; p++){
-              printTerm(`Reply from ${targetDev.ip}: bytes=32 time=2ms TTL=64`);
-            }
+            rtts.forEach((rtt,i) => {
+              printTerm(`Reply from ${targetDev.ip}: bytes=32 time=${rtt}ms TTL=${64 - hops}`);
+            });
             printTerm(`\nPing statistics for ${targetDev.ip}:`);
             printTerm(`    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),`);
             printTerm(`Approximate round trip times in milli-seconds:`);
-            printTerm(`    Minimum = 1ms, Maximum = 2ms, Average = 1ms\n`);
+            printTerm(`    Minimum = ${min}ms, Maximum = ${max}ms, Average = ${avg}ms\n`);
           }
         } else {
           if(dev.cisco.isCisco){
@@ -471,9 +665,13 @@ function executeTerminalCommand(rawCmd){
     printTerm(`\nTracing the route to ${targetDev.name} (${targetDev.ip}) over a maximum of 30 hops:`);
     for(let i = 1; i < path.length; i++){
       const hopDev = devices.get(path[i]);
-      printTerm(`  ${i}   ${i * 2} ms   ${i * 2 - 1} ms   ${i * 2} ms  ${hopDev.ip} [${hopDev.name}]`);
+      const rtt1 = i * 2, rtt2 = i * 2 + 1, rtt3 = i * 2;
+      printTerm(`  ${String(i).padStart(2)}   ${rtt1} ms   ${rtt2} ms   ${rtt3} ms  ${hopDev.ip} [${hopDev.name}]`);
     }
     printTerm('Trace complete.\n', 'info');
+
+    // Route highlight qilish
+    if(typeof highlightRoute === 'function') highlightRoute(path);
 
     startPacketTransfer({
       srcId: dev.id,

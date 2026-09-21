@@ -170,12 +170,14 @@ function renderWifiModalContent(){
       } else {
         wifiConnectedClientsList.innerHTML = clients.map(cl => {
           const clientDev = devices.get(cl.devId);
+          // IP ni real vaqtda devices dan o'qish (eskirgan cl.ip ishlatilmaydi)
+          const currentIp = clientDev ? clientDev.ip : cl.ip;
           const dist = clientDev ? getWifiDistance(dev.id, clientDev.id).toFixed(1) : '—';
-          const rssi = clientDev ? calcRssi(dist) : cl.rssi;
+          const rssi = clientDev ? calcRssi(parseFloat(dist)) : cl.rssi;
           return `
             <div class="wifi-net-item">
               <div class="wifi-net-info">
-                <div class="wifi-net-title">${cl.name} <span class="mono" style="font-size:10px; color:#6FE3C4;">${cl.ip}</span></div>
+                <div class="wifi-net-title">${cl.name} <span class="mono" style="font-size:10px; color:#6FE3C4;">${currentIp}</span></div>
                 <div class="wifi-net-meta">MAC: ${cl.mac} · Masofa: ${dist}m · Signal: ${rssi} dBm</div>
               </div>
               <button class="actbtn warn" style="font-size:10px; padding:3px 7px;" onclick="window.disconnectWifiClient('${cl.devId}')">Uzish</button>
@@ -231,6 +233,12 @@ function renderScannedNetworks(){
   wifiScannedList.innerHTML = networks.map(net => {
     const isConnected = (net.apId === curApId);
     const lockIcon = net.security === 'open' ? '🔓 Ochiq' : '🔒 ' + net.security.toUpperCase();
+    // Range tashqarisidagi AP uchun disabled tugma
+    const connectBtn = isConnected
+      ? `<button class="actbtn warn" style="font-size:10px; padding:3px 8px;" onclick="window.disconnectWifiClient('${activeWifiDevId}')">Uzish</button>`
+      : net.inRange
+        ? `<button class="actbtn on" style="font-size:10px; padding:3px 10px; background:#38BDF8; color:#03140A; border-color:#38BDF8; font-weight:700;" onclick="window.promptWifiConnect('${net.apId}', '${escapeHtml(net.ssid)}', '${net.security}')">Ulanish</button>`
+        : `<button class="actbtn" style="font-size:10px; padding:3px 10px; opacity:0.45; cursor:not-allowed;" disabled title="Signal juda zaif — qurilmani yaqinroq olib keling">📵 Signal zaif</button>`;
     return `
       <div class="wifi-net-item">
         <div class="wifi-net-info">
@@ -238,6 +246,7 @@ function renderScannedNetworks(){
             <span>${net.ssid}</span>
             <span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(56,189,248,0.15); color:#38BDF8;">${net.band}</span>
             ${isConnected ? '<span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(0,255,135,0.15); color:#00FF87;">Ulangan</span>' : ''}
+            ${!net.inRange && !isConnected ? '<span style="font-size:9.5px; padding:1px 5px; border-radius:3px; background:rgba(239,68,68,0.15); color:#EF4444;">Range tashqarida</span>' : ''}
           </div>
           <div class="wifi-net-meta">
             <span>${lockIcon}</span>
@@ -246,13 +255,7 @@ function renderScannedNetworks(){
             ${renderSignalBarsHtml(net.bars)}
           </div>
         </div>
-        <div>
-          ${isConnected ? `
-            <button class="actbtn warn" style="font-size:10px; padding:3px 8px;" onclick="window.disconnectWifiClient('${activeWifiDevId}')">Uzish</button>
-          ` : `
-            <button class="actbtn on" style="font-size:10px; padding:3px 10px; background:#38BDF8; color:#03140A; border-color:#38BDF8; font-weight:700;" onclick="window.promptWifiConnect('${net.apId}', '${escapeHtml(net.ssid)}', '${net.security}')">Ulanish</button>
-          `}
-        </div>
+        <div>${connectBtn}</div>
       </div>
     `;
   }).join('');
@@ -573,11 +576,15 @@ function spawnWifiPulses(dt){
   if(wifiSpawnTimer < 1.6) return;
   wifiSpawnTimer = 0;
   devices.forEach(rec=>{
-    if(rec.type !== "router") return;
+    // Router VA hotspot rejimidagi qurilmalar uchun puls animatsiyasi
+    const isApDevice = rec.type === 'router' || (rec.wifi && rec.wifi.hotspotMode && rec.wifi.enabled);
+    if(!isApDevice) return;
     const hasWireless = [...connections.values()].some(c => (c.a === rec.id || c.b === rec.id) && c.wireless);
     if(!hasWireless) return;
+    // Hotspot qurilmalar uchun boshqacha rang (to'q sariq)
+    const pulseColor = rec.type === 'router' ? 0x4FC7E8 : 0xFFB454;
     const geo = new THREE.RingGeometry(0.35, 0.42, 32);
-    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x4FC7E8, transparent: true, opacity: 0.5, side: THREE.DoubleSide }));
+    const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: pulseColor, transparent: true, opacity: 0.5, side: THREE.DoubleSide }));
     m.rotation.x = -Math.PI / 2;
     m.position.set(rec.group.position.x, 0.05, rec.group.position.z);
     scene.add(m);

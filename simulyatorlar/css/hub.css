@@ -1,15 +1,15 @@
 :root {
-  --sim-bg: #050A07;
-  --sim-panel: #0D1811;
-  --sim-panel-2: #14241B;
-  --sim-line: #1B3224;
-  --sim-accent: #00E676;
-  --sim-volt: #00FF87;
-  --brand-primary: #00E676;
-  --brand-volt: #00FF87;
-  --brand-forest: #0D2616;
-  --text-dim: #94A3B8;
-  --text-light: #E2E8F0;
+  --sim-bg: var(--bg-main, #050A07);
+  --sim-panel: var(--bg-card, #0D1811);
+  --sim-panel-2: var(--bg-surface-2, #14241B);
+  --sim-line: var(--line-base, #1B3224);
+  --sim-accent: var(--accent-primary, #00E676);
+  --sim-volt: var(--accent-secondary, #00FF87);
+  --brand-primary: var(--accent-primary, #00E676);
+  --brand-volt: var(--accent-secondary, #00FF87);
+  --brand-forest: var(--bg-surface-3, #0D2616);
+  --text-dim: var(--text-dim, #94A3B8);
+  --text-light: var(--text-main, #E2E8F0);
   --font-editorial: 'Oswald', sans-serif;
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -17,7 +17,7 @@
 
 body.sim-center-body {
   background: var(--sim-bg);
-  color: #FFFFFF;
+  color: var(--text-contrast, #FFFFFF);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ body.sim-center-body {
 
 /* Top Universal Hub Header */
 .sim-hub-header {
-  background: #08110B;
+  background: var(--header-bg, #08110B);
   border-bottom: 2px solid var(--sim-line);
   position: sticky;
   top: 0;
@@ -97,7 +97,7 @@ body.sim-center-body {
 .sim-tabs-strip {
   display: flex;
   gap: 6px;
-  background: #050D07;
+  background: var(--bg-surface-2, #050D07);
   padding: 4px;
   border: 1px solid var(--sim-line);
   border-radius: 6px;
@@ -127,14 +127,14 @@ body.sim-center-body {
 
 .hub-tab-btn:hover {
   background: var(--sim-panel-2);
-  color: #FFF;
+  color: var(--text-contrast, #FFF);
 }
 
 .hub-tab-btn.active {
   background: var(--sim-accent);
-  color: #03140A;
+  color: var(--btn-text, #03140A);
   border-color: var(--sim-accent);
-  box-shadow: 0 0 14px rgba(0, 230, 118, 0.4);
+  box-shadow: 0 0 14px rgba(var(--accent-rgb, 0, 230, 118), 0.4);
 }
 
 .hub-tab-btn .badge-count {

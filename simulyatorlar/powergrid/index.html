@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATT-25 Smart Grid: GESdan Xonadongacha Elektr Tizimi 3D</title>
+  <meta name="description" content="Gidroelektr stansiyasidan to xonadongacha bo'lgan butun energetika zanjirini 3D eko-muhitda va SCADA pulti orqali modellashtiruvchi interaktiv simulyator.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Three.js & OrbitControls CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <!-- 3D WebGL World Container -->
+  <div id="scene3dContainer"></div>
+
+  <!-- Top Floating Header & Hotspot Navigation Bar -->
+  <header class="top-nav-bar">
+    <a href="../index.html" class="brand-badge" title="Bosh sahifaga qaytish" style="text-decoration:none;">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+      </svg>
+      <span>SMART GRID</span> 3D
+    </a>
+
+    <!-- Hotspot Jump Buttons -->
+    <nav class="hotspot-group">
+      <button class="hotspot-btn active" data-spot="ges" id="btnSpotGes">
+        🏔️ GES & To'g'on
+      </button>
+      <button class="hotspot-btn" data-spot="substation" id="btnSpotSubstation">
+        ⚡ 220 kV ORU
+      </button>
+      <button class="hotspot-btn" data-spot="pylon" id="btnSpotPylon">
+        🌾 Dala LEP
+      </button>
+      <button class="hotspot-btn" data-spot="gpp" id="btnSpotGpp">
+        🏭 Tuman GPP
+      </button>
+      <button class="hotspot-btn" data-spot="ktp" id="btnSpotKtp">
+        🛖 Mahalla KTP
+      </button>
+      <button class="hotspot-btn" data-spot="house" id="btnSpotHouse">
+        🏠 Xonadon
+      </button>
+      <button class="hotspot-btn" data-spot="solar" id="btnSpotSolar">
+        ☀️ Quyosh SES
+      </button>
+      <button class="hotspot-btn" data-spot="wind" id="btnSpotWind">
+        🌬️ Shamol VET
+      </button>
+      <button class="hotspot-btn" data-spot="bess" id="btnSpotBess">
+        🔋 BESS Saqlash
+      </button>
+    </nav>
+
+    <!-- Right Quick Actions -->
+    <div class="nav-actions">
+      <button class="btn-nav-action" id="btnDroneTour" title="Butun elektr tarmog'i bo'ylab dron ekskursiyasi">
+        🚁 Dron Sayohati
+      </button>
+      <button class="btn-nav-action" id="btnAudioToggle" title="Ovozni yoqish / o'chirish">
+        🔊 Ovoz: Yoniq
+      </button>
+      <button class="btn-nav-action gold" id="btnOpenExperiments">
+        🔬 Tajribalar & Avariyalar
+      </button>
+      <button class="btn-nav-action" id="btnOpenHouseModal">
+        🏠 Xonadon Jihozlari
+      </button>
+    </div>
+  </header>
+
+  <!-- Left Side Breakers Control Drawer -->
+  <aside class="breakers-drawer" id="breakersDrawer">
+    <div class="drawer-header">
+      <span class="drawer-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="var(--accent-green)" fill="none" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        Podstansiya O'chirgichlari
+      </span>
+      <button class="btn-breaker-toggle btn-green" id="btnResetAllBreakers" style="font-size:0.65rem;" title="Barcha o'chirgichlarni ulash">
+        Qayta Tiklash
+      </button>
+    </div>
+    <div id="scadaBreakerList" style="display:flex; flex-direction:column; gap:8px;">
+      <!-- Injected by scada.js -->
+    </div>
+  </aside>
+
+  <!-- Right Side Event & Alarm Log Drawer -->
+  <aside class="alarm-log-drawer" id="alarmLogDrawer">
+    <div class="drawer-header">
+      <span class="drawer-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="var(--accent-cyan)" fill="none" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        SCADA Hodisalar Jurnali
+      </span>
+    </div>
+    <div class="log-scroll-area" id="scadaAlarmLog">
+      <!-- Injected by scada.js -->
+    </div>
+  </aside>
+
+  <!-- Bottom Floating SCADA Telemetry Panel -->
+  <footer class="scada-telemetry-panel">
+    <!-- 1. GES -->
+    <div class="telemetry-card">
+      <span class="card-title">🏔️ GES Ishlab Chiqarish</span>
+      <span class="card-value" id="scadaGesPower">0.0 MVt</span>
+      <div class="card-subtext">
+        <span>Chastota: <b id="scadaGesFreq" style="color:var(--accent-green)">50.00 Hz</b></span>
+        <span>Suv: <b id="scadaGesFlow">72 m³/s</b></span>
+      </div>
+    </div>
+
+    <!-- 2. 220 kV LEP -->
+    <div class="telemetry-card">
+      <span class="card-title">⚡ 220 kV Magistral LEP</span>
+      <span class="card-value" id="scadaLepVolt">228.0 kV</span>
+      <div class="card-subtext">
+        <span>Tok: <b id="scadaLepCurrent">185 A</b></span>
+        <span>Isrof: <b id="scadaLepLoss">1.2 MVt</b> (<span id="scadaLepLossPct">1.6%</span>)</span>
+      </div>
+    </div>
+
+    <!-- 3. GPP Substation -->
+    <div class="telemetry-card">
+      <span class="card-title">🏭 Tuman Bosh GPP</span>
+      <span class="card-value" id="scadaGppTotal">0.0 MVt</span>
+      <div class="card-subtext">
+        <span>Kirish: <b id="scadaGppInput">218 kV</b></span>
+        <span>Shahar: <b id="scadaGppCity">45 MVt</b></span>
+      </div>
+    </div>
+
+    <!-- 4. Mahalla KTP -->
+    <div class="telemetry-card">
+      <span class="card-title">🛖 Mahalla KTP (10/0.4)</span>
+      <span class="card-value" id="scadaKtpOut">230.0 V</span>
+      <div class="card-subtext">
+        <span>Kirish: <b id="scadaKtpIn">10.3 kV</b></span>
+        <span>Yuklama: <b id="scadaKtpLoad">180 kVt</b></span>
+      </div>
+    </div>
+
+    <!-- 5. House Target -->
+    <div class="telemetry-card">
+      <span class="card-title">🏠 Xonadon Iste'moli</span>
+      <span class="card-value" id="meterVoltage" style="color:var(--accent-cyan)">228.0 V</span>
+      <div class="card-subtext">
+        <span>Tok: <b id="meterCurrent">0.0 A</b></span>
+        <span>Quvvat: <b id="meterPower">0.0 kVt</b></span>
+      </div>
+    </div>
+
+    <!-- 6. Yashil Energetika (SES, VET, BESS) -->
+    <div class="telemetry-card">
+      <span class="card-title">🌱 Yashil Generatsiya</span>
+      <span class="card-value" id="scadaSolarPower" style="color:var(--accent-gold)">0.0 MVt</span>
+      <div class="card-subtext">
+        <span>VET: <b id="scadaWindPower" style="color:var(--accent-cyan)">0.0 MVt</b></span>
+        <span>BESS: <b id="scadaBessPower">0.0 MVt</b> (<span id="scadaBessSoc">68%</span>)</span>
+      </div>
+    </div>
+
+    <!-- 7. Quick Environmental Controls -->
+    <div class="scada-quick-controls">
+      <div class="slider-group">
+        <span>💧 To'g'on:</span>
+        <input type="range" id="waterFlowSlider" min="20" max="100" value="85">
+        <span class="slider-val" id="waterFlowVal">85%</span>
+      </div>
+      <div class="slider-group">
+        <span>☀️ Vaqt:</span>
+        <input type="range" id="timeOfDaySlider" min="0" max="24" step="0.5" value="14">
+        <span class="slider-val" id="timeOfDayVal">14:00</span>
+      </div>
+      <div class="slider-group">
+        <span>🌬️ Shamol:</span>
+        <input type="range" id="windSpeedSlider" min="0" max="25" step="0.5" value="9.5">
+        <span class="slider-val" id="windSpeedVal">9.5 m/s</span>
+      </div>
+      <div class="slider-group">
+        <span>☁️ Bulut:</span>
+        <input type="range" id="cloudCoverSlider" min="0" max="100" value="10">
+        <span class="slider-val" id="cloudCoverVal">10%</span>
+      </div>
+      <div class="slider-group">
+        <span>🔋 BESS:</span>
+        <select id="bessModeSelect" style="background:#020617; color:#F8FAFC; border:1px solid rgba(56,189,248,0.3); border-radius:4px; font-size:0.68rem; padding:1px 4px; outline:none;">
+          <option value="auto">Auto</option>
+          <option value="charge">Zaryad</option>
+          <option value="discharge">Razryad</option>
+          <option value="idle">Kutish</option>
+        </select>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Experiments & Fault Scenarios Modal -->
+  <div class="modal-backdrop" id="experimentsModal">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h2>
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="var(--accent-gold)" fill="none" stroke-width="2.5"><path d="M10 2v7.31L4.17 19.5a2 2 0 0 0 1.73 3h12.2a2 2 0 0 0 1.73-3L14 9.31V2"></path></svg>
+          Energetika Tajribalari va Avariya Ssenariylari
+        </h2>
+        <button class="btn-close-modal" id="closeExperimentsModal">✕</button>
+      </div>
+      <div class="modal-content">
+        <div class="experiments-grid">
+          <!-- Exp 1 -->
+          <div class="exp-card">
+            <div class="exp-title">⚡ 1. Nega Yuqori Kuchlanish (220 kV) Kerak?</div>
+            <div class="exp-desc">
+              Transformatorni chetlab o'tib, 70 MVt quvvatni to'g'ridan-to'g'ri 10.5 kV da uzatishni sinab ko'ring. Tok 4,000+ Ampergacha ko'tarilib, simlarda ulkan isrof ($I^2 R$) paydo bo'lishini solishtiring.
+            </div>
+            <button class="btn-run-exp" id="btnExpHighVoltage">Rejimni O'zgartirish (220kV ↔ 10.5kV)</button>
+          </div>
+
+          <!-- Exp 2 -->
+          <div class="exp-card">
+            <div class="exp-title">🌆 2. Kechki Pik Soatlar va Blackout</div>
+            <div class="exp-desc">
+              Kechki 20:30 da shahar va qishloqda hamma bir vaqtda konditsioner, choynak va yoritishni yoqadi. Tizim yuklamasi GES quvvatidan oshib, chastota 50 Hz dan 48.2 Hz gacha qulashini kuzating.
+            </div>
+            <button class="btn-run-exp" id="btnExpPeakLoad">Pik Yuklamani Yoqish</button>
+          </div>
+
+          <!-- Exp 3 -->
+          <div class="exp-card">
+            <div class="exp-title">🌩️ 3. Liniyadagi Qisqa Tutashuv & APV</div>
+            <div class="exp-desc">
+              220 kV magistral liniyaga chaqmoq tushganda tok 8,400 Amperga yetadi. Rele himoyasi liniyani 0.08 soniyada o'chiradi va 2.5 soniyadan so'ng APV (avtomatik qayta ulash) tizimi tokni tiklaydi.
+            </div>
+            <button class="btn-run-exp" id="btnExpShortCircuit">Chaqmoq Urishini Simulyatsiya Qilish</button>
+          </div>
+
+          <!-- Exp 4 -->
+          <div class="exp-card">
+            <div class="exp-title">🫖 4. Xonadon Ortiqcha Yuklamasi</div>
+            <div class="exp-desc">
+              Xonadondagi barcha kuchli jihozlarni (Choynak + Dazmol + Kir mashinasi + Konditsioner) bir vaqtda yoqing. Tok 32A dan oshganda xonadon kirish avtomati sharaqlab o'chishini tekshiring.
+            </div>
+            <button class="btn-run-exp" id="btnExpHouseOverload">Xonadonda Barchasini Yoqish</button>
+          </div>
+
+          <!-- Exp 5 -->
+          <div class="exp-card">
+            <div class="exp-title">🦆 5. O'rdak Egri Chizig'i (Duck Curve)</div>
+            <div class="exp-desc">
+              19:30 da quyosh botishi bilan xonadonlar yuklamasi keskin oshadi. BESS akkumulyatori darhol +25 MVt quvvat berib, GES bilan birgalikda chastotani barqarorlashtirishini kuzating.
+            </div>
+            <button class="btn-run-exp" id="btnExpDuckCurve">O'rdak Egri Chizig'i Sinovi</button>
+          </div>
+
+          <!-- Exp 6 -->
+          <div class="exp-card">
+            <div class="exp-title">🔋 6. BESS Tezkor Birlamchi Javobi (FCR)</div>
+            <div class="exp-desc">
+              GES generatori kutilmaganda avariyaviy uzilganda, BESS batareyasi 20 millisoniyada to'liq 25 MVt quvvatni tarmoqqa uzatib, blackout'ning oldini oladi.
+            </div>
+            <button class="btn-run-exp" id="btnExpBessRapid">BESS Tezkor FCR Sinovi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- House Appliances & Smart Meter Modal -->
+  <div class="modal-backdrop" id="houseModal">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h2>
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="var(--accent-cyan)" fill="none" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Xonadon Elektr Shchiti va Smart Hisoblagich
+        </h2>
+        <button class="btn-close-modal" id="closeHouseModal">✕</button>
+      </div>
+      <div class="modal-content">
+        <div class="house-view-container">
+          <!-- Left: Smart Meter & Breaker Box -->
+          <div class="smart-meter-box">
+            <div class="meter-brand">
+              <span>ATT-SMART 2026</span>
+              <span>1600 imp/kWh</span>
+            </div>
+            <div class="meter-lcd">
+              <div class="lcd-line">
+                <span>KUCHLANISH</span>
+                <span class="lcd-val" id="meterVoltageDisplay">228.0 V</span>
+              </div>
+              <div class="lcd-line">
+                <span>TOK</span>
+                <span class="lcd-val" id="meterCurrentDisplay">0.0 A</span>
+              </div>
+              <div class="lcd-line">
+                <span>QUVVAT</span>
+                <span class="lcd-val" id="meterPowerDisplay">0.00 kVt</span>
+              </div>
+              <div class="lcd-line">
+                <span>JAMI ENERGIYA</span>
+                <span class="lcd-val" id="meterEnergy" style="color:var(--accent-gold)">142.6 kVt*s</span>
+              </div>
+            </div>
+            <div class="meter-led-bar">
+              <div class="impulse-led" id="meterLedImpulse"></div>
+              <span>Aktiv impuls indikatori</span>
+            </div>
+
+            <!-- House Main Breaker -->
+            <div class="breaker-control-box">
+              <div>
+                <div style="font-size:0.8rem; font-weight:700;">Kirish Avtomati (25A)</div>
+                <div id="houseBreakerStatus" style="font-size:0.75rem; color:var(--accent-green);">ULANGAN (ON)</div>
+              </div>
+              <button class="btn-breaker-toggle btn-green" id="btnResetHouseBreaker">
+                Qayta Yoqish
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Appliances Grid -->
+          <div>
+            <h3 style="font-size:0.95rem; margin-bottom:12px; color:var(--text-muted);">Maishiy Elektr Jihozlari Boshqaruvi:</h3>
+            <div class="appliances-grid" id="applianceListContainer">
+              <!-- Injected by house_sim.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Box -->
+  <div id="toast"></div>
+
+  <!-- Scripts in dependency order -->
+  <script src="js/grid_engine.js"></script>
+  <script src="js/grid_scene3d.js"></script>
+  <script src="js/house_sim.js"></script>
+  <script src="js/scada.js"></script>
+  <script src="js/experiments.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

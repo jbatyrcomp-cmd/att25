@@ -210,6 +210,11 @@ const BUILDERS = {
   server: buildServer,
   desktop: buildDesktop,
   laptop: buildLaptop,
+  tablet: function(c){
+    return (typeof MODELS_DB !== 'undefined' && MODELS_DB.tablet && MODELS_DB.tablet.tablet_stand)
+      ? MODELS_DB.tablet.tablet_stand.builder(c)
+      : buildPhone(c);
+  },
   printer: buildPrinter,
   phone: buildPhone
 };
@@ -228,11 +233,13 @@ function initDevicePorts(rec){
     rec.ports.push({ id: 'Gi0/1', name: 'GigabitEthernet0/1 (10G)', type: 'gigabit', connectedTo: null });
     rec.ports.push({ id: 'Gi0/2', name: 'GigabitEthernet0/2 (10G)', type: 'gigabit', connectedTo: null });
   } else if(rec.type === 'modem'){
-    rec.ports.push({ id: 'WAN', name: 'Internet (WAN DSL/Coax)', type: 'wan', connectedTo: null });
+    rec.ports.push({ id: 'WAN', name: 'Internet (WAN DSL/Coax/GPON)', type: 'wan', connectedTo: null });
     rec.ports.push({ id: 'LAN1', name: 'LAN 1 (Ethernet)', type: 'fastethernet', connectedTo: null });
   } else if(rec.type === 'laptop'){
     rec.ports.push({ id: 'Fa0/1', name: 'FastEthernet0/1', type: 'fastethernet', connectedTo: null });
     rec.ports.push({ id: 'WLAN0', name: 'Wi-Fi (802.11ax)', type: 'wireless', connectedTo: null });
+  } else if(rec.type === 'tablet'){
+    rec.ports.push({ id: 'WLAN0', name: 'Wi-Fi (802.11ax/6E)', type: 'wireless', connectedTo: null });
   } else if(rec.type === 'phone'){
     rec.ports.push({ id: 'WLAN0', name: 'Wi-Fi (5GHz)', type: 'wireless', connectedTo: null });
   } else if(rec.type === 'printer'){
@@ -247,13 +254,30 @@ function initDevicePorts(rec){
 const labelsEl = document.getElementById('labels');
 
 /* Add / Remove Devices */
-function addDevice(type){
+function addDevice(type, modelKey){
   if(devices.size >= 26){
     toast("Ko'p qurilma qo'shildi — birinchi tozalab qayta boshlang.");
     return;
   }
   const def = TYPES[type];
-  const group = BUILDERS[type](def.color);
+  
+  // Check MODELS_DB for specific model
+  let modelDef = null;
+  if(typeof MODELS_DB !== 'undefined' && MODELS_DB[type]){
+    if(modelKey && MODELS_DB[type][modelKey]){
+      modelDef = MODELS_DB[type][modelKey];
+    } else {
+      // Pick first model as default
+      const firstKey = Object.keys(MODELS_DB[type])[0];
+      modelKey = firstKey;
+      modelDef = MODELS_DB[type][firstKey];
+    }
+  }
+
+  const group = (modelDef && typeof modelDef.builder === 'function')
+    ? modelDef.builder(def.color)
+    : BUILDERS[type](def.color);
+
   const pos = spawnPosition();
   group.position.copy(pos);
   const id = nextId();
@@ -273,8 +297,11 @@ function addDevice(type){
   const nameCount = [...devices.values()].filter(d => d.type === type).length + 1;
   const ip = type === "modem" ? wanIP() : nextIP();
   const rec = {
-    id, type, group, pickMeshes,
-    name: def.label + " " + nameCount,
+    id, type, group, pickMeshes, hitBox,
+    modelKey: modelKey || 'default',
+    modelName: modelDef ? modelDef.name : def.label,
+    portOffset: group.userData.portOffset || new THREE.Vector3(0, def.port, 0),
+    name: (modelDef ? modelDef.name : def.label) + (nameCount > 1 ? " " + nameCount : ""),
     ip: ip,
     mask: '255.255.255.0',
     gw: type === 'router' ? ip : '192.168.1.1',
@@ -286,6 +313,8 @@ function addDevice(type){
   };
   initDevicePorts(rec);
   if(typeof initDeviceWifi === 'function') initDeviceWifi(rec);
+  if(rec.type === 'switch' && typeof initSwitchVlans === 'function') initSwitchVlans(rec);
+  if(rec.type === 'router' && typeof initRouterSubinterfaces === 'function') initRouterSubinterfaces(rec);
   devices.set(id, rec);
 
   const label = document.createElement('div');
@@ -294,9 +323,58 @@ function addDevice(type){
   labelsEl.appendChild(label);
   rec.label = label;
 
-  toast((def.label) + " qo'shildi");
+  toast((modelDef ? modelDef.name : def.label) + " qo'shildi");
   return rec;
 }
+
+function changeDeviceModel(deviceId, newModelKey){
+  const rec = devices.get(deviceId);
+  if(!rec) return;
+  if(typeof MODELS_DB === 'undefined' || !MODELS_DB[rec.type] || !MODELS_DB[rec.type][newModelKey]) return;
+  const modelDef = MODELS_DB[rec.type][newModelKey];
+
+  // Remove existing visual children (except hitBox)
+  const toRemove = [];
+  rec.group.children.forEach(c => {
+    if(c !== rec.hitBox) toRemove.push(c);
+  });
+  toRemove.forEach(c => rec.group.remove(c));
+
+  // Build new 3D model
+  const def = TYPES[rec.type];
+  const newGroup = modelDef.builder(def.color);
+
+  // portOffset ni bolalar ko'chirilishidan AVVAL saqlash (newGroup keyin bo'shaydi)
+  const newPortOffset = newGroup.userData.portOffset;
+
+  while(newGroup.children.length > 0){
+    rec.group.add(newGroup.children[0]);
+  }
+
+  // Re-index pick meshes
+  rec.pickMeshes = [];
+  rec.group.traverse(o => {
+    if(o.isMesh){
+      o.userData.deviceId = rec.id;
+      rec.pickMeshes.push(o);
+    }
+  });
+  if(rec.hitBox) rec.pickMeshes.push(rec.hitBox);
+
+  rec.modelKey = newModelKey;
+  rec.modelName = modelDef.name;
+  rec.portOffset = newPortOffset || new THREE.Vector3(0, def.port, 0);
+
+  if(selectedDeviceId === rec.id && typeof refreshPanel === 'function'){
+    refreshPanel();
+  }
+  if(typeof updateConnectionsGeometry === 'function'){
+    updateConnectionsGeometry();
+  }
+
+  toast(`Model o‘zgartirildi: ${modelDef.name}`);
+}
+window.changeDeviceModel = changeDeviceModel;
 
 function removeDevice(id){
   const rec = devices.get(id);

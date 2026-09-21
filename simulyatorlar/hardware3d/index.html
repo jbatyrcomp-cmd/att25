@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3D Kompyuter Sxemalari va Atributlari Simulyatori | ATT-25</title>
+<title>3D Kompyuter Sxemalari, Arxitekturasi va Atributlari Simulyatori | ATT-25</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,29 +14,46 @@
 <div id="labels"></div>
 
 <!-- Top Toolbar -->
-<div id="toolbar">
+<header id="toolbar">
   <div id="brand">
     <b>ATT-25 <span>HARDWARE 3D</span></b>
-    <span class="sub">Kompyuter Sxemalari va Atributlari Laboratoriyasi</span>
+    <span class="sub">Sxemotexnika, Arxitektura & Mikroelektronika</span>
   </div>
 
-  <div id="modesBar">
+  <nav id="modesBar">
     <button class="modebtn active" data-mode="all">⚡ Barcha Sxemalar</button>
     <button class="modebtn" data-mode="cpu">🧠 CPU & Kesh</button>
-    <button class="modebtn" data-mode="ram">💾 RAM & Shinalar</button>
-    <button class="modebtn" data-mode="vrm">🔋 VRM Quvvat Zanjiri</button>
-    <button class="modebtn" data-mode="pcie">🚀 PCIe & GPU Magistral</button>
-    <button class="modebtn" data-mode="logic">🔲 Mantiqiy Elementlar (ALU)</button>
-  </div>
+    <button class="modebtn" data-mode="rom">💾 ROM & BIOS</button>
+    <button class="modebtn" data-mode="ssd">⚡ M.2 SSD & SATA</button>
+    <button class="modebtn" data-mode="ram">💾 RAM & Shina</button>
+    <button class="modebtn" data-mode="vrm">🔋 VRM Quvvat</button>
+    <button class="modebtn" data-mode="gpu">🚀 Kengaytma Slotalar</button>
+    <button class="modebtn" data-mode="io">🔌 Fizik Portlar</button>
+    <button class="modebtn" data-mode="logic">🔲 Mantiqiy (ALU)</button>
+    <button class="modebtn" data-mode="disassembly" style="color:var(--gold); border-color:rgba(251,191,36,0.35);">🔧 Yig‘ish / Ajratish</button>
+    <button class="modebtn" data-mode="thermal" style="color:var(--danger); border-color:rgba(239,68,68,0.35);">🔥 Overclock & Termal</button>
+  </nav>
 
   <div id="actions">
-    <button class="actbtn pulse-on" id="pulseSpeedBtn" title="Signal oqimi tezligi">
+    <button class="actbtn" id="quizBtn" title="Kompyuter arxitekturasi bo‘yicha bilimingizni sinang" style="color:var(--gold); border-color:rgba(251,191,36,0.35);">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>Test</span>
+    </button>
+    <button class="actbtn pulse-on" id="pulseSpeedBtn" title="Signal oqimi takt chastotasi">
       <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
       <span>Takt: 4.2 GHz</span>
     </button>
+    <button class="actbtn" id="cycleModeBtn" title="Buyruq sikli (Fetch-Decode-Execute) oqimini ko‘rsatish">
+      <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <span>Sikl: Oddiy</span>
+    </button>
     <button class="actbtn" id="resetCamBtn" title="Kamerani boshlang‘ich burchakka qaytarish">
-      <svg viewBox="0 0 24 24"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
       <span>Qayta</span>
+    </button>
+    <button class="actbtn" id="soundToggleBtn" title="Ovoz effektlarini yoqish/o‘chirish">
+      <svg id="soundIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      <span>Ovoz</span>
     </button>
     <button class="actbtn" id="hwFsBtn" style="color:var(--accent); border-color:var(--line-bright);" title="To‘liq ekranga o‘tish">
       <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
@@ -50,12 +67,8 @@
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
       <span>Markaz</span>
     </a>
-    <a href="../../index.html" class="actbtn" target="_top" style="color:var(--gold); border-color:rgba(251,191,36,0.35);" title="Boshqaruv portaliga qaytish">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Portal</span>
-    </a>
   </div>
-</div>
+</header>
 
 <!-- Attribute Inspector Panel -->
 <aside id="panel">
@@ -64,11 +77,11 @@
       <h2 id="pName">Markaziy Protsessor (CPU)</h2>
       <div id="pType">Hisoblash & Sxemotexnika Klasteri</div>
     </div>
-    <button class="xbtn" id="pClose">✕</button>
+    <button class="xbtn" id="pClose" title="Yopish">✕</button>
   </div>
 
   <div class="pbadge" id="pStatus">
-    <span style="width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent);"></span>
+    <span class="status-dot"></span>
     <span id="pStatusText">FAOL • Takt chastotasi: 4.2 GHz</span>
   </div>
 
@@ -79,8 +92,8 @@
   <div class="schematic-box">
     <div class="title">📐 Sxema Ulanishi & Topologiya:</div>
     <div id="pSchematic">
-      CPU ↔ [FSB / QPI 32GB/s] ↔ DDR5 RAM<br>
-      CPU ↔ [PCIe 5.0 x16: 64GB/s] ↔ GPU<br>
+      CPU ↔ [L1/L2/L3 Kesh] ↔ DDR5 Xotira Shinalari<br>
+      CPU ↔ [PCIe 5.0 x16: 64GB/s] ↔ GPU Videokarta<br>
       CPU ↔ [DMI 4.0 16GB/s] ↔ PCH Chipset
     </div>
   </div>
@@ -90,14 +103,136 @@
   </div>
 </aside>
 
+<!-- Disassembly / Assembly Floating Sub-bar -->
+<div id="disassemblyBar" class="sub-bar">
+  <div class="bar-header">
+    <span>🔧 Yig‘ish / Qismlarga Ajratish Boshqaruvi</span>
+  </div>
+  <div class="bar-controls">
+    <div class="slider-group">
+      <label>💥 Exploded View (Portlatish): <b id="explodeVal">0%</b></label>
+      <input type="range" id="explodeSlider" min="0" max="100" value="0">
+    </div>
+    <div class="btn-group">
+      <button class="actbtn mini pulse-on" id="toggleCoolerBtn">❄️ Kuler: O‘rnatilgan</button>
+      <button class="actbtn mini" id="toggleLeverBtn">🔓 Soket Dastagi: Yopiq</button>
+      <button class="actbtn mini pulse-on" id="toggleCpuBtn">🧠 CPU: Soketda</button>
+      <button class="actbtn mini pulse-on" id="toggleRamBtn">💾 RAM: Qulflangan</button>
+      <button class="actbtn mini pulse-on" id="toggleGpuBtn">🚀 GPU: Slotda</button>
+      <button class="actbtn mini pulse-on" id="toggleCard2Btn">🎵 Ovoz Kartasi: Slotda</button>
+      <button class="actbtn mini pulse-on" id="toggleSsdBtn">⚡ M.2 SSD: O‘rnatilgan</button>
+      <button class="actbtn mini pulse-on" id="toggleBatteryBtn">🔋 Batareya: O‘rnatilgan</button>
+      <button class="actbtn mini pulse-on" id="toggleJumperBtn">⚙️ CMOS Jumper: 1-2</button>
+    </div>
+  </div>
+</div>
+
+<!-- Overclocking & Thermal Dashboard -->
+<div id="thermalBar" class="sub-bar">
+  <div class="bar-header">
+    <span>🔥 Overclocking & Termal Kamera Laboratoriyasi</span>
+    <button class="actbtn mini pulse-on" id="stressTestBtn">⚡ Stress Test (100%)</button>
+  </div>
+  <div class="thermal-grid">
+    <div class="gauge-card">
+      <div class="g-title">CPU Harorati</div>
+      <div class="g-val" id="cpuTempGauge" style="color:var(--accent);">48 °C</div>
+      <div class="g-sub" id="tempStatus">Optimal Sovutish</div>
+    </div>
+    <div class="gauge-card">
+      <div class="g-title">Energiya Sarfi</div>
+      <div class="g-val" id="powerGauge">125 W</div>
+      <div class="g-sub">VRM Quvvat Oqimi</div>
+    </div>
+    <div class="gauge-card">
+      <div class="g-title">Kuler Aylanishi</div>
+      <div class="g-val" id="fanRpmGauge">1450 RPM</div>
+      <div class="g-sub">PWM Shovqin: 24 dBA</div>
+    </div>
+  </div>
+  <div class="bar-controls" style="margin-top:8px;">
+    <div class="slider-group">
+      <label>Takt Chastotasi: <b id="ghzVal">4.2 GHz</b></label>
+      <input type="range" id="ghzSlider" min="10" max="62" value="42">
+    </div>
+    <div class="slider-group">
+      <label>VCore Kuchlanish: <b id="vcoreVal">1.15 V</b></label>
+      <input type="range" id="vcoreSlider" min="85" max="155" value="115">
+    </div>
+    <div class="slider-group">
+      <label>Sovutgich Turi:</label>
+      <select id="coolerSelect">
+        <option value="tower" selected>Minora Kuler (180W TDP)</option>
+        <option value="box">Standart Boks Kuler (65W TDP)</option>
+        <option value="aio">360mm Suv Sovutgich (320W TDP)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Logic Gates & ALU Matrix Sub-bar -->
+<div id="logicBar" class="sub-bar">
+  <div class="bar-header">
+    <span>🔲 Mantiqiy Elementlar & Arifmetik ALU Laboratoriyasi</span>
+    <span style="font-size:11px; color:var(--cyan); font-family:'JetBrains Mono',monospace;">Kirish: A & B ➔ Chiqish: Sum & Carry</span>
+  </div>
+  <div class="logic-workspace">
+    <div class="logic-inputs">
+      <button class="actbtn logic-in" id="btnInputA">Kirish A: <b>0</b></button>
+      <button class="actbtn logic-in" id="btnInputB">Kirish B: <b>0</b></button>
+      <div class="logic-indicator">
+        Yig‘indi (Sum): <span id="outSum" class="out-box">0</span>
+      </div>
+      <div class="logic-indicator">
+        Ko‘chirish (Carry): <span id="outCarry" class="out-box">0</span>
+      </div>
+    </div>
+    <div class="truth-table-wrap">
+      <table class="truth-table">
+        <thead>
+          <tr><th>A</th><th>B</th><th>Sum (A ⊕ B)</th><th>Carry (A • B)</th><th>Izoh</th></tr>
+        </thead>
+        <tbody>
+          <tr id="ttRow00" class="active"><td>0</td><td>0</td><td>0</td><td>0</td><td>Nol holati</td></tr>
+          <tr id="ttRow01"><td>0</td><td>1</td><td>1</td><td>0</td><td>1 bitli natija</td></tr>
+          <tr id="ttRow10"><td>1</td><td>0</td><td>1</td><td>0</td><td>1 bitli natija</td></tr>
+          <tr id="ttRow11"><td>1</td><td>1</td><td>0</td><td>1</td><td>1+1 = 10 (Ikkilikda)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Knowledge Quiz Modal -->
+<div id="quizModal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="m-top">
+      <div>
+        <h3>ATT-25 Kompyuter Arxitekturasi Testi</h3>
+        <span class="m-sub" id="quizProgress">Savol 1 / 5</span>
+      </div>
+      <button class="xbtn" id="closeQuizBtn">✕</button>
+    </div>
+    <div class="quiz-body">
+      <div class="quiz-question" id="quizQuestionText">Savol matni yuklanmoqda...</div>
+      <div class="quiz-options" id="quizOptionsList"></div>
+      <div class="quiz-exp" id="quizExplanation"></div>
+    </div>
+    <div class="m-foot">
+      <div class="quiz-score" id="quizScoreText">To‘g‘ri javoblar: 0 / 0</div>
+      <button class="actbtn" id="nextQuizBtn" style="color:var(--accent); border-color:var(--line-bright);">Keyingi Savol ➔</button>
+    </div>
+  </div>
+</div>
+
 <!-- Bottom Bar -->
-<div id="bottomBar">
+<footer id="bottomBar">
   <div id="legend">
     <div class="lgitem"><span class="lgdot" style="background:#00E676;"></span> Data Bus (Ma'lumotlar Shinası)</div>
     <div class="lgitem"><span class="lgdot" style="background:#FBBF24;"></span> Address Bus (Manzil Shinası)</div>
     <div class="lgitem"><span class="lgdot" style="background:#38BDF8;"></span> Control & Clock (Boshqaruv)</div>
   </div>
-</div>
+</footer>
 
 <div id="hint">Qismlar ustiga bosing → <b>Atributlari</b> va <b>Sxema ulanishlarini</b> o‘rganing. Sichqoncha bilan aylantiring.</div>
 <div id="toast"></div>
@@ -106,6 +241,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <!-- Modular Scripts -->
 <script src="js/data.js"></script>
+<script src="js/textures.js"></script>
 <script src="js/scene.js"></script>
 <script src="js/app.js"></script>
 

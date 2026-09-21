@@ -11,6 +11,7 @@ const ICONS = {
   desktop: `<svg viewBox="0 0 24 24"><rect x="3" y="4" width="14" height="10" rx="1"/><path d="M8 20h6M10 14v6"/><rect x="18" y="6" width="3" height="12" rx="0.5"/></svg>`,
   laptop: `<svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="9" rx="1"/><path d="M2 19h20l-2-3H4l-2 3Z"/></svg>`,
   printer: `<svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="8" rx="1"/><path d="M7 8V4h10v4M7 16v4h10v-4"/></svg>`,
+  tablet: `<svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="18" r="0.8" fill="var(--ink)"/></svg>`,
   phone: `<svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/></svg>`
 };
 
@@ -22,10 +23,11 @@ const TYPES = {
   server:  {label:"Server",     color:0x2F8558, port:0.90, forcesWireless:false},
   desktop: {label:"Kompyuter",  color:0x55606E, port:0.55, forcesWireless:false},
   laptop:  {label:"Noutbuk",    color:0x7A8697, port:0.16, forcesWireless:true},
+  tablet:  {label:"Planshet",   color:0x38BDF8, port:0.18, forcesWireless:true},
   printer: {label:"Printer",    color:0xB07A2E, port:0.34, forcesWireless:false},
   phone:   {label:"Telefon",    color:0x3E6FA8, port:0.36, forcesWireless:true},
 };
-const ORDER = ["router","switch","modem","server","desktop","laptop","printer","phone"];
+const ORDER = ["router","switch","modem","server","desktop","laptop","tablet","printer","phone"];
 
 /* Cable Descriptions */
 const CABLE_DESCRIPTIONS = {

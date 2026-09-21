@@ -9,6 +9,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="css/hub.css">
+  <meta name="theme-color" content="#070C09" id="themeMetaColor">
+
+  <!-- Zero-FOUC Instant Theme & Accessibility Loader -->
+  <script>
+    (function () {
+      try {
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        const savedTheme = localStorage.getItem('att25_theme_id') || (prefersLight ? 'high-tech-light' : 'matrix-green');
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        if (localStorage.getItem('att25_high_contrast') === 'true') {
+          document.documentElement.classList.add('mode-high-contrast');
+        }
+        if (localStorage.getItem('att25_font_large') === 'true') {
+          document.documentElement.classList.add('font-large');
+        }
+      } catch (e) { }
+    })();
+  </script>
 </head>
 <body class="sim-center-body">
 
@@ -39,6 +57,14 @@
         <button class="hub-tab-btn" data-tab="hardware3d" role="tab">
           ⚡ 3D Hardware Sxemalari
           <span class="badge-count">v2.0</span>
+        </button>
+        <button class="hub-tab-btn" data-tab="circuit" role="tab">
+          📐 Circuit Lab (Sxema)
+          <span class="badge-count" style="background:#00FF87; color:#070B12; font-weight:800;">Yangi</span>
+        </button>
+        <button class="hub-tab-btn" data-tab="powergrid" role="tab">
+          ⚡ Smart Grid (GES ➔ Uy)
+          <span class="badge-count" style="background:#38BDF8; color:#070B12; font-weight:800;">3D Eko</span>
         </button>
         <button class="hub-tab-btn" data-tab="subnet" role="tab">
           🔢 Subnet Kalkulyator
@@ -85,7 +111,17 @@
       <iframe src="hardware3d/index.html" class="sim-fullscreen-frame" id="iframeHardware" title="3D Hardware Sxemalari Simulyatori" allow="fullscreen" allowfullscreen="true"></iframe>
     </div>
 
-    <!-- 3. TAB: IP SUBNET & VLSM KALKULYATORI -->
+    <!-- 3. TAB: CIRCUIT LAB (SXEMA QURUVCHI & VIRTUAL ELEKTRONIKA) -->
+    <div class="sim-tab-panel" id="tab-circuit" role="tabpanel">
+      <iframe src="circuit/index.html" class="sim-fullscreen-frame" id="iframeCircuit" title="Sxema Quruvchi & Elektronika Laboratoriyasi" allow="fullscreen" allowfullscreen="true"></iframe>
+    </div>
+
+    <!-- 4. TAB: SMART GRID 3D (GESDAN XONADONGACHA ELEKTR TIZIMI) -->
+    <div class="sim-tab-panel" id="tab-powergrid" role="tabpanel">
+      <iframe src="powergrid/index.html" class="sim-fullscreen-frame" id="iframePowergrid" title="Smart Grid: GESdan Xonadongacha 3D" allow="fullscreen" allowfullscreen="true"></iframe>
+    </div>
+
+    <!-- 4. TAB: IP SUBNET & VLSM KALKULYATORI -->
     <div class="sim-tab-panel" id="tab-subnet" role="tabpanel">
       <div class="tool-tab-content">
         <div class="tool-tab-header">
