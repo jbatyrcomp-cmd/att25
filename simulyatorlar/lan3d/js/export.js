@@ -252,7 +252,12 @@ function exportTopologySvg() {
 }
 
 /* ---------- Export Dropdown Ochish ---------- */
-function openExportDropdown() {
+function openExportDropdown(e) {
+  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+  ['topoMenu', 'roomMenu', 'cableMenu'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show');
+  });
   const dd = document.getElementById('exportDropdown');
   if (dd) dd.classList.toggle('show');
 }
@@ -260,7 +265,23 @@ function openExportDropdown() {
 document.addEventListener('click', (e) => {
   const dd  = document.getElementById('exportDropdown');
   const btn = document.getElementById('exportBtn');
-  if (dd && !dd.contains(e.target) && e.target !== btn) {
+  if (dd && !dd.contains(e.target) && (!btn || !btn.contains(e.target))) {
     dd.classList.remove('show');
   }
 });
+
+if (typeof document !== 'undefined') {
+  const initExportItems = () => {
+    const dd = document.getElementById('exportDropdown');
+    if (dd) {
+      dd.querySelectorAll('.topo-item').forEach(item => {
+        item.addEventListener('click', () => dd.classList.remove('show'));
+      });
+    }
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initExportItems);
+  } else {
+    initExportItems();
+  }
+}

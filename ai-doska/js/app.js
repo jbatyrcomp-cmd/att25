@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mathSolver = new MathSolver(engine);
   const codeBridge = new CodeBridge(engine);
   const handwritingOCR = new HandwritingOCR(engine, aiEngine);
+  const voiceAssistant = new VoiceAssistant(aiEngine, mathSolver, engine);
 
   // Global ob'ektlar (debug va qulaylik uchun)
   window.boardEngine = engine;
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.mathSolver = mathSolver;
   window.codeBridge = codeBridge;
   window.handwritingOCR = handwritingOCR;
+  window.voiceAssistant = voiceAssistant;
 
   // 2. Mahalliy xotiradan yuklash (yoki boshlang'ich shablon)
   const hasSaved = engine.loadFromStorage();
@@ -49,8 +51,35 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     TOP BAR HODISALARI (UNDO/REDO, ZOOM, TO'R, MAVZU, TOZALASH)
+     YAGONA ASOSIY MENYU VA HEADER QUICK ACTIONS
      ========================================================================== */
+  const btnMainMenu = document.getElementById('btnMainMenu');
+  const btnCloseMainMenu = document.getElementById('btnCloseMainMenu');
+  const mainMenuOverlay = document.getElementById('mainMenuOverlay');
+  const mainMenuDrawer = document.getElementById('mainMenuDrawer');
+
+  function openMainMenu() {
+    mainMenuDrawer?.classList.remove('hidden');
+    mainMenuOverlay?.classList.remove('hidden');
+  }
+
+  function closeMainMenu() {
+    mainMenuDrawer?.classList.add('hidden');
+    mainMenuOverlay?.classList.add('hidden');
+  }
+
+  btnMainMenu?.addEventListener('click', openMainMenu);
+  btnCloseMainMenu?.addEventListener('click', closeMainMenu);
+  mainMenuOverlay?.addEventListener('click', closeMainMenu);
+
+  // Esc bosilganda asosiy menyuni yopish
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mainMenuDrawer && !mainMenuDrawer.classList.contains('hidden')) {
+      closeMainMenu();
+    }
+  });
+
+  // Header quick buttons: Undo/Redo & Zoom
   const btnUndo = document.getElementById('btnUndo');
   const btnRedo = document.getElementById('btnRedo');
   if (btnUndo) btnUndo.addEventListener('click', () => engine.undo());
@@ -64,58 +93,58 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnZoomOut) btnZoomOut.addEventListener('click', () => engine.setZoom(engine.zoom * 0.85));
   if (btnZoomReset) btnZoomReset.addEventListener('click', () => engine.setZoom(1.0));
 
-  // To'r (Grid) menyusi
-  const btnGridSelect = document.getElementById('btnGridSelect');
-  if (btnGridSelect) {
-    btnGridSelect.addEventListener('click', (e) => {
-      e.stopPropagation();
-      btnGridSelect.parentElement.classList.toggle('open');
-    });
-  }
-
-  document.querySelectorAll('#gridMenu .dropdown-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.querySelectorAll('#gridMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      const mode = item.getAttribute('data-grid');
-      engine.setGridMode(mode);
-      btnGridSelect.parentElement.classList.remove('open');
-      toast(`To'r rejimi: ${item.textContent}`);
-    });
+  // Menyu ichidagi AI Assistent tugmasi
+  document.getElementById('menuBtnOpenAi')?.addEventListener('click', () => {
+    closeMainMenu();
+    const aiDrawer = document.getElementById('aiDrawer');
+    if (aiDrawer) {
+      aiDrawer.classList.add('open');
+      document.getElementById('aiPromptInput')?.focus();
+    }
   });
 
-  // Mavzu (Theme) menyusi
-  const btnThemeSelect = document.getElementById('btnThemeSelect');
-  if (btnThemeSelect) {
-    btnThemeSelect.addEventListener('click', (e) => {
-      e.stopPropagation();
-      btnThemeSelect.parentElement.classList.toggle('open');
-    });
-  }
+  // Menyu ichidagi Shablonlar tugmasi
+  document.getElementById('menuBtnTemplates')?.addEventListener('click', () => {
+    closeMainMenu();
+    document.getElementById('templatesModal')?.classList.remove('hidden');
+  });
 
-  document.querySelectorAll('#themeMenu .dropdown-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.querySelectorAll('#themeMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      const theme = item.getAttribute('data-theme');
+  // Menyu ichidagi Eksport tugmasi
+  document.getElementById('menuBtnExport')?.addEventListener('click', () => {
+    closeMainMenu();
+    document.getElementById('exportModal')?.classList.remove('hidden');
+  });
+
+  // Menyu ichidagi Doskani Tozalash tugmasi
+  document.getElementById('menuBtnClearBoard')?.addEventListener('click', () => {
+    closeMainMenu();
+    if (confirm("Haqiqatan ham doskadagi barcha elementlarni tozalamoqchimisiz?")) {
+      engine.clearBoard();
+      toast("Doska tozalandi (Ctrl+Z bilan qaytarish mumkin)");
+    }
+  });
+
+  // Menyu ichidagi Mavzu tanlash (Theme)
+  document.querySelectorAll('.theme-choice-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.theme-choice-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const theme = btn.getAttribute('data-theme');
       engine.setTheme(theme);
-      btnThemeSelect.parentElement.classList.remove('open');
-      toast(`Mavzu o'zgartirildi: ${item.textContent}`);
+      toast(`Mavzu: ${btn.textContent.trim()}`);
     });
   });
 
-  // Tozalash tugmasi
-  const btnClearBoard = document.getElementById('btnClearBoard');
-  if (btnClearBoard) {
-    btnClearBoard.addEventListener('click', () => {
-      if (confirm("Haqiqatan ham doskadagi barcha elementlarni tozalamoqchimisiz?")) {
-        engine.clearBoard();
-        toast("Doska tozalandi (Ctrl+Z bilan qaytarish mumkin)");
-      }
+  // Menyu ichidagi To'r tanlash (Grid)
+  document.querySelectorAll('.grid-choice-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.grid-choice-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const grid = btn.getAttribute('data-grid');
+      engine.setGridMode(grid);
+      toast(`To'r rejimi: ${btn.textContent.trim()}`);
     });
-  }
+  });
 
   /* ==========================================================================
      SHABLONLAR MODALI
@@ -825,6 +854,210 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnAiSummarize) btnAiSummarize.addEventListener('click', () => runAnalysis('summarize'));
   if (btnAiExplain) btnAiExplain.addEventListener('click', () => runAnalysis('explain'));
+
+  // Chizmalarni tekislash (Smart Beautifier & Auto-align)
+  const btnAiBeautify = document.getElementById('btnAiBeautify');
+  if (btnAiBeautify) {
+    btnAiBeautify.addEventListener('click', () => {
+      const count = aiEngine.beautifyAndAlign();
+      if (aiAnalysisResult) {
+        aiAnalysisResult.innerHTML = `
+          <div class="validation-card success">
+            <strong>✨ Chizmalar Muvaffaqiyatli Tekislandi!</strong>
+            Doskadagi ${count} ta element to'r bo'yicha mukammal tekislandi va tartibga keltirildi. (Kerak bo'lsa, Ctrl+Z orqali qaytarishingiz mumkin).
+          </div>
+        `;
+      }
+      toast(`✨ ${count} ta element tekislandi`);
+    });
+  }
+
+  // Xatoliklarni tekshirish (Validator & Sanity Check)
+  const btnAiValidate = document.getElementById('btnAiValidate');
+  if (btnAiValidate) {
+    btnAiValidate.addEventListener('click', () => {
+      const findings = aiEngine.validateBoardLogic();
+      if (aiAnalysisResult) {
+        aiAnalysisResult.innerHTML = findings.map(f => `
+          <div class="validation-card ${f.type}">
+            <strong>${f.type === 'warning' ? '⚠️' : (f.type === 'success' ? '✅' : 'ℹ️')} ${f.title}</strong>
+            ${f.message}
+          </div>
+        `).join('');
+      }
+      toast("🔍 Doska mantiqi tekshirildi");
+    });
+  }
+
+  /* ==========================================================================
+     OVOZLI BOSHQARUV (VOICE ASSISTANT WIRED)
+     ========================================================================== */
+  const btnVoicePrompt = document.getElementById('btnVoicePrompt');
+  const btnVoiceChat = document.getElementById('btnVoiceChat');
+  const voiceLangSelect = document.getElementById('voiceLangSelect');
+
+  if (voiceLangSelect) {
+    voiceLangSelect.addEventListener('change', () => {
+      voiceAssistant.setLanguage(voiceLangSelect.value);
+      toast(`Ovozli til: ${voiceLangSelect.options[voiceLangSelect.selectedIndex].text}`);
+    });
+  }
+
+  let activeVoiceTarget = 'prompt'; // 'prompt' or 'chat'
+  voiceAssistant.onStatusChange = (status) => {
+    const isL = status === 'listening';
+    [btnVoicePrompt, btnVoiceChat].forEach(btn => {
+      if (!btn) return;
+      if (isL) {
+        btn.classList.add('listening');
+        if (btn.querySelector('span')) btn.querySelector('span').textContent = "Tinglanmoqda...";
+      } else {
+        btn.classList.remove('listening');
+        if (btn.querySelector('span')) btn.querySelector('span').textContent = "Ovoz";
+      }
+    });
+  };
+
+  voiceAssistant.onTranscript = (text, isFinal) => {
+    if (activeVoiceTarget === 'prompt') {
+      const promptInput = document.getElementById('aiPromptInput');
+      if (promptInput) promptInput.value = text;
+    } else {
+      const chatInput = document.getElementById('aiChatInput');
+      if (chatInput) chatInput.value = text;
+    }
+  };
+
+  if (btnVoicePrompt) {
+    btnVoicePrompt.addEventListener('click', () => {
+      activeVoiceTarget = 'prompt';
+      voiceAssistant.toggle();
+    });
+  }
+  if (btnVoiceChat) {
+    btnVoiceChat.addEventListener('click', () => {
+      activeVoiceTarget = 'chat';
+      voiceAssistant.toggle();
+    });
+  }
+
+  /* ==========================================================================
+     AI REPETITOR & CO-PILOT (CHAT ENGINE WIRED)
+     ========================================================================== */
+  const aiChatMessages = document.getElementById('aiChatMessages');
+  const aiChatInput = document.getElementById('aiChatInput');
+  const btnSendChat = document.getElementById('btnSendChat');
+
+  const appendChatMessage = (text, sender = 'bot') => {
+    if (!aiChatMessages) return;
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `chat-msg ${sender}`;
+
+    const formatted = text
+      .replace(/\n/g, '<br>')
+      .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+      .replace(/\*(.*?)\*/g, '<i>$1</i>');
+
+    let innerHtml = `<div class="chat-bubble">${formatted}</div>`;
+
+    if (sender === 'bot') {
+      innerHtml += `
+        <div class="chat-actions">
+          <button class="btn-chat-insert" title="Ushbu ma'lumotni doskaga stiker qilib joylashtirish">📥 Doskaga qo'shish</button>
+        </div>
+      `;
+    }
+
+    msgDiv.innerHTML = innerHtml;
+
+    if (sender === 'bot') {
+      const btnInsert = msgDiv.querySelector('.btn-chat-insert');
+      if (btnInsert) {
+        btnInsert.addEventListener('click', () => {
+          aiEngine.insertChatResponseToBoard(text);
+          toast("✅ AI javobi doskaga stiker sifatida joylashtirildi!");
+        });
+      }
+    }
+
+    aiChatMessages.appendChild(msgDiv);
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+  };
+
+  const sendChatMessage = async () => {
+    if (!aiChatInput) return;
+    const q = aiChatInput.value.trim();
+    if (!q) return;
+
+    appendChatMessage(q, 'user');
+    aiChatInput.value = '';
+
+    // O'ylamoqda animatsiyasi
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'chat-msg bot';
+    typingDiv.innerHTML = `<div class="chat-bubble" style="font-style: italic; color: #94A3B8;">⏳ AI javob tayyorlamoqda...</div>`;
+    aiChatMessages.appendChild(typingDiv);
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+
+    try {
+      const res = await aiEngine.chatWithAssistant(q);
+      typingDiv.remove();
+      appendChatMessage(res.reply, 'bot');
+    } catch (err) {
+      typingDiv.remove();
+      appendChatMessage(`Kechirasiz, xatolik yuz berdi: ${err.message}`, 'bot');
+    }
+  };
+
+  if (btnSendChat) btnSendChat.addEventListener('click', sendChatMessage);
+  if (aiChatInput) {
+    aiChatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendChatMessage();
+      }
+    });
+  }
+
+  document.querySelectorAll('.chat-quick-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const q = chip.getAttribute('data-q');
+      if (aiChatInput && q) {
+        aiChatInput.value = q;
+        sendChatMessage();
+      }
+    });
+  });
+
+  /* ==========================================================================
+     DOSKADAN AVTOMATIK TEST YARATISH (AUTO-QUIZ WIRED)
+     ========================================================================== */
+  const btnAiAutoQuiz = document.getElementById('btnAiAutoQuiz');
+  const aiQuizStatus = document.getElementById('aiQuizStatus');
+
+  if (btnAiAutoQuiz) {
+    btnAiAutoQuiz.addEventListener('click', async () => {
+      btnAiAutoQuiz.disabled = true;
+      btnAiAutoQuiz.innerHTML = `<span>Savol generatsiya qilinmoqda...</span>`;
+
+      try {
+        const res = await aiEngine.generateQuizFromBoard();
+        if (aiQuizStatus) {
+          aiQuizStatus.classList.remove('hidden');
+          aiQuizStatus.innerHTML = `
+            ✅ <b>"${res.topic}"</b> mavzusida test yaratildi va doska markaziga joylashtirildi!<br>
+            <span style="font-size: 11px; color: #CBD5E1;">Savol: ${res.question}</span>
+          `;
+        }
+        toast("🧠 Doskadan test kartochkasi yaratildi!");
+      } catch (e) {
+        toast("Test yaratish xatosi: " + e.message);
+      } finally {
+        btnAiAutoQuiz.disabled = false;
+        btnAiAutoQuiz.innerHTML = `<span>Doska Asosida Test Yaratish</span> <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+      }
+    });
+  }
 
   // AI Sozlamalar
   const geminiKeyInput = document.getElementById('geminiApiKeyInput');

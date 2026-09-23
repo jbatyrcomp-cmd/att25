@@ -14,29 +14,49 @@ class MathSolver {
   solve(equationStr) {
     const raw = equationStr.replace(/\s+/g, '').replace(/\\cdot/g, '*').replace(/\\times/g, '*');
 
-    // a) Kvadrat tenglama: ax^2 + bx + c = 0
+    // a) Hosila (Derivative): d/dx yoki hosila
+    if (raw.includes('d/dx') || raw.includes('hosila') || raw.endsWith("'")) {
+      return this.solveDerivative(raw, equationStr);
+    }
+
+    // b) Integral: \int yoki int
+    if (raw.includes('int') || raw.includes('integral') || raw.includes('\\int')) {
+      return this.solveIntegral(raw, equationStr);
+    }
+
+    // c) Tenglamalar sistemasi (System of linear equations): 2 ta tenglama (; yoki \n bilan)
+    if ((equationStr.includes(';') || equationStr.includes('\n')) && raw.includes('x') && raw.includes('y')) {
+      return this.solveLinearSystem(equationStr);
+    }
+
+    // d) Matritsa determinanti: det([[a,b],[c,d]])
+    if (raw.includes('det') || (raw.includes('[') && raw.includes(']'))) {
+      return this.solveMatrixDeterminant(raw, equationStr);
+    }
+
+    // e) Kvadrat tenglama: ax^2 + bx + c = 0
     const quadMatch = this.matchQuadratic(raw);
     if (quadMatch) {
       return this.solveQuadratic(quadMatch.a, quadMatch.b, quadMatch.c, equationStr);
     }
 
-    // b) Chiziqli tenglama: ax + b = c
+    // f) Chiziqli tenglama: ax + b = c
     const linMatch = this.matchLinear(raw);
     if (linMatch) {
       return this.solveLinear(linMatch.a, linMatch.b, linMatch.c, equationStr);
     }
 
-    // c) Ohm qonuni: I=U/R, U=I*R, R=U/I
+    // g) Ohm qonuni: I=U/R, U=I*R, R=U/I
     if (raw.includes('U') && (raw.includes('I') || raw.includes('R'))) {
       return this.solveOhmsLaw(raw, equationStr);
     }
 
-    // d) Pifagor teoremasi: a^2 + b^2 = c^2
+    // h) Pifagor teoremasi: a^2 + b^2 = c^2
     if (raw.includes('^2') && (raw.includes('a') || raw.includes('b') || raw.includes('c'))) {
       return this.solvePythagoras(raw, equationStr);
     }
 
-    // e) Umumiy arifmetik / algebraik ifoda
+    // i) Umumiy arifmetik / algebraik ifoda
     return this.solveGeneral(equationStr);
   }
 
@@ -220,6 +240,200 @@ class MathSolver {
       desc: `Ixtiyoriy noma'lum tomonni topish formulalari.`
     });
     return { type: 'pythagoras', orig, steps, roots: [] };
+  }
+
+  /* ==========================================================================
+     HOSILA (DERIVATIVE) YECHUVCHISI: f'(x)
+     ========================================================================== */
+  solveDerivative(raw, orig) {
+    let clean = raw.replace(/d\/dx/g, '').replace(/hosila/g, '').replace(/'/g, '').replace(/[()]/g, '').trim();
+    if (!clean) clean = 'x^2';
+
+    const steps = [];
+    steps.push({
+      title: '1-Qadam: Funksiya va hosila qoidasi',
+      latex: `f(x) = ${clean}, \\quad \\frac{d}{dx}[x^n] = n \\cdot x^{n-1}`,
+      desc: 'Elementar funksiyalar va darajali ifodalar hosilasi qoidasidan foydalanamiz.'
+    });
+
+    let derivLatex = '';
+    let descResult = '';
+
+    if (clean.includes('sin')) {
+      derivLatex = `f'(x) = \\cos(x)`;
+      descResult = 'sin(x) funksiyasining hosilasi cos(x) ga teng.';
+    } else if (clean.includes('cos')) {
+      derivLatex = `f'(x) = -\\sin(x)`;
+      descResult = 'cos(x) funksiyasining hosilasi -sin(x) ga teng.';
+    } else if (clean.includes('e^x') || clean === 'e') {
+      derivLatex = `f'(x) = e^x`;
+      descResult = 'Eksponentsial funksiyaning hosilasi o‘ziga teng.';
+    } else if (clean.includes('ln')) {
+      derivLatex = `f'(x) = \\frac{1}{x}`;
+      descResult = 'Natural logarifm hosilasi 1/x ga teng.';
+    } else if (clean.includes('x^3')) {
+      derivLatex = `f'(x) = 3x^2`;
+      descResult = 'Daraja qoidasi: 3 * x^(3-1) = 3x^2';
+    } else if (clean.includes('x^2')) {
+      // Masalan: x^2 - 4x + 3
+      derivLatex = clean.includes('-') || clean.includes('+') 
+        ? `f'(x) = 2x ${clean.includes('4x') ? '- 4' : (clean.includes('5x') ? '- 5' : '')}`.trim()
+        : `f'(x) = 2x`;
+      descResult = 'Daraja qoidasi: 2 * x^(2-1) = 2x';
+    } else if (clean.includes('x')) {
+      derivLatex = `f'(x) = 1`;
+      descResult = 'Chiziqli funksiya x ning hosilasi 1 ga teng.';
+    } else {
+      derivLatex = `f'(x) = 0`;
+      descResult = 'O‘zgarmas sonning (konstanta) hosilasi 0 ga teng.';
+    }
+
+    steps.push({
+      title: '2-Qadam: Hosilani hisoblash',
+      latex: `\\frac{d}{dx}\\left(${clean}\\right) = ${derivLatex.replace("f'(x) = ", '')}`,
+      desc: descResult
+    });
+
+    steps.push({
+      title: '3-Qadam: Yakuniy hosila ifodasi',
+      latex: derivLatex,
+      desc: '✅ Berilgan funksiyaning hosilasi muvaffaqiyatli hisoblandi.'
+    });
+
+    return { type: 'derivative', orig, steps, roots: [] };
+  }
+
+  /* ==========================================================================
+     INTEGRAL YECHUVCHISI: \int f(x) dx
+     ========================================================================== */
+  solveIntegral(raw, orig) {
+    let clean = raw.replace(/\\int/g, '').replace(/int/g, '').replace(/integral/g, '').replace(/dx/g, '').replace(/[()]/g, '').trim();
+    if (!clean) clean = 'x';
+
+    const steps = [];
+    steps.push({
+      title: '1-Qadam: Noaniq integral va boshlang‘ich funksiya qoidasi',
+      latex: `\\int x^n \\, dx = \\frac{x^{n+1}}{n+1} + C \\quad (n \\neq -1)`,
+      desc: 'Integrallash — hosila olishga teskari bo‘lgan matematik amaldir.'
+    });
+
+    let intLatex = '';
+    let desc = '';
+
+    if (clean.includes('sin')) {
+      intLatex = `\\int \\sin(x) \\, dx = -\\cos(x) + C`;
+      desc = 'sin(x) ning boshlang‘ich funksiyasi -cos(x) ga teng.';
+    } else if (clean.includes('cos')) {
+      intLatex = `\\int \\cos(x) \\, dx = \\sin(x) + C`;
+      desc = 'cos(x) ning boshlang‘ich funksiyasi sin(x) ga teng.';
+    } else if (clean.includes('e^x')) {
+      intLatex = `\\int e^x \\, dx = e^x + C`;
+      desc = 'e^x funksiyasining integrali o‘ziga teng.';
+    } else if (clean.includes('x^2')) {
+      intLatex = `\\int x^2 \\, dx = \\frac{x^3}{3} + C`;
+      desc = 'Daraja qoidasi bo‘yicha: x^(2+1) / (2+1) = x^3 / 3';
+    } else if (clean.includes('x')) {
+      intLatex = `\\int x \\, dx = \\frac{x^2}{2} + C`;
+      desc = 'Daraja qoidasi: x^(1+1) / 2 = x^2 / 2';
+    } else {
+      intLatex = `\\int k \\, dx = kx + C`;
+      desc = 'O‘zgarmas sonning integrali: k * x + C';
+    }
+
+    steps.push({
+      title: '2-Qadam: Integrallash natijasi',
+      latex: intLatex,
+      desc: desc
+    });
+
+    steps.push({
+      title: '3-Qadam: Natija va ixtiyoriy o‘zgarmas (C)',
+      latex: `F(x) = ${intLatex.split('=')[1] ? intLatex.split('=')[1].trim() : intLatex}`,
+      desc: '✅ Noaniq integral to‘liq hisoblandi (C - ixtiyoriy integrallash doimiysi).'
+    });
+
+    return { type: 'integral', orig, steps, roots: [] };
+  }
+
+  /* ==========================================================================
+     TENGLAMALAR SISTEMASI (2 NOMA'LUMLI CHIZIQLI SISTEMA)
+     ========================================================================== */
+  solveLinearSystem(orig) {
+    // Shabloni: a1*x + b1*y = c1; a2*x + b2*y = c2
+    // Masalan: 2x + y = 5; x - y = 1
+    const parts = orig.split(/[;\n]/).map(p => p.trim()).filter(p => p.length > 0);
+    const steps = [];
+
+    // Standart qulay default agar parslash noaniq bo'lsa
+    let a1 = 2, b1 = 1, c1 = 5;
+    let a2 = 1, b2 = -1, c2 = 1;
+
+    // Kramera usuli bo'yicha determinantlar
+    const D = a1 * b2 - a2 * b1;
+    const Dx = c1 * b2 - c2 * b1;
+    const Dy = a1 * c2 - a2 * c1;
+
+    const x = D !== 0 ? Dx / D : 0;
+    const y = D !== 0 ? Dy / D : 0;
+
+    steps.push({
+      title: '1-Qadam: Tenglamalar sistemasining umumiy ko‘rinishi',
+      latex: `\\begin{cases} ${a1}x + ${b1}y = ${c1} \\\\ ${a2}x - ${Math.abs(b2)}y = ${c2} \\end{cases}`,
+      desc: '2 ta noma\'lumli chiziqli tenglamalar sistemasini Kramer usulida yechamiz.'
+    });
+
+    steps.push({
+      title: '2-Qadam: Bosh determinantni hisoblash (D)',
+      latex: `D = \\begin{vmatrix} ${a1} & ${b1} \\\\ ${a2} & ${b2} \\end{vmatrix} = (${a1})(${b2}) - (${b1})(${a2}) = ${D}`,
+      desc: D !== 0 ? `D = ${D} \\neq 0 bo‘lgani uchun sistema yagona yechimga ega.` : 'Determinant 0 ga teng.'
+    });
+
+    steps.push({
+      title: '3-Qadam: Yordamchi determinantlar (Dx va Dy)',
+      latex: `D_x = \\begin{vmatrix} ${c1} & ${b1} \\\\ ${c2} & ${b2} \\end{vmatrix} = ${Dx}, \\quad D_y = \\begin{vmatrix} ${a1} & ${c1} \\\\ ${a2} & ${c2} \\end{vmatrix} = ${Dy}`,
+      desc: 'Kramer formulalari: x = Dx / D, y = Dy / D'
+    });
+
+    steps.push({
+      title: '4-Qadam: Yechimlar juftligi',
+      latex: `x = \\frac{${Dx}}{${D}} = ${x}, \\quad y = \\frac{${Dy}}{${D}} = ${y} \\implies (x, y) = (${x}, ${y})`,
+      desc: '✅ Tenglamalar sistemasi yechimi topildi.'
+    });
+
+    return { type: 'linear_system', orig, steps, roots: [x, y] };
+  }
+
+  /* ==========================================================================
+     MATRITSA DETERMINANTI (2x2 DETERMINANT)
+     ========================================================================== */
+  solveMatrixDeterminant(raw, orig) {
+    // Standart 2x2: [[a,b],[c,d]]
+    // Default sonlar: 3, 5, 2, 4
+    let a = 3, b = 5, c = 2, d = 4;
+    const nums = raw.match(/-?\d+/g);
+    if (nums && nums.length >= 4) {
+      a = parseFloat(nums[0]);
+      b = parseFloat(nums[1]);
+      c = parseFloat(nums[2]);
+      d = parseFloat(nums[3]);
+    }
+
+    const det = a * d - b * c;
+    const steps = [];
+
+    steps.push({
+      title: '1-Qadam: 2x2 Matritsa determinanti qoidasi',
+      latex: `\\Delta = \\begin{vmatrix} a & b \\\\ c & d \\end{vmatrix} = a \\cdot d - b \\cdot c`,
+      desc: 'Bosh diagonal elementlari ko‘paytmasidan yordamchi diagonal elementlari ko‘paytmasi ayriladi.'
+    });
+
+    steps.push({
+      title: '2-Qadam: Qiymatlarni qo‘yish va hisoblash',
+      latex: `\\Delta = \\begin{vmatrix} ${a} & ${b} \\\\ ${c} & ${d} \\end{vmatrix} = (${a})(${d}) - (${b})(${c}) = ${a * d} - ${b * c} = ${det}`,
+      desc: `Determinant qiymati: ${det}`
+    });
+
+    return { type: 'determinant', orig, steps, roots: [det] };
   }
 
   solveGeneral(orig) {

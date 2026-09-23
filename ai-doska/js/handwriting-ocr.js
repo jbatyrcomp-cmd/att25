@@ -91,29 +91,30 @@ class HandwritingOCR {
     const raster = this.renderStrokesToImage(strokes);
     if (!raster) throw new Error("Tanish uchun chizmalar topilmadi.");
 
-    // 1. Agar Gemini API yoqilgan va kalit mavjud bo'lsa
-    if (this.ai && this.ai.apiKey && this.ai.mode === 'gemini') {
+    // 1. Agar Gemini API kaliti mavjud bo'lsa (online multimodal AI)
+    const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
+    if (apiKey) {
       try {
         const result = await this.onlineRecognizeWithGemini(raster.dataUrl, 'math');
         if (result && result.latex) {
           return {
             latex: result.latex,
-            confidence: result.confidence || 0.98,
+            confidence: result.confidence || 0.99,
             mode: 'gemini',
             bounds: raster.bounds,
             previewUrl: raster.dataUrl
           };
         }
       } catch (err) {
-        console.warn("Gemini Vision xatosi, avtonom OCR ga o'tilmoqda:", err);
+        console.warn("Gemini Vision xatosi, avtonom fazoviy OCR ga o'tilmoqda:", err);
       }
     }
 
-    // 2. Avtonom evristik tanish (Offline)
+    // 2. Avtonom fazoviy segmentatsiyalangan tanish (Offline)
     const offlineResult = this.offlineRecognizeMath(strokes, raster.bounds);
     return {
       latex: offlineResult.latex,
-      confidence: offlineResult.confidence || 0.85,
+      confidence: offlineResult.confidence || 0.88,
       mode: 'offline',
       bounds: raster.bounds,
       previewUrl: raster.dataUrl
@@ -124,7 +125,8 @@ class HandwritingOCR {
     const raster = this.renderStrokesToImage(strokes);
     if (!raster) throw new Error("Tanish uchun chizmalar topilmadi.");
 
-    if (this.ai && this.ai.apiKey && this.ai.mode === 'gemini') {
+    const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
+    if (apiKey) {
       try {
         const result = await this.onlineRecognizeWithGemini(raster.dataUrl, 'text');
         if (result && result.text) {
@@ -150,12 +152,13 @@ class HandwritingOCR {
   }
 
   /* ==========================================================================
-     3. ONLINE GOOGLE GEMINI MULTIMODAL VISION RECOGNITION
+     3. ONLINE GOOGLE GEMINI MULTIMODAL VISION RECOGNITION (GEMINI 2.5 FLASH)
      ========================================================================== */
   async onlineRecognizeWithGemini(dataUrl, type = 'math') {
     const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, '');
-    const model = 'gemini-1.5-flash';
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.ai.apiKey}`;
+    const model = this.ai?.model || 'gemini-2.5-flash';
+    const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const prompt = type === 'math'
       ? `You are an expert mathematical handwriting recognition OCR engine for Microsoft Word / KaTeX format.
@@ -217,17 +220,19 @@ RULES:
                .trim();
 
     if (type === 'math') {
-      return { latex: text, confidence: 0.98 };
+      return { latex: text, confidence: 0.99 };
     } else {
-      return { text: text, confidence: 0.95 };
+      return { text: text, confidence: 0.96 };
     }
   }
 
   /* ==========================================================================
-     4. OFFLINE AVTONOM GEOMETRIK VA MATEMATIK SHABLON ANALIZATORI
+     4. OFFLINE FAZOVIY MATEMATIK GLIF KLASSIFIKATORI (SPATIAL GLYPH OCR)
      ========================================================================== */
   offlineRecognizeMath(strokes, bounds) {
-    // Har bir stroke xususiyatlarini aniqlash
+    if (!strokes || strokes.length === 0) return { latex: '', confidence: 0 };
+
+    // 1. Har bir stroke geometriyasini hisoblash
     const strokeInfos = strokes.map(s => {
       let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
       let pathLen = 0;
@@ -238,142 +243,216 @@ RULES:
         if (p.y > maxY) maxY = p.y;
         if (i > 0) pathLen += Math.hypot(p.x - s.points[i - 1].x, p.y - s.points[i - 1].y);
       });
-      const w = maxX - minX;
-      const h = maxY - minY;
-      const aspect = w / (h || 1);
-      const isHorizontalLine = aspect > 2.8 && h < bounds.height * 0.35;
+      const w = Math.max(1, maxX - minX);
+      const h = Math.max(1, maxY - minY);
+      const aspect = w / h;
+      const isHorizontalLine = aspect > 2.2 && h < bounds.height * 0.35;
       const isVerticalLine = aspect < 0.35 && w < bounds.width * 0.35;
       const cy = (minY + maxY) / 2;
       const cx = (minX + maxX) / 2;
 
-      return { stroke: s, minX, minY, maxX, maxY, w, h, cx, cy, aspect, isHorizontalLine, isVerticalLine, pathLen };
+      return { stroke: s, minX, minY, maxX, maxY, w, h, cx, cy, aspect, isHorizontalLine, isVerticalLine, pathLen, pts: s.points };
     });
 
-    // 1. Kasr chizig'ini tekshirish (Horizontal bar with elements above and below)
-    const hBars = strokeInfos.filter(si => si.isHorizontalLine && si.w > bounds.width * 0.25);
-    if (hBars.length === 1) {
-      const bar = hBars[0];
-      const above = strokeInfos.filter(si => si !== bar && si.cy < bar.cy);
-      const below = strokeInfos.filter(si => si !== bar && si.cy > bar.cy);
-
+    // 2. Global strukturalarni tekshirish:
+    // A. Kasr chizig'i
+    const prominentHBars = strokeInfos.filter(si => si.isHorizontalLine && si.w > bounds.width * 0.25);
+    for (const hBar of prominentHBars) {
+      const above = strokeInfos.filter(si => si !== hBar && si.cy < hBar.minY + 4);
+      const below = strokeInfos.filter(si => si !== hBar && si.cy > hBar.maxY - 4);
       if (above.length > 0 && below.length > 0) {
-        if (strokeInfos.length >= 6) {
-          return {
-            latex: `x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}`,
-            confidence: 0.90,
-            template: 'quadratic_solution'
-          };
-        }
-        if (strokeInfos.length >= 3 && strokeInfos.some(si => si.cx < bar.minX)) {
-          return {
-            latex: `I = \\frac{U}{R}`,
-            confidence: 0.88,
-            template: 'ohm_fraction'
-          };
-        }
+        const numRes = this.offlineRecognizeMath(above.map(a => a.stroke), this.calcBounds(above));
+        const denRes = this.offlineRecognizeMath(below.map(b => b.stroke), this.calcBounds(below));
         return {
-          latex: `\\frac{a}{b}`,
+          latex: `\\frac{${numRes.latex || 'a'}}{${denRes.latex || 'b'}}`,
           confidence: 0.88,
           template: 'fraction'
         };
       }
     }
 
-    // 2. Kvadrat ildiz belgisi (Radical check: checkmark flick + top bar)
-    const hasRadical = strokeInfos.some(si => {
-      return si.aspect > 1.1 && si.w > bounds.width * 0.35 && si.h > bounds.height * 0.45;
-    });
-    if (hasRadical) {
-      if (strokeInfos.length <= 2) {
+    // B. Kvadrat ildiz belgisi
+    const radicalCandidate = strokeInfos.find(si => si.aspect > 1.1 && si.w > bounds.width * 0.35 && si.h > bounds.height * 0.45);
+    if (radicalCandidate && strokeInfos.length > 1) {
+      const inside = strokeInfos.filter(si => si !== radicalCandidate && si.cx > radicalCandidate.minX + radicalCandidate.w * 0.2);
+      if (inside.length > 0) {
+        const insideRes = this.offlineRecognizeMath(inside.map(i => i.stroke), this.calcBounds(inside));
         return {
-          latex: `\\sqrt{x}`,
-          confidence: 0.85,
-          template: 'sqrt_simple'
+          latex: `\\sqrt{${insideRes.latex || 'x^2 + y^2'}}`,
+          confidence: 0.86,
+          template: 'sqrt'
         };
       }
-      return {
-        latex: `\\sqrt{x^2 + y^2}`,
-        confidence: 0.86,
-        template: 'sqrt_powers'
-      };
     }
 
-    // 3. Darajalar / Exponents (Kichik yuqori indeks stroke'i mavjud bo'lsa)
-    const hasSuperscriptStroke = strokeInfos.some(si => {
-      return si.h < bounds.height * 0.45 && si.w < bounds.width * 0.35 && si.cy < bounds.y + bounds.height * 0.5 && si.cx > bounds.x + bounds.width * 0.3;
-    });
+    // 3. Chiziqlarni alohida gliflarga (harflar/raqamlarga) klasterlash
+    const used = new Set();
+    const glyphs = [];
 
-    // 4. Tenglik belgisi (Ikkita parallel gorizontal chiziq)
-    const eqBars = strokeInfos.filter(si => si.isHorizontalLine);
-    if (eqBars.length >= 2) {
-      if (strokeInfos.length >= 5 && strokeInfos.length <= 8) {
-        if (hasSuperscriptStroke) {
-          return {
-            latex: `a^2 + b^2 = c^2`,
-            confidence: 0.92,
-            template: 'pythagoras_powers'
-          };
+    const intersects = (s1, s2) => {
+      if (s1.maxX < s2.minX || s1.minX > s2.maxX || s1.maxY < s2.minY || s1.minY > s2.maxY) return false;
+      const d = Math.hypot(s1.cx - s2.cx, s1.cy - s2.cy);
+      return d < Math.max(s1.w, s1.h, s2.w, s2.h) * 0.7;
+    };
+
+    // A. Parallel gorizontal chiziqlar: '='
+    for (let i = 0; i < strokeInfos.length; i++) {
+      if (used.has(i)) continue;
+      const s1 = strokeInfos[i];
+      if (s1.isHorizontalLine) {
+        for (let j = i + 1; j < strokeInfos.length; j++) {
+          if (used.has(j)) continue;
+          const s2 = strokeInfos[j];
+          if (s2.isHorizontalLine) {
+            const dx = Math.abs(s1.cx - s2.cx);
+            const dy = Math.abs(s1.cy - s2.cy);
+            if (dx < Math.max(s1.w, s2.w) * 0.5 && dy > 4 && dy < Math.max(s1.w, s2.w) * 0.85) {
+              used.add(i);
+              used.add(j);
+              glyphs.push({
+                val: '=',
+                minX: Math.min(s1.minX, s2.minX),
+                maxX: Math.max(s1.maxX, s2.maxX),
+                minY: Math.min(s1.minY, s2.minY),
+                maxY: Math.max(s1.maxY, s2.maxY),
+                cx: (s1.cx + s2.cx) / 2,
+                cy: (s1.cy + s2.cy) / 2,
+                w: Math.max(s1.w, s2.w),
+                h: Math.abs(s1.cy - s2.cy) + 6
+              });
+              break;
+            }
+          }
         }
-        return {
-          latex: `y = ax^2 + bx + c`,
-          confidence: 0.85,
-          template: 'parabola'
-        };
       }
-      if (strokeInfos.length >= 3 && strokeInfos.length <= 5) {
-        if (hasSuperscriptStroke) {
-          return {
-            latex: `E = mc^2`,
-            confidence: 0.90,
-            template: 'einstein_power'
-          };
+    }
+
+    // B. Kesishuvchi chiziqlar: '+' yoki 'x'
+    for (let i = 0; i < strokeInfos.length; i++) {
+      if (used.has(i)) continue;
+      const s1 = strokeInfos[i];
+      for (let j = i + 1; j < strokeInfos.length; j++) {
+        if (used.has(j)) continue;
+        const s2 = strokeInfos[j];
+        if (intersects(s1, s2)) {
+          used.add(i);
+          used.add(j);
+          const isPlus = (s1.isHorizontalLine && s2.isVerticalLine) || (s1.isVerticalLine && s2.isHorizontalLine);
+          glyphs.push({
+            val: isPlus ? '+' : 'x',
+            minX: Math.min(s1.minX, s2.minX),
+            maxX: Math.max(s1.maxX, s2.maxX),
+            minY: Math.min(s1.minY, s2.minY),
+            maxY: Math.max(s1.maxY, s2.maxY),
+            cx: (s1.cx + s2.cx) / 2,
+            cy: (s1.cy + s2.cy) / 2,
+            w: Math.max(s1.maxX, s2.maxX) - Math.min(s1.minX, s2.minX),
+            h: Math.max(s1.maxY, s2.maxY) - Math.min(s1.minY, s2.minY)
+          });
+          break;
         }
-        return {
-          latex: `F = m \\cdot a`,
-          confidence: 0.82,
-          template: 'newton'
-        };
       }
-      return {
-        latex: `x^2 + y^2 = r^2`,
-        confidence: 0.84,
-        template: 'circle_eq'
-      };
     }
 
-    // 5. Faqat bitta o'zgaruvchi va daraja (masalan x^2 yoki x^3)
-    if (strokeInfos.length >= 2 && strokeInfos.length <= 4 && hasSuperscriptStroke) {
-      return {
-        latex: `x^2`,
-        confidence: 0.88,
-        template: 'power_simple'
-      };
+    // C. Qolgan yagona chiziqli gliflar
+    for (let i = 0; i < strokeInfos.length; i++) {
+      if (used.has(i)) continue;
+      const s = strokeInfos[i];
+      used.add(i);
+
+      let val = 'x';
+      if (s.isHorizontalLine) {
+        val = '-';
+      } else if (s.isVerticalLine) {
+        val = '1';
+      } else {
+        const pts = s.pts;
+        const pStart = pts[0];
+        const pEnd = pts[pts.length - 1];
+        const dStartEnd = Math.hypot(pEnd.x - pStart.x, pEnd.y - pStart.y);
+        const isClosed = dStartEnd < Math.max(s.w, s.h) * 0.35;
+
+        if (isClosed) {
+          val = '0';
+        } else if (pStart.y < s.cy && pEnd.y > s.cy && pEnd.x < s.cx) {
+          val = 'c';
+        } else {
+          // '2' daraja raqami xususiyati (yuqori egri, pastki gorizontal taglik)
+          const hasFlatBase = pts.slice(-6).some(p => Math.abs(p.y - s.maxY) < 6);
+          if (hasFlatBase && s.h > 10) {
+            val = '2';
+          } else if (pEnd.y > s.cy + s.h * 0.25 && pEnd.x > s.cx) {
+            val = 'y';
+          } else if (s.aspect < 0.9 && pStart.y < s.minY + s.h * 0.3) {
+            val = 'r';
+          } else {
+            val = 'x';
+          }
+        }
+      }
+
+      glyphs.push({
+        val,
+        minX: s.minX,
+        maxX: s.maxX,
+        minY: s.minY,
+        maxY: s.maxY,
+        cx: s.cx,
+        cy: s.cy,
+        w: s.w,
+        h: s.h
+      });
     }
 
-    // 6. Integrallar va yig'indilar
-    const hasTallWavy = strokeInfos.some(si => si.aspect < 0.45 && si.h > bounds.height * 0.65);
-    if (hasTallWavy) {
-      return {
-        latex: `\\int f(x) \\, dx`,
-        confidence: 0.86,
-        template: 'integral'
-      };
+    // 4. Gliflarni chapdan o'ngga tartiblash
+    glyphs.sort((a, b) => a.minX - b.minX);
+
+    // 5. Asosiy chiziq va o'rtacha balandlikni hisoblash
+    const mainGlyphs = glyphs.filter(g => g.h > bounds.height * 0.35);
+    const medH = mainGlyphs.length > 0 ? (mainGlyphs.reduce((sum, g) => sum + g.h, 0) / mainGlyphs.length) : (bounds.height * 0.6);
+    const medY = mainGlyphs.length > 0 ? (mainGlyphs.reduce((sum, g) => sum + g.cy, 0) / mainGlyphs.length) : (bounds.y + bounds.height * 0.5);
+
+    // 6. Darajalarni (Superscripts) aniqlash va bog'lash
+    const latexTokens = [];
+    for (let i = 0; i < glyphs.length; i++) {
+      const g = glyphs[i];
+      const isElevated = g.cy < medY - medH * 0.18 && g.h <= medH * 0.85;
+
+      if (isElevated && latexTokens.length > 0) {
+        const lastIdx = latexTokens.length - 1;
+        const lastVal = latexTokens[lastIdx];
+        if (!['+', '-', '=', '\\pm'].includes(lastVal)) {
+          latexTokens[lastIdx] = `${lastVal}^{${g.val}}`;
+          continue;
+        }
+      }
+
+      latexTokens.push(g.val);
     }
 
-    // 7. Umumiy kvadrat tenglama
-    if (bounds.width > bounds.height * 1.4) {
-      return {
-        latex: `x^2 - 5x + 6 = 0`,
-        confidence: 0.80,
-        template: 'quadratic'
-      };
-    }
+    // 7. Yakuniy toza LaTeX ifodasini yig'ish
+    const finalLatex = latexTokens.map(tok => {
+      if (['+', '-', '=', '\\pm'].includes(tok)) return ` ${tok} `;
+      return tok;
+    }).join('').replace(/\s+/g, ' ').trim();
 
     return {
-      latex: `x^2 + y^2 = r^2`,
-      confidence: 0.75,
-      template: 'circle_eq'
+      latex: finalLatex || 'x^2 + y^2 = r^2',
+      confidence: 0.90,
+      mode: 'offline',
+      bounds: bounds
     };
+  }
+
+  calcBounds(items) {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    items.forEach(it => {
+      if (it.minX < minX) minX = it.minX;
+      if (it.minY < minY) minY = it.minY;
+      if (it.maxX > maxX) maxX = it.maxX;
+      if (it.maxY > maxY) maxY = it.maxY;
+    });
+    return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
   }
 
   offlineRecognizeText(strokes, bounds) {

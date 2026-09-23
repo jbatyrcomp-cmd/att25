@@ -300,6 +300,517 @@ const BoardTemplates = {
 
       return objects;
     }
+  },
+
+  // 8. Tarmoq Xavfsizligi & DMZ Zonasi
+  network_security: {
+    id: 'network_security',
+    title: '🛡️ Tarmoq Xavfsizligi & DMZ Zonasi',
+    desc: 'Internet, Tashqi Firewall, DMZ (Web/Mail server), Ichki Firewall, DB Server va VPN',
+    icon: '🛡️',
+    generate: (originX = -380, originY = -120) => {
+      const objects = [];
+      // DMZ va Ichki Tarmoq fon zonalari
+      objects.push({
+        type: 'rect',
+        x: originX + 220,
+        y: originY - 60,
+        width: 260,
+        height: 280,
+        color: '#F59E0B',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(245, 158, 11, 0.08)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 240,
+        y: originY - 40,
+        text: '🛡️ DMZ Zonasi (Ommaviy Serverlar)',
+        color: '#F59E0B',
+        fontSize: 12,
+        fontWeight: 700
+      });
+
+      objects.push({
+        type: 'rect',
+        x: originX + 560,
+        y: originY - 60,
+        width: 280,
+        height: 280,
+        color: '#10B981',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(16, 185, 129, 0.08)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 580,
+        y: originY - 40,
+        text: '🔒 Ichki Himoyalangan LAN',
+        color: '#10B981',
+        fontSize: 12,
+        fontWeight: 700
+      });
+
+      // Tugunlar
+      objects.push({ type: 'net_node', x: originX, y: originY + 60, nodeType: 'cloud', label: 'Internet (WAN)', ip: 'Global Wan' });
+      objects.push({ type: 'net_node', x: originX + 130, y: originY + 60, nodeType: 'firewall', label: 'Tashqi Firewall', ip: '192.168.100.1' });
+      objects.push({ type: 'net_node', x: originX + 310, y: originY + 10, nodeType: 'server', label: 'Web Server', ip: '172.16.1.10' });
+      objects.push({ type: 'net_node', x: originX + 310, y: originY + 120, nodeType: 'server', label: 'Mail Server', ip: '172.16.1.20' });
+      objects.push({ type: 'net_node', x: originX + 490, y: originY + 60, nodeType: 'firewall', label: 'Ichki Firewall', ip: '172.16.1.1' });
+      objects.push({ type: 'net_node', x: originX + 660, y: originY + 10, nodeType: 'server', label: 'SQL Database', ip: '10.0.0.5' });
+      objects.push({ type: 'net_node', x: originX + 660, y: originY + 120, nodeType: 'pc', label: 'Admin PC', ip: '10.0.0.50' });
+
+      // Aloqa chiziqlari
+      objects.push({ type: 'arrow', x1: originX + 30, y1: originY + 60, x2: originX + 100, y2: originY + 60, color: '#EF4444', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 160, y1: originY + 50, x2: originX + 270, y2: originY + 20, color: '#38BDF8', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 160, y1: originY + 70, x2: originX + 270, y2: originY + 110, color: '#38BDF8', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 350, y1: originY + 20, x2: originX + 460, y2: originY + 50, color: '#F59E0B', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 520, y1: originY + 50, x2: originX + 620, y2: originY + 20, color: '#10B981', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 520, y1: originY + 70, x2: originX + 620, y2: originY + 110, color: '#10B981', strokeWidth: 2 });
+
+      // Stiker izoh
+      objects.push({
+        type: 'sticky',
+        x: originX,
+        y: originY + 170,
+        width: 210,
+        height: 110,
+        bgColor: '#FEF08A',
+        textColor: '#1E293B',
+        text: '🛡️ DMZ QOIDASI:\nTashqaridan faqat DMZ serverlariga ruxsat bor. Ichki LAN ga to‘g‘ridan-to‘g‘ri kirish qatʼiyan taqiqlangan.'
+      });
+
+      return objects;
+    }
+  },
+
+  // 9. Agile Kanban Loyiha Doskasi
+  kanban_board: {
+    id: 'kanban_board',
+    title: '📋 Agile Kanban Doskasi (Loyiha Rejasi)',
+    desc: '4 ta ustun: Rejadagi ishlar, Jarayonda, Sinovda va Bajarildi stikerlari',
+    icon: '📋',
+    generate: (originX = -440, originY = -220) => {
+      const objects = [];
+      const cols = [
+        { title: '📌 REJADA (TO DO)', color: '#38BDF8', bg: 'rgba(56, 189, 248, 0.08)' },
+        { title: '⚡ JARAYONDA (DOING)', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.08)' },
+        { title: '🧪 SINOVDA (TESTING)', color: '#A855F7', bg: 'rgba(168, 85, 247, 0.08)' },
+        { title: '✅ BAJARILDI (DONE)', color: '#10B981', bg: 'rgba(16, 185, 129, 0.08)' }
+      ];
+
+      const colW = 210;
+      const colH = 420;
+      const gap = 16;
+
+      cols.forEach((col, i) => {
+        const cx = originX + i * (colW + gap);
+        objects.push({
+          type: 'rect',
+          x: cx,
+          y: originY,
+          width: colW,
+          height: colH,
+          color: col.color,
+          strokeWidth: 2,
+          filled: true,
+          fillColor: col.bg
+        });
+        objects.push({
+          type: 'text',
+          x: cx + 12,
+          y: originY + 16,
+          text: col.title,
+          color: col.color,
+          fontSize: 12,
+          fontWeight: 700
+        });
+        objects.push({
+          type: 'line',
+          x1: cx,
+          y1: originY + 40,
+          x2: cx + colW,
+          y2: originY + 40,
+          color: col.color,
+          strokeWidth: 1.5
+        });
+      });
+
+      // Ustunlardagi stikerlar
+      objects.push({ type: 'sticky', x: originX + 12, y: originY + 54, width: 186, height: 95, bgColor: '#BAE6FD', textColor: '#0C4A6E', text: '📝 Topshiriq #1:\nIPv6 marshrutlash jadvalini sozlash' });
+      objects.push({ type: 'sticky', x: originX + 12, y: originY + 165, width: 186, height: 95, bgColor: '#BAE6FD', textColor: '#0C4A6E', text: '📡 Topshiriq #2:\nWi-Fi 6 qamrov zonasini o‘rganish' });
+      objects.push({ type: 'sticky', x: originX + colW + gap + 12, y: originY + 54, width: 186, height: 95, bgColor: '#FEF08A', textColor: '#713F12', text: '⚙️ Bajarilmoqda:\nFirewall ACL filtr qoidalarini yozish' });
+      objects.push({ type: 'sticky', x: originX + (colW + gap) * 2 + 12, y: originY + 54, width: 186, height: 95, bgColor: '#DDD6FE', textColor: '#4C1D95', text: '🔍 Tekshirilmoqda:\nPacket Tracer yuklama testi' });
+      objects.push({ type: 'sticky', x: originX + (colW + gap) * 3 + 12, y: originY + 54, width: 186, height: 95, bgColor: '#BBF7D0', textColor: '#064E3B', text: '🎉 Muvaffaqiyatli:\nOSI modeli taqdimoti yakunlandi' });
+
+      return objects;
+    }
+  },
+
+  // 10. Telekommunikatsiya & Tarmoqlar Mindmap
+  telecom_mindmap: {
+    id: 'telecom_mindmap',
+    title: '🧠 Telekommunikatsiya & Tarmoqlar Aqliy Daraxti',
+    desc: 'Markaziy ATT-25 tuguni va 4 yo‘nalish: Protokollar, Simsiz Aloqa, Xavfsizlik va Bulut',
+    icon: '🧠',
+    generate: (originX = 0, originY = 0) => {
+      const objects = [];
+      const cw = 200, ch = 56;
+      objects.push({
+        type: 'rect',
+        x: originX - cw / 2,
+        y: originY - ch / 2,
+        width: cw,
+        height: ch,
+        color: '#00FF87',
+        strokeWidth: 3,
+        filled: true,
+        fillColor: 'rgba(0, 255, 135, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX - 86,
+        y: originY - 6,
+        text: 'ATT-25 TARMOQLAR',
+        color: '#00FF87',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      const branches = [
+        { name: '🌐 TARMOQ PROTOKOLLARI', items: '• TCP / UDP\n• IPv4 va IPv6\n• BGP, OSPF, RIP\n• DNS, DHCP', x: originX - 340, y: originY - 170, color: '#38BDF8' },
+        { name: '📡 SIMSIZ ALOQA & 5G', items: '• 5G NR va LTE\n• Wi-Fi 6 va Wi-Fi 7\n• Sunʼiy Yo‘ldosh\n• Modulyatsiya (QAM)', x: originX + 160, y: originY - 170, color: '#F59E0B' },
+        { name: '🔒 KIBERXAVFSIZLIK', items: '• Next-Gen Firewall\n• VPN (IPsec, Wireguard)\n• IDS / IPS tizimlari\n• Shifrlash (AES, RSA)', x: originX - 340, y: originY + 80, color: '#EF4444' },
+        { name: '☁️ BULUT & SERVERTARMOQ', items: '• SDN (Dasturiy tarmoq)\n• NFV virtualizatsiya\n• Docker va Kubernetes\n• CDN va Balansirovka', x: originX + 160, y: originY + 80, color: '#A855F7' }
+      ];
+
+      branches.forEach(b => {
+        const targetCenterX = b.x + 95;
+        const targetCenterY = b.y + 55;
+        objects.push({
+          type: 'line',
+          x1: originX,
+          y1: originY,
+          x2: targetCenterX,
+          y2: targetCenterY,
+          color: b.color,
+          strokeWidth: 2
+        });
+        objects.push({
+          type: 'sticky',
+          x: b.x,
+          y: b.y,
+          width: 190,
+          height: 115,
+          bgColor: '#1E293B',
+          textColor: '#F8FAFC',
+          text: `${b.name}\n\n${b.items}`
+        });
+      });
+
+      return objects;
+    }
+  },
+
+  // 11. Ikkilik Qidiruv Daraxti (Binary Search Tree)
+  binary_tree: {
+    id: 'binary_tree',
+    title: '🌳 Ikkilik Qidiruv Daraxti (Binary Tree)',
+    desc: 'Ildiz 50, chap shox (30, 20, 40) va o‘ng shox (70, 60, 80) hamda O(log n) izohi',
+    icon: '🌳',
+    generate: (originX = 0, originY = -180) => {
+      const objects = [];
+      const nodes = [
+        { val: 50, x: originX, y: originY, level: 0 },
+        { val: 30, x: originX - 140, y: originY + 90, level: 1 },
+        { val: 70, x: originX + 140, y: originY + 90, level: 1 },
+        { val: 20, x: originX - 200, y: originY + 180, level: 2 },
+        { val: 40, x: originX - 80, y: originY + 180, level: 2 },
+        { val: 60, x: originX + 80, y: originY + 180, level: 2 },
+        { val: 80, x: originX + 200, y: originY + 180, level: 2 }
+      ];
+
+      const edges = [
+        [0, 1], [0, 2],
+        [1, 3], [1, 4],
+        [2, 5], [2, 6]
+      ];
+
+      edges.forEach(([p, c]) => {
+        objects.push({
+          type: 'line',
+          x1: nodes[p].x,
+          y1: nodes[p].y,
+          x2: nodes[c].x,
+          y2: nodes[c].y,
+          color: '#64748B',
+          strokeWidth: 2
+        });
+      });
+
+      nodes.forEach(n => {
+        const isRoot = n.level === 0;
+        objects.push({
+          type: 'circle',
+          x: n.x - 22,
+          y: n.y - 22,
+          radiusX: 22,
+          radiusY: 22,
+          color: isRoot ? '#10B981' : (n.val < 50 ? '#38BDF8' : '#F59E0B'),
+          strokeWidth: 2,
+          filled: true,
+          fillColor: isRoot ? 'rgba(16,185,129,0.3)' : 'rgba(56,189,248,0.2)'
+        });
+        objects.push({
+          type: 'text',
+          x: n.x - 9,
+          y: n.y - 6,
+          text: String(n.val),
+          color: '#FFFFFF',
+          fontSize: 13,
+          fontWeight: 700
+        });
+      });
+
+      objects.push({
+        type: 'sticky',
+        x: originX - 310,
+        y: originY + 220,
+        width: 240,
+        height: 95,
+        bgColor: '#FEF08A',
+        textColor: '#1E293B',
+        text: '🌲 BST QOIDASI:\nChap tugunlar < Ildiz < O‘ng tugunlar.\nQidirish murakkabligi: O(log n)'
+      });
+
+      return objects;
+    }
+  },
+
+  // 12. 5G Simsiz Aloqa Arxitekturasi
+  wireless_5g: {
+    id: 'wireless_5g',
+    title: '📡 5G Simsiz Tarmoq Arxitekturasi',
+    desc: 'Mobil qurilma (UE), gNodeB tayanch stansiyasi, 5G Core (UPF, AMF) va Internet',
+    icon: '📡',
+    generate: (originX = -320, originY = 0) => {
+      const objects = [];
+      objects.push({ type: 'net_node', x: originX, y: originY, nodeType: 'pc', label: '5G Smartfon (UE)', ip: '10.200.1.5' });
+      objects.push({ type: 'net_node', x: originX + 200, y: originY, nodeType: 'router', label: 'gNodeB (Antenna)', ip: 'NG-RAN Tugun' });
+      objects.push({ type: 'net_node', x: originX + 420, y: originY - 70, nodeType: 'server', label: '5G Core (AMF/SMF)', ip: 'Boshqaruv (CP)' });
+      objects.push({ type: 'net_node', x: originX + 420, y: originY + 70, nodeType: 'server', label: 'UPF Gateway', ip: 'Foydalanuvchi (UP)' });
+      objects.push({ type: 'net_node', x: originX + 640, y: originY, nodeType: 'cloud', label: 'Internet (WAN)', ip: 'Global Web' });
+
+      objects.push({ type: 'line', x1: originX + 30, y1: originY, x2: originX + 170, y2: originY, color: '#38BDF8', strokeWidth: 3 });
+      objects.push({ type: 'text', x: originX + 65, y: originY - 18, text: 'Simsiz NR (Uu)', color: '#38BDF8', fontSize: 11, fontWeight: 700 });
+
+      objects.push({ type: 'arrow', x1: originX + 230, y1: originY - 15, x2: originX + 380, y2: originY - 55, color: '#F59E0B', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 230, y1: originY + 15, x2: originX + 380, y2: originY + 55, color: '#10B981', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 460, y1: originY + 70, x2: originX + 610, y2: originY + 10, color: '#10B981', strokeWidth: 3 });
+
+      objects.push({
+        type: 'sticky',
+        x: originX + 80,
+        y: originY + 120,
+        width: 250,
+        height: 100,
+        bgColor: '#BBF7D0',
+        textColor: '#064E3B',
+        text: '⚡ 5G XUSUSIYATLARI:\n• Kechikish (Latency): < 1 ms\n• O‘tkazuvchanlik: 10-20 Gbit/s\n• Massive MIMO va Beamforming'
+      });
+
+      return objects;
+    }
+  },
+
+  // 13. Elektr Zanjiri va Kirchhoff Qonunlari
+  kirchhoff_circuit: {
+    id: 'kirchhoff_circuit',
+    title: '⚡ Elektr Zanjiri va Kirchhoff Qonunlari',
+    desc: 'Tugunlar, parallel rezistorlar, tok oqimi va I hamda II Kirchhoff tenglamalari',
+    icon: '⚡',
+    generate: (originX = -260, originY = -120) => {
+      const objects = [];
+      const w = 360, h = 180;
+
+      objects.push({ type: 'rect', x: originX, y: originY, width: w, height: h, color: '#38BDF8', strokeWidth: 2, filled: false, fillColor: 'transparent' });
+      objects.push({ type: 'rect', x: originX + 130, y: originY - 12, width: 70, height: 24, color: '#F59E0B', strokeWidth: 2, filled: true, fillColor: 'rgba(245, 158, 11, 0.3)' });
+      objects.push({ type: 'text', x: originX + 152, y: originY - 6, text: 'R1', color: '#F59E0B', fontSize: 13, fontWeight: 700 });
+
+      objects.push({ type: 'rect', x: originX + w - 12, y: originY + 60, width: 24, height: 60, color: '#F59E0B', strokeWidth: 2, filled: true, fillColor: 'rgba(245, 158, 11, 0.3)' });
+      objects.push({ type: 'text', x: originX + w - 8, y: originY + 84, text: 'R2', color: '#F59E0B', fontSize: 13, fontWeight: 700 });
+
+      objects.push({ type: 'circle', x: originX - 16, y: originY + 70, radiusX: 16, radiusY: 16, color: '#10B981', strokeWidth: 2, filled: true, fillColor: 'rgba(16,185,129,0.3)' });
+      objects.push({ type: 'text', x: originX - 6, y: originY + 76, text: 'E', color: '#10B981', fontSize: 13, fontWeight: 700 });
+
+      objects.push({ type: 'arrow', x1: originX + 60, y1: originY, x2: originX + 110, y2: originY, color: '#EF4444', strokeWidth: 2 });
+      objects.push({ type: 'text', x: originX + 80, y: originY - 18, text: 'I1 ➔', color: '#EF4444', fontSize: 11, fontWeight: 700 });
+
+      objects.push({
+        type: 'formula',
+        x: originX + 20,
+        y: originY + h + 30,
+        width: 260,
+        height: 80,
+        latex: '\\sum I_{kir} = \\sum I_{chiq}',
+        color: '#10B981',
+        fontSize: 22
+      });
+
+      objects.push({
+        type: 'sticky',
+        x: originX + 310,
+        y: originY + h + 20,
+        width: 220,
+        height: 100,
+        bgColor: '#FEF08A',
+        textColor: '#1E293B',
+        text: '⚡ KIRCHHOFF QONUNI:\n1-Qonun (Tugunlar): ∑I = 0\n2-Qonun (Konturlar): ∑E = ∑(I · R)'
+      });
+
+      return objects;
+    }
+  },
+
+  // 14. Relyatsion Ma'lumotlar Bazasi (ER Diagramma)
+  database_er: {
+    id: 'database_er',
+    title: '🗄️ Relyatsion MB Arxitekturasi (ERD)',
+    desc: 'Users, Orders va Products jadvallari orasidagi 1:N munosabatlar',
+    icon: '🗄️',
+    generate: (originX = -360, originY = -100) => {
+      const objects = [];
+      const tables = [
+        {
+          name: 'USERS',
+          fields: ['🔑 id: INT (PK)', '• name: VARCHAR(100)', '• email: VARCHAR(150)', '• created_at: DATETIME'],
+          x: originX,
+          y: originY,
+          color: '#38BDF8'
+        },
+        {
+          name: 'ORDERS',
+          fields: ['🔑 id: INT (PK)', '🔗 user_id: INT (FK)', '• total_price: DECIMAL', '• status: VARCHAR(20)'],
+          x: originX + 250,
+          y: originY,
+          color: '#10B981'
+        },
+        {
+          name: 'ORDER_ITEMS',
+          fields: ['🔑 id: INT (PK)', '🔗 order_id: INT (FK)', '🔗 product_id: INT (FK)', '• quantity: INT'],
+          x: originX + 500,
+          y: originY,
+          color: '#F59E0B'
+        }
+      ];
+
+      const w = 200, h = 160;
+      tables.forEach(t => {
+        objects.push({
+          type: 'rect',
+          x: t.x,
+          y: t.y,
+          width: w,
+          height: h,
+          color: t.color,
+          strokeWidth: 2,
+          filled: true,
+          fillColor: 'rgba(30, 41, 59, 0.9)'
+        });
+        objects.push({
+          type: 'rect',
+          x: t.x,
+          y: t.y,
+          width: w,
+          height: 32,
+          color: t.color,
+          strokeWidth: 2,
+          filled: true,
+          fillColor: t.color
+        });
+        objects.push({
+          type: 'text',
+          x: t.x + 16,
+          y: t.y + 8,
+          text: `📊 ${t.name}`,
+          color: '#070C14',
+          fontSize: 12,
+          fontWeight: 800
+        });
+
+        t.fields.forEach((f, idx) => {
+          objects.push({
+            type: 'text',
+            x: t.x + 12,
+            y: t.y + 44 + idx * 24,
+            text: f,
+            color: '#F8FAFC',
+            fontSize: 11,
+            fontWeight: 500
+          });
+        });
+      });
+
+      objects.push({ type: 'arrow', x1: originX + w, y1: originY + 75, x2: originX + 250, y2: originY + 75, color: '#38BDF8', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 250 + w, y1: originY + 75, x2: originX + 500, y2: originY + 75, color: '#10B981', strokeWidth: 2 });
+
+      return objects;
+    }
+  },
+
+  // 15. Akademik Dars va Taqdimot Konspekti
+  lecture_plan: {
+    id: 'lecture_plan',
+    title: '📑 Akademik Dars va Taqdimot Konspekti',
+    desc: 'Mavzu, Maqsadlar, Nazariya, Laboratoriya va Xulosa bo‘limlari',
+    icon: '📑',
+    generate: (originX = -320, originY = -180) => {
+      const objects = [];
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY,
+        width: 640,
+        height: 48,
+        color: '#38BDF8',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(56, 189, 248, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 20,
+        y: originY + 14,
+        text: '🎓 MA\'RUZA: KOMPYUTER TARMOQLARI VA PROTOKOLLAR',
+        color: '#38BDF8',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      const sections = [
+        { title: '1. DARS MAQSADLARI', text: '• OSI va TCP/IP farqi\n• IP manzil turlari (A, B, C)\n• Paketlar harakatini kuzatish', bg: '#BAE6FD', textC: '#0C4A6E', x: originX, y: originY + 64 },
+        { title: '2. ASOSIY TUSHUNCHALAR', text: '• Router — 3-qatlam qurilmasi\n• Switch — 2-qatlam MAC\n• Hub — fizik takrorlagich', bg: '#FEF08A', textC: '#713F12', x: originX + 330, y: originY + 64 },
+        { title: '3. AMALIY LAB TOPSHIRIQLARI', text: '• Wireshark dasturida paket ushlash\n• Ping va Traceroute tahlili\n• Subnet mask hisoblash', bg: '#BBF7D0', textC: '#064E3B', x: originX, y: originY + 210 },
+        { title: '4. SAVOLLAR VA XULOSA', text: '• Qaysi protokol ishonchli: TCP/UDP?\n• Nima uchun NAT kerak?\n• Uyga vazifa: Laboratoriya hisoboti', bg: '#FECDD3', textC: '#881337', x: originX + 330, y: originY + 210 }
+      ];
+
+      sections.forEach(s => {
+        objects.push({
+          type: 'sticky',
+          x: s.x,
+          y: s.y,
+          width: 310,
+          height: 125,
+          bgColor: s.bg,
+          textColor: s.textC,
+          text: `${s.title}\n\n${s.text}`
+        });
+      });
+
+      return objects;
+    }
   }
 };
 

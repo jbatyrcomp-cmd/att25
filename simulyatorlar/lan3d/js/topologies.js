@@ -25,7 +25,9 @@ function createRoomPartition(cx, cz, width, depth, labelText, colorHex = '#38BDF
       width: width,
       depth: depth,
       color: colorHex,
-      vlanId: vlanId
+      vlanId: vlanId,
+      select: false,
+      silent: true
     });
     return r ? r.group : null;
   }
@@ -33,25 +35,27 @@ function createRoomPartition(cx, cz, width, depth, labelText, colorHex = '#38BDF
 
 function clearAllNetwork(){
   clearRoomPartitions();
-  [...devices.keys()].forEach(removeDevice);
+  // Snapshot keys first to avoid iterating a mutating Map
+  const ids = [...devices.keys()];
+  ids.forEach(id => removeDevice(id));
 }
 
-/* Helper to set device properties and UI label */
+/* Helper to set device properties and UI label.
+   Returns null if addDevice failed (e.g. device limit reached). */
 function setupDevice(type, model, name, pos, ip = '', gw = ''){
   const dev = addDevice(type, model);
-  if(dev){
-    dev.name = name;
-    if(ip) dev.ip = ip;
-    if(gw) dev.gw = gw;
-    if(dev.label){
-      const nmEl = dev.label.querySelector('.nm');
-      if(nmEl) nmEl.textContent = name;
-      const ipEl = dev.label.querySelector('.ip');
-      if(ipEl && ip) ipEl.textContent = ip;
-    }
-    if(dev.group && pos){
-      dev.group.position.set(pos[0], pos[1] || 0, pos[2]);
-    }
+  if(!dev) return null; // addDevice can return null/undefined when limit is hit
+  dev.name = name;
+  if(ip) dev.ip = ip;
+  if(gw) dev.gw = gw;
+  if(dev.label){
+    const nmEl = dev.label.querySelector('.nm');
+    if(nmEl) nmEl.textContent = name;
+    const ipEl = dev.label.querySelector('.ip');
+    if(ipEl && ip) ipEl.textContent = ip;
+  }
+  if(dev.group && pos){
+    dev.group.position.set(pos[0], pos[1] || 0, pos[2]);
   }
   return dev;
 }
@@ -110,38 +114,38 @@ function loadTopology(type){
     }
 
     // Switch ↔ Router 802.1Q Trunk
-    addConnection(swCore.id, rtrCore.id, { portA: 'Gi0/1', portB: 'Gi0/0', cableType: 'fiber_single' });
-    if(typeof setPortMode === 'function') setPortMode(swCore, 'Gi0/1', 'trunk');
+    if(swCore && rtrCore) addConnection(swCore.id, rtrCore.id, { portA: 'Gi0/1', portB: 'Gi0/0', cableType: 'fiber_single' });
+    if(typeof setPortMode === 'function' && swCore) setPortMode(swCore, 'Gi0/1', 'trunk');
 
     // Serverxona ulanishlari (VLAN 99)
-    addConnection(swCore.id, devServer.id, { portA: 'Fa0/23', cableType: 'fiber' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/23', 99);
-    addConnection(swCore.id, devNas.id, { portA: 'Fa0/24', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/24', 99);
+    if(swCore && devServer) addConnection(swCore.id, devServer.id, { portA: 'Fa0/23', cableType: 'fiber' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/23', 99);
+    if(swCore && devNas) addConnection(swCore.id, devNas.id, { portA: 'Fa0/24', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/24', 99);
 
     // Xona 1 ulanishlari (VLAN 10)
-    addConnection(swCore.id, devImac.id, { portA: 'Fa0/1', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/1', 10);
-    addConnection(swCore.id, devMacbook.id, { portA: 'Fa0/2', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/2', 10);
-    addConnection(swCore.id, devPhone1.id, { portA: 'Fa0/3', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/3', 10);
+    if(swCore && devImac) addConnection(swCore.id, devImac.id, { portA: 'Fa0/1', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/1', 10);
+    if(swCore && devMacbook) addConnection(swCore.id, devMacbook.id, { portA: 'Fa0/2', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/2', 10);
+    if(swCore && devPhone1) addConnection(swCore.id, devPhone1.id, { portA: 'Fa0/3', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/3', 10);
 
     // Xona 2 ulanishlari (VLAN 20)
-    addConnection(swCore.id, devOptiplex.id, { portA: 'Fa0/5', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/5', 20);
-    addConnection(swCore.id, devHpLap.id, { portA: 'Fa0/6', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/6', 20);
-    addConnection(swCore.id, devPrinter.id, { portA: 'Fa0/7', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/7', 20);
+    if(swCore && devOptiplex) addConnection(swCore.id, devOptiplex.id, { portA: 'Fa0/5', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/5', 20);
+    if(swCore && devHpLap) addConnection(swCore.id, devHpLap.id, { portA: 'Fa0/6', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/6', 20);
+    if(swCore && devPrinter) addConnection(swCore.id, devPrinter.id, { portA: 'Fa0/7', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/7', 20);
 
     // Xona 3 ulanishlari (VLAN 30)
-    addConnection(swCore.id, devOdyssey.id, { portA: 'Fa0/9', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/9', 30);
-    addConnection(swCore.id, devPredator.id, { portA: 'Fa0/10', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/10', 30);
-    addConnection(swCore.id, devThinkpad.id, { portA: 'Fa0/11', cableType: 'cat6' });
-    if(typeof setPortVlan === 'function') setPortVlan(swCore, 'Fa0/11', 30);
+    if(swCore && devOdyssey) addConnection(swCore.id, devOdyssey.id, { portA: 'Fa0/9', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/9', 30);
+    if(swCore && devPredator) addConnection(swCore.id, devPredator.id, { portA: 'Fa0/10', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/10', 30);
+    if(swCore && devThinkpad) addConnection(swCore.id, devThinkpad.id, { portA: 'Fa0/11', cableType: 'cat6' });
+    if(typeof setPortVlan === 'function' && swCore) setPortVlan(swCore, 'Fa0/11', 30);
 
     if(typeof toggleVlanView === 'function') toggleVlanView(true);
     if(typeof camRadius !== 'undefined'){
@@ -809,7 +813,8 @@ function seed(){
 
   // 8. Cisco 8845 HD Video IP Phone
   const phone = setupDevice('phone', 'cisco_ip_phone_8845', 'Cisco 8845 IP Phone', [3.8, 0, 4.0], '192.168.1.15', '192.168.1.1');
-  addConnection(router.id, phone.id, { cableType: 'cat6' });
+  // Phone is connected to the switch, not directly to the router
+  if(phone) addConnection(sw.id, phone.id, { cableType: 'cat6' });
 
   // 9. Lenovo ThinkPad X1 Carbon Gen 11 (Wi-Fi)
   const laptop = setupDevice('laptop', 'lenovo_thinkpad_x1', 'ThinkPad X1 Carbon', [2.4, 0, 1.6], '192.168.1.101', '192.168.1.1');
@@ -826,6 +831,10 @@ const topoMenu = document.getElementById('topoMenu');
 if(topoBtn && topoMenu){
   topoBtn.addEventListener('click', (e)=>{
     e.stopPropagation();
+    ['roomMenu', 'cableMenu', 'exportDropdown'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.classList.remove('show');
+    });
     topoMenu.classList.toggle('show');
   });
   document.addEventListener('click', ()=>{ topoMenu.classList.remove('show'); });

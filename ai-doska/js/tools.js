@@ -683,9 +683,45 @@ class ToolManager {
         const nodeType = item.getAttribute('data-node');
         this.currentNodeType = nodeType;
         this.setTool('net_node');
-        btnNetNode.parentElement.classList.remove('open');
+        btnNetNode?.parentElement?.classList.remove('open');
+        document.getElementById('moreToolsAnchor')?.classList.remove('open');
       });
     });
+
+    // 4. Qo'shimcha / Maxsus Asboblar Menyusi (More Tools Popover)
+    const btnMoreTools = document.getElementById('btnMoreTools');
+    const moreToolsAnchor = document.getElementById('moreToolsAnchor');
+    if (btnMoreTools && moreToolsAnchor) {
+      btnMoreTools.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moreToolsAnchor.classList.toggle('open');
+      });
+    }
+
+    document.querySelectorAll('#moreToolsMenu .tool-btn-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const tool = item.getAttribute('data-tool');
+        if (tool) {
+          this.setTool(tool);
+        }
+        moreToolsAnchor?.classList.remove('open');
+      });
+    });
+
+    // Magic Ink toggle
+    const btnMagicInk = document.getElementById('btnMagicInkToggle');
+    if (btnMagicInk) {
+      btnMagicInk.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.magicInkEnabled = !this.magicInkEnabled;
+        btnMagicInk.classList.toggle('active-feature', this.magicInkEnabled);
+        if (typeof window.toast === 'function') {
+          window.toast(`Magic Ink: ${this.magicInkEnabled ? "Yoqildi (Avto-shakl)" : "O'chirildi"}`);
+        }
+        moreToolsAnchor?.classList.remove('open');
+      });
+    }
 
     // Tashqariga bosganda popoverlarni yopish
     window.addEventListener('click', () => {
@@ -773,6 +809,13 @@ class ToolManager {
     // Laser pointer ko'rinishini sozlash
     if (this.laserDot) {
       this.laserDot.classList.toggle('hidden', toolName !== 'laser');
+    }
+
+    // Stil panelini (rang & qalinlik) faqat chizish asboblari faol bo'lganda ko'rsatish
+    const styleBar = document.getElementById('styleBar');
+    if (styleBar) {
+      const needsStyle = ['pen', 'highlighter', 'text'].includes(toolName) || toolName.startsWith('shape_');
+      styleBar.classList.toggle('hidden', !needsStyle && !this.engine.selectedObject);
     }
 
     this.updateViewportCursor();
@@ -1112,7 +1155,7 @@ class ToolManager {
           session.recognizedLatex = res.latex;
           session.bounds = res.bounds;
 
-          this.showFormulaLiveBadgeReady(res.latex);
+          this.showFormulaLiveBadgeReady(res.latex, res.mode);
         }
       } catch (err) {
         console.warn("Formula OCR xatosi:", err);
@@ -1128,8 +1171,19 @@ class ToolManager {
     this.fbadgeReady?.classList.add('hidden');
   }
 
-  showFormulaLiveBadgeReady(latex) {
+  showFormulaLiveBadgeReady(latex, mode = 'gemini') {
     if (!this.formulaLiveBadge || !this.activeFormulaSession) return;
+
+    const modeIndicator = document.getElementById('fbadgeModeIndicator');
+    if (modeIndicator) {
+      if (mode === 'gemini') {
+        modeIndicator.textContent = '✨ Gemini 2.5 Vision';
+        modeIndicator.style.color = '#10B981';
+      } else {
+        modeIndicator.textContent = '⚡ Lokal Fazoviy OCR';
+        modeIndicator.style.color = '#38BDF8';
+      }
+    }
 
     if (this.fbadgeKatexPreview) {
       if (typeof window.katex !== 'undefined') {

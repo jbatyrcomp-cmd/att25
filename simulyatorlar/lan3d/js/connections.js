@@ -714,9 +714,16 @@ function setupCableEvents(){
   if(cableMenuBtn && cableMenu){
     cableMenuBtn.addEventListener('click', (e)=>{
       e.stopPropagation();
+      ['topoMenu', 'roomMenu', 'exportDropdown'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('show');
+      });
       cableMenu.classList.toggle('show');
     });
     document.addEventListener('click', ()=>{ cableMenu.classList.remove('show'); });
+    cableMenu.querySelectorAll('.topo-item').forEach(item => {
+      item.addEventListener('click', ()=>{ cableMenu.classList.remove('show'); });
+    });
   }
 
   // Raycaster click listener for 3D cables

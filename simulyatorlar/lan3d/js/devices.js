@@ -255,9 +255,10 @@ const labelsEl = document.getElementById('labels');
 
 /* Add / Remove Devices */
 function addDevice(type, modelKey){
-  if(devices.size >= 26){
-    toast("Ko'p qurilma qo'shildi — birinchi tozalab qayta boshlang.");
-    return;
+  // Limit raised to 60: multi-room topologies can use 15-20+ devices each
+  if(devices.size >= 60){
+    toast("Qurilmalar soni chegaraga yetdi (60 ta). Tozalab qayta boshlang.");
+    return null;
   }
   const def = TYPES[type];
   

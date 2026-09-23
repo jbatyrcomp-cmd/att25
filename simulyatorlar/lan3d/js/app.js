@@ -49,6 +49,7 @@ const inboxList = document.getElementById('inboxList');
 function selectDevice(id){
   selectedDeviceId = id;
   selRing.visible = true;
+  if(typeof deselectRoom === 'function') deselectRoom();
   openPanel();
   refreshPanel();
   if(typeof showWifiRangeRing === 'function'){
@@ -447,6 +448,7 @@ let dragDeviceId = null, dragMoved = false, dragStart = { x: 0, y: 0 };
 let orbiting = false, lastX = 0, lastY = 0;
 
 canvas.addEventListener('pointerdown', (e)=>{
+  if(window.isDraggingRoomHandle) return;
   setMouse(e);
   hideHint();
   try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
@@ -476,10 +478,13 @@ canvas.addEventListener('pointerdown', (e)=>{
     if(cid){ selectConnectionPrompt(cid); return; }
   }
 
+  if(window.isDraggingRoomHandle) return;
+
   orbiting = true; lastX = e.clientX; lastY = e.clientY;
 });
 
 canvas.addEventListener('pointermove', (e)=>{
+  if(window.isDraggingRoomHandle) return;
   e.preventDefault();
   setMouse(e);
   if(dragDeviceId && !isFpsMode){
@@ -1102,8 +1107,13 @@ if(typeof Multiplayer !== 'undefined'){
 /* Check URL query on start (e.g. ?topo=star) */
 const urlParams = new URLSearchParams(window.location.search);
 const qTopo = urlParams.get('topo') || window.location.hash.replace('#', '');
-// 'seed' ham ro'yxatga qo'shildi
-if(qTopo && ['star', 'ring', 'bus', 'tree', 'mesh', 'office', 'seed'].includes(qTopo)){
+const validTopos = [
+  'multi_room_office', 'multi_room_campus', 'vlan_roas', 'vlan_svi_l3',
+  'vlan_voice_data', 'vlan_3building', 'vlan_trunk', 'vlan_guest_isolation',
+  'datacenter_leafspine', 'dmz_secure', 'p2p_wan', 'smart_office_iot',
+  'office', 'star', 'tree', 'ring', 'bus', 'mesh', 'seed'
+];
+if(qTopo && validTopos.includes(qTopo)){
   if(qTopo === 'seed'){
     seed();
   } else {

@@ -73,7 +73,12 @@ function rebuildRoom3D(room){
   room.floorMesh = floorMesh;
 
   // 2. Perimeter border lines
-  const edges = new THREE.EdgesGeometry(floorGeo);
+  // NOTE: Use a fresh PlaneGeometry (pre-rotation) so EdgesGeometry picks up
+  // the correct 4-edge outline on the XZ plane rather than the rotated mesh
+  const edgeSourceGeo = new THREE.PlaneGeometry(w, d);
+  edgeSourceGeo.rotateX(-Math.PI / 2);
+  const edges = new THREE.EdgesGeometry(edgeSourceGeo);
+  edgeSourceGeo.dispose(); // no longer needed after edges are extracted
   const lineMat = new THREE.LineBasicMaterial({
     color: col,
     transparent: true,
@@ -165,6 +170,7 @@ function rebuildRoom3D(room){
     const sprite = new THREE.Sprite(spriteMat);
     sprite.position.set(0, 2.3, 0);
     sprite.scale.set(3.2, 0.8, 1);
+    sprite.userData = { isRoomElement: true, roomId: room.id };
     room.group.add(sprite);
     room.sprite = sprite;
   }
@@ -194,9 +200,11 @@ function addCustomRoom(options = {}){
   rooms.set(id, room);
 
   rebuildRoom3D(room);
-  selectRoom(id);
+  if(options.select !== false){
+    selectRoom(id);
+  }
 
-  if(typeof toast === 'function'){
+  if(typeof toast === 'function' && options.silent !== true){
     toast(`🏗️ Yangi xona qurildi: "${room.name}" (${room.width}m × ${room.depth}m)`);
   }
   return room;
@@ -217,9 +225,11 @@ function createPresetRoom(presetType){
   let offsetX = 0;
   let offsetZ = 0;
   if(rooms.size > 0){
-    const count = rooms.size;
-    offsetX = ((count % 3) - 1) * 7.5;
-    offsetZ = (Math.floor(count / 3) * 6.5) - 3.0;
+    const count = rooms.size; // rooms already placed
+    const col = count % 3;    // 0,1,2 → column index
+    const row = Math.floor(count / 3); // row index
+    offsetX = (col - 1) * 8.0;         // -8, 0, +8 columns
+    offsetZ = row * 7.5;               // 0, 7.5, 15 rows (positive Z forward)
   }
 
   return addCustomRoom({
@@ -229,7 +239,8 @@ function createPresetRoom(presetType){
     color: p.color,
     vlanId: p.vlanId,
     x: offsetX,
-    z: offsetZ
+    z: offsetZ,
+    select: true
   });
 }
 
@@ -237,8 +248,12 @@ function resizeRoom(roomId, newWidth, newDepth){
   const room = rooms.get(roomId);
   if(!room) return;
 
-  room.width = Math.max(3.0, Math.min(25.0, parseFloat(newWidth) || room.width));
-  room.depth = Math.max(3.0, Math.min(25.0, parseFloat(newDepth) || room.depth));
+  if(newWidth !== null && newWidth !== undefined && !isNaN(newWidth)){
+    room.width = Math.max(3.0, Math.min(25.0, parseFloat(newWidth)));
+  }
+  if(newDepth !== null && newDepth !== undefined && !isNaN(newDepth)){
+    room.depth = Math.max(3.0, Math.min(25.0, parseFloat(newDepth)));
+  }
 
   rebuildRoom3D(room);
   updateRoomHandles(room);
@@ -264,12 +279,33 @@ function deselectRoom(){
   closeRoomPanel();
 }
 
+function disposeRoomGroup(group){
+  if(!group) return;
+  while(group.children.length > 0){
+    const child = group.children[0];
+    group.remove(child);
+    if(child.geometry) child.geometry.dispose();
+    if(child.material){
+      if(Array.isArray(child.material)){
+        child.material.forEach(m => {
+          if(m.map) m.map.dispose();
+          m.dispose();
+        });
+      } else {
+        if(child.material.map) child.material.map.dispose();
+        child.material.dispose();
+      }
+    }
+  }
+}
+
 function deleteRoom(id){
   const room = rooms.get(id);
   if(!room) return;
 
-  if(room.group && roomPartitionsGroup){
-    roomPartitionsGroup.remove(room.group);
+  if(room.group){
+    disposeRoomGroup(room.group);
+    if(roomPartitionsGroup) roomPartitionsGroup.remove(room.group);
   }
 
   rooms.delete(id);
@@ -285,11 +321,14 @@ function deleteRoom(id){
 function clearAllRooms(){
   deselectRoom();
   rooms.forEach(room => {
-    if(room.group && roomPartitionsGroup){
-      roomPartitionsGroup.remove(room.group);
+    if(room.group){
+      disposeRoomGroup(room.group);
+      if(roomPartitionsGroup) roomPartitionsGroup.remove(room.group);
     }
   });
   rooms.clear();
+  // Also ensure handle gizmos are gone
+  clearRoomHandles();
 }
 
 /* --------------------------------------------------------------------------
@@ -301,7 +340,10 @@ function clearRoomHandles(){
     const child = roomHandlesGroup.children[0];
     roomHandlesGroup.remove(child);
     if(child.geometry) child.geometry.dispose();
-    if(child.material) child.material.dispose();
+    if(child.material){
+      if(child.material.map) child.material.map.dispose();
+      child.material.dispose();
+    }
   }
 }
 
@@ -577,9 +619,16 @@ function setupRoomUIEvents(){
   if(roomBtn && roomMenu){
     roomBtn.addEventListener('click', (e)=>{
       e.stopPropagation();
+      ['topoMenu', 'cableMenu', 'exportDropdown'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('show');
+      });
       roomMenu.classList.toggle('show');
     });
     document.addEventListener('click', ()=>{ roomMenu.classList.remove('show'); });
+    roomMenu.querySelectorAll('.topo-item').forEach(item => {
+      item.addEventListener('click', ()=>{ roomMenu.classList.remove('show'); });
+    });
   }
 }
 
@@ -614,7 +663,9 @@ function onRoomPointerDown(e){
       const hitHandle = handleHits[0].object;
       if(hitHandle.userData && hitHandle.userData.isHandle){
         isDraggingRoomHandle = true;
+        window.isDraggingRoomHandle = true;
         activeDragHandle = hitHandle.userData;
+        if(typeof orbiting !== 'undefined') orbiting = false;
         if(typeof controls !== 'undefined' && controls) controls.enabled = false;
         e.stopPropagation();
         return;
@@ -623,27 +674,27 @@ function onRoomPointerDown(e){
   }
 
   // 2. Check Device Hit (Devices have priority over rooms)
+  // Only test against each device's own pickMeshes — far cheaper than scene.children traversal
   if(typeof devices !== 'undefined' && devices.size > 0){
-    const devHits = raycaster.intersectObjects(scene.children, true);
-    for(const hit of devHits){
-      let p = hit.object;
-      while(p && p !== scene){
-        if(p.userData && p.userData.deviceId){
-          // Device clicked, let app.js handle it
-          return;
-        }
-        p = p.parent;
+    const allPickMeshes = [];
+    devices.forEach(rec => { if(rec.pickMeshes) allPickMeshes.push(...rec.pickMeshes); });
+    if(allPickMeshes.length > 0){
+      const devHits = raycaster.intersectObjects(allPickMeshes, false);
+      if(devHits.length > 0 && devHits[0].object.userData.deviceId){
+        // Device clicked — let app.js handle it
+        return;
       }
     }
   }
 
-  // 3. Check Room Hit (Floor or Walls)
+  // 3. Check Room Hit (Floor, Walls, or Title Badge Sprite)
   if(roomPartitionsGroup && roomPartitionsGroup.children.length > 0){
     const roomHits = raycaster.intersectObjects(roomPartitionsGroup.children, true);
     if(roomHits.length > 0){
       const hitObj = roomHits[0].object;
       if(hitObj.userData && hitObj.userData.roomId){
         selectRoom(hitObj.userData.roomId);
+        if(typeof orbiting !== 'undefined') orbiting = false;
         e.stopPropagation();
         return;
       }
@@ -653,7 +704,7 @@ function onRoomPointerDown(e){
   // 4. Clicked on empty space (and not dragging) -> deselect room
   if(selectedRoomId && !isDraggingRoomHandle){
     // Don't deselect if clicking on UI
-    if(!e.target.closest('#roomPanel') && !e.target.closest('#panel') && !e.target.closest('.topbar')){
+    if(!e.target.closest('#roomPanel') && !e.target.closest('#panel') && !e.target.closest('#toolbar') && !e.target.closest('.modal') && !e.target.closest('.topo-menu')){
       deselectRoom();
     }
   }
@@ -701,6 +752,7 @@ function onRoomPointerMove(e){
 function onRoomPointerUp(){
   if(isDraggingRoomHandle){
     isDraggingRoomHandle = false;
+    window.isDraggingRoomHandle = false;
     activeDragHandle = null;
     if(typeof controls !== 'undefined' && controls) controls.enabled = true;
   }
