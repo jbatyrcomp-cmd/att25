@@ -12,8 +12,18 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- KaTeX for high-precision LaTeX formula rendering -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+        integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+        crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+          integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+          crossorigin="anonymous"></script>
+
+  <!-- jsPDF for crystal clear vector/multi-page PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+          integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
 
   <link rel="stylesheet" href="css/style.css?v=4">
   <meta name="theme-color" content="#0F172A">
@@ -40,7 +50,7 @@
 
       <div class="header-branding">
         <span class="header-app-badge">AI DOSKA</span>
-        <input type="text" id="boardTitleInput" class="board-title-input" value="Akademik Loyiha #1" title="Doska nomini o'zgartirish">
+        <input type="text" id="boardTitleInput" class="board-title-input" value="Akademik Loyiha #1" title="Doska nomini o'zgartirish" maxlength="80" autocomplete="off" spellcheck="false" pattern="[^<>]*">
       </div>
     </div>
 
@@ -63,6 +73,40 @@
       <button id="btnZoomReset" class="quick-zoom-label" title="100% ga qaytarish">100%</button>
       <button id="btnZoomIn" class="quick-icon-btn" title="Yaqinlashtirish (Ctrl +)">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <div class="quick-divider"></div>
+      <button id="btnOpenSearch" class="quick-icon-btn" title="Doskadan qidirish (Ctrl+F)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+      <div class="quick-divider"></div>
+      <button id="btnToggleVirtualKeyboard" class="quick-icon-btn" title="Sensorli Klaviatura (Virtual Keyboard)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="3"/>
+          <line x1="6" y1="8" x2="6.01" y2="8"/>
+          <line x1="10" y1="8" x2="10.01" y2="8"/>
+          <line x1="14" y1="8" x2="14.01" y2="8"/>
+          <line x1="18" y1="8" x2="18.01" y2="8"/>
+          <line x1="6" y1="12" x2="6.01" y2="12"/>
+          <line x1="10" y1="12" x2="10.01" y2="12"/>
+          <line x1="14" y1="12" x2="14.01" y2="12"/>
+          <line x1="18" y1="12" x2="18.01" y2="12"/>
+          <line x1="7" y1="16" x2="17" y2="16"/>
+        </svg>
+      </button>
+      <button id="btnSmartboardToggle" class="quick-icon-btn" title="Interaktiv Doska Rejimi (Smartboard / Touch)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </button>
+      <button id="btnBoardFullscreen" class="quick-icon-btn" title="To'liq Ekran (Fullscreen - F11)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
       </button>
     </div>
   </header>
@@ -206,7 +250,7 @@
        2. CANVAS WORKSPACE (CHEKSIZ MAYDON)
        ========================================================================== -->
   <main class="canvas-viewport" id="canvasViewport">
-    <canvas id="whiteboardCanvas"></canvas>
+    <canvas id="whiteboardCanvas" role="application" aria-label="AI Doska chizish maydoni" tabindex="0"></canvas>
     
     <!-- Matn va stikerlarni jonli tahrirlash qatlami -->
     <div id="textEditorOverlay" class="text-editor-overlay hidden">
@@ -344,6 +388,13 @@
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="10 5 19 5 19 14"/></svg>
           <span>Strelka</span>
         </button>
+        <button class="popover-item" data-shape="connector" title="Aqlli Bog'lovchi (Smart Connector - C)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          <span>Aqlli Bog'lovchi</span>
+        </button>
       </div>
     </div>
 
@@ -436,6 +487,30 @@
           <span>Magic Ink (Avto-shakl)</span>
         </button>
 
+        <!-- IP & Subnet Kalkulyator (CIDR / VLSM) -->
+        <button class="popover-item tool-btn-item" id="btnSubnetModalTool" title="IP & Subnet Kalkulyator (CIDR / VLSM)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+            <circle cx="7" cy="8" r="1.2" fill="currentColor"/>
+            <circle cx="12" cy="8" r="1.2" fill="currentColor"/>
+            <circle cx="17" cy="8" r="1.2" fill="currentColor"/>
+          </svg>
+          <span>IP & Subnet Kalkulyator</span>
+        </button>
+
+        <!-- Texnik Taqqoslash Jadvallari -->
+        <button class="popover-item tool-btn-item" id="btnComparisonModalTool" title="Texnik Taqqoslash Jadvallari">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="3" x2="9" y2="21"/>
+            <line x1="15" y1="3" x2="15" y2="21"/>
+          </svg>
+          <span>Taqqoslovchi Jadvallar</span>
+        </button>
+
         <!-- Tarmoq Tugunlari (ATT-25 Network Nodes) -->
         <div class="sub-popover-item">
           <button class="popover-item tool-btn-item" id="btnNetNodeTool" title="Tarmoq Qurilmasi">
@@ -514,7 +589,7 @@
   <!-- ==========================================================================
        5. SMART AI ASSISTANT DRAWER (AI YON PANELI)
        ========================================================================== -->
-  <aside class="ai-drawer" id="aiDrawer">
+  <aside class="ai-drawer" id="aiDrawer" role="complementary" aria-label="AI Yordamchi Paneli">
     <div class="ai-drawer-header">
       <div class="ai-header-title">
         <div class="ai-avatar-pulse">
@@ -530,17 +605,18 @@
       <button class="drawer-close-btn" id="btnCloseAi" title="Yopish">&times;</button>
     </div>
 
-    <!-- AI Tab navigation: 5 ta aqlli bo'lim -->
-    <div class="ai-tabs">
-      <button class="ai-tab active" data-tab="aiGenerate">🪄 Generatsiya</button>
-      <button class="ai-tab" data-tab="aiChat">💬 Co-pilot</button>
-      <button class="ai-tab" data-tab="aiAnalyze">🔍 Tahlil</button>
-      <button class="ai-tab" data-tab="aiQuiz">🧠 Test Tuzish</button>
-      <button class="ai-tab" data-tab="aiSettings">⚙️ Sozlamalar</button>
+    <!-- AI Tab navigation: 6 ta aqlli bo'lim -->
+    <div class="ai-tabs" role="tablist" aria-label="AI bo'limlari">
+      <button class="ai-tab active" data-tab="aiGenerate" role="tab" aria-selected="true" id="tab-aiGenerate" aria-controls="paneAiGenerate">🪄 Generatsiya</button>
+      <button class="ai-tab" data-tab="aiChat" role="tab" aria-selected="false" id="tab-aiChat" aria-controls="paneAiChat">💬 Co-pilot</button>
+      <button class="ai-tab" data-tab="aiAnalyze" role="tab" aria-selected="false" id="tab-aiAnalyze" aria-controls="paneAiAnalyze">🔍 Tahlil</button>
+      <button class="ai-tab" data-tab="aiEdit" role="tab" aria-selected="false" id="tab-aiEdit" aria-controls="paneAiEdit">✦ AI Tahrir</button>
+      <button class="ai-tab" data-tab="aiQuiz" role="tab" aria-selected="false" id="tab-aiQuiz" aria-controls="paneAiQuiz">🧠 Test</button>
+      <button class="ai-tab" data-tab="aiSettings" role="tab" aria-selected="false" id="tab-aiSettings" aria-controls="paneAiSettings">⚙️ Sozlama</button>
     </div>
 
     <!-- TAB 1: Diagramma & Mindmap Generatori -->
-    <div class="ai-pane active" id="paneAiGenerate">
+    <div class="ai-pane active" id="paneAiGenerate" role="tabpanel" aria-labelledby="tab-aiGenerate">
       <div class="ai-input-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <label for="aiPromptInput" class="ai-card-label" style="margin: 0;">AI ga buyruq bering (Prompt):</label>
@@ -569,42 +645,62 @@
 
       <div class="ai-section-title">⚡ Tezkor IT & Muhandislik Sxemalari:</div>
       <div class="ai-chips-grid">
-        <button class="ai-chip" data-preset="microservices">🏗️ Mikroxizmatlar (API Gateway)</button>
-        <button class="ai-chip" data-preset="docker_k8s">☸️ Kubernetes & Docker Klaster</button>
-        <button class="ai-chip" data-preset="cicd">🔄 CI/CD Konveyer (Pipeline)</button>
-        <button class="ai-chip" data-preset="git_flow">🌿 Git Branching Flow</button>
-        <button class="ai-chip" data-preset="neural_net">🧠 Neyron Tarmoq (AI Layer)</button>
-        <button class="ai-chip" data-preset="sql_joins">🗄️ SQL JOIN Turlari (Venn)</button>
-        <button class="ai-chip" data-preset="load_balancer">⚖️ Load Balancer (Nginx)</button>
-        <button class="ai-chip" data-preset="dns">🌐 DNS Qidiruv Sxemasi</button>
-        <button class="ai-chip" data-preset="osi">🌐 OSI 7 Qatlamli Modeli</button>
-        <button class="ai-chip" data-preset="client_server">💻 Client-Server Arxitekturasi</button>
-        <button class="ai-chip" data-preset="tcp_handshake">🤝 TCP 3-Way Handshake</button>
-        <button class="ai-chip" data-preset="flowchart">🔄 Algoritm Blok-Sxemasi</button>
+        <button class="ai-chip" data-preset="microservices">🏗️ Mikroxizmatlar</button>
+        <button class="ai-chip" data-preset="docker_k8s">☸️ Kubernetes K8s</button>
+        <button class="ai-chip" data-preset="cicd">🔄 CI/CD Pipeline</button>
+        <button class="ai-chip" data-preset="git_flow">🌿 Git Branching</button>
+        <button class="ai-chip" data-preset="neural_net">🧠 Neyron Tarmoq</button>
+        <button class="ai-chip" data-preset="sql_joins">🗄️ SQL JOIN</button>
+        <button class="ai-chip" data-preset="load_balancer">⚖️ Load Balancer</button>
+        <button class="ai-chip" data-preset="dns">🌐 DNS Resolution</button>
+        <button class="ai-chip" data-preset="osi">📶 OSI 7 Qatlam</button>
+        <button class="ai-chip" data-preset="tcp_handshake">🤝 TCP Handshake</button>
+        <button class="ai-chip" data-preset="ospf_bgp">🗺️ OSPF+BGP Routing</button>
+        <button class="ai-chip" data-preset="zero_trust">🛡️ Zero-Trust ZTNA</button>
+        <button class="ai-chip" data-preset="rest_api">🔌 REST API dizayn</button>
+        <button class="ai-chip" data-preset="oauth_jwt">🔐 OAuth2 + JWT</button>
+        <button class="ai-chip" data-preset="cloud_arch">☁️ Cloud Arxitektura</button>
+        <button class="ai-chip" data-preset="cache_redis">⚡ Redis Cache</button>
+        <button class="ai-chip" data-preset="kafka">📨 Kafka Queue</button>
+        <button class="ai-chip" data-preset="vlan">🔀 VLAN 802.1Q</button>
+        <button class="ai-chip" data-preset="dhcp">📋 DHCP DORA</button>
+        <button class="ai-chip" data-preset="tls">🔒 TLS Handshake</button>
+        <button class="ai-chip" data-preset="erd">🗄️ ERD Ma'lumot Bazasi</button>
+        <button class="ai-chip" data-preset="big_o">📊 Big-O Tahlil</button>
+        <button class="ai-chip" data-preset="flowchart">🔄 Algoritm Blok-Sxema</button>
+        <button class="ai-chip" data-preset="subnet_calc">🔢 Subnet /26 Hisobi</button>
+        <button class="ai-chip" data-preset="tcp_udp_comp">📊 TCP vs UDP Jadvali</button>
+        <button class="ai-chip" data-preset="osi_comp">🏛️ OSI vs TCP/IP</button>
+        <button class="ai-chip" data-preset="pki_flow">🔐 PKI & Raqamli Imzo</button>
+        <button class="ai-chip" data-preset="webrtc_call">📹 WebRTC Video Call</button>
+        <button class="ai-chip" data-preset="cicd_gitops">🚀 CI/CD GitOps</button>
       </div>
 
       <div id="aiGenStatus" class="ai-status-box hidden"></div>
     </div>
 
     <!-- TAB 2: AI Co-pilot (Interaktiv Chat & Repetitor) -->
-    <div class="ai-pane" id="paneAiChat">
+    <div class="ai-pane" id="paneAiChat" role="tabpanel" aria-labelledby="tab-aiChat">
       <div class="ai-chat-container">
         <div class="ai-chat-messages" id="aiChatMessages">
           <div class="chat-msg bot">
             <div class="chat-bubble">
-              Assalomu alaykum! Men sizning <strong>AI Co-pilot</strong> yordamchingizman. Doskadagi chizmalar bo'yicha savol bering, xatolarni tekshiraylik yoki yangi tushunchalarni doskaga tushirib beray.
+              Assalomu alaykum! Men sizning <strong>AI Co-pilot</strong> yordamchingizman. OSI, TCP, dasturlash, matematik, kiberxavfsizlik va boshqa ko'p mavzularda yordam beraman. Savol bering! 🤖
             </div>
           </div>
         </div>
 
         <div class="ai-chat-quick-prompts">
           <button class="chat-quick-chip" data-q="Doskadagi sxemani o'quvchiga tushuntirgandek sodda tushuntirib ber">💡 Doskani tushuntir</button>
-          <button class="chat-quick-chip" data-q="Ushbu arxitekturaning kamchiliklari va xavflari nimada?">🛡️ Xavflarni ko'rsat</button>
-          <button class="chat-quick-chip" data-q="Doska mavzusiga oid 3 ta muhim savol ber">❓ 3 ta savol ber</button>
+          <button class="chat-quick-chip" data-q="OSI 7 qatlam modeli nima va har bir qatlam vazifasi nima?">🌐 OSI nima?</button>
+          <button class="chat-quick-chip" data-q="TCP va UDP farqi va qayerda ishlatiladi?">🔀 TCP vs UDP</button>
+          <button class="chat-quick-chip" data-q="Ushbu arxitekturaning kamchiliklari va xavflari nimada?">🛡️ Xavflar</button>
+          <button class="chat-quick-chip" data-q="Python dasturlashda OOP nima va qanday qo'llaniladi?">🐍 OOP Python</button>
+          <button class="chat-quick-chip" data-q="Doska mavzusiga oid 3 ta muhim savol ber">❓ 3 ta savol</button>
         </div>
 
         <div class="ai-chat-input-row">
-          <textarea id="aiChatInput" class="ai-chat-input" rows="2" placeholder="Savol bering (masalan: DMZ zonasi nima uchun kerak?)..."></textarea>
+          <textarea id="aiChatInput" class="ai-chat-input" rows="2" placeholder="Savol bering (masalan: OSPF qanday ishlaydi?)..."></textarea>
           <button id="btnVoiceChat" class="voice-mic-btn icon-only" title="Ovoz bilan yozish">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
@@ -617,12 +713,17 @@
               <polygon points="22 2 15 22 11 13 2 9 22 2"/>
             </svg>
           </button>
+          <button id="btnClearChat" class="voice-mic-btn icon-only" title="Chat tarixini tozalash" style="color:#F43F5E;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
 
     <!-- TAB 3: Doska Tahlili, Go'zallashtiruvchi & Tekshiruvchi -->
-    <div class="ai-pane" id="paneAiAnalyze">
+    <div class="ai-pane" id="paneAiAnalyze" role="tabpanel" aria-labelledby="tab-aiAnalyze">
       <div class="ai-analyze-intro">
         <p>AI doskadagi barcha chizmalar, stikerlar va tarmoq tugunlarini ko'rib chiqib, ularning xatolarini tekshiradi va professional konspekt tuzadi.</p>
         <div class="ai-analyze-grid-buttons">
@@ -632,11 +733,17 @@
           <button id="btnAiExplain" class="btn-ai-secondary">
             <span>💡 Doskani Tushuntirish</span>
           </button>
+          <button id="btnAiQuizAnalysis" class="btn-ai-secondary">
+            <span>❓ Test Savollar</span>
+          </button>
+          <button id="btnAiColorPalette" class="btn-ai-secondary">
+            <span>🎨 Rang Tavsiyasi</span>
+          </button>
           <button id="btnAiBeautify" class="btn-ai-secondary action-green">
-            <span>✨ Chizmalarni Tekislash</span>
+            <span>✨ Tekislash</span>
           </button>
           <button id="btnAiValidate" class="btn-ai-secondary action-amber">
-            <span>⚠️ Xatolarni Tekshirish</span>
+            <span>⚠️ Xato Tekshir</span>
           </button>
         </div>
       </div>
@@ -648,8 +755,45 @@
       </div>
     </div>
 
-    <!-- TAB 4: Doskadan Avtomatik Test Yaratish -->
-    <div class="ai-pane" id="paneAiQuiz">
+    <!-- TAB 4: AI Element Tahrirlash (YANGI) -->
+    <div class="ai-pane" id="paneAiEdit" role="tabpanel" aria-labelledby="tab-aiEdit">
+      <div class="ai-input-card">
+        <h4 style="margin:0 0 8px;font-size:13px;color:#F8FAFC;">✦ Tanlangan Elementni AI Bilan Tahrirlash</h4>
+        <p style="font-size:11px;color:#94A3B8;margin:0 0 12px;line-height:1.5;">
+          Doskadan elementni tanlang (bosish), keyin o'zgartirish buyrug'ini yozing.
+        </p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+          <button class="ai-edit-chip" data-cmd="rang #38BDF8" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38BDF8;cursor:pointer;">🔵 Ko'k rang</button>
+          <button class="ai-edit-chip" data-cmd="rang #10B981" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#10B981;cursor:pointer;">🟢 Yashil rang</button>
+          <button class="ai-edit-chip" data-cmd="rang #F43F5E" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(244,63,94,0.15);border:1px solid rgba(244,63,94,0.3);color:#F43F5E;cursor:pointer;">🔴 Qizil rang</button>
+          <button class="ai-edit-chip" data-cmd="rang #F59E0B" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#F59E0B;cursor:pointer;">🟡 Sariq rang</button>
+          <button class="ai-edit-chip" data-cmd="rang #A855F7" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:#A855F7;cursor:pointer;">🟣 Binafsha</button>
+          <button class="ai-edit-chip" data-cmd="kattalashtir" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#F8FAFC;cursor:pointer;">🔍 Kattalashtir</button>
+          <button class="ai-edit-chip" data-cmd="kichiklashtir" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#F8FAFC;cursor:pointer;">🔎 Kichiklashtir</button>
+          <button class="ai-edit-chip" data-cmd="o'chir" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.3);color:#F43F5E;cursor:pointer;">🗑️ O'chir</button>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <input type="text" id="aiEditInput" placeholder="Misol: rang #FF6600  yoki  matn «Yangi nom»" style="flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:8px 10px;color:#F8FAFC;font-size:12px;outline:none;">
+          <button id="btnAiEdit" style="background:linear-gradient(135deg,#A855F7,#38BDF8);border:none;border-radius:6px;padding:8px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">✦ Bajar</button>
+        </div>
+        <div id="aiEditStatus" class="hidden" style="margin-top:8px;font-size:11px;padding:6px 8px;background:rgba(255,255,255,0.05);border-radius:4px;"></div>
+
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
+          <p style="font-size:11px;color:#94A3B8;margin:0 0 8px;">📋 Qo'llanma:</p>
+          <p style="font-size:10.5px;color:#64748B;line-height:1.7;margin:0;">
+            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">rang #FF0000</code> — Rang o'zgartirish<br>
+            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">matn «Yangi nom»</code> — Matnni o'zgartirish<br>
+            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">kattalashtir</code> — 130% ga kattalashtirish<br>
+            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">kichiklashtir</code> — 75% ga kichiklashtirish<br>
+            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">o'chir</code> — Elementni o'chirish<br>
+            <br>💡 Ctrl+Shift+E — bu panelni tezkor ochish
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Doskadan Avtomatik Test Yaratish -->
+    <div class="ai-pane" id="paneAiQuiz" role="tabpanel" aria-labelledby="tab-aiQuiz">
       <div class="ai-input-card">
         <h4>🧠 Intellektual Test Generatori</h4>
         <p style="font-size: 12px; color: #94A3B8; margin: 6px 0 14px 0; line-height: 1.5;">
@@ -664,8 +808,8 @@
       <div id="aiQuizStatus" class="ai-status-box hidden" style="margin-top: 14px;"></div>
     </div>
 
-    <!-- TAB 5: Sozlamalar va Gemini API -->
-    <div class="ai-pane" id="paneAiSettings">
+    <!-- TAB 6: Sozlamalar va Gemini API -->
+    <div class="ai-pane" id="paneAiSettings" role="tabpanel" aria-labelledby="tab-aiSettings">
       <div class="ai-setting-block">
         <label class="setting-label">AI Ishlash Rejimi:</label>
         <div class="setting-radio-group">
@@ -708,12 +852,12 @@
   <!-- ==========================================================================
        6. SHABLONLAR MODALI (TEMPLATES MODAL)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="templatesModal">
+  <div class="modal-backdrop hidden" id="templatesModal" role="dialog" aria-modal="true" aria-labelledby="templatesModalTitle">
     <div class="modal-card wide">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">KUTUBXONA</span>
-          <h2>Tayyor O'quv va Tarmoq Shablonlari</h2>
+          <h2 id="templatesModalTitle">Tayyor O'quv va Tarmoq Shablonlari</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseTemplates">&times;</button>
       </div>
@@ -729,12 +873,12 @@
   <!-- ==========================================================================
        7. EKSPORT MODALI (EXPORT MODAL)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="exportModal">
+  <div class="modal-backdrop hidden" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
     <div class="modal-card">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">SAQLASH</span>
-          <h2>Doskani Eksport Qilish</h2>
+          <h2 id="exportModalTitle">Doskani Eksport Qilish</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseExport">&times;</button>
       </div>
@@ -767,6 +911,15 @@
             <button class="btn-export-action" id="btnExportJson">Faylni Saqlash</button>
           </div>
 
+          <div class="export-card" id="exportPdfCard">
+            <div class="export-icon">📄</div>
+            <div class="export-info">
+              <h4>PDF Formatida Hujjat</h4>
+              <p>Chop etish va arxivlash uchun yuqori sifatli (ko'p sahifali) PDF</p>
+            </div>
+            <button class="btn-export-action" id="btnExportPdf">Yuklab Olish</button>
+          </div>
+
           <div class="export-card" id="importJsonCard">
             <div class="export-icon">📂</div>
             <div class="export-info">
@@ -786,12 +939,12 @@
   <!-- ==========================================================================
        8. MATEMATIK FORMULA MODALI (FORMULA EDITOR MODAL)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="formulaModal">
+  <div class="modal-backdrop hidden" id="formulaModal" role="dialog" aria-modal="true" aria-labelledby="formulaModalTitle">
     <div class="modal-card wide">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">MATEMATIKA & FIZIKA</span>
-          <h2>Matematik Formula Muharriri</h2>
+          <h2 id="formulaModalTitle">Matematik Formula Muharriri</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseFormula">&times;</button>
       </div>
@@ -871,12 +1024,12 @@
   <!-- ==========================================================================
        9. 2D FUNKSIYA GRAFIGI VA MATEMATIK YECHUVCHI MODALI (GRAPH & SOLVER)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="graphModal">
+  <div class="modal-backdrop hidden" id="graphModal" role="dialog" aria-modal="true" aria-labelledby="graphModalTitle">
     <div class="modal-card wide">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">MATEMATIKA & GRAFIK</span>
-          <h2>2D Funksiya Grafigi va Tenglama Yechuvchi</h2>
+          <h2 id="graphModalTitle">2D Funksiya Grafigi va Tenglama Yechuvchi</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseGraph">&times;</button>
       </div>
@@ -940,12 +1093,12 @@
   <!-- ==========================================================================
        10. KOD <-> BLOK-SXEMA TRANSFORMASIYASI (CODE BRIDGE MODAL)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="codeBridgeModal">
+  <div class="modal-backdrop hidden" id="codeBridgeModal" role="dialog" aria-modal="true" aria-labelledby="codeBridgeModalTitle">
     <div class="modal-card wide">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">DASTURLASH & ALGORITM</span>
-          <h2>Kod <-> Blok-sxema Transformatori</h2>
+          <h2 id="codeBridgeModalTitle">Kod &lt;-&gt; Blok-sxema Transformatori</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseCodeBridge">&times;</button>
       </div>
@@ -987,12 +1140,12 @@ else:
   <!-- ==========================================================================
        11. INTERAKTIV TEST KARTOCHKASI YARATISH (QUIZ CREATOR MODAL)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="quizModal">
+  <div class="modal-backdrop hidden" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizModalTitle">
     <div class="modal-card wide">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">INTERAKTIV TEST</span>
-          <h2>Interaktiv Bilim Test Kartochkasi</h2>
+          <h2 id="quizModalTitle">Interaktiv Bilim Test Kartochkasi</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseQuiz">&times;</button>
       </div>
@@ -1089,12 +1242,12 @@ else:
   <!-- ==========================================================================
        14. OCR TASDIQLASH VA JONLI PREVIEW MODALI (OCR CONFIRM MODAL)
        ========================================================================== -->
-  <div class="modal-backdrop hidden" id="ocrConfirmModal">
+  <div class="modal-backdrop hidden" id="ocrConfirmModal" role="dialog" aria-modal="true" aria-labelledby="ocrConfirmModalTitle">
     <div class="modal-card wide">
       <div class="modal-header">
         <div class="modal-title-group">
           <span class="modal-pill">QO'LYOZMA OCR</span>
-          <h2>Qo'lyozmani Standartlashtirish</h2>
+          <h2 id="ocrConfirmModalTitle">Qo'lyozmani Standartlashtirish</h2>
         </div>
         <button class="modal-close-btn" id="btnCloseOcrConfirm">&times;</button>
       </div>
@@ -1133,6 +1286,158 @@ else:
   </div>
 
   <!-- ==========================================================================
+       10b. IP & SUBNET / VLSM KALKULYATOR MODALI
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="subnetModal" role="dialog" aria-modal="true" aria-labelledby="subnetModalTitle">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">TARMOQ & IP</span>
+          <h2 id="subnetModalTitle">IPv4 Subnet &amp; VLSM Kalkulyatori</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseSubnet">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">IPv4 manzilini va CIDR prefiksini kiriting. Tizim bir zumda barcha tarmoq parametrlarini hisoblab beradi va doskaga chizadi:</p>
+
+        <div class="subnet-input-row">
+          <input type="text" id="subnetIpInput" class="subnet-ip-input" value="192.168.10.0" placeholder="192.168.10.0">
+          <div class="subnet-cidr-group">
+            <span class="subnet-cidr-val" id="subnetCidrLabel">/26</span>
+            <input type="range" id="subnetCidrSlider" class="subnet-cidr-slider" min="1" max="32" value="26">
+          </div>
+        </div>
+
+        <div class="subnet-chips">
+          <button class="subnet-chip" data-cidr="24">/24 (254 host)</button>
+          <button class="subnet-chip active" data-cidr="26">/26 (62 host)</button>
+          <button class="subnet-chip" data-cidr="27">/27 (30 host)</button>
+          <button class="subnet-chip" data-cidr="28">/28 (14 host)</button>
+          <button class="subnet-chip" data-cidr="29">/29 (6 host)</button>
+          <button class="subnet-chip" data-cidr="30">/30 (2 host - P2P)</button>
+        </div>
+
+        <div class="subnet-metrics-grid" id="subnetMetricsGrid">
+          <div class="subnet-card highlight">
+            <div class="subnet-card-title">Tarmoq ID (Network)</div>
+            <div class="subnet-card-val" id="resSubnetNet">192.168.10.0 /26</div>
+          </div>
+          <div class="subnet-card">
+            <div class="subnet-card-title">Subnet Mask</div>
+            <div class="subnet-card-val" id="resSubnetMask">255.255.255.192</div>
+          </div>
+          <div class="subnet-card amber">
+            <div class="subnet-card-title">Wildcard Mask</div>
+            <div class="subnet-card-val" id="resSubnetWildcard">0.0.0.63</div>
+          </div>
+          <div class="subnet-card cyan">
+            <div class="subnet-card-title">Foydalanuvchi Oralig'i</div>
+            <div class="subnet-card-val" id="resSubnetRange">192.168.10.1 – 192.168.10.62</div>
+          </div>
+          <div class="subnet-card">
+            <div class="subnet-card-title">Broadcast IP</div>
+            <div class="subnet-card-val" id="resSubnetBroadcast">192.168.10.63</div>
+          </div>
+          <div class="subnet-card purple">
+            <div class="subnet-card-title">Foydalanuvchi Xostlar</div>
+            <div class="subnet-card-val" id="resSubnetHosts">62 ta xost (64 jami)</div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <span style="font-size: 11.5px; color: #94A3B8;" id="resSubnetScope">Class C • Xususiy (RFC 1918)</span>
+          <div style="display: flex; gap: 8px;">
+            <button id="btnInsertSubnetTopology" class="btn-ai-secondary action-green" style="padding: 8px 14px; font-size: 12px;">
+              <span>🌐 Topologiya Yaratish</span>
+            </button>
+            <button id="btnInsertSubnetTable" class="btn-ai-primary" style="padding: 8px 16px; font-size: 12px;">
+              <span>📋 Jadvalni Joylash</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       10c. TEXNIK TAQQOSLASH JADVALLARI MODALI
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="comparisonModal" role="dialog" aria-modal="true" aria-labelledby="comparisonModalTitle">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">SOLISHTIRMA</span>
+          <h2 id="comparisonModalTitle">Texnik &amp; Ilmiy Taqqoslash Jadvallari</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseComparison">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Kerakli taqqoslash mavzusini tanlang va bir zumda doskaga professional, to'liq jadvalni joylashtiring:</p>
+
+        <div class="comparison-presets-grid" id="comparisonPresetsGrid">
+          <button class="comparison-preset-btn active" data-preset="tcp_vs_udp">
+            <span class="icon">🌐</span>
+            <span>TCP vs UDP</span>
+          </button>
+          <button class="comparison-preset-btn" data-preset="osi_vs_tcpip">
+            <span class="icon">🏛️</span>
+            <span>OSI vs TCP/IP</span>
+          </button>
+          <button class="comparison-preset-btn" data-preset="ipv4_vs_ipv6">
+            <span class="icon">🔢</span>
+            <span>IPv4 vs IPv6</span>
+          </button>
+          <button class="comparison-preset-btn" data-preset="sql_vs_nosql">
+            <span class="icon">🗄️</span>
+            <span>SQL vs NoSQL</span>
+          </button>
+          <button class="comparison-preset-btn" data-preset="crypto_sym_asym">
+            <span class="icon">🔐</span>
+            <span>Simmetrik vs Asimmetrik</span>
+          </button>
+          <button class="comparison-preset-btn" data-preset="http1_vs_http2_vs_http3">
+            <span class="icon">🚀</span>
+            <span>HTTP/1 vs HTTP/2 vs HTTP/3</span>
+          </button>
+          <button class="comparison-preset-btn" data-preset="rest_vs_graphql_vs_grpc">
+            <span class="icon">⚡</span>
+            <span>REST vs GraphQL vs gRPC</span>
+          </button>
+        </div>
+
+        <div class="comparison-preview-wrap" id="comparisonPreviewWrap">
+          <!-- Dinamik prevyu jadvali -->
+        </div>
+
+        <div style="display:flex; justify-content: flex-end; gap: 8px; margin-top: 14px;">
+          <button id="btnInsertComparisonTable" class="btn-ai-primary" style="padding: 10px 20px;">
+            <span>📋 Doskaga Jadvalni Joylash</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       10d. SUZUVCHI SELECTION AI TEZKOR BUYRUQLAR BAR (SELECTION FLOATING BAR)
+       ========================================================================== -->
+  <div class="selection-floating-bar" id="selectionFloatingBar">
+    <button class="selection-ai-btn primary" id="btnSelAiExplain" title="Tanlangan elementni AI orqali tushuntirish va stiker yopishtirish">
+      <span>💡 AI Tushuntir</span>
+    </button>
+    <button class="selection-ai-btn" id="btnSelAiQuiz" title="Tanlangan ob'ekt bo'yicha interaktiv bilim test kartochkasini yaratish">
+      <span>🧠 Test Yarat</span>
+    </button>
+    <div class="selection-bar-divider"></div>
+    <button class="selection-ai-btn" id="btnSelAiColor" title="Elementga estetik mos rang palitrasini o'rnatish">
+      <span>🎨 Smart Rang</span>
+    </button>
+    <button class="selection-ai-btn" id="btnSelAiAlign" title="Elementlarni kataklarga tekislash">
+      <span>📏 Tekislash</span>
+    </button>
+  </div>
+
+  <!-- ==========================================================================
        12. MINIMAP (PASTKI O'NG BURCHAKDA DOSKA HARITASI)
        ========================================================================== -->
   <div class="minimap-container" id="minimapContainer" title="Doska maydoni mini-xaritasi">
@@ -1140,16 +1445,122 @@ else:
     <div class="minimap-viewport" id="minimapViewport"></div>
   </div>
 
+  <!-- ==========================================================================
+       15. KO'P SAHIFA (MULTI-PAGE) BOSHQARUV TIZIMI
+       ========================================================================== -->
+  <div class="board-pages-bar" id="boardPagesBar">
+    <div class="pages-tabs-container" id="pagesTabsContainer">
+      <!-- Sahifalar dinamik tarzda app.js orqali render bo'ladi -->
+    </div>
+    <button class="btn-add-page" id="btnAddPage" title="Yangi doska sahifasi qo'shish">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      <span>Sahifa</span>
+    </button>
+  </div>
+
+  <!-- ==========================================================================
+       16. OB'EKTLARNI QIDIRISH (CTRL+F) SUZUVCHI PANELI
+       ========================================================================== -->
+  <div class="board-search-bar hidden" id="boardSearchBar">
+    <div class="search-bar-inner">
+      <svg class="search-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="boardSearchInput" placeholder="Doskadan qidirish..." autocomplete="off" spellcheck="false">
+      <span class="search-count" id="boardSearchCount">0/0</span>
+      <button class="search-nav-btn" id="btnSearchPrev" title="Oldingi natija (Shift+Enter)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+      </button>
+      <button class="search-nav-btn" id="btnSearchNext" title="Keyingi natija (Enter)">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <button class="search-close-btn" id="btnCloseSearch" title="Yopish (Esc)">&times;</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       17. O'NG KLIK KONTEKST MENYUSI (RIGHT-CLICK CONTEXT MENU)
+       ========================================================================== -->
+  <div class="board-context-menu hidden" id="boardContextMenu">
+    <div class="context-item" id="ctxCopy">
+      <span class="ctx-icon">📋</span>
+      <span class="ctx-label">Nusxalash</span>
+      <span class="ctx-shortcut">Ctrl+C</span>
+    </div>
+    <div class="context-item" id="ctxPaste">
+      <span class="ctx-icon">📄</span>
+      <span class="ctx-label">Qo'yish</span>
+      <span class="ctx-shortcut">Ctrl+V</span>
+    </div>
+    <div class="context-item" id="ctxDuplicate">
+      <span class="ctx-icon">📑</span>
+      <span class="ctx-label">Dublikat</span>
+      <span class="ctx-shortcut">Ctrl+D</span>
+    </div>
+    <div class="ctx-divider"></div>
+    <div class="context-item" id="ctxBringToFront">
+      <span class="ctx-icon">⬆️</span>
+      <span class="ctx-label">Oldinga olib chiqish</span>
+      <span class="ctx-shortcut">]</span>
+    </div>
+    <div class="context-item" id="ctxSendToBack">
+      <span class="ctx-icon">⬇️</span>
+      <span class="ctx-label">Orqaga yuborish</span>
+      <span class="ctx-shortcut">[</span>
+    </div>
+    <div class="ctx-divider"></div>
+    <div class="context-item" id="ctxLock">
+      <span class="ctx-icon" id="ctxLockIcon">🔒</span>
+      <span class="ctx-label" id="ctxLockLabel">Qulflash</span>
+      <span class="ctx-shortcut">Ctrl+L</span>
+    </div>
+    <div class="context-item danger" id="ctxDelete">
+      <span class="ctx-icon">🗑️</span>
+      <span class="ctx-label">O'chirish</span>
+      <span class="ctx-shortcut">Del</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       18. SUZUVCHI SENSORLI KLAVIATURA TUGMASI (FLOATING KEYBOARD FAB)
+       ========================================================================== -->
+  <button class="floating-keyboard-fab" id="btnFloatingKeyboard" title="Sensorli Klaviaturani ochish/yopish">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="4" width="20" height="16" rx="3"/>
+      <line x1="6" y1="8" x2="6.01" y2="8"/>
+      <line x1="10" y1="8" x2="10.01" y2="8"/>
+      <line x1="14" y1="8" x2="14.01" y2="8"/>
+      <line x1="18" y1="8" x2="18.01" y2="8"/>
+      <line x1="6" y1="12" x2="6.01" y2="12"/>
+      <line x1="10" y1="12" x2="10.01" y2="12"/>
+      <line x1="14" y1="12" x2="14.01" y2="12"/>
+      <line x1="18" y1="12" x2="18.01" y2="12"/>
+      <line x1="7" y1="16" x2="17" y2="16"/>
+    </svg>
+  </button>
+
+  <!-- ==========================================================================
+       19. SENSORLI VIRTUAL EKRAN KLAVIATURASI (VIRTUAL KEYBOARD CONTAINER)
+       ========================================================================== -->
+  <div id="virtualKeyboardContainer" class="virtual-keyboard-container hidden"></div>
+
   <!-- Toast Bildirishnomalar -->
-  <div id="toastContainer" class="toast-container"></div>
+  <div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>
 
   <!-- Scripts -->
   <script src="js/board.js"></script>
   <script src="js/tools.js"></script>
+  <script src="js/smartboard.js"></script>
   <script src="js/templates.js?v=2"></script>
   <script src="js/math-solver.js?v=3"></script>
   <script src="js/code-bridge.js"></script>
   <script src="js/handwriting-ocr.js"></script>
+  <script src="js/subnet-calculator.js"></script>
+  <script src="js/comparison-tables.js"></script>
   <script src="js/ai-engine.js?v=3"></script>
   <script src="js/voice-assistant.js?v=3"></script>
   <script src="js/app.js?v=3"></script>

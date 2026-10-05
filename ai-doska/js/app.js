@@ -4,6 +4,28 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // XSS himoyasi va xavfsiz render yordamchilari
+  function sanitizeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function safeFormatMarkdown(text) {
+    if (typeof text !== 'string') return '';
+    let safe = sanitizeHTML(text);
+    safe = safe
+      .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+      .replace(/\*(.*?)\*/g, '<i>$1</i>')
+      .replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;font-family:monospace;">$1</code>')
+      .replace(/\n/g, '<br>');
+    return safe;
+  }
+
   // 1. Asosiy modullarni ishga tushirish
   const engine = new WhiteboardEngine('whiteboardCanvas', 'minimapCanvas');
   const toolManager = new ToolManager(engine);
@@ -12,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const codeBridge = new CodeBridge(engine);
   const handwritingOCR = new HandwritingOCR(engine, aiEngine);
   const voiceAssistant = new VoiceAssistant(aiEngine, mathSolver, engine);
+  const smartboard = new SmartboardManager(engine, toolManager);
 
   // Global ob'ektlar (debug va qulaylik uchun)
   window.boardEngine = engine;
@@ -21,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.codeBridge = codeBridge;
   window.handwritingOCR = handwritingOCR;
   window.voiceAssistant = voiceAssistant;
+  window.smartboard = smartboard;
 
   // 2. Mahalliy xotiradan yuklash (yoki boshlang'ich shablon)
   const hasSaved = engine.loadFromStorage();
@@ -57,6 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnCloseMainMenu = document.getElementById('btnCloseMainMenu');
   const mainMenuOverlay = document.getElementById('mainMenuOverlay');
   const mainMenuDrawer = document.getElementById('mainMenuDrawer');
+  const aiDrawer = document.getElementById('aiDrawer');
+  const aiPromptInput = document.getElementById('aiPromptInput');
+  const templatesModal = document.getElementById('templatesModal');
+  const exportModal = document.getElementById('exportModal');
 
   function openMainMenu() {
     mainMenuDrawer?.classList.remove('hidden');
@@ -93,26 +121,60 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnZoomOut) btnZoomOut.addEventListener('click', () => engine.setZoom(engine.zoom * 0.85));
   if (btnZoomReset) btnZoomReset.addEventListener('click', () => engine.setZoom(1.0));
 
+  // Smartboard va Fullscreen boshqaruvi
+  const btnSmartboardToggle = document.getElementById('btnSmartboardToggle');
+  const btnBoardFullscreen = document.getElementById('btnBoardFullscreen');
+
+  const updateSmartboardBtnUI = () => {
+    if (!btnSmartboardToggle) return;
+    const mode = smartboard.detector.mode;
+    const isActive = smartboard.detector.isSmartboard;
+    btnSmartboardToggle.classList.toggle('active', isActive);
+    btnSmartboardToggle.title = `Interaktiv Doska Rejimi: ${mode === 'auto' ? 'Avtomatik (' + (isActive ? 'Faol' : "O'chiq") + ')' : (mode === 'on' ? 'Doimiy Yoqilgan' : "O'chirilgan")}`;
+  };
+
+  smartboard.detector.onChange(() => {
+    updateSmartboardBtnUI();
+  });
+  updateSmartboardBtnUI();
+
+  btnSmartboardToggle?.addEventListener('click', () => {
+    const current = smartboard.detector.mode;
+    const nextMode = current === 'auto' ? (smartboard.detector.isSmartboard ? 'off' : 'on') : (current === 'on' ? 'off' : 'auto');
+    smartboard.detector.setMode(nextMode);
+    updateSmartboardBtnUI();
+    toast(`📺 Interaktiv Doska Rejimi: ${nextMode === 'on' ? 'Doimiy Yoqildi' : (nextMode === 'off' ? "O'chirildi" : 'Avtomatik aniqlash')}`);
+  });
+
+  btnBoardFullscreen?.addEventListener('click', () => {
+    smartboard.toggleFullscreen();
+  });
+
+  // Sensorli virtual klaviaturani ochish tugmalari
+  document.getElementById('btnToggleVirtualKeyboard')?.addEventListener('click', () => smartboard.keyboard.toggle());
+  document.getElementById('btnFloatingKeyboard')?.addEventListener('click', () => smartboard.keyboard.toggle());
+
+
+
   // Menyu ichidagi AI Assistent tugmasi
   document.getElementById('menuBtnOpenAi')?.addEventListener('click', () => {
     closeMainMenu();
-    const aiDrawer = document.getElementById('aiDrawer');
     if (aiDrawer) {
       aiDrawer.classList.add('open');
-      document.getElementById('aiPromptInput')?.focus();
+      aiPromptInput?.focus();
     }
   });
 
   // Menyu ichidagi Shablonlar tugmasi
   document.getElementById('menuBtnTemplates')?.addEventListener('click', () => {
     closeMainMenu();
-    document.getElementById('templatesModal')?.classList.remove('hidden');
+    templatesModal?.classList.remove('hidden');
   });
 
   // Menyu ichidagi Eksport tugmasi
   document.getElementById('menuBtnExport')?.addEventListener('click', () => {
     closeMainMenu();
-    document.getElementById('exportModal')?.classList.remove('hidden');
+    exportModal?.classList.remove('hidden');
   });
 
   // Menyu ichidagi Doskani Tozalash tugmasi
@@ -149,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      SHABLONLAR MODALI
      ========================================================================== */
-  const templatesModal = document.getElementById('templatesModal');
   const btnOpenTemplates = document.getElementById('btnOpenTemplates');
   const btnCloseTemplates = document.getElementById('btnCloseTemplates');
   const templatesGrid = document.getElementById('templatesGrid');
@@ -189,7 +250,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      EKSPORT MODALI
      ========================================================================== */
-  const exportModal = document.getElementById('exportModal');
   const btnOpenExport = document.getElementById('btnOpenExport');
   const btnCloseExport = document.getElementById('btnCloseExport');
 
@@ -218,6 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
     exportModal.classList.add('hidden');
     toast("Doska loyihasi JSON faylga saqlandi");
   });
+
+  document.getElementById('btnExportPdf')?.addEventListener('click', () => {
+    engine.exportPDF(true);
+    exportModal?.classList.add('hidden');
+    toast("📄 PDF formatidagi hujjat yuklab olindi");
+  });
+
 
   const importInput = document.getElementById('importJsonInput');
   if (importInput) {
@@ -599,6 +666,287 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
+     IP & SUBNET / VLSM KALKULYATOR MODALI
+     ========================================================================== */
+  const subnetModal = document.getElementById('subnetModal');
+  const btnSubnetModalTool = document.getElementById('btnSubnetModalTool');
+  const btnCloseSubnet = document.getElementById('btnCloseSubnet');
+  const subnetIpInput = document.getElementById('subnetIpInput');
+  const subnetCidrSlider = document.getElementById('subnetCidrSlider');
+  const subnetCidrLabel = document.getElementById('subnetCidrLabel');
+  const resSubnetNet = document.getElementById('resSubnetNet');
+  const resSubnetMask = document.getElementById('resSubnetMask');
+  const resSubnetWildcard = document.getElementById('resSubnetWildcard');
+  const resSubnetRange = document.getElementById('resSubnetRange');
+  const resSubnetBroadcast = document.getElementById('resSubnetBroadcast');
+  const resSubnetHosts = document.getElementById('resSubnetHosts');
+  const resSubnetScope = document.getElementById('resSubnetScope');
+  const btnInsertSubnetTable = document.getElementById('btnInsertSubnetTable');
+  const btnInsertSubnetTopology = document.getElementById('btnInsertSubnetTopology');
+
+  let currentSubnetCalc = null;
+
+  function updateSubnetMetrics() {
+    if (!subnetIpInput || !subnetCidrSlider || typeof window.SubnetCalculator === 'undefined') return;
+    const ip = subnetIpInput.value.trim() || '192.168.10.0';
+    const cidr = parseInt(subnetCidrSlider.value, 10);
+    if (subnetCidrLabel) subnetCidrLabel.textContent = `/${cidr}`;
+
+    const res = window.SubnetCalculator.calculate(ip, cidr);
+    currentSubnetCalc = res;
+
+    if (res && res.success) {
+      if (resSubnetNet) resSubnetNet.textContent = `${res.networkIp} /${res.cidr}`;
+      if (resSubnetMask) resSubnetMask.textContent = res.maskIp;
+      if (resSubnetWildcard) resSubnetWildcard.textContent = res.wildcardIp;
+      if (resSubnetRange) resSubnetRange.textContent = `${res.firstUsableIp} – ${res.lastUsableIp}`;
+      if (resSubnetBroadcast) resSubnetBroadcast.textContent = res.broadcastIp;
+      if (resSubnetHosts) resSubnetHosts.textContent = `${res.usableHosts.toLocaleString()} ta xost (${res.totalHosts.toLocaleString()} jami)`;
+      if (resSubnetScope) resSubnetScope.textContent = `Class ${res.ipClass} • ${res.scope}`;
+    }
+  }
+
+  if (btnSubnetModalTool && subnetModal) {
+    btnSubnetModalTool.addEventListener('click', () => {
+      subnetModal.classList.remove('hidden');
+      updateSubnetMetrics();
+      subnetIpInput?.focus();
+    });
+  }
+  if (btnCloseSubnet && subnetModal) {
+    btnCloseSubnet.addEventListener('click', () => subnetModal.classList.add('hidden'));
+  }
+  if (subnetIpInput) subnetIpInput.addEventListener('input', updateSubnetMetrics);
+  if (subnetCidrSlider) subnetCidrSlider.addEventListener('input', updateSubnetMetrics);
+
+  document.querySelectorAll('#subnetModal .subnet-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#subnetModal .subnet-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const cidr = chip.getAttribute('data-cidr');
+      if (subnetCidrSlider) subnetCidrSlider.value = cidr;
+      updateSubnetMetrics();
+    });
+  });
+
+  if (btnInsertSubnetTable) {
+    btnInsertSubnetTable.addEventListener('click', () => {
+      updateSubnetMetrics();
+      if (!currentSubnetCalc || !currentSubnetCalc.success) {
+        toast("Iltimos, to'g'ri IPv4 manzilini kiriting!");
+        return;
+      }
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      const objects = window.SubnetCalculator.generateBoardTable(currentSubnetCalc, center.x - 270, center.y - 165);
+      engine.saveState();
+      objects.forEach(obj => engine.addObject(obj, false));
+      engine.render();
+      subnetModal.classList.add('hidden');
+      toast(`🔢 ${currentSubnetCalc.inputIp}/${currentSubnetCalc.cidr} hisob jadvali doskaga joylashtirildi!`);
+    });
+  }
+
+  if (btnInsertSubnetTopology) {
+    btnInsertSubnetTopology.addEventListener('click', () => {
+      updateSubnetMetrics();
+      if (!currentSubnetCalc || !currentSubnetCalc.success) {
+        toast("Iltimos, to'g'ri IPv4 manzilini kiriting!");
+        return;
+      }
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      const objects = window.SubnetCalculator.generateNetworkTopology(currentSubnetCalc, center.x, center.y);
+      engine.saveState();
+      objects.forEach(obj => engine.addObject(obj, false));
+      engine.render();
+      subnetModal.classList.add('hidden');
+      toast(`🌐 ${currentSubnetCalc.networkIp}/${currentSubnetCalc.cidr} topologiyasi doskaga chizildi!`);
+    });
+  }
+
+  /* ==========================================================================
+     TEXNIK TAQQOSLASH JADVALLARI MODALI
+     ========================================================================== */
+  const comparisonModal = document.getElementById('comparisonModal');
+  const btnComparisonModalTool = document.getElementById('btnComparisonModalTool');
+  const btnCloseComparison = document.getElementById('btnCloseComparison');
+  const comparisonPreviewWrap = document.getElementById('comparisonPreviewWrap');
+  const btnInsertComparisonTable = document.getElementById('btnInsertComparisonTable');
+
+  let currentComparisonPreset = 'tcp_vs_udp';
+
+  function renderComparisonPreview(presetKey) {
+    if (!comparisonPreviewWrap || typeof window.ComparisonTablesEngine === 'undefined') return;
+    const presets = window.ComparisonTablesEngine.getPresets();
+    const data = presets[presetKey] || presets.tcp_vs_udp;
+    currentComparisonPreset = presetKey;
+
+    let html = `<table class="comparison-preview-table"><thead><tr>`;
+    data.cols.forEach(c => { html += `<th>${c}</th>`; });
+    html += `</tr></thead><tbody>`;
+    data.rows.forEach(r => {
+      html += `<tr>`;
+      r.forEach(c => { html += `<td>${c.replace(/\n/g, '<br>')}</td>`; });
+      html += `</tr>`;
+    });
+    html += `</tbody></table>`;
+    if (data.note) {
+      html += `<div style="margin-top: 10px; font-size: 11px; color: #38BDF8;">${data.note}</div>`;
+    }
+    comparisonPreviewWrap.innerHTML = html;
+  }
+
+  if (btnComparisonModalTool && comparisonModal) {
+    btnComparisonModalTool.addEventListener('click', () => {
+      comparisonModal.classList.remove('hidden');
+      renderComparisonPreview(currentComparisonPreset);
+    });
+  }
+  if (btnCloseComparison && comparisonModal) {
+    btnCloseComparison.addEventListener('click', () => comparisonModal.classList.add('hidden'));
+  }
+
+  document.querySelectorAll('#comparisonModal .comparison-preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#comparisonModal .comparison-preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const preset = btn.getAttribute('data-preset');
+      renderComparisonPreview(preset);
+    });
+  });
+
+  if (btnInsertComparisonTable) {
+    btnInsertComparisonTable.addEventListener('click', () => {
+      if (typeof window.ComparisonTablesEngine === 'undefined') return;
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      const objects = window.ComparisonTablesEngine.generateBoardTable(currentComparisonPreset, center.x - 360, center.y - 180);
+      engine.saveState();
+      objects.forEach(obj => engine.addObject(obj, false));
+      engine.render();
+      comparisonModal.classList.add('hidden');
+      toast("📊 Taqqoslash jadvali doskaga muvaffaqiyatli joylashtirildi!");
+    });
+  }
+
+  /* ==========================================================================
+     SUZUVCHI SELECTION AI TEZKOR BUYRUQLAR BAR
+     ========================================================================== */
+  const selectionFloatingBar = document.getElementById('selectionFloatingBar');
+  const btnSelAiExplain = document.getElementById('btnSelAiExplain');
+  const btnSelAiQuiz = document.getElementById('btnSelAiQuiz');
+  const btnSelAiColor = document.getElementById('btnSelAiColor');
+  const btnSelAiAlign = document.getElementById('btnSelAiAlign');
+
+  engine.onSelectionChange((selected) => {
+    if (selectionFloatingBar) {
+      selectionFloatingBar.classList.toggle('active', Boolean(selected && selected.length > 0));
+    }
+  });
+
+  btnSelAiExplain?.addEventListener('click', async () => {
+    const obj = engine.selectedObject;
+    if (!obj) { toast("Avval doskadan element tanlang!"); return; }
+    toast("💡 AI elementni tushuntirmoqda...");
+    const desc = obj.text || obj.label || obj.latex || obj.type;
+    const center = engine.getObjectBounds ? engine.getObjectBounds(obj) : { x: obj.x, y: obj.y, width: 200, height: 100 };
+    const stickyX = (center?.x || obj.x || 0) + (center?.width || 200) + 24;
+    const stickyY = (center?.y || obj.y || 0);
+
+    const prompt = `Element: ${desc}. Ushbu mavzuni qisqa va aniq konspekt qilib tushuntir.`;
+    const resp = await aiEngine.chatWithAssistant(prompt);
+
+    const stickyObj = {
+      type: 'sticky',
+      x: Math.round(stickyX),
+      y: Math.round(stickyY),
+      width: 260,
+      height: 150,
+      bgColor: '#FEF08A',
+      textColor: '#1E293B',
+      text: `💡 AI IZOHI:\n\n${(resp.reply || '').substring(0, 220)}...`
+    };
+
+    engine.saveState();
+    engine.addObject(stickyObj);
+    engine.render();
+    toast("✅ AI tushuntirish stikeri joylashtirildi!");
+  });
+
+  btnSelAiQuiz?.addEventListener('click', async () => {
+    const res = await aiEngine.generateQuizFromBoard();
+    if (res && res.success) {
+      toast(`🧠 "${res.topic}" bo'yicha interaktiv test kartochkasi yaratildi!`);
+    }
+  });
+
+  const PALETTE_CYCLE = [
+    { main: '#00FF87', fill: 'rgba(0,255,135,0.18)' },
+    { main: '#38BDF8', fill: 'rgba(56,189,248,0.18)' },
+    { main: '#F59E0B', fill: 'rgba(245,158,11,0.18)' },
+    { main: '#A855F7', fill: 'rgba(168,85,247,0.18)' }
+  ];
+  let paletteIdx = 0;
+
+  btnSelAiColor?.addEventListener('click', () => {
+    if (engine.selectedObjects.length === 0) return;
+    engine.saveState();
+    paletteIdx = (paletteIdx + 1) % PALETTE_CYCLE.length;
+    const current = PALETTE_CYCLE[paletteIdx];
+    engine.selectedObjects.forEach(obj => {
+      obj.color = current.main;
+      if (obj.fillColor) obj.fillColor = current.fill;
+    });
+    engine.render();
+    toast(`🎨 Element rangi o'zgartirildi: ${current.main}`);
+  });
+
+  btnSelAiAlign?.addEventListener('click', () => {
+    const count = aiEngine.beautifyAndAlign();
+    toast(`📏 ${count} ta element kataklarga tekislandi!`);
+  });
+
+  /* ==========================================================================
+     TARMOQ QURILMALARI POP-UP TUGMALARI (NET NODE MENU)
+     ========================================================================== */
+  document.querySelectorAll('#netNodeMenu .popover-item[data-node]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const nodeType = btn.getAttribute('data-node');
+      if (!nodeType) return;
+
+      toolManager.currentNodeType = nodeType;
+      toolManager.setTool('net_node');
+
+      const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
+      const labelMap = {
+        router: 'Router', switch: 'Switch', server: 'Server',
+        cloud: 'Internet', pc: 'Kompyuter', firewall: 'Firewall'
+      };
+      const ipMap = {
+        router: '192.168.1.1', switch: '192.168.1.2', server: '10.0.0.1',
+        cloud: '0.0.0.0', pc: '192.168.1.10', firewall: '10.0.0.254'
+      };
+
+      engine.saveState();
+      const newNode = {
+        id: 'obj_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+        type: 'net_node',
+        x: Math.round(center.x),
+        y: Math.round(center.y),
+        nodeType: nodeType,
+        label: labelMap[nodeType] || nodeType,
+        ip: ipMap[nodeType] || ''
+      };
+      engine.addObject(newNode);
+      engine.selectObject(newNode);
+
+      toast(`🌐 ${labelMap[nodeType] || nodeType} doskaga joylashtirildi`);
+
+      document.getElementById('moreToolsAnchor')?.classList.remove('open');
+      btn.parentElement?.classList.remove('open');
+    });
+  });
+
+  /* ==========================================================================
      QO'LYOZMA OCR VA FORMULALARNI STANDARTLASHTIRISH
      ========================================================================== */
   const ocrFloatingToolbar = document.getElementById('ocrFloatingToolbar');
@@ -753,7 +1101,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      AI YON PANELI (AI DRAWER)
      ========================================================================== */
-  const aiDrawer = document.getElementById('aiDrawer');
   const btnToggleAi = document.getElementById('btnToggleAi');
   const btnCloseAi = document.getElementById('btnCloseAi');
 
@@ -783,7 +1130,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // AI Generatsiya qilish tugmasi
   const btnAiRun = document.getElementById('btnAiRunGenerate');
-  const aiPromptInput = document.getElementById('aiPromptInput');
   const aiGenType = document.getElementById('aiGenType');
   const aiGenStatus = document.getElementById('aiGenStatus');
 
@@ -813,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         toast(`⚠️ Xatolik: ${err.message}`);
         if (aiGenStatus) {
-          aiGenStatus.innerHTML = `❌ <b>Xatolik:</b> ${err.message}`;
+          aiGenStatus.innerHTML = `❌ <b>Xatolik:</b> ${sanitizeHTML(err.message)}`;
         }
       } finally {
         btnAiRun.disabled = false;
@@ -822,12 +1168,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Tezkor Preset chiplar
+  // Tezkor Preset chiplar — preset ID → aniq prompt
+  const PRESET_PROMPTS = {
+    microservices: 'Microservices API Gateway arxitektura',
+    docker_k8s: 'Docker Kubernetes K8s konteyner klaster',
+    cicd: 'CI/CD pipeline devops',
+    git_flow: 'Git branching flow commit',
+    neural_net: "Neyron tarmoq sun'iy intellekt deep learning",
+    sql_joins: 'SQL Join relyatsion ma\'lumotlar bazasi',
+    load_balancer: 'Load Balancer Nginx proxy',
+    dns: 'DNS domen ip qidirish',
+    osi: 'OSI 7 qatlam modeli',
+    client_server: 'Client server mijoz arxitektura',
+    tcp_handshake: 'TCP handshake syn',
+    flowchart: 'Algoritm flowchart blok sxema',
+    ospf_bgp: 'OSPF BGP marshrutlash protokol',
+    zero_trust: 'Zero-Trust ZTNA sifr ishonch',
+    rest_api: 'REST API dizayn HTTP metod endpoint',
+    oauth_jwt: 'OAuth JWT autentifikatsiya token',
+    cloud_arch: 'Cloud AWS Azure bulut arxitektura',
+    cache_redis: 'Cache Redis kesh arxitektura',
+    kafka: 'Kafka Message Queue rabbitmq navbat',
+    vlan: 'VLAN kommutatsiya switch trunk 802.1q',
+    dhcp: 'DHCP ip berish ip discovery',
+    tls: 'TLS SSL HTTPS shifrlash handshake',
+    erd: "ERD entity ma'lumotlar bazasi diagramma",
+    big_o: 'Big O algoritmlar murakkablik tahlil',
+    sorting: 'Sorting saralash quicksort mergesort algoritm',
+    swot: 'SWOT kuchli zaif',
+    math_formulas: 'Formula matematik fizika tenglama',
+    subnet_calc: '192.168.10.0/26 subnet hisob',
+    tcp_udp_comp: 'TCP vs UDP taqqos jadval',
+    osi_comp: 'OSI vs TCP/IP solishtir jadval',
+    pki_flow: 'PKI raqamli imzo kriptografiya',
+    webrtc_call: 'WebRTC video call p2p',
+    cicd_gitops: 'DevOps CI/CD GitOps pipeline',
+  };
+
   document.querySelectorAll('.ai-chip[data-preset]').forEach(chip => {
     chip.addEventListener('click', () => {
       const preset = chip.getAttribute('data-preset');
-      aiPromptInput.value = chip.textContent.trim();
-      btnAiRun.click();
+      const promptText = PRESET_PROMPTS[preset] || chip.textContent.trim();
+      if (aiPromptInput) aiPromptInput.value = promptText;
+      if (btnAiRun) btnAiRun.click();
     });
   });
 
@@ -842,18 +1225,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const resultText = await aiEngine.analyzeBoard(action);
-      // Formatlash: yangi qatorlarni <br>, **qalin** so'zlarni <b>
-      const htmlFormatted = resultText
-        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-        .replace(/\n/g, '<br>');
-      aiAnalysisResult.innerHTML = htmlFormatted;
+      aiAnalysisResult.innerHTML = safeFormatMarkdown(resultText);
     } catch (e) {
-      aiAnalysisResult.innerHTML = `❌ Tahlil qilishda xatolik: ${e.message}`;
+      aiAnalysisResult.innerHTML = `❌ Tahlil qilishda xatolik: ${sanitizeHTML(e.message)}`;
     }
   };
 
   if (btnAiSummarize) btnAiSummarize.addEventListener('click', () => runAnalysis('summarize'));
   if (btnAiExplain) btnAiExplain.addEventListener('click', () => runAnalysis('explain'));
+
+  // Yangi: doska bo'yicha quiz generatsiyasi tahlil ko'rinishida
+  const btnAiQuizAnalysis = document.getElementById('btnAiQuizAnalysis');
+  if (btnAiQuizAnalysis) btnAiQuizAnalysis.addEventListener('click', () => runAnalysis('quiz'));
+
+  // Yangi: AI Rang Tavsiyachi
+  const btnAiColorPalette = document.getElementById('btnAiColorPalette');
+  if (btnAiColorPalette && aiAnalysisResult) {
+    btnAiColorPalette.addEventListener('click', () => {
+      const palette = aiEngine.suggestColorPalette('tech');
+      aiAnalysisResult.innerHTML = `
+        <b>🎨 AI Tavsiya Etgan Rang Palitasi:</b><br>
+        <div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap;">
+          ${palette.colors.map(c => `<div title="${c}" onclick="navigator.clipboard.writeText('${c}');toast('Rang nusxalandi: ${c}')" style="cursor:pointer;width:36px;height:36px;border-radius:6px;background:${c};border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(0,0,0,0.7);" title="${c}"></div>`).join('')}
+        </div>
+        <b>Fon:</b> <code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px;">${palette.bg}</code><br>
+        <br><span style="color:#94A3B8;font-size:11px;">Rangni bosing — buferga ko'chiriladi</span>
+      `;
+      toast('🎨 Tavsiya rang palitasi ko\'rsatildi');
+    });
+  }
 
   // Chizmalarni tekislash (Smart Beautifier & Auto-align)
   const btnAiBeautify = document.getElementById('btnAiBeautify');
@@ -920,8 +1320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   voiceAssistant.onTranscript = (text, isFinal) => {
     if (activeVoiceTarget === 'prompt') {
-      const promptInput = document.getElementById('aiPromptInput');
-      if (promptInput) promptInput.value = text;
+      if (aiPromptInput) aiPromptInput.value = text;
     } else {
       const chatInput = document.getElementById('aiChatInput');
       if (chatInput) chatInput.value = text;
@@ -953,10 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const msgDiv = document.createElement('div');
     msgDiv.className = `chat-msg ${sender}`;
 
-    const formatted = text
-      .replace(/\n/g, '<br>')
-      .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-      .replace(/\*(.*?)\*/g, '<i>$1</i>');
+    const formatted = safeFormatMarkdown(text);
 
     let innerHtml = `<div class="chat-bubble">${formatted}</div>`;
 
@@ -1025,6 +1421,75 @@ document.addEventListener('DOMContentLoaded', () => {
       if (aiChatInput && q) {
         aiChatInput.value = q;
         sendChatMessage();
+      }
+    });
+  });
+
+  // Chat tarixini tozalash
+  const btnClearChat = document.getElementById('btnClearChat');
+  if (btnClearChat && aiChatMessages) {
+    btnClearChat.addEventListener('click', () => {
+      aiEngine.clearHistory();
+      aiChatMessages.innerHTML = `
+        <div class="chat-msg bot">
+          <div class="chat-bubble">💬 Suhbat tarixi tozalandi. Yangi suhbat boshlandi! Nima haqida gaplashamiz?</div>
+        </div>
+      `;
+      toast('🗑️ Chat tarixi tozalandi');
+    });
+  }
+
+  /* ==========================================================================
+     YANGI: AI ELEMENTLARNI TAHRIRLASH PANELI
+     ========================================================================== */
+  const aiEditInput = document.getElementById('aiEditInput');
+  const btnAiEdit = document.getElementById('btnAiEdit');
+  const aiEditStatus = document.getElementById('aiEditStatus');
+
+  if (btnAiEdit && aiEditInput) {
+    btnAiEdit.addEventListener('click', async () => {
+      const instruction = aiEditInput.value.trim();
+      if (!instruction) {
+        toast('Iltimos, tahrirlash buyrug\'ini kiriting!');
+        aiEditInput.focus();
+        return;
+      }
+
+      btnAiEdit.disabled = true;
+      btnAiEdit.textContent = 'Bajarilmoqda...';
+
+      try {
+        const res = await aiEngine.editSelectedWithAI(instruction);
+        if (aiEditStatus) {
+          aiEditStatus.classList.remove('hidden');
+          aiEditStatus.innerHTML = res.success
+            ? `<span style="color:#10B981;">✅ ${res.message}</span>`
+            : `<span style="color:#F59E0B;">⚠️ ${res.message}</span>`;
+        }
+        if (res.success) {
+          aiEditInput.value = '';
+          toast(res.message);
+        }
+      } catch (e) {
+        if (aiEditStatus) aiEditStatus.innerHTML = `<span style="color:#F43F5E;">❌ ${e.message}</span>`;
+      } finally {
+        btnAiEdit.disabled = false;
+        btnAiEdit.textContent = '✦ Bajar';
+      }
+    });
+
+    // Enter bosilganda
+    aiEditInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); btnAiEdit.click(); }
+    });
+  }
+
+  // AI tahrirlash quick chiplar
+  document.querySelectorAll('.ai-edit-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (aiEditInput) {
+        aiEditInput.value = chip.getAttribute('data-cmd') || chip.textContent.trim();
+        aiEditInput.focus();
       }
     });
   });
@@ -1101,31 +1566,252 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === codeBridgeModal) codeBridgeModal.classList.add('hidden');
     if (e.target === quizModal) quizModal.classList.add('hidden');
     if (e.target === ocrConfirmModal) ocrConfirmModal.classList.add('hidden');
+    if (e.target === subnetModal) subnetModal.classList.add('hidden');
+    if (e.target === comparisonModal) comparisonModal.classList.add('hidden');
+  });
+
+  /* ==========================================================================
+     KO'P SAHIFA (MULTI-PAGE) BOSHQARUV TIZIMI
+     ========================================================================== */
+  const pagesTabsContainer = document.getElementById('pagesTabsContainer');
+  const btnAddPage = document.getElementById('btnAddPage');
+
+  function renderPagesTabs() {
+    if (!pagesTabsContainer || !engine.pages) return;
+    pagesTabsContainer.innerHTML = '';
+
+    engine.pages.forEach((p, idx) => {
+      const tab = document.createElement('div');
+      tab.className = `page-tab ${p.id === engine.currentPageId ? 'active' : ''}`;
+      tab.title = "Ochish uchun bosing. Nomini o'zgartirish uchun ikki marta bosing.";
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'page-tab-title';
+      titleSpan.textContent = p.title || `Sahifa ${idx + 1}`;
+
+      tab.appendChild(titleSpan);
+
+      // Faqat 1 tadan ko'p sahifa bo'lganda o'chirish tugmasi ko'rinadi
+      if (engine.pages.length > 1) {
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'page-tab-close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.title = "Ushbu sahifani o'chirish";
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (confirm(`"${p.title || `Sahifa ${idx + 1}`}" sahifasini o'chirmoqchimisiz?`)) {
+            engine.deletePage(p.id);
+            toast("Sahifa o'chirildi");
+          }
+        });
+        tab.appendChild(closeBtn);
+      }
+
+      // Sahifaga o'tish
+      tab.addEventListener('click', () => {
+        if (p.id !== engine.currentPageId) {
+          engine.switchPage(p.id);
+        }
+      });
+
+      // Sahifa nomini tahrirlash (Dblclick)
+      tab.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        const newTitle = prompt("Sahifa nomini kiriting:", p.title || `Sahifa ${idx + 1}`);
+        if (newTitle && newTitle.trim()) {
+          engine.renamePage(p.id, newTitle.trim());
+        }
+      });
+
+      pagesTabsContainer.appendChild(tab);
+    });
+  }
+
+  // Engine hodisasiga bog'lash
+  engine.onPageChange(() => {
+    renderPagesTabs();
+  });
+
+  // Boshlang'ich render
+  renderPagesTabs();
+
+  // Yangi sahifa qo'shish
+  btnAddPage?.addEventListener('click', () => {
+    const newPage = engine.addPage();
+    toast(`📄 Yangi sahifa ochildi: "${newPage.title}"`);
+  });
+
+  /* ==========================================================================
+     OB'EKTLARNI QIDIRISH (SEARCH - CTRL+F) SUZUVCHI PANELI
+     ========================================================================== */
+  const boardSearchBar = document.getElementById('boardSearchBar');
+  const boardSearchInput = document.getElementById('boardSearchInput');
+  const boardSearchCount = document.getElementById('boardSearchCount');
+  const btnSearchPrev = document.getElementById('btnSearchPrev');
+  const btnSearchNext = document.getElementById('btnSearchNext');
+  const btnCloseSearch = document.getElementById('btnCloseSearch');
+  const btnOpenSearch = document.getElementById('btnOpenSearch');
+
+  let searchMatches = [];
+  let currentMatchIndex = -1;
+
+  function openSearchBar() {
+    if (!boardSearchBar) return;
+    boardSearchBar.classList.remove('hidden');
+    boardSearchInput?.focus();
+    boardSearchInput?.select();
+    if (boardSearchInput && boardSearchInput.value.trim()) {
+      runSearch(boardSearchInput.value.trim());
+    }
+  }
+
+  function closeSearchBar() {
+    if (!boardSearchBar) return;
+    boardSearchBar.classList.add('hidden');
+    engine.highlightedObject = null;
+    engine.markDirty();
+  }
+
+  function runSearch(query) {
+    if (!query || !query.trim()) {
+      searchMatches = [];
+      currentMatchIndex = -1;
+      if (boardSearchCount) boardSearchCount.textContent = '0/0';
+      engine.highlightedObject = null;
+      engine.markDirty();
+      return;
+    }
+
+    searchMatches = engine.findObjects(query);
+    if (searchMatches.length > 0) {
+      currentMatchIndex = 0;
+      if (boardSearchCount) boardSearchCount.textContent = `1/${searchMatches.length}`;
+      goToMatch(currentMatchIndex);
+    } else {
+      currentMatchIndex = -1;
+      if (boardSearchCount) boardSearchCount.textContent = '0/0';
+      engine.highlightedObject = null;
+      engine.markDirty();
+    }
+  }
+
+  function goToMatch(index) {
+    if (index < 0 || index >= searchMatches.length) return;
+    currentMatchIndex = index;
+    if (boardSearchCount) boardSearchCount.textContent = `${currentMatchIndex + 1}/${searchMatches.length}`;
+
+    const match = searchMatches[currentMatchIndex];
+    const obj = match.obj;
+    const b = engine.getObjectBounds(obj);
+    const centerX = b.x + b.width / 2;
+    const centerY = b.y + b.height / 2;
+
+    engine.panTo(centerX, centerY);
+    engine.highlightObject(obj);
+    engine.selectObject(obj, false);
+  }
+
+  btnOpenSearch?.addEventListener('click', openSearchBar);
+  btnCloseSearch?.addEventListener('click', closeSearchBar);
+
+  boardSearchInput?.addEventListener('input', (e) => {
+    runSearch(e.target.value);
+  });
+
+  boardSearchInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (searchMatches.length === 0) return;
+      if (e.shiftKey) {
+        currentMatchIndex = (currentMatchIndex - 1 + searchMatches.length) % searchMatches.length;
+      } else {
+        currentMatchIndex = (currentMatchIndex + 1) % searchMatches.length;
+      }
+      goToMatch(currentMatchIndex);
+    } else if (e.key === 'Escape') {
+      closeSearchBar();
+    }
+  });
+
+  btnSearchNext?.addEventListener('click', () => {
+    if (searchMatches.length === 0) return;
+    currentMatchIndex = (currentMatchIndex + 1) % searchMatches.length;
+    goToMatch(currentMatchIndex);
+  });
+
+  btnSearchPrev?.addEventListener('click', () => {
+    if (searchMatches.length === 0) return;
+    currentMatchIndex = (currentMatchIndex - 1 + searchMatches.length) % searchMatches.length;
+    goToMatch(currentMatchIndex);
   });
 
   // Global hotkeys
+
   window.addEventListener('keydown', (e) => {
     if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+    // Ctrl+F: Qidiruv panelini ochish
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+      e.preventDefault();
+      openSearchBar();
+      return;
+    }
 
     // Ctrl+I: AI panelini ochish
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
       e.preventDefault();
       aiDrawer.classList.toggle('open');
       if (aiDrawer.classList.contains('open')) {
-        aiPromptInput.focus();
+        aiPromptInput?.focus();
       }
+      return;
     }
-    // G: 2D Funksiya grafigi modali
-    else if (e.key.toLowerCase() === 'g') {
-      btnGraphModalTool?.click();
+
+    // Ctrl+Shift+A: Doska AI tahlili
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+      e.preventDefault();
+      aiDrawer?.classList.add('open');
+      setTimeout(() => {
+        const analyzeTab = document.querySelector('.ai-tab[data-tab="aiAnalyze"]');
+        analyzeTab?.click();
+        document.getElementById('btnAiSummarize')?.click();
+      }, 100);
+      toast('🔍 Doska tahlil qilinmoqda...');
+      return;
     }
-    // C: Kod <-> Blok-sxema modali
-    else if (e.key.toLowerCase() === 'c') {
-      btnCodeModalTool?.click();
+
+    // Ctrl+Shift+E: Tanlangan elementni AI bilan tahrirlash
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'e') {
+      e.preventDefault();
+      aiDrawer?.classList.add('open');
+      setTimeout(() => {
+        const editTab = document.querySelector('.ai-tab[data-tab="aiEdit"]');
+        editTab?.click();
+        document.getElementById('aiEditInput')?.focus();
+      }, 100);
+      toast('✦ AI Tahrirlash paneli ochildi');
+      return;
     }
-    // Q: Quiz kartochkasi modali
-    else if (e.key.toLowerCase() === 'q') {
-      btnQuizModalTool?.click();
+
+    // Global hotkeys — faqat hech qanday modal ochiq bo'lmagan va modifier tugmalar bosilmagan paytda
+    const isAnyModalOpen = () => {
+      return document.querySelector('.modal-backdrop:not(.hidden)') !== null ||
+             (aiDrawer && aiDrawer.classList.contains('open'));
+    };
+
+    if (!e.ctrlKey && !e.metaKey && !e.altKey && !isAnyModalOpen()) {
+      // G: 2D Funksiya grafigi modali
+      if (e.key.toLowerCase() === 'g') {
+        btnGraphModalTool?.click();
+      }
+      // C: Kod <-> Blok-sxema modali
+      else if (e.key.toLowerCase() === 'c') {
+        btnCodeModalTool?.click();
+      }
+      // Q: Quiz kartochkasi modali
+      else if (e.key.toLowerCase() === 'q') {
+        btnQuizModalTool?.click();
+      }
     }
   });
 });
@@ -1139,6 +1825,7 @@ function toast(message, duration = 2800) {
 
   const t = document.createElement('div');
   t.className = 'board-toast';
+  t.setAttribute('role', 'alert');
   t.innerHTML = message;
   container.appendChild(t);
 

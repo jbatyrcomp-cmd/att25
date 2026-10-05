@@ -1,9 +1,68 @@
 /* ==========================================================================
-   ATT-25 AI DOSKA — MATHEMATICS & PHYSICS SOLVER + PLOTTER (math-solver.js)
-   Tenglamalarni bosqichma-bosqich yechish va 2D Funksiya grafigini chizish
+   XAVFSIZ MATEMATIK EVALUATOR (Sandbox)
+   new Function() ni to'g'ridan-to'g'ri ishlatmaslik uchun — XSS himoyasi
    ========================================================================== */
+const _mathFnCache = new Map(); // expr string → compiled Function cache
+
+function safeMathEval(rawExpr, x) {
+  if (typeof rawExpr !== 'string' || rawExpr.trim() === '') return null;
+
+  try {
+    // 1. Normalizatsiya: foydalanuvchi notation → JS notation
+    let expr = rawExpr.trim()
+      // Unicode matematik belgilar
+      .replace(/²/g, '^2').replace(/³/g, '^3').replace(/√/g, 'sqrt')
+      .replace(/π/g, 'pi').replace(/÷/g, '/')
+      // Koeffitsient × o'zgaruvchi (masalan 2x → 2*x)
+      .replace(/(\d+\.?\d*)\s*x/g, '$1*x')
+      // Darajalar: x^n → Math.pow(x,n)
+      .replace(/x\s*\^\s*(-?\d+\.?\d*)/g, 'Math.pow(x,$1)')
+      .replace(/\(([^)]+)\)\s*\^\s*(\d+)/g, 'Math.pow(($1),$2)')
+      // Matematik funksiyalar (tartib muhim: sinh/cosh/tanh dan oldin sin/cos/tan)
+      .replace(/\bsinh\b/g, 'Math.sinh').replace(/\bcosh\b/g, 'Math.cosh').replace(/\btanh\b/g, 'Math.tanh')
+      .replace(/\bsin\b/g, 'Math.sin').replace(/\bcos\b/g, 'Math.cos').replace(/\btan\b/g, 'Math.tan')
+      .replace(/\basin\b/g, 'Math.asin').replace(/\bacos\b/g, 'Math.acos').replace(/\batan\b/g, 'Math.atan')
+      .replace(/\bsqrt\b/g, 'Math.sqrt').replace(/\babs\b/g, 'Math.abs').replace(/\bcbrt\b/g, 'Math.cbrt')
+      .replace(/\bln\b/g, 'Math.log').replace(/\blog2\b/g, 'Math.log2').replace(/\blog\b/g, 'Math.log10')
+      .replace(/\bexp\b/g, 'Math.exp').replace(/\bfloor\b/g, 'Math.floor').replace(/\bceil\b/g, 'Math.ceil')
+      .replace(/\bround\b/g, 'Math.round').replace(/\bsign\b/g, 'Math.sign')
+      // Konstantalar
+      .replace(/\bpi\b/gi, 'Math.PI').replace(/\be\b/g, 'Math.E')
+      // Implicit multiply: )( → )*(
+      .replace(/\)\s*\(/g, ')*(');
+
+    // 2. WHITELIST TEKSHIRUVI — faqat ruxsat etilgan belgilar
+    // Ruxsat: raqamlar, x, Math so'zi, +−*/^().,_ va bo'shliq
+    const safe = /^[\d\s\+\-\*\/\^\(\)\.\,xMath\.PIEsincostaqbrlg2pohewdfikuv_]+$/;
+    if (!safe.test(expr)) {
+      console.warn('[safeMathEval] Ruxsatsiz belgi:', expr);
+      return null;
+    }
+
+    // 3. Compile cache — bir xil formula bir marta compile qilinadi
+    let fn = _mathFnCache.get(expr);
+    if (!fn) {
+      // eslint-disable-next-line no-new-func
+      fn = new Function('x', `'use strict'; return (${expr});`);
+      _mathFnCache.set(expr, fn);
+      // Cache ning o'sib ketmasligi uchun
+      if (_mathFnCache.size > 200) {
+        const firstKey = _mathFnCache.keys().next().value;
+        _mathFnCache.delete(firstKey);
+      }
+    }
+
+    // 4. Hisoblash va natijani tekshirish
+    const val = fn(x);
+    return Number.isFinite(val) ? val : null;
+
+  } catch (e) {
+    return null;
+  }
+}
 
 class MathSolver {
+
   constructor(boardEngine) {
     this.board = boardEngine;
   }
@@ -549,28 +608,7 @@ class MathSolver {
   }
 
   static eval(funcStr, x) {
-    try {
-      let expr = funcStr
-        .replace(/(\d+)x/g, '$1*x')
-        .replace(/x\^(\d+)/g, 'Math.pow(x, $1)')
-        .replace(/x\^2/g, 'x*x')
-        .replace(/x\^3/g, 'x*x*x')
-        .replace(/sin/g, 'Math.sin')
-        .replace(/cos/g, 'Math.cos')
-        .replace(/tan/g, 'Math.tan')
-        .replace(/sqrt/g, 'Math.sqrt')
-        .replace(/abs/g, 'Math.abs')
-        .replace(/ln/g, 'Math.log')
-        .replace(/log/g, 'Math.log10')
-        .replace(/pi/g, 'Math.PI')
-        .replace(/e/g, 'Math.E');
-
-      const fn = new Function('x', `return ${expr};`);
-      const val = fn(x);
-      return Number.isFinite(val) ? val : null;
-    } catch (e) {
-      return null;
-    }
+    return safeMathEval(funcStr, x);
   }
 }
 

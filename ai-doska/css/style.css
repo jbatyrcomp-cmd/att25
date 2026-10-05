@@ -2450,5 +2450,875 @@ body.board-body {
   margin-bottom: 4px;
 }
 
+/* ==========================================================================
+   15. KO'P SAHIFA (MULTI-PAGE) BOSHQARUV TIZIMI STILLARI
+   ========================================================================== */
+.board-pages-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-panel);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--surface-panel-border);
+  border-radius: 12px;
+  padding: 5px 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  z-index: 90;
+  max-width: calc(50vw - 320px);
+  transition: var(--transition-fast);
+}
+
+.pages-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  max-width: 320px;
+  scrollbar-width: none;
+}
+
+.pages-tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.page-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: var(--transition-fast);
+}
+
+.page-tab:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.page-tab.active {
+  background: rgba(0, 255, 135, 0.12);
+  color: #00FF87;
+  border-color: rgba(0, 255, 135, 0.4);
+  box-shadow: 0 0 12px rgba(0, 255, 135, 0.2);
+}
+
+.page-tab-title {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page-tab-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  padding: 0;
+}
+
+.page-tab-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+}
+
+.btn-add-page {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-add-page:hover {
+  background: rgba(0, 255, 135, 0.2);
+  color: #00FF87;
+  border-color: rgba(0, 255, 135, 0.4);
+  box-shadow: 0 0 10px rgba(0, 255, 135, 0.2);
+}
+
+/* ==========================================================================
+   16. OB'EKTLARNI QIDIRISH (SEARCH - CTRL+F) STILLARI
+   ========================================================================== */
+.board-search-bar {
+  position: fixed;
+  top: 72px;
+  right: 24px;
+  z-index: 150;
+  animation: slideInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.board-search-bar.hidden {
+  display: none;
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.search-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-panel);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--surface-panel-border);
+  border-radius: 12px;
+  padding: 6px 10px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+#boardSearchInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  width: 180px;
+}
+
+#boardSearchInput::placeholder {
+  color: var(--text-muted);
+}
+
+.search-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.search-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.search-nav-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.search-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.search-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   17. O'NG KLIK KONTEKST MENYUSI (RIGHT-CLICK CONTEXT MENU) STILLARI
+   ========================================================================== */
+.board-context-menu {
+  position: fixed;
+  z-index: 350;
+  width: 210px;
+  background: var(--surface-panel);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--surface-panel-border);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.4);
+  animation: popContextMenu 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.board-context-menu.hidden {
+  display: none;
+}
+
+@keyframes popContextMenu {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.context-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.context-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.context-item.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.ctx-icon {
+  font-size: 14px;
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ctx-label {
+  flex: 1;
+}
+
+.ctx-shortcut {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ctx-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 5px 0;
+}
+
+.context-item.danger {
+  color: #F87171;
+}
+
+.context-item.danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+/* ==========================================================================
+   18. INTERAKTIV DOSKA (SMARTBOARD / TOUCH) MOSLASHUV STILLARI
+   ========================================================================== */
+
+/* Faol Smartboard rejimida barcha tugmalar va elementlar kattalashadi */
+body.smartboard-mode .floating-toolbar {
+  padding: 8px 14px;
+  gap: 8px;
+  border-radius: 20px;
+}
+
+body.smartboard-mode .tool-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+body.smartboard-mode .tool-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+body.smartboard-mode .quick-icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+}
+
+body.smartboard-mode .quick-icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+body.smartboard-mode .popover-item {
+  padding: 12px 16px;
+  font-size: 14px;
+}
+
+body.smartboard-mode .popover-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Sarlavhadagi faol Smartboard tugmasi */
+#btnSmartboardToggle.active {
+  background: rgba(0, 255, 135, 0.18) !important;
+  color: #00FF87 !important;
+  border-color: rgba(0, 255, 135, 0.5) !important;
+  box-shadow: 0 0 14px rgba(0, 255, 135, 0.3) !important;
+}
+
+#btnBoardFullscreen.active {
+  background: rgba(56, 189, 248, 0.18) !important;
+  color: #38BDF8 !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+}
+
+/* 19. Suzuvchi Sensorli Klaviatura Tugmasi (FAB) */
+.floating-keyboard-fab {
+  position: fixed;
+  bottom: 126px;
+  right: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--surface-panel-border);
+  background: var(--surface-panel);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  z-index: 95;
+  transition: var(--transition-fast);
+}
+
+.floating-keyboard-fab:hover, .floating-keyboard-fab:active {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38BDF8;
+  border-color: rgba(56, 189, 248, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
+}
+
+#btnToggleVirtualKeyboard.active {
+  background: rgba(56, 189, 248, 0.18) !important;
+  color: #38BDF8 !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+}
+
+/* Faqat smartboard-mode da ko'rsatish (desktopda xalaqit bermaydi) */
+body:not(.smartboard-mode) .floating-keyboard-fab {
+  display: none;
+}
+
+/* 20. Sensorli Ekran Virtual Klaviaturasi */
+.virtual-keyboard-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 960px;
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -14px 44px rgba(0, 0, 0, 0.7);
+  z-index: 400;
+  padding: 10px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: slideUpKeyboard 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.virtual-keyboard-container.hidden {
+  display: none;
+}
+
+@keyframes slideUpKeyboard {
+  from { transform: translate(-50%, 100%); }
+  to { transform: translate(-50%, 0); }
+}
+
+.vk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vk-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #38BDF8;
+}
+
+.vk-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vk-mode-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.vk-mode-btn.active, .vk-mode-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38BDF8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.vk-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.vk-close-btn:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.vk-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vk-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.vk-key {
+  flex: 1;
+  min-width: 36px;
+  max-width: 72px;
+  height: 48px;
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #F8FAFC;
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.05s ease, background 0.15s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.vk-key:active {
+  transform: scale(0.94);
+  background: #38BDF8;
+  color: #070C14;
+}
+
+.vk-key-special {
+  flex: 1.4;
+  background: rgba(51, 65, 85, 0.9);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.vk-key-shift.active {
+  background: #38BDF8;
+  color: #070C14;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+.vk-key-space {
+  flex: 4;
+  max-width: 320px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.vk-key-enter {
+  flex: 1.8;
+  background: #10B981;
+  color: #064E3B;
+  font-weight: 700;
+  border-color: #10B981;
+}
+
+.vk-key-enter:active {
+  background: #059669;
+  color: #FFFFFF;
+}
+
+.vk-key-mic {
+  color: #38BDF8;
+}
+
+.vk-key-mic.listening {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  animation: micPulse 1.2s infinite alternate;
+}
+
+/* 21. Touch Long-Press Ripple Effekti */
+.touch-longpress-ripple {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #00FF87;
+  background: rgba(0, 255, 135, 0.15);
+  box-shadow: 0 0 20px rgba(0, 255, 135, 0.5);
+  transform: translate(-50%, -50%) scale(0.2);
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+}
+
+.touch-longpress-ripple.animate {
+  animation: longpressExpand 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.touch-longpress-ripple.hidden {
+  display: none;
+}
+
+@keyframes longpressExpand {
+  0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}
+
+/* ==========================================================================
+   22. SUBNET / VLSM CALCULATOR & COMPARISON TABLE MODAL STYLES
+   ========================================================================== */
+.subnet-input-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.subnet-ip-input {
+  flex: 2;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #F8FAFC;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.subnet-ip-input:focus {
+  border-color: #38BDF8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.subnet-cidr-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subnet-cidr-slider {
+  flex: 1;
+  accent-color: #38BDF8;
+  cursor: pointer;
+}
+
+.subnet-cidr-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #38BDF8;
+  min-width: 38px;
+}
+
+.subnet-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.subnet-chip {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #CBD5E1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.subnet-chip:hover, .subnet-chip.active {
+  background: rgba(56, 189, 248, 0.18);
+  border-color: #38BDF8;
+  color: #38BDF8;
+}
+
+.subnet-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.subnet-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.subnet-card-title {
+  font-size: 11px;
+  color: #94A3B8;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subnet-card-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #F8FAFC;
+  word-break: break-all;
+}
+
+.subnet-card.highlight .subnet-card-val {
+  color: #00FF87;
+}
+
+.subnet-card.cyan .subnet-card-val {
+  color: #38BDF8;
+}
+
+.subnet-card.amber .subnet-card-val {
+  color: #F59E0B;
+}
+
+.subnet-card.purple .subnet-card-val {
+  color: #A855F7;
+}
+
+/* Comparison Tables Grid */
+.comparison-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.comparison-preset-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #E2E8F0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+
+.comparison-preset-btn:hover, .comparison-preset-btn.active {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #10B981;
+  color: #10B981;
+}
+
+.comparison-preset-btn .icon {
+  font-size: 16px;
+}
+
+.comparison-preview-wrap {
+  max-height: 240px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  scrollbar-width: thin;
+}
+
+.comparison-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.comparison-preview-table th {
+  text-align: left;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #38BDF8;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-preview-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #CBD5E1;
+}
+
+.comparison-preview-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ==========================================================================
+   23. FLOATING SELECTION AI ACTION BAR
+   ========================================================================== */
+.selection-floating-bar {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 255, 135, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 135, 0.15);
+  border-radius: 30px;
+  padding: 6px 14px;
+  z-index: 85;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+.selection-floating-bar.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.selection-ai-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: #F8FAFC;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.selection-ai-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #00FF87;
+}
+
+.selection-ai-btn.primary {
+  background: linear-gradient(135deg, rgba(0, 255, 135, 0.2), rgba(56, 189, 248, 0.2));
+  border: 1px solid rgba(0, 255, 135, 0.35);
+  color: #00FF87;
+}
+
+.selection-ai-btn.primary:hover {
+  background: linear-gradient(135deg, rgba(0, 255, 135, 0.35), rgba(56, 189, 248, 0.35));
+  box-shadow: 0 0 14px rgba(0, 255, 135, 0.4);
+}
+
+.selection-bar-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+
+
+
 
 

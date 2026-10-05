@@ -811,8 +811,486 @@ const BoardTemplates = {
 
       return objects;
     }
+  },
+
+  // 16. OSPF Multi-Area Arxitekturasi
+  ospf_architecture: {
+    id: 'ospf_architecture',
+    title: '🗺️ OSPF Multi-Area Marshrutlash',
+    desc: 'Area 0 (Backbone), Area 1 (Standard), ABR va ASBR routerlar arxitekturasi',
+    icon: '🗺️',
+    generate: (originX = -320, originY = -180) => {
+      const objects = [];
+
+      // Sarlavha
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY,
+        width: 680,
+        height: 44,
+        color: '#10B981',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(16, 185, 129, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 20,
+        y: originY + 12,
+        text: '🌐 OSPF MULTI-AREA ARXITEKTURASI (LSA 1, 2, 3 OQIMLARI)',
+        color: '#10B981',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      // Area 0 (Backbone)
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY + 60,
+        width: 320,
+        height: 240,
+        color: '#38BDF8',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(56, 189, 248, 0.08)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 16,
+        y: originY + 70,
+        text: '🔵 AREA 0 (BACKBONE)',
+        color: '#38BDF8',
+        fontSize: 12,
+        fontWeight: 700
+      });
+
+      // Area 1 (Standard Area)
+      objects.push({
+        type: 'rect',
+        x: originX + 360,
+        y: originY + 60,
+        width: 320,
+        height: 240,
+        color: '#A855F7',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(168, 85, 247, 0.08)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 376,
+        y: originY + 70,
+        text: '🟣 AREA 1 (OFFICE / CAMPUS)',
+        color: '#A855F7',
+        fontSize: 12,
+        fontWeight: 700
+      });
+
+      // Backbone Router R1
+      objects.push({ type: 'net_node', x: originX + 80, y: originY + 160, nodeType: 'router', label: 'R1 (Core)', ip: '10.0.0.1' });
+      // ABR Router (Border)
+      objects.push({ type: 'net_node', x: originX + 240, y: originY + 160, nodeType: 'router', label: 'ABR-1 (Border)', ip: '10.0.0.2 / 192.168.1.1' });
+      // Area 1 Router R2
+      objects.push({ type: 'net_node', x: originX + 440, y: originY + 160, nodeType: 'router', label: 'R2 (Internal)', ip: '192.168.1.2' });
+      // ASBR Router
+      objects.push({ type: 'net_node', x: originX + 600, y: originY + 160, nodeType: 'router', label: 'ASBR (BGP Gateway)', ip: '192.168.1.254' });
+
+      // Ulanishlar
+      objects.push({ type: 'arrow', x1: originX + 110, y1: originY + 160, x2: originX + 210, y2: originY + 160, color: '#38BDF8', strokeWidth: 3 });
+      objects.push({ type: 'arrow', x1: originX + 270, y1: originY + 160, x2: originX + 410, y2: originY + 160, color: '#A855F7', strokeWidth: 3 });
+      objects.push({ type: 'arrow', x1: originX + 470, y1: originY + 160, x2: originX + 570, y2: originY + 160, color: '#F59E0B', strokeWidth: 3 });
+
+      // Izoh stikeri
+      objects.push({
+        type: 'sticky',
+        x: originX,
+        y: originY + 320,
+        width: 320,
+        height: 100,
+        bgColor: '#CFFAFE',
+        textColor: '#0C4A6E',
+        text: '📌 ABR vazifasi:\nArea 0 va boshqa arealar o\'rtasida Type 3 Summary LSA larni aylantiradi.'
+      });
+
+      objects.push({
+        type: 'sticky',
+        x: originX + 360,
+        y: originY + 320,
+        width: 320,
+        height: 100,
+        bgColor: '#FEF3C7',
+        textColor: '#78350F',
+        text: '📌 ASBR vazifasi:\nTashqi tarmoq (BGP / Internet) dan kelgan Type 5 LSA larni tarqatadi.'
+      });
+
+      return objects;
+    }
+  },
+
+  // 17. PKI va Raqamli Imzo (Kriptografiya)
+  pki_cryptography: {
+    id: 'pki_cryptography',
+    title: '🔐 PKI va Raqamli Imzo (Kriptografiya)',
+    desc: 'Ochiq va maxfiy kalitlar, SHA-256 xesh, CA sertifikat va imzo tekshirish',
+    icon: '🔐',
+    generate: (originX = -320, originY = -180) => {
+      const objects = [];
+
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY,
+        width: 680,
+        height: 44,
+        color: '#F43F5E',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(244, 63, 94, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 20,
+        y: originY + 12,
+        text: '🔒 ASIMMETRIK KRIPTOGRAFIYA VA RAQAMLI IMZO JARAYONI',
+        color: '#F43F5E',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      // 1-qadam: Hujjat
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY + 60,
+        width: 140,
+        height: 70,
+        color: '#38BDF8',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(56, 189, 248, 0.15)'
+      });
+      objects.push({ type: 'text', x: originX + 16, y: originY + 80, text: '📄 Asl Hujjat\n(Plaintext)', color: '#F8FAFC', fontSize: 13, fontWeight: 700 });
+
+      // Strelka Hash
+      objects.push({ type: 'arrow', x1: originX + 140, y1: originY + 95, x2: originX + 210, y2: originY + 95, color: '#64748B', strokeWidth: 2 });
+
+      // 2-qadam: Hash
+      objects.push({
+        type: 'diamond',
+        x: originX + 210,
+        y: originY + 65,
+        width: 110,
+        height: 60,
+        color: '#F59E0B',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(245, 158, 11, 0.2)'
+      });
+      objects.push({ type: 'text', x: originX + 230, y: originY + 85, text: 'SHA-256', color: '#F8FAFC', fontSize: 12, fontWeight: 800 });
+
+      // Strelka Shifrlash
+      objects.push({ type: 'arrow', x1: originX + 320, y1: originY + 95, x2: originX + 380, y2: originY + 95, color: '#64748B', strokeWidth: 2 });
+
+      // 3-qadam: Shifrlash
+      objects.push({
+        type: 'rect',
+        x: originX + 380,
+        y: originY + 60,
+        width: 130,
+        height: 70,
+        color: '#A855F7',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(168, 85, 247, 0.2)'
+      });
+      objects.push({ type: 'text', x: originX + 392, y: originY + 76, text: '🔑 Maxfiy Kalit\n(Private Key)', color: '#F8FAFC', fontSize: 12, fontWeight: 700 });
+
+      // Strelka Imzo
+      objects.push({ type: 'arrow', x1: originX + 510, y1: originY + 95, x2: originX + 560, y2: originY + 95, color: '#10B981', strokeWidth: 2 });
+
+      // 4-qadam: Raqamli Imzo
+      objects.push({
+        type: 'rect',
+        x: originX + 560,
+        y: originY + 60,
+        width: 120,
+        height: 70,
+        color: '#10B981',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(16, 185, 129, 0.2)'
+      });
+      objects.push({ type: 'text', x: originX + 574, y: originY + 76, text: '✍️ Raqamli\nImzo', color: '#10B981', fontSize: 13, fontWeight: 800 });
+
+      // Tushuntirish stikeri
+      objects.push({
+        type: 'sticky',
+        x: originX,
+        y: originY + 160,
+        width: 320,
+        height: 110,
+        bgColor: '#FEF3C7',
+        textColor: '#78350F',
+        text: '📌 Xavfsizlik Uchligi (CIA):\n1. Butunlik (Integrity) — SHA-256 hash orqali\n2. Rad etib bo\'lmaslik (Non-repudiation)\n3. Haqiqiylik (Authentication)'
+      });
+
+      objects.push({
+        type: 'sticky',
+        x: originX + 360,
+        y: originY + 160,
+        width: 320,
+        height: 110,
+        bgColor: '#E0E7FF',
+        textColor: '#312E81',
+        text: '📌 Tekshirish (Verification):\nQabul qiluvchi jo\'natuvchining OCHIQ kaliti (Public Key) orqali imzoni deshifrlaydi va xeshni solishtiradi.'
+      });
+
+      return objects;
+    }
+  },
+
+  // 18. WebRTC P2P Video Qo'ng'iroq
+  webrtc_call: {
+    id: 'webrtc_call',
+    title: '📹 WebRTC P2P Video Qo‘ng‘iroq',
+    desc: 'SDP Offer/Answer, STUN/TURN serverlar va to‘g‘ridan-to‘g‘ri media oqimi',
+    icon: '📹',
+    generate: (originX = -320, originY = -180) => {
+      const objects = [];
+
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY,
+        width: 660,
+        height: 44,
+        color: '#38BDF8',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(56, 189, 248, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 20,
+        y: originY + 12,
+        text: '📡 WEBRTC REAL-TIME P2P ALOQA SXEMASI',
+        color: '#38BDF8',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      // Peer A (Mijoz 1)
+      objects.push({ type: 'net_node', x: originX + 60, y: originY + 150, nodeType: 'pc', label: 'Peer A (Browser 1)', ip: '192.168.1.10' });
+
+      // Signaling Server (WebSocket)
+      objects.push({ type: 'net_node', x: originX + 330, y: originY + 80, nodeType: 'server', label: 'Signaling Server\n(WebSockets)', ip: 'Signal / SDP' });
+
+      // STUN / TURN Server
+      objects.push({ type: 'net_node', x: originX + 330, y: originY + 230, nodeType: 'cloud', label: 'STUN / TURN Server\n(NAT Traversal)', ip: 'Public IP:Port' });
+
+      // Peer B (Mijoz 2)
+      objects.push({ type: 'net_node', x: originX + 600, y: originY + 150, nodeType: 'pc', label: 'Peer B (Browser 2)', ip: '10.0.0.25' });
+
+      // Signaling strelkalari
+      objects.push({ type: 'arrow', x1: originX + 90, y1: originY + 130, x2: originX + 290, y2: originY + 90, color: '#A855F7', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 370, y1: originY + 90, x2: originX + 570, y2: originY + 130, color: '#A855F7', strokeWidth: 2 });
+
+      // STUN strelkalari
+      objects.push({ type: 'arrow', x1: originX + 90, y1: originY + 170, x2: originX + 290, y2: originY + 220, color: '#F59E0B', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 370, y1: originY + 220, x2: originX + 570, y2: originY + 170, color: '#F59E0B', strokeWidth: 2 });
+
+      // Direct P2P Media Stream
+      objects.push({ type: 'arrow', x1: originX + 100, y1: originY + 150, x2: originX + 560, y2: originY + 150, color: '#00FF87', strokeWidth: 4 });
+
+      // P2P yozuvi
+      objects.push({
+        type: 'text',
+        x: originX + 230,
+        y: originY + 134,
+        text: '⚡ BEVOSITA P2P AUDIO / VIDEO (SRTP)',
+        color: '#00FF87',
+        fontSize: 12,
+        fontWeight: 800
+      });
+
+      return objects;
+    }
+  },
+
+  // 19. CI/CD GitOps Pipeline
+  cicd_gitops: {
+    id: 'cicd_gitops',
+    title: '🚀 DevOps CI/CD va GitOps Pipeline',
+    desc: 'Git Commit, Docker Build, Test, ArgoCD va Kubernetes Klasterga Deploy',
+    icon: '🚀',
+    generate: (originX = -320, originY = -180) => {
+      const objects = [];
+
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY,
+        width: 680,
+        height: 44,
+        color: '#A855F7',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(168, 85, 247, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 20,
+        y: originY + 12,
+        text: '⚙️ MODERN DEVOPS CI/CD & GITOPS AVTOMATLASHTIRISH',
+        color: '#A855F7',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      const stages = [
+        { name: '1. KOD (GIT)', desc: 'git push main\nPull Request', color: '#F43F5E', x: originX },
+        { name: '2. TEST & BUILD', desc: 'Unit Tests\nDocker Build', color: '#F59E0B', x: originX + 175 },
+        { name: '3. REGISTRY', desc: 'Docker Hub\nGHCR / Harbor', color: '#38BDF8', x: originX + 350 },
+        { name: '4. DEPLOY (K8S)', desc: 'ArgoCD Sync\nPods rolling update', color: '#10B981', x: originX + 525 }
+      ];
+
+      stages.forEach((st, idx) => {
+        objects.push({
+          type: 'rect',
+          x: st.x,
+          y: originY + 60,
+          width: 155,
+          height: 90,
+          color: st.color,
+          strokeWidth: 2,
+          filled: true,
+          fillColor: st.color + '22'
+        });
+        objects.push({
+          type: 'text',
+          x: st.x + 12,
+          y: originY + 72,
+          text: st.name,
+          color: st.color,
+          fontSize: 12,
+          fontWeight: 800
+        });
+        objects.push({
+          type: 'text',
+          x: st.x + 12,
+          y: originY + 96,
+          text: st.desc,
+          color: '#F8FAFC',
+          fontSize: 11,
+          fontWeight: 600
+        });
+
+        if (idx < stages.length - 1) {
+          objects.push({
+            type: 'arrow',
+            x1: st.x + 155,
+            y1: originY + 105,
+            x2: st.x + 175,
+            y2: originY + 105,
+            color: '#64748B',
+            strokeWidth: 2
+          });
+        }
+      });
+
+      objects.push({
+        type: 'sticky',
+        x: originX,
+        y: originY + 175,
+        width: 680,
+        height: 70,
+        bgColor: '#FEF9C3',
+        textColor: '#854D0E',
+        text: '💡 GitOps Tamoyili: Git reponing holati — yagona haqiqat manbai (Single Source of Truth). ArgoCD repodagi o\'zgarishni ko\'rib, Kubernetes klasterini avtomatik yangilaydi.'
+      });
+
+      return objects;
+    }
+  },
+
+  // 20. Zero Trust Xavfsizlik Arxitekturasi
+  zero_trust_security: {
+    id: 'zero_trust_security',
+    title: '🛡️ Zero Trust Xavfsizlik Arxitekturasi (ZTNA)',
+    desc: 'Hech qachon ishonma, doim tekshir: IDP, PDP, PEP va Mikro-segmentatsiya',
+    icon: '🛡️',
+    generate: (originX = -320, originY = -180) => {
+      const objects = [];
+
+      objects.push({
+        type: 'rect',
+        x: originX,
+        y: originY,
+        width: 680,
+        height: 44,
+        color: '#F43F5E',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(244, 63, 94, 0.15)'
+      });
+      objects.push({
+        type: 'text',
+        x: originX + 20,
+        y: originY + 12,
+        text: '🛡️ ZERO TRUST ARCHITECTURE: "NEVER TRUST, ALWAYS VERIFY"',
+        color: '#F43F5E',
+        fontSize: 14,
+        fontWeight: 800
+      });
+
+      // Foydalanuvchi / Qurilma
+      objects.push({ type: 'net_node', x: originX + 60, y: originY + 130, nodeType: 'pc', label: 'Xodim / Qurilma\n(MFA, EDR)', ip: 'Untrusted IP' });
+
+      // PDP - Policy Decision Point
+      objects.push({
+        type: 'rect',
+        x: originX + 190,
+        y: originY + 60,
+        width: 180,
+        height: 80,
+        color: '#F59E0B',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(245, 158, 11, 0.18)'
+      });
+      objects.push({ type: 'text', x: originX + 205, y: originY + 74, text: '🧠 PDP (Qaror Markazi)\n• Shaxs (IDP / SSO)\n• Xavf darajasi', color: '#F8FAFC', fontSize: 11, fontWeight: 700 });
+
+      // PEP - Policy Enforcement Point
+      objects.push({
+        type: 'rect',
+        x: originX + 190,
+        y: originY + 160,
+        width: 180,
+        height: 80,
+        color: '#38BDF8',
+        strokeWidth: 2,
+        filled: true,
+        fillColor: 'rgba(56, 189, 248, 0.18)'
+      });
+      objects.push({ type: 'text', x: originX + 205, y: originY + 176, text: '🚪 PEP (Darvoza / Proxy)\n• mTLS Shifrlash\n• Sessiyani tekshirish', color: '#F8FAFC', fontSize: 11, fontWeight: 700 });
+
+      // Mikro-segmentlangan resurslar
+      objects.push({ type: 'net_node', x: originX + 500, y: originY + 90, nodeType: 'server', label: 'HR & Moliya DB\n(Izolyatsiya)', ip: 'Micro-segment A' });
+      objects.push({ type: 'net_node', x: originX + 500, y: originY + 200, nodeType: 'server', label: 'Dev & API Servis\n(Izolyatsiya)', ip: 'Micro-segment B' });
+
+      // Strelkalar
+      objects.push({ type: 'arrow', x1: originX + 90, y1: originY + 130, x2: originX + 190, y2: originY + 100, color: '#F59E0B', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 90, y1: originY + 130, x2: originX + 190, y2: originY + 200, color: '#38BDF8', strokeWidth: 2 });
+      objects.push({ type: 'arrow', x1: originX + 370, y1: originY + 180, x2: originX + 470, y2: originY + 100, color: '#10B981', strokeWidth: 3 });
+      objects.push({ type: 'arrow', x1: originX + 370, y1: originY + 200, x2: originX + 470, y2: originY + 200, color: '#10B981', strokeWidth: 3 });
+
+      return objects;
+    }
   }
 };
 
 window.BoardTemplates = BoardTemplates;
+
 

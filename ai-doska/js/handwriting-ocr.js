@@ -156,7 +156,7 @@ class HandwritingOCR {
      ========================================================================== */
   async onlineRecognizeWithGemini(dataUrl, type = 'math') {
     const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, '');
-    const model = this.ai?.model || 'gemini-2.5-flash';
+    const model = this.ai?.model || 'gemini-1.5-flash';
     const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 

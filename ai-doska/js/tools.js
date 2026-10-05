@@ -27,6 +27,16 @@ class ToolManager {
     this.dragOffset = { x: 0, y: 0 };
     this.spacebarHeld = false;
 
+    // Rotation, Multi-Select & Connectors holati
+    this.isRotatingObject = false;
+    this.rotateObj = null;
+    this.rotateCenter = null;
+    this.isMarqueeSelecting = false;
+    this.marqueeStart = null;
+    this.connectorStart = null;
+    this.dragStartPositions = null;
+    this.dragStartWorld = null;
+
     // Matn tahrirlagich overlay
     this.textOverlay = document.getElementById('textEditorOverlay');
     this.textInput = document.getElementById('inlineTextInput');
@@ -51,6 +61,7 @@ class ToolManager {
     this.bindToolbarEvents();
     this.bindFormulaModeEvents();
     this.bindKeyboardShortcuts();
+    this.bindContextMenuEvents();
     this.bindImageDropAndPaste();
   }
 
@@ -80,12 +91,21 @@ class ToolManager {
       this.updateFormulaBadgePosition();
     }, { passive: false });
 
-    // Kontekst menyuni bloklash (chizish qulay bo'lishi uchun)
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    // Kontekst menyuni chiqarish
+    canvas.addEventListener('contextmenu', (e) => this.onContextMenu(e));
   }
 
   onPointerDown(e) {
     if (e.target !== this.engine.canvas) return;
+
+    // Smartboard Multi-Touch & Palm Eraser tekshiruvi
+    if (window.smartboard && window.smartboard.gestures) {
+      const gRes = window.smartboard.gestures.handlePointerDown(e);
+      if (gRes && gRes.handled) {
+        return;
+      }
+    }
+
     this.isPointerDown = true;
     this.startScreenPos = { x: e.clientX, y: e.clientY };
     this.startWorldPos = this.engine.screenToWorld(e.clientX, e.clientY);
@@ -101,8 +121,25 @@ class ToolManager {
 
     // 1. Tanlash vositasi (Select)
     if (this.currentTool === 'select') {
+      // Rotation Handle bosildimi? (Yakka tanlangan ob'ektda)
+      if (this.engine.selectedObjects.length === 1 && this.engine.isPointOnRotateHandle(wx, wy, this.engine.selectedObjects[0])) {
+        const obj = this.engine.selectedObjects[0];
+        const b = this.engine.getObjectBounds(obj);
+        this.isRotatingObject = true;
+        this.rotateObj = obj;
+        this.rotateCenter = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+        this.viewport.className = 'canvas-viewport mode-rotating';
+        return;
+      }
+
       const hit = this.engine.hitTest(wx, wy);
       if (hit) {
+        // Shift+Click: Multi-Select to'plamiga qo'shish / chiqarish
+        if (e.shiftKey) {
+          this.engine.selectObject(hit, true);
+          return;
+        }
+
         // Agar bosilgan ob'ekt interaktiv Quiz Card bo'lsa
         if (hit.type === 'quiz_card') {
           const hx = hit.x, hy = hit.y, hw = hit.width || 360;
@@ -131,7 +168,7 @@ class ToolManager {
           }
 
           if (optionClicked) {
-            this.engine.selectedObject = hit;
+            this.engine.selectObject(hit, false);
             return;
           }
 
@@ -143,17 +180,28 @@ class ToolManager {
             if (typeof window.toast === 'function') {
               window.toast(hit.revealed ? "✅ To'g'ri javob ochildi" : "Javob yashirildi");
             }
-            this.engine.selectedObject = hit;
+            this.engine.selectObject(hit, false);
             return;
           }
         }
 
-        this.engine.selectedObject = hit;
+        // Agar mavjud tanlov ichida bo'lmasa, yakka tanlash
+        if (!this.engine.selectedObjects.includes(hit)) {
+          this.engine.selectObject(hit, false);
+        }
+
         this.isDraggingObject = true;
-        this.dragOffset = {
-          x: wx - (hit.x !== undefined ? hit.x : hit.x1),
-          y: wy - (hit.y !== undefined ? hit.y : hit.y1)
-        };
+        this.dragStartWorld = { x: wx, y: wy };
+        this.dragStartPositions = this.engine.selectedObjects.map(o => ({
+          obj: o,
+          x: o.x,
+          y: o.y,
+          x1: o.x1,
+          y1: o.y1,
+          x2: o.x2,
+          y2: o.y2,
+          points: o.points ? o.points.map(p => ({ ...p })) : null
+        }));
 
         // Agar tanlangan element chizma (stroke) bo'lsa, atrofidagi barcha bog'liq chizmalarni klasterlab OCR panelini ko'rsatish
         if (hit.type === 'stroke') {
@@ -163,8 +211,35 @@ class ToolManager {
           this.hideOcrFloatingToolbar();
         }
       } else {
-        this.engine.selectedObject = null;
+        if (!e.shiftKey) {
+          this.engine.clearSelection();
+        }
         this.hideOcrFloatingToolbar();
+        // Marquee to'rtburchak tanlash boshlash
+        this.isMarqueeSelecting = true;
+        this.marqueeStart = { x: wx, y: wy };
+        this.engine.marqueeBox = { x1: wx, y1: wy, x2: wx, y2: wy };
+        this.engine.markDirty();
+      }
+      return;
+    }
+
+    // 1b. Aqlli Bog'lovchi (Smart Connector) vositasi
+    if (this.currentTool === 'connector') {
+      const hit = this.engine.hitTest(wx, wy);
+      if (hit) {
+        const res = this.engine.getNearestAnchor(hit, wx, wy);
+        const pt = this.engine.getObjectAnchorPoint(hit, res.anchor);
+        this.connectorStart = {
+          objId: hit.id,
+          anchor: res.anchor,
+          point: pt
+        };
+        this.engine.tempConnector = {
+          p1: pt,
+          p2: { x: wx, y: wy }
+        };
+        this.engine.markDirty();
       }
       return;
     }
@@ -296,12 +371,21 @@ class ToolManager {
   }
 
   onPointerMove(e) {
+    // Smartboard Multi-Touch & Palm Eraser tekshiruvi
+    if (window.smartboard && window.smartboard.gestures) {
+      const gRes = window.smartboard.gestures.handlePointerMove(e);
+      if (gRes && gRes.handled) {
+        return;
+      }
+    }
+
     // Laser pointer koordinatasi
     if (this.currentTool === 'laser' && this.laserDot) {
       this.laserDot.style.left = e.clientX + 'px';
       this.laserDot.style.top = e.clientY + 'px';
       if (this.isPointerDown) {
         this.engine.addLaserPoint(e.clientX, e.clientY);
+        this.engine.markDirty();
       }
     }
 
@@ -314,6 +398,7 @@ class ToolManager {
       this.engine.panX += dx;
       this.engine.panY += dy;
       this.startScreenPos = { x: e.clientX, y: e.clientY };
+      this.engine.markDirty();
       this.updateOcrToolbarPosition();
       this.updateFormulaBadgePosition();
       return;
@@ -324,32 +409,65 @@ class ToolManager {
     // O'chirg'ich harakatda bo'lsa
     if (this.currentTool === 'eraser') {
       const hit = this.engine.hitTest(currWorld.x, currWorld.y);
-      if (hit) this.engine.removeObject(hit);
+      if (hit) { this.engine.removeObject(hit); this.engine.markDirty(); }
       return;
     }
 
-    // Tanlangan ob'ektni ko'chirish
-    if (this.currentTool === 'select' && this.isDraggingObject && this.engine.selectedObject) {
-      const obj = this.engine.selectedObject;
-      const nx = currWorld.x - this.dragOffset.x;
-      const ny = currWorld.y - this.dragOffset.y;
+    // 1. Ob'ektni aylantirish (Rotation)
+    if (this.isRotatingObject && this.rotateObj && this.rotateCenter) {
+      const angle = Math.atan2(currWorld.y - this.rotateCenter.y, currWorld.x - this.rotateCenter.x) + Math.PI / 2;
+      this.rotateObj.rotation = angle;
+      this.engine.markDirty();
+      return;
+    }
 
-      if (obj.x !== undefined && obj.y !== undefined) {
-        const dx = nx - obj.x;
-        const dy = ny - obj.y;
-        obj.x = nx;
-        obj.y = ny;
-        // Agar stroke bo'lsa barcha nuqtalarni siljitish
-        if (obj.type === 'stroke' && obj.points) {
-          obj.points.forEach(p => { p.x += dx; p.y += dy; });
+    // 2. Marquee to'rtburchak tanlash
+    if (this.isMarqueeSelecting && this.marqueeStart) {
+      this.engine.marqueeBox = {
+        x1: this.marqueeStart.x,
+        y1: this.marqueeStart.y,
+        x2: currWorld.x,
+        y2: currWorld.y
+      };
+      this.engine.markDirty();
+      return;
+    }
+
+    // 3. Aqlli Bog'lovchi jonli chizig'i (Temp Connector)
+    if (this.currentTool === 'connector' && this.connectorStart && this.engine.tempConnector) {
+      this.engine.tempConnector.p2 = { x: currWorld.x, y: currWorld.y };
+      this.engine.markDirty();
+      return;
+    }
+
+    // 4. Tanlangan ob'ekt(lar)ni ko'chirish (Multi-drag)
+    if (this.currentTool === 'select' && this.isDraggingObject && this.dragStartPositions && this.dragStartPositions.length > 0) {
+      const dx = currWorld.x - this.dragStartWorld.x;
+      const dy = currWorld.y - this.dragStartWorld.y;
+
+      this.dragStartPositions.forEach(item => {
+        const obj = item.obj;
+        if (obj.locked) return; // Qulflangan element siljimaydi
+        if (obj.x !== undefined && item.x !== undefined) {
+          obj.x = item.x + dx;
+          obj.y = item.y + dy;
+          if (obj.type === 'stroke' && obj.points && item.points) {
+            obj.points.forEach((p, idx) => {
+              if (item.points[idx]) {
+                p.x = item.points[idx].x + dx;
+                p.y = item.points[idx].y + dy;
+              }
+            });
+          }
+        } else if (obj.x1 !== undefined && item.x1 !== undefined) {
+          obj.x1 = item.x1 + dx;
+          obj.y1 = item.y1 + dy;
+          obj.x2 = item.x2 + dx;
+          obj.y2 = item.y2 + dy;
         }
-      } else if (obj.x1 !== undefined) {
-        const dx = nx - obj.x1;
-        const dy = ny - obj.y1;
-        obj.x1 = nx; obj.y1 = ny;
-        obj.x2 += dx; obj.y2 += dy;
-      }
-      if (obj.type === 'stroke') {
+      });
+      this.engine.markDirty();
+      if (this.dragStartPositions.length === 1 && this.dragStartPositions[0].obj.type === 'stroke') {
         this.updateOcrToolbarPosition();
       }
       return;
@@ -358,6 +476,7 @@ class ToolManager {
     // Qalam / Marker davom ettirish
     if (this.currentDrawingObject && this.currentDrawingObject.type === 'stroke') {
       this.currentDrawingObject.points.push({ x: currWorld.x, y: currWorld.y });
+      this.engine.markDirty();
       return;
     }
 
@@ -385,13 +504,76 @@ class ToolManager {
         obj.x2 = cx;
         obj.y2 = cy;
       }
+      this.engine.markDirty();
     }
   }
 
   onPointerUp(e) {
+    if (window.smartboard && window.smartboard.gestures) {
+      window.smartboard.gestures.handlePointerUp(e);
+    }
+
     if (!this.isPointerDown) return;
     this.isPointerDown = false;
-    this.isDraggingObject = false;
+
+    // Rotation yakunlash
+    if (this.isRotatingObject) {
+      this.isRotatingObject = false;
+      this.rotateObj = null;
+      this.rotateCenter = null;
+      this.engine.saveState();
+      this.updateViewportCursor();
+      return;
+    }
+
+    // Marquee to'rtburchak tanlash yakunlash
+    if (this.isMarqueeSelecting && this.marqueeStart) {
+      this.isMarqueeSelecting = false;
+      const mb = this.engine.marqueeBox;
+      this.engine.marqueeBox = null;
+      if (mb) {
+        const w = Math.abs(mb.x2 - mb.x1);
+        const h = Math.abs(mb.y2 - mb.y1);
+        if (w > 4 || h > 4) {
+          const found = this.engine.findObjectsInRect(mb.x1, mb.y1, mb.x2, mb.y2);
+          if (found.length > 0) {
+            this.engine.selectedObjects = found;
+          }
+        }
+      }
+      this.engine.markDirty();
+    }
+
+    // Aqlli bog'lovchi yaratish
+    if (this.currentTool === 'connector' && this.connectorStart) {
+      const currWorld = this.engine.screenToWorld(e.clientX, e.clientY);
+      const hit = this.engine.hitTest(currWorld.x, currWorld.y);
+      if (hit && hit.id !== this.connectorStart.objId) {
+        const res = this.engine.getNearestAnchor(hit, currWorld.x, currWorld.y);
+        const conn = {
+          id: 'conn_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+          type: 'connector',
+          fromId: this.connectorStart.objId,
+          toId: hit.id,
+          fromAnchor: this.connectorStart.anchor,
+          toAnchor: res.anchor,
+          color: this.currentColor || '#00FF87',
+          strokeWidth: Math.max(2, this.currentSize || 2),
+          hasArrow: true
+        };
+        this.engine.addObject(conn);
+        if (typeof window.toast === 'function') window.toast("🔗 Aqlli bog'lovchi ulandi");
+      }
+      this.connectorStart = null;
+      this.engine.tempConnector = null;
+      this.engine.markDirty();
+    }
+
+    if (this.isDraggingObject) {
+      this.isDraggingObject = false;
+      this.dragStartPositions = null;
+      this.engine.saveState();
+    }
 
     if (this.currentDrawingObject) {
       // 1. AI Formula Rejimi faol bo'lsa: formulani fonda tahlil qilish
@@ -607,6 +789,11 @@ class ToolManager {
     this.textInput.focus();
     this.textInput.select();
 
+    // Smartboard virtual klaviaturasini ochish
+    if (window.smartboard && window.smartboard.keyboard && document.body.classList.contains('smartboard-mode')) {
+      window.smartboard.keyboard.openFor(this.textInput);
+    }
+
     const commit = () => {
       if (this.activeTextObj) {
         this.activeTextObj.text = this.textInput.value.trim() || ' ';
@@ -614,6 +801,9 @@ class ToolManager {
         this.activeTextObj = null;
       }
       this.textOverlay.classList.add('hidden');
+      if (window.smartboard && window.smartboard.keyboard) {
+        window.smartboard.keyboard.close();
+      }
       window.removeEventListener('pointerdown', handleOutside);
     };
 
@@ -863,9 +1053,54 @@ class ToolManager {
 
       // O'chirish (Delete / Backspace)
       if (e.key === 'Delete' || e.key === 'Backspace') {
-        if (this.engine.selectedObject) {
-          this.engine.removeObject(this.engine.selectedObject);
+        if (this.engine.selectedObjects && this.engine.selectedObjects.length > 0) {
+          e.preventDefault();
+          this.engine.deleteSelected();
         }
+      }
+
+      // Ctrl+A: Barcha elementlarni tanlash
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        this.engine.selectAll();
+      }
+
+      // Ctrl+C: Nusxalash
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+        e.preventDefault();
+        this.engine.copySelected();
+      }
+
+      // Ctrl+V: Qo'yish
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+        if (this.currentTool !== 'text') {
+          e.preventDefault();
+          this.engine.paste();
+        }
+      }
+
+      // Ctrl+D: Dublikat qilish
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+        e.preventDefault();
+        this.engine.duplicateSelected();
+      }
+
+      // Ctrl+L: Qulflash / Qulfdan chiqarish
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+        e.preventDefault();
+        this.engine.toggleLockSelected();
+      }
+
+      // ]: Oldinga chiqarish
+      if (e.key === ']' && !e.ctrlKey) {
+        e.preventDefault();
+        this.engine.bringToFront();
+      }
+
+      // [: Orqaga yuborish
+      if (e.key === '[' && !e.ctrlKey) {
+        e.preventDefault();
+        this.engine.sendToBack();
       }
 
       // Alt+F: AI Formula Rejimini yoqish/o'chirish
@@ -884,8 +1119,12 @@ class ToolManager {
         }
       }
 
-      // Escape: Formulani bekor qilish
+      // Escape: Formulani yoki menyuni yopish
       if (e.key === 'Escape') {
+        const ctxMenu = document.getElementById('boardContextMenu');
+        if (ctxMenu && !ctxMenu.classList.contains('hidden')) {
+          ctxMenu.classList.add('hidden');
+        }
         if (this.formulaLiveBadge && !this.formulaLiveBadge.classList.contains('hidden')) {
           this.dismissFormulaSession();
           return;
@@ -902,6 +1141,7 @@ class ToolManager {
       else if (key === 's') this.setTool(this.currentShape || 'shape_rect');
       else if (key === 't') this.setTool('text');
       else if (key === 'n') this.setTool('sticky');
+      else if (key === 'c' && !e.ctrlKey) this.setTool('connector');
       else if (key === 'f') document.getElementById('btnFormulaTool')?.click();
       else if (key === 'l') this.setTool('laser');
     });
@@ -912,6 +1152,104 @@ class ToolManager {
         this.updateViewportCursor();
       }
     });
+  }
+
+  /* ==========================================================================
+     O'NG KLIK KONTEKST MENYUSI (RIGHT CLICK CONTEXT MENU)
+     ========================================================================== */
+  bindContextMenuEvents() {
+    const menu = document.getElementById('boardContextMenu');
+    if (!menu) return;
+
+    // Menyu elementlari
+    document.getElementById('ctxCopy')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.copySelected();
+    });
+
+    document.getElementById('ctxPaste')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.paste();
+    });
+
+    document.getElementById('ctxDuplicate')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.duplicateSelected();
+    });
+
+    document.getElementById('ctxBringToFront')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.bringToFront();
+    });
+
+    document.getElementById('ctxSendToBack')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.sendToBack();
+    });
+
+    document.getElementById('ctxLock')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.toggleLockSelected();
+    });
+
+    document.getElementById('ctxDelete')?.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      this.engine.deleteSelected();
+    });
+
+    // Tashqariga bosilganda kontekst menyuni yopish
+    window.addEventListener('pointerdown', (e) => {
+      if (menu && !menu.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+  }
+
+  onContextMenu(e) {
+    e.preventDefault();
+    const curr = this.engine.screenToWorld(e.clientX, e.clientY);
+    const hit = this.engine.hitTest(curr.x, curr.y);
+
+    if (hit) {
+      if (!this.engine.selectedObjects.includes(hit)) {
+        this.engine.selectObject(hit, false);
+      }
+    }
+
+    const menu = document.getElementById('boardContextMenu');
+    if (!menu) return;
+
+    const hasSelection = this.engine.selectedObjects && this.engine.selectedObjects.length > 0;
+    const isLocked = hasSelection && this.engine.selectedObjects.every(o => o.locked);
+    const lockIcon = document.getElementById('ctxLockIcon');
+    const lockLabel = document.getElementById('ctxLockLabel');
+    if (lockIcon && lockLabel) {
+      lockIcon.textContent = isLocked ? '🔓' : '🔒';
+      lockLabel.textContent = isLocked ? 'Qulfdan ochish' : 'Qulflash';
+    }
+
+    const ctxCopy = document.getElementById('ctxCopy');
+    const ctxDuplicate = document.getElementById('ctxDuplicate');
+    const ctxBringToFront = document.getElementById('ctxBringToFront');
+    const ctxSendToBack = document.getElementById('ctxSendToBack');
+    const ctxLock = document.getElementById('ctxLock');
+    const ctxDelete = document.getElementById('ctxDelete');
+
+    [ctxCopy, ctxDuplicate, ctxBringToFront, ctxSendToBack, ctxLock, ctxDelete].forEach(item => {
+      if (item) item.classList.toggle('disabled', !hasSelection);
+    });
+
+    menu.classList.remove('hidden');
+
+    const menuW = 210;
+    const menuH = 260;
+    let posX = e.clientX;
+    let posY = e.clientY;
+    if (posX + menuW > window.innerWidth) posX = window.innerWidth - menuW - 10;
+    if (posY + menuH > window.innerHeight) posY = window.innerHeight - menuH - 10;
+
+    menu.style.left = `${posX}px`;
+    menu.style.top = `${posY}px`;
   }
 
   /* ==========================================================================
