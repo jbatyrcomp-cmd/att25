@@ -25,6 +25,30 @@
           crossorigin="anonymous"
           referrerpolicy="no-referrer"></script>
 
+  <!-- PDF.js for rendering and extracting PDF pages and text -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
+          integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+
+  <!-- Mammoth.js for Word (.docx) documents conversion -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"
+          integrity="sha384-nFoSjZIoH3CCp8W639jJyQkuPHinJ2NHe7on1xvlUA7SuGfJAfvMldrsoAVm6ECz"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+
+  <!-- SheetJS (xlsx) for Excel (.xlsx, .xls, .csv) spreadsheets -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
+          integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+
+  <!-- JSZip for PowerPoint (.pptx) zip extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+          integrity="sha384-+mbV2IY1Zk/X1p/nWllGySJSUN8uMs+gUAN10Or95UBH0fpj6GfKgPmgC5EXieXG"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+
   <link rel="stylesheet" href="css/style.css?v=4">
   <meta name="theme-color" content="#0F172A">
 </head>
@@ -103,6 +127,11 @@
           <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
       </button>
+      <button id="btnHeaderPresent" class="quick-icon-btn btn-present-highlight" title="To'g'ridan-to'g'ri Namoyish (Slayd-shou - F5)">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+      </button>
       <button id="btnBoardFullscreen" class="quick-icon-btn" title="To'liq Ekran (Fullscreen - F11)">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
@@ -167,6 +196,29 @@
       <!-- 3. Loyiha va Fayl amallari -->
       <div class="menu-section">
         <div class="menu-section-title">Loyiha & Fayllar</div>
+        <button id="menuBtnDirectPresent" class="menu-action-item doc-import-highlight" style="margin-bottom: 8px;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <div class="menu-item-text">
+            <strong>To'g'ridan-to'g'ri Namoyish (Slayd-shou)</strong>
+            <span>Hujjat yoki doskani taqdimot qilish (F5)</span>
+          </div>
+          <span class="menu-badge-neon" style="background: rgba(0, 255, 135, 0.2); color: #00FF87; border-color: rgba(0, 255, 135, 0.4);">F5</span>
+        </button>
+        <button id="menuBtnImportDoc" class="menu-action-item" style="margin-bottom: 8px;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+          <div class="menu-item-text">
+            <strong>Hujjat Import Qilish</strong>
+            <span>PDF, Word (DOCX), Excel, PPTX, TXT</span>
+          </div>
+          <span class="menu-badge-neon" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8; border-color: rgba(56, 189, 248, 0.4);">DOCS</span>
+        </button>
         <div class="menu-grid-2">
           <button id="menuBtnTemplates" class="menu-card-btn">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -421,6 +473,16 @@
 
     <div class="toolbar-divider"></div>
 
+    <!-- Smart AI Assistent (Drawer) -->
+    <button class="tool-btn ai-tool-btn" id="btnToggleAi" title="Smart AI Assistent (Ctrl+I)">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+      <span class="tool-shortcut">AI</span>
+    </button>
+
+    <div class="toolbar-divider"></div>
+
     <!-- Maxsus / Qo'shimcha Asboblar Popoveri (Qo'shimcha vositalar yagona tugma ostida) -->
     <div class="tool-popover-anchor" id="moreToolsAnchor">
       <button class="tool-btn more-tools-btn" id="btnMoreTools" title="Qo'shimcha & Maxsus Vositalar (+)">
@@ -509,6 +571,25 @@
             <line x1="15" y1="3" x2="15" y2="21"/>
           </svg>
           <span>Taqqoslovchi Jadvallar</span>
+        </button>
+
+        <!-- To'g'ridan-to'g'ri Namoyish (Presenter Mode - F5) -->
+        <button class="popover-item tool-btn-item" id="btnDirectPresentTool" title="To'g'ridan-to'g'ri Namoyish (Slayd-shou - F5)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          <span>Namoyish Rejimi (F5)</span>
+        </button>
+
+        <!-- Hujjat O'qish va Import (PDF, DOCX, XLSX, PPTX) -->
+        <button class="popover-item tool-btn-item" id="btnDocumentImportTool" title="Hujjat Yuklash (PDF, DOCX, XLSX, PPTX, TXT)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+          <span>Hujjat Import (PDF, Office)</span>
         </button>
 
         <!-- Tarmoq Tugunlari (ATT-25 Network Nodes) -->
@@ -1419,6 +1500,155 @@ else:
   </div>
 
   <!-- ==========================================================================
+       10d. HUJJATLARNI O'QISH VA TAHLIL MODALI (DOCUMENT IMPORT & READER MODAL)
+       ========================================================================== -->
+  <div class="modal-backdrop hidden" id="documentImportModal" role="dialog" aria-modal="true" aria-labelledby="documentImportModalTitle">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-pill">HUJJAT &amp; OFIS</span>
+          <h2 id="documentImportModalTitle">Hujjatlarni O'qish va Tahlil Qilish</h2>
+        </div>
+        <button class="modal-close-btn" id="btnCloseDocImport">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Drag & Drop Zone -->
+        <div class="doc-drop-zone" id="docDropZone">
+          <input type="file" id="docFileInput" class="hidden" accept=".pdf,.docx,.xlsx,.xls,.csv,.pptx,.txt,.md">
+          <div class="doc-drop-icon">
+            <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="M12 18v-6m-3 3l3-3 3 3"/>
+            </svg>
+          </div>
+          <div class="doc-drop-text">
+            <strong>Faylni shu yerga sudrab tashlang yoki <span class="doc-browse-link">tanlang</span></strong>
+            <p>PDF, Word (.docx), Excel (.xlsx, .csv), PowerPoint (.pptx), TXT va Markdown</p>
+          </div>
+          <div class="doc-format-badges">
+            <span class="badge-pdf">PDF</span>
+            <span class="badge-docx">DOCX</span>
+            <span class="badge-xlsx">XLSX</span>
+            <span class="badge-pptx">PPTX</span>
+            <span class="badge-csv">CSV</span>
+            <span class="badge-txt">TXT</span>
+          </div>
+        </div>
+
+        <!-- Progress / Loader Box -->
+        <div id="docLoadingBox" class="doc-loading-box hidden">
+          <div class="doc-spinner"></div>
+          <span id="docLoadingText">Hujjat tahlil qilinmoqda, iltimos kuting...</span>
+        </div>
+
+        <!-- Parsed Document Preview Section -->
+        <div id="docPreviewSection" class="doc-preview-section hidden">
+          <div class="doc-info-bar">
+            <div class="doc-info-main">
+              <div class="doc-type-icon" id="docPreviewTypeIcon">📄</div>
+              <div>
+                <h4 id="docPreviewFileName">fayl_nomi.pdf</h4>
+                <div class="doc-meta-tags">
+                  <span id="docPreviewMetaPages">0 sahifa</span>
+                  <span id="docPreviewMetaSize">0 KB</span>
+                  <span id="docPreviewMetaChars">0 belgi</span>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button id="btnDocDirectPresentHeader" class="action-pill-btn hero-present-btn" style="background: linear-gradient(135deg, rgba(0,255,135,0.25), rgba(56,189,248,0.25)); border: 1px solid rgba(0,255,135,0.5); color: #00FF87; font-weight: 700; padding: 6px 14px; font-size: 11px;">▶️ To'g'ridan-to'g'ri Namoyish</button>
+              <button id="btnDocChangeFile" class="action-pill-btn" style="padding: 6px 12px; font-size: 11px;">Boshqa fayl</button>
+            </div>
+          </div>
+
+          <!-- Document Snippet or Thumbnail Previews -->
+          <div class="doc-content-preview-tabs">
+            <button class="doc-tab-btn active" data-doctab="preview">👁️ Ko'rinish &amp; Matn</button>
+            <button class="doc-tab-btn" data-doctab="actions">⚡ Amallar &amp; AI</button>
+          </div>
+
+          <div class="doc-tab-content active" id="docTabPreview">
+            <div id="docThumbnailGrid" class="doc-thumb-grid"></div>
+            <div id="docTextPreviewBox" class="doc-text-preview-box"></div>
+          </div>
+
+          <div class="doc-tab-content" id="docTabActions">
+            <div class="doc-actions-grid">
+              <!-- TO'G'RIDAN-TO'G'RI NAMOYISH (HERO ACTION) -->
+              <div class="doc-action-card hero-present-card" id="btnActionDirectPresent">
+                <div class="doc-action-icon">▶️</div>
+                <div class="doc-action-details">
+                  <h5>To'g'ridan-to'g'ri Namoyish Qilish (Slayd-shou)</h5>
+                  <p>Hujjatni to'liq ekranda ochish, slaydlar ustiga chizish, lazer va AI tushuntirish bilan namoyish etish</p>
+                </div>
+              </div>
+
+              <!-- Doskaga joylash variantlari -->
+              <div class="doc-action-card" id="btnActionInsertCurrentBoard">
+                <div class="doc-action-icon">🖼️</div>
+                <div class="doc-action-details">
+                  <h5>Doskaga Slayd / Karta Qilib Joylash</h5>
+                  <p>Sahifalar yoki slaydlarni joriy doskaga tartibli panjara qilib joylashtiradi</p>
+                </div>
+              </div>
+
+              <div class="doc-action-card" id="btnActionInsertMultiPage">
+                <div class="doc-action-icon">📑</div>
+                <div class="doc-action-details">
+                  <h5>Ko'p Sahifali Doskaga Import (Multi-Page)</h5>
+                  <p>Har bir sahifa yoki slaydni doskaning alohida yangi sahifasiga o'tkazadi</p>
+                </div>
+              </div>
+
+              <div class="doc-action-card" id="btnActionInsertStickyCluster">
+                <div class="doc-action-icon">📌</div>
+                <div class="doc-action-details">
+                  <h5>Bo'limlar va Stikerlar Klasteri</h5>
+                  <p>Word yoki matn bo'limlarini sarlavhalari bilan rang-barang stikerlarga aylantiradi</p>
+                </div>
+              </div>
+
+              <div class="doc-action-card" id="btnActionInsertTable">
+                <div class="doc-action-icon">📊</div>
+                <div class="doc-action-details">
+                  <h5>Doskaga Jadval Sifatida Chizish</h5>
+                  <p>Excel / CSV jadvallarini chiroyli vektorli taqqoslash jadvali sifatida joylaydi</p>
+                </div>
+              </div>
+
+              <!-- AI Amallari -->
+              <div class="doc-action-card ai-glow" id="btnActionAiSummarize">
+                <div class="doc-action-icon">🪄</div>
+                <div class="doc-action-details">
+                  <h5>AI Konspekt &amp; Tushuntirish</h5>
+                  <p>Hujjatning eng muhim g'oyalarini AI orqali konspekt qilib stikerga yozadi</p>
+                </div>
+              </div>
+
+              <div class="doc-action-card ai-glow" id="btnActionAiMindmap">
+                <div class="doc-action-icon">🧠</div>
+                <div class="doc-action-details">
+                  <h5>AI Mindmap &amp; Sxema Chizish</h5>
+                  <p>Hujjat mavzusi bo'yicha bog'langan aqliy xarita (mindmap) generatsiya qiladi</p>
+                </div>
+              </div>
+
+              <div class="doc-action-card ai-glow" id="btnActionAiQuiz">
+                <div class="doc-action-icon">❓</div>
+                <div class="doc-action-details">
+                  <h5>AI Test Savollari (Quiz)</h5>
+                  <p>Hujjat asosida talabalarga bilim tekshiruvchi interaktiv test kartochkasi yaratadi</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        10d. SUZUVCHI SELECTION AI TEZKOR BUYRUQLAR BAR (SELECTION FLOATING BAR)
        ========================================================================== -->
   <div class="selection-floating-bar" id="selectionFloatingBar">
@@ -1548,6 +1778,186 @@ else:
        ========================================================================== -->
   <div id="virtualKeyboardContainer" class="virtual-keyboard-container hidden"></div>
 
+  <!-- ==========================================================================
+       19b. TO'G'RIDAN-TO'G'RI NAMOYISH REJIMI (INTERACTIVE PRESENTATION MODE)
+       ========================================================================== -->
+  <div id="presentationOverlay" class="presentation-overlay hidden" tabindex="-1">
+    <!-- Yuqori nozik ma'lumot paneli (Top Info Bar) -->
+    <div class="presenter-top-bar">
+      <div class="presenter-doc-info">
+        <span class="presenter-badge" id="presenterDocBadge">PDF NAMOYISH</span>
+        <span class="presenter-title" id="presenterDocTitle">Hujjat nomi</span>
+      </div>
+      <div class="presenter-top-actions">
+        <button class="presenter-top-btn" id="btnPresenterAiExplain" title="AI Slayd Konspekti &amp; Izohi">
+          <span>🧠 AI Izoh</span>
+        </button>
+        <button class="presenter-top-btn" id="btnPresenterSendToBoard" title="Ushbu slaydni doskaga saqlash">
+          <span>📌 Doskaga Saqlash</span>
+        </button>
+        <button class="presenter-top-btn" id="btnPresenterFullscreen" title="To'liq Ekran (F)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+        </button>
+        <button class="presenter-close-btn" id="btnClosePresenter" title="Namoyishni yopish (Esc)">&times;</button>
+      </div>
+    </div>
+
+    <!-- Asosiy Slayd Ko'rish Maydoni (Main Slide Stage) -->
+    <div class="presenter-stage" id="presenterStage">
+      <!-- Slayd kontenti va ustiga chizish qatlami -->
+      <div class="presenter-slide-viewport" id="presenterSlideViewport">
+        <!-- PDF / Image Slide -->
+        <img id="presenterSlideImg" class="presenter-slide-img hidden" alt="Slayd">
+        <!-- DOCX / PPTX / Text / Table Rich Card Slide -->
+        <div id="presenterSlideCard" class="presenter-slide-card hidden"></div>
+        <!-- Slayd ustiga chizish qatlami (Annotation Canvas) -->
+        <canvas id="presenterDrawCanvas" class="presenter-draw-canvas"></canvas>
+        <!-- Lazer ko'rsatkich nuqtasi -->
+        <div id="presenterLaserDot" class="presenter-laser-dot hidden"></div>
+      </div>
+
+      <!-- Yon tarafdagi AI Izohlar Paneli (Floating AI Slide Insights) -->
+      <aside id="presenterAiPanel" class="presenter-ai-panel hidden">
+        <div class="presenter-ai-header">
+          <div class="presenter-ai-title">
+            <span>🧠</span>
+            <h5>AI Slayd Izohi</h5>
+          </div>
+          <button id="btnClosePresenterAi" class="presenter-ai-close">&times;</button>
+        </div>
+        <div class="presenter-ai-body" id="presenterAiBody">
+          <div class="presenter-ai-loading hidden" id="presenterAiLoading">
+            <div class="doc-spinner"></div>
+            <span>AI slaydni tahlil qilmoqda...</span>
+          </div>
+          <div id="presenterAiContent" class="presenter-ai-content"></div>
+        </div>
+        <div class="presenter-ai-footer">
+          <button id="btnPresenterAiQuiz" class="presenter-ai-action-btn">❓ Slayd bo'yicha Test</button>
+          <button id="btnPresenterAiKeyPoints" class="presenter-ai-action-btn">💡 Asosiy Tezislar</button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Pastki Suzuvchi Taqdimotchi Paneli (Floating Presenter Toolbar) -->
+    <div class="presenter-bottom-bar" id="presenterBottomBar">
+      <div class="presenter-nav-group">
+        <button class="presenter-nav-btn" id="btnPresenterPrev" title="Oldingi Slayd (←, PageUp)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="presenter-counter-btn" id="btnPresenterCounter" title="Barcha slaydlarni ko'rish">
+          <span id="presenterPageNum">1</span> / <span id="presenterTotalPages">1</span>
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="presenter-nav-btn" id="btnPresenterNext" title="Keyingi Slayd (→, Space)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div class="presenter-bar-divider"></div>
+
+      <!-- Chizish va Lazer Asboblari -->
+      <div class="presenter-tools-group">
+        <button class="presenter-tool-btn active" data-ptool="cursor" id="btnPToolCursor" title="Kursor / Ko'rsatkich (V)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7 18 3-7 7-3L3 3z"/></svg>
+        </button>
+        <button class="presenter-tool-btn" data-ptool="laser" id="btnPToolLaser" title="Lazer Ko'rsatkich (L)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" fill="#F43F5E"/>
+            <line x1="12" y1="2" x2="12" y2="6"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="6" y2="12"/>
+            <line x1="18" y1="12" x2="22" y2="12"/>
+          </svg>
+        </button>
+        <button class="presenter-tool-btn" data-ptool="pen" id="btnPToolPen" title="Slayd ustiga chizish (P)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+        </button>
+        <button class="presenter-tool-btn" data-ptool="highlighter" id="btnPToolHighlighter" title="Matnlarni belgilash (H)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4l5 5L8 21H3v-5L15 4z"/></svg>
+        </button>
+
+        <!-- Rang tanlash -->
+        <div class="presenter-color-picker" id="presenterColorPicker">
+          <button class="pcolor-dot active" data-color="#F43F5E" style="background: #F43F5E;" title="Qizil"></button>
+          <button class="pcolor-dot" data-color="#F59E0B" style="background: #F59E0B;" title="Sariq"></button>
+          <button class="pcolor-dot" data-color="#00FF87" style="background: #00FF87;" title="Yashil"></button>
+          <button class="pcolor-dot" data-color="#38BDF8" style="background: #38BDF8;" title="Moviy"></button>
+          <button class="pcolor-dot" data-color="#FFFFFF" style="background: #FFFFFF;" title="Oq"></button>
+        </div>
+
+        <button class="presenter-tool-btn" id="btnPresenterClearDraw" title="Slayd chizmalarini tozalash (C)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+
+      <div class="presenter-bar-divider"></div>
+
+      <!-- Slaydlar galereyasi tugmasi -->
+      <div class="presenter-quick-group">
+        <button class="presenter-quick-btn" id="btnPresenterToggleThumbnails" title="Slaydlar lentalari">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Slaydlar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slaydlar Lentasi / Miniaturalar paneli (Slide Drawer) -->
+    <div id="presenterThumbnailDrawer" class="presenter-thumb-drawer hidden">
+      <div class="presenter-thumb-drawer-header">
+        <h5>Barcha Slaydlar (<span id="presenterThumbCount">0</span>)</h5>
+        <button id="btnClosePresenterThumbDrawer">&times;</button>
+      </div>
+      <div class="presenter-thumb-drawer-grid" id="presenterThumbGrid"></div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       20b. ODDIY DOSKA NAMOYISHI SUZUVCHI PANELI (WHITEBOARD PRESENTER BAR)
+       ========================================================================== -->
+  <div id="boardPresenterBar" class="board-presenter-bar hidden">
+    <div class="presenter-nav-group">
+      <button class="presenter-nav-btn" id="btnBoardPresPrev" title="Oldingi sahifa (←, PageUp)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="board-pres-page-label">
+        <span id="boardPresPageNum">1</span> / <span id="boardPresTotalPages">1</span> Sahifa
+      </div>
+      <button class="presenter-nav-btn" id="btnBoardPresNext" title="Keyingi sahifa (→, Space)">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <div class="presenter-bar-divider"></div>
+
+    <div class="presenter-tools-group">
+      <button class="presenter-tool-btn active" id="btnBoardPresLaser" title="Lazer Ko'rsatkich (L)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3" fill="#F43F5E"/>
+          <line x1="12" y1="2" x2="12" y2="6"/>
+          <line x1="12" y1="18" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="6" y2="12"/>
+          <line x1="18" y1="12" x2="22" y2="12"/>
+        </svg>
+      </button>
+      <button class="presenter-tool-btn" id="btnBoardPresPen" title="Doskaga Chizish (P)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+      </button>
+      <button class="presenter-tool-btn" id="btnBoardPresFit" title="Ekranga moslashtirish (Zoom to Fit)">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </button>
+    </div>
+
+    <div class="presenter-bar-divider"></div>
+
+    <button class="board-pres-exit-btn" id="btnBoardPresExit" title="Namoyishdan chiqish (Esc)">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <span>Chiqish (Esc)</span>
+    </button>
+  </div>
+
   <!-- Toast Bildirishnomalar -->
   <div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>
 
@@ -1561,6 +1971,7 @@ else:
   <script src="js/handwriting-ocr.js"></script>
   <script src="js/subnet-calculator.js"></script>
   <script src="js/comparison-tables.js"></script>
+  <script src="js/document-reader.js"></script>
   <script src="js/ai-engine.js?v=3"></script>
   <script src="js/voice-assistant.js?v=3"></script>
   <script src="js/app.js?v=3"></script>

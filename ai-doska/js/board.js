@@ -104,6 +104,43 @@ class WhiteboardEngine {
     this.zoom = 1.0;
   }
 
+  zoomToFit(padding = 50) {
+    if (!this.objects || this.objects.length === 0) {
+      this.panTo(0, 0, 1.0);
+      return;
+    }
+
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    this.objects.forEach(obj => {
+      const b = this.getObjectBounds(obj);
+      if (b) {
+        if (b.x < minX) minX = b.x;
+        if (b.y < minY) minY = b.y;
+        if (b.x + b.width > maxX) maxX = b.x + b.width;
+        if (b.y + b.height > maxY) maxY = b.y + b.height;
+      }
+    });
+
+    if (minX === Infinity || maxX === -Infinity) {
+      this.panTo(0, 0, 1.0);
+      return;
+    }
+
+    const contentW = maxX - minX;
+    const contentH = maxY - minY;
+    const centerX = minX + contentW / 2;
+    const centerY = minY + contentH / 2;
+
+    const availableW = this.width - padding * 2;
+    const availableH = this.height - padding * 2;
+
+    const scaleX = availableW / (contentW || 1);
+    const scaleY = availableH / (contentH || 1);
+    const targetZoom = Math.max(this.minZoom, Math.min(1.4, Math.min(scaleX, scaleY)));
+
+    this.panTo(centerX, centerY, targetZoom);
+  }
+
   /* ==========================================================================
      KOORDINATA O'ZGARISHLARI (Screen <-> World)
      ========================================================================== */

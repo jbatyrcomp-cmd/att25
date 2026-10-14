@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const handwritingOCR = new HandwritingOCR(engine, aiEngine);
   const voiceAssistant = new VoiceAssistant(aiEngine, mathSolver, engine);
   const smartboard = new SmartboardManager(engine, toolManager);
+  const documentReader = (typeof DocumentReader !== 'undefined') ? new DocumentReader(engine, aiEngine) : null;
 
   // Global ob'ektlar (debug va qulaylik uchun)
   window.boardEngine = engine;
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.handwritingOCR = handwritingOCR;
   window.voiceAssistant = voiceAssistant;
   window.smartboard = smartboard;
+  window.documentReader = documentReader;
 
   // 2. Mahalliy xotiradan yuklash (yoki boshlang'ich shablon)
   const hasSaved = engine.loadFromStorage();
@@ -824,6 +826,141 @@ document.addEventListener('DOMContentLoaded', () => {
       engine.render();
       comparisonModal.classList.add('hidden');
       toast("📊 Taqqoslash jadvali doskaga muvaffaqiyatli joylashtirildi!");
+    });
+  }
+
+  /* ==========================================================================
+     HUJJATLARNI O'QISH VA TO'G'RIDAN-TO'G'RI NAMOYISH (DOCUMENT & PRESENTER)
+     ========================================================================== */
+  const btnDocumentImportTool = document.getElementById('btnDocumentImportTool');
+  const menuBtnImportDoc = document.getElementById('menuBtnImportDoc');
+  const btnHeaderPresent = document.getElementById('btnHeaderPresent');
+  const menuBtnDirectPresent = document.getElementById('menuBtnDirectPresent');
+  const btnDirectPresentTool = document.getElementById('btnDirectPresentTool');
+
+  // Oddiy Doska Namoyishi elementlari
+  const boardPresenterBar = document.getElementById('boardPresenterBar');
+  const btnBoardPresPrev = document.getElementById('btnBoardPresPrev');
+  const btnBoardPresNext = document.getElementById('btnBoardPresNext');
+  const boardPresPageNum = document.getElementById('boardPresPageNum');
+  const boardPresTotalPages = document.getElementById('boardPresTotalPages');
+  const btnBoardPresLaser = document.getElementById('btnBoardPresLaser');
+  const btnBoardPresPen = document.getElementById('btnBoardPresPen');
+  const btnBoardPresFit = document.getElementById('btnBoardPresFit');
+  const btnBoardPresExit = document.getElementById('btnBoardPresExit');
+
+  let isBoardPresentationActive = false;
+  let prevToolBeforePresentation = 'select';
+
+  function updateBoardPresPageNumbers() {
+    if (!engine || !engine.pages) return;
+    const currentIdx = engine.pages.findIndex(p => p.id === engine.currentPageId);
+    if (boardPresPageNum) boardPresPageNum.textContent = String(currentIdx >= 0 ? currentIdx + 1 : 1);
+    if (boardPresTotalPages) boardPresTotalPages.textContent = String(engine.pages.length);
+  }
+
+  function startBoardPresentation() {
+    isBoardPresentationActive = true;
+    prevToolBeforePresentation = toolManager.currentTool;
+
+    document.body.classList.add('board-presentation-active');
+    boardPresenterBar?.classList.remove('hidden');
+
+    updateBoardPresPageNumbers();
+    toolManager.setTool('laser');
+    btnBoardPresLaser?.classList.add('active');
+    btnBoardPresPen?.classList.remove('active');
+
+    // Doskani ekranga moslashtirish (Zoom to Fit)
+    if (typeof engine.zoomToFit === 'function') {
+      engine.zoomToFit(60);
+    }
+
+    toast("▶️ Doska Namoyishi (Lazer: L, Sahifalar: →, Chiqish: Esc)");
+  }
+
+  function exitBoardPresentation() {
+    isBoardPresentationActive = false;
+    document.body.classList.remove('board-presentation-active');
+    boardPresenterBar?.classList.add('hidden');
+    toolManager.setTool(prevToolBeforePresentation || 'select');
+    toast("Namoyish yakunlandi");
+  }
+
+  function triggerDirectPresentation() {
+    // 1. Agar yuklangan hujjat bo'lsa — hujjat namoyishini ochadi
+    if (window.documentReader && window.documentReader.currentDoc) {
+      window.documentReader.startPresentation(0);
+      return;
+    }
+
+    // 2. Agar hujjat bo'lmasa — to'g'ridan-to'g'ri doskani namoyish qiladi!
+    startBoardPresentation();
+  }
+
+  btnBoardPresExit?.addEventListener('click', exitBoardPresentation);
+
+  btnBoardPresPrev?.addEventListener('click', () => {
+    if (!engine || !engine.pages) return;
+    const currentIdx = engine.pages.findIndex(p => p.id === engine.currentPageId);
+    if (currentIdx > 0) {
+      engine.switchPage(engine.pages[currentIdx - 1].id);
+      updateBoardPresPageNumbers();
+      engine.zoomToFit?.(60);
+    }
+  });
+
+  btnBoardPresNext?.addEventListener('click', () => {
+    if (!engine || !engine.pages) return;
+    const currentIdx = engine.pages.findIndex(p => p.id === engine.currentPageId);
+    if (currentIdx < engine.pages.length - 1) {
+      engine.switchPage(engine.pages[currentIdx + 1].id);
+      updateBoardPresPageNumbers();
+      engine.zoomToFit?.(60);
+    }
+  });
+
+  btnBoardPresLaser?.addEventListener('click', () => {
+    toolManager.setTool('laser');
+    btnBoardPresLaser.classList.add('active');
+    btnBoardPresPen?.classList.remove('active');
+  });
+
+  btnBoardPresPen?.addEventListener('click', () => {
+    toolManager.setTool('pen');
+    btnBoardPresPen.classList.add('active');
+    btnBoardPresLaser?.classList.remove('active');
+  });
+
+  btnBoardPresFit?.addEventListener('click', () => {
+    engine.zoomToFit?.(60);
+  });
+
+  btnHeaderPresent?.addEventListener('click', triggerDirectPresentation);
+  menuBtnDirectPresent?.addEventListener('click', () => {
+    closeMainMenu();
+    triggerDirectPresentation();
+  });
+  btnDirectPresentTool?.addEventListener('click', () => {
+    document.getElementById('moreToolsAnchor')?.classList.remove('open');
+    triggerDirectPresentation();
+  });
+
+  if (btnDocumentImportTool) {
+    btnDocumentImportTool.addEventListener('click', () => {
+      document.getElementById('moreToolsAnchor')?.classList.remove('open');
+      if (window.documentReader) {
+        window.documentReader.openModal();
+      }
+    });
+  }
+
+  if (menuBtnImportDoc) {
+    menuBtnImportDoc.addEventListener('click', () => {
+      closeMainMenu();
+      if (window.documentReader) {
+        window.documentReader.openModal();
+      }
     });
   }
 
@@ -1799,6 +1936,51 @@ document.addEventListener('DOMContentLoaded', () => {
              (aiDrawer && aiDrawer.classList.contains('open'));
     };
 
+    // F5: To'g'ridan-to'g'ri Namoyish (Presenter Mode)
+    if (e.key === 'F5') {
+      e.preventDefault();
+      triggerDirectPresentation();
+      return;
+    }
+
+    // Doska namoyishi faol paytidagi tezkor tugmalar
+    if (isBoardPresentationActive) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        exitBoardPresentation();
+        return;
+      }
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        btnBoardPresNext?.click();
+        return;
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        btnBoardPresPrev?.click();
+        return;
+      }
+      if (e.key.toLowerCase() === 'l') {
+        btnBoardPresLaser?.click();
+        return;
+      }
+      if (e.key.toLowerCase() === 'p') {
+        btnBoardPresPen?.click();
+        return;
+      }
+      if (e.key.toLowerCase() === 'f') {
+        btnBoardPresFit?.click();
+        return;
+      }
+    }
+
+    // Ctrl+O: Hujjat yuklash (Document Import) modali
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o') {
+      e.preventDefault();
+      btnDocumentImportTool?.click();
+      return;
+    }
+
     if (!e.ctrlKey && !e.metaKey && !e.altKey && !isAnyModalOpen()) {
       // G: 2D Funksiya grafigi modali
       if (e.key.toLowerCase() === 'g') {
@@ -1811,6 +1993,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // Q: Quiz kartochkasi modali
       else if (e.key.toLowerCase() === 'q') {
         btnQuizModalTool?.click();
+      }
+      // D: Hujjat import qilish modali
+      else if (e.key.toLowerCase() === 'd') {
+        btnDocumentImportTool?.click();
       }
     }
   });
