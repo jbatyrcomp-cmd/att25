@@ -16,6 +16,7 @@
     rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/att25-logo.svg">
   <meta name="theme-color" content="#070C09" id="themeMetaColor">
 
   <!-- Zero-FOUC Instant Theme & Accessibility Loader -->
@@ -80,9 +81,55 @@
     <div class="header-inner">
       <!-- ATT-25 Geometric Crest -->
       <a href="#bosh-sahifa" class="brand-crest">
-        <div class="crest-shield">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+        <div class="crest-shield" title="ATT-25 Emblemasi">
+          <svg class="att-logo-svg" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ATT-25 Logotipi">
+            <defs>
+              <linearGradient id="attHdrShieldBg" x1="32" y1="2" x2="32" y2="72" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0A2216"/>
+                <stop offset="50%" stop-color="#06150E"/>
+                <stop offset="100%" stop-color="#020805"/>
+              </linearGradient>
+              <linearGradient id="attHdrBorderGlow" x1="4" y1="2" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87"/>
+                <stop offset="45%" stop-color="#38EF7D"/>
+                <stop offset="80%" stop-color="#00F0FF"/>
+                <stop offset="100%" stop-color="#00A3FF"/>
+              </linearGradient>
+              <linearGradient id="attHdrCoreGrad" x1="16" y1="16" x2="48" y2="54" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87"/>
+                <stop offset="100%" stop-color="#00F0FF"/>
+              </linearGradient>
+              <radialGradient id="attHdrCoreBloom" cx="32" cy="36" r="22" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" stop-opacity="0.38"/>
+                <stop offset="55%" stop-color="#00F0FF" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#00FF87" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="attHdrNeonFilter" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <circle cx="32" cy="36" r="22" fill="url(#attHdrCoreBloom)" />
+            <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#attHdrShieldBg)" stroke="url(#attHdrBorderGlow)" stroke-width="2.2" stroke-linejoin="round" />
+            <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none" stroke="rgba(0, 255, 135, 0.25)" stroke-width="1" stroke-dasharray="4 2.5" />
+            <line x1="26" y1="8.5" x2="38" y2="8.5" stroke="#00FF87" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.8"/>
+            <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.8"/>
+            <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.07)" stroke="url(#attHdrCoreGrad)" stroke-width="2" stroke-linejoin="round" />
+            <path d="M 22.5 35.5 L 41.5 35.5" stroke="#00FF87" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M 27 35.5 L 27 47" stroke="url(#attHdrCoreGrad)" stroke-width="1.8" />
+            <path d="M 37 35.5 L 37 47" stroke="url(#attHdrCoreGrad)" stroke-width="1.8" />
+            <line x1="32" y1="17" x2="32" y2="55" stroke="url(#attHdrCoreGrad)" stroke-width="1.5" stroke-dasharray="3 2" />
+            <polygon points="32,31 36.5,35.5 32,40 27.5,35.5" fill="#00FF87" filter="url(#attHdrNeonFilter)" />
+            <circle cx="32" cy="35.5" r="1.2" fill="#031109" />
+            <circle cx="32" cy="17" r="2.8" fill="#00FF87" filter="url(#attHdrNeonFilter)" />
+            <circle cx="32" cy="17" r="1.2" fill="#FFFFFF" />
+            <circle cx="18" cy="47" r="2.5" fill="#00F0FF" />
+            <circle cx="18" cy="47" r="1" fill="#FFFFFF" />
+            <circle cx="46" cy="47" r="2.5" fill="#00FF87" />
+            <circle cx="46" cy="47" r="1" fill="#FFFFFF" />
+            <circle cx="32" cy="55" r="2.2" fill="#00F0FF" />
+            <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="brand-text">
@@ -1545,9 +1592,55 @@
       <div class="footer-top-grid">
         <div class="footer-brand-col">
           <div class="brand-crest">
-            <div class="crest-shield">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            <div class="crest-shield" title="ATT-25 Emblemasi">
+              <svg class="att-logo-svg" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ATT-25 Logotipi">
+                <defs>
+                  <linearGradient id="attFtrShieldBg" x1="32" y1="2" x2="32" y2="72" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#0A2216"/>
+                    <stop offset="50%" stop-color="#06150E"/>
+                    <stop offset="100%" stop-color="#020805"/>
+                  </linearGradient>
+                  <linearGradient id="attFtrBorderGlow" x1="4" y1="2" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#00FF87"/>
+                    <stop offset="45%" stop-color="#38EF7D"/>
+                    <stop offset="80%" stop-color="#00F0FF"/>
+                    <stop offset="100%" stop-color="#00A3FF"/>
+                  </linearGradient>
+                  <linearGradient id="attFtrCoreGrad" x1="16" y1="16" x2="48" y2="54" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#00FF87"/>
+                    <stop offset="100%" stop-color="#00F0FF"/>
+                  </linearGradient>
+                  <radialGradient id="attFtrCoreBloom" cx="32" cy="36" r="22" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#00FF87" stop-opacity="0.38"/>
+                    <stop offset="55%" stop-color="#00F0FF" stop-opacity="0.12"/>
+                    <stop offset="100%" stop-color="#00FF87" stop-opacity="0"/>
+                  </radialGradient>
+                  <filter id="attFtrNeonFilter" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                  </filter>
+                </defs>
+                <circle cx="32" cy="36" r="22" fill="url(#attFtrCoreBloom)" />
+                <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#attFtrShieldBg)" stroke="url(#attFtrBorderGlow)" stroke-width="2.2" stroke-linejoin="round" />
+                <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none" stroke="rgba(0, 255, 135, 0.25)" stroke-width="1" stroke-dasharray="4 2.5" />
+                <line x1="26" y1="8.5" x2="38" y2="8.5" stroke="#00FF87" stroke-width="1.8" stroke-linecap="round" />
+                <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.8"/>
+                <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.8"/>
+                <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.07)" stroke="url(#attFtrCoreGrad)" stroke-width="2" stroke-linejoin="round" />
+                <path d="M 22.5 35.5 L 41.5 35.5" stroke="#00FF87" stroke-width="2.2" stroke-linecap="round" />
+                <path d="M 27 35.5 L 27 47" stroke="url(#attFtrCoreGrad)" stroke-width="1.8" />
+                <path d="M 37 35.5 L 37 47" stroke="url(#attFtrCoreGrad)" stroke-width="1.8" />
+                <line x1="32" y1="17" x2="32" y2="55" stroke="url(#attFtrCoreGrad)" stroke-width="1.5" stroke-dasharray="3 2" />
+                <polygon points="32,31 36.5,35.5 32,40 27.5,35.5" fill="#00FF87" filter="url(#attFtrNeonFilter)" />
+                <circle cx="32" cy="35.5" r="1.2" fill="#031109" />
+                <circle cx="32" cy="17" r="2.8" fill="#00FF87" filter="url(#attFtrNeonFilter)" />
+                <circle cx="32" cy="17" r="1.2" fill="#FFFFFF" />
+                <circle cx="18" cy="47" r="2.5" fill="#00F0FF" />
+                <circle cx="18" cy="47" r="1" fill="#FFFFFF" />
+                <circle cx="46" cy="47" r="2.5" fill="#00FF87" />
+                <circle cx="46" cy="47" r="1" fill="#FFFFFF" />
+                <circle cx="32" cy="55" r="2.2" fill="#00F0FF" />
+                <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.5" stroke-linecap="round"/>
               </svg>
             </div>
             <div class="brand-text">
