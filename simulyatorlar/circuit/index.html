@@ -19,13 +19,69 @@
   <!-- Top Navigation & Toolbar -->
   <header id="topBar">
     <div class="brand-section">
-      <a href="../index.html" class="brand-badge" target="_top">
-        <div class="brand-logo-icon">
-          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <a href="../index.html" class="brand-badge" target="_top" title="ATT-25 Talabalar Portaliga Qaytish">
+        <div class="crest-shield" style="width:32px; height:37px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0;" title="ATT-25 Kiber-Emblemasi">
+          <svg class="att-logo-svg att-animated-logo" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg"
+            aria-label="ATT-25 Logotipi" style="width:100%; height:100%;">
+            <defs>
+              <linearGradient id="cirShieldBg" x1="32" y1="2" x2="32" y2="72" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0E2E1E" />
+                <stop offset="50%" stop-color="#071910" />
+                <stop offset="100%" stop-color="#020905" />
+              </linearGradient>
+              <linearGradient id="cirBorderGlow" x1="4" y1="2" x2="60" y2="72" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" />
+                <stop offset="35%" stop-color="#38EF7D" />
+                <stop offset="70%" stop-color="#00F0FF" />
+                <stop offset="100%" stop-color="#0088FF" />
+              </linearGradient>
+              <linearGradient id="cirCoreGrad" x1="16" y1="16" x2="48" y2="54" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" />
+                <stop offset="100%" stop-color="#00F0FF" />
+              </linearGradient>
+              <radialGradient id="cirCoreBloom" cx="32" cy="36" r="22" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" stop-opacity="0.5" />
+                <stop offset="50%" stop-color="#00F0FF" stop-opacity="0.18" />
+                <stop offset="100%" stop-color="#00FF87" stop-opacity="0" />
+              </radialGradient>
+              <filter id="cirNeonFilter" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="1.6" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            <circle cx="32" cy="36" r="22" fill="url(#cirCoreBloom)" />
+            <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#cirShieldBg)"
+              stroke="url(#cirBorderGlow)" stroke-width="2.3" stroke-linejoin="round" />
+            <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none"
+              stroke="rgba(0, 255, 135, 0.3)" stroke-width="1" stroke-dasharray="4 2.5" />
+            <circle class="logo-radar-ring" cx="32" cy="36" r="16" stroke="rgba(0, 240, 255, 0.55)" stroke-width="1.3"
+              stroke-dasharray="6 4 2 4" fill="none" />
+            <line x1="26" y1="8.5" x2="38" y2="8.5" stroke="#00FF87" stroke-width="2" stroke-linecap="round" />
+            <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.9" />
+            <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.9" />
+            <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.08)" stroke="url(#cirCoreGrad)"
+              stroke-width="2" stroke-linejoin="round" />
+            <path d="M 22.5 35.5 L 41.5 35.5" stroke="#00FF87" stroke-width="2.2" stroke-linecap="round" />
+            <path d="M 27 35.5 L 27 47" stroke="url(#cirCoreGrad)" stroke-width="1.8" />
+            <path d="M 37 35.5 L 37 47" stroke="url(#cirCoreGrad)" stroke-width="1.8" />
+            <line class="logo-photon-track" x1="32" y1="17" x2="32" y2="55" stroke="#00FF87" stroke-width="1.6" />
+            <g class="logo-core-pulse">
+              <polygon points="32,30.5 37,35.5 32,40.5 27,35.5" fill="#00FF87" filter="url(#cirNeonFilter)" />
+              <circle cx="32" cy="35.5" r="1.5" fill="#020C06" />
+            </g>
+            <circle cx="32" cy="17" r="3" fill="#00FF87" filter="url(#cirNeonFilter)" />
+            <circle cx="32" cy="17" r="1.3" fill="#FFFFFF" />
+            <circle cx="18" cy="47" r="2.6" fill="#00F0FF" />
+            <circle cx="18" cy="47" r="1" fill="#FFFFFF" />
+            <circle cx="46" cy="47" r="2.6" fill="#00FF87" />
+            <circle cx="46" cy="47" r="1" fill="#FFFFFF" />
+            <circle cx="32" cy="55" r="2.4" fill="#00F0FF" />
+            <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
         </div>
         <div>
           <div class="brand-title">ATT-25 <span>CIRCUIT LAB</span></div>
-          <span class="brand-subtitle">Sxemotexnika & 3D Mikroelektronika</span>
+          <span class="brand-subtitle">Talabalar Portali • Sxemotexnika & 3D Maket</span>
         </div>
       </a>
 

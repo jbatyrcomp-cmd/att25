@@ -4417,6 +4417,26 @@ body.board-presentation-active .minimal-header {
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
 }
 
+/* ATT-25 Animated Crest */
+.crest-shield {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+.crest-shield:hover {
+  transform: translateY(-1px) scale(1.05);
+  filter: drop-shadow(0 0 10px rgba(0, 255, 135, 0.6));
+}
+@keyframes attLogoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes attCorePulse { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px #00FF87); } 50% { transform: scale(1.18); filter: drop-shadow(0 0 10px #00F0FF); } }
+@keyframes attPhotonFlow { 0% { stroke-dashoffset: 24; } 100% { stroke-dashoffset: 0; } }
+.att-animated-logo .logo-radar-ring { transform-origin: 32px 36px; animation: attLogoSpin 12s linear infinite; }
+.att-animated-logo .logo-core-pulse { transform-origin: 32px 35.5px; animation: attCorePulse 2.4s ease-in-out infinite; }
+.att-animated-logo .logo-photon-track { stroke-dasharray: 4 6; animation: attPhotonFlow 1.8s linear infinite; }
+
+
 
 
 
