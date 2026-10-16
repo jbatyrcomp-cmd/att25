@@ -366,11 +366,11 @@
         <h2 class="section-title" data-i18n="curr.title">O‘quv Dasturi & Fan Modullari</h2>
       </div>
       <div class="section-filters" id="curriculumFilters">
-        <button class="filter-btn" data-semester="1">1-Semestr (6 ta)</button>
-        <button class="filter-btn" data-semester="2">2-Semestr (7 ta)</button>
-        <button class="filter-btn active" data-semester="3">3-Semestr (6 ta • Faol)</button>
-        <button class="filter-btn" data-semester="4">4-Semestr (7 ta)</button>
-        <button class="filter-btn" data-semester="all">Barchasi (26 ta fan)</button>
+        <button class="filter-btn" data-semester="1" data-i18n="curr.sem1">1-Semestr (6 ta)</button>
+        <button class="filter-btn" data-semester="2" data-i18n="curr.sem2">2-Semestr (7 ta)</button>
+        <button class="filter-btn active" data-semester="3" data-i18n="curr.sem3">3-Semestr (6 ta • Faol)</button>
+        <button class="filter-btn" data-semester="4" data-i18n="curr.sem4">4-Semestr (7 ta)</button>
+        <button class="filter-btn" data-semester="all" data-i18n="curr.sem_all">Barchasi (26 ta fan)</button>
       </div>
     </div>
 
@@ -969,10 +969,10 @@
         <h2 class="section-title" data-i18n="slides.title">Qo‘llanmali Taqdimotlar & Darsliklar</h2>
       </div>
       <div class="section-filters" id="docsFilters">
-        <button class="filter-btn active" data-doc-type="all">Barchasi</button>
-        <button class="filter-btn" data-doc-type="presentation">Taqdimotlar</button>
-        <button class="filter-btn" data-doc-type="lab">Laboratoriya</button>
-        <button class="filter-btn" data-doc-type="handbook">Qo‘llanmalar</button>
+        <button class="filter-btn active" data-doc-type="all" data-i18n="slides.all">Barchasi</button>
+        <button class="filter-btn" data-doc-type="presentation" data-i18n="slides.pres">Taqdimotlar</button>
+        <button class="filter-btn" data-doc-type="lab" data-i18n="slides.lab">Laboratoriya</button>
+        <button class="filter-btn" data-doc-type="handbook" data-i18n="slides.handbook">Qo‘llanmalar</button>
       </div>
     </div>
 
@@ -1122,9 +1122,9 @@
         <h2 class="section-title" data-i18n="media.title">Media Hub: Foto & Video Materiallar</h2>
       </div>
       <div class="section-filters" id="mediaFilterBtns">
-        <button class="filter-btn active" data-filter="all">Barchasi</button>
-        <button class="filter-btn" data-filter="video">Videolar</button>
-        <button class="filter-btn" data-filter="photo">Foto Galereya</button>
+        <button class="filter-btn active" data-filter="all" data-i18n="media.all">Barchasi</button>
+        <button class="filter-btn" data-filter="video" data-i18n="media.video">Videolar</button>
+        <button class="filter-btn" data-filter="photo" data-i18n="media.photo">Foto Galereya</button>
       </div>
     </div>
 
@@ -1361,7 +1361,7 @@
         <h2 class="section-title" data-i18n="news.title">IT & Sun'iy Intellekt Yangiliklari</h2>
       </div>
       <div class="section-filters" id="newsFilters">
-        <span style="font-family:var(--font-mono); font-size:12px; color:var(--brand-primary); font-weight:700;">
+        <span style="font-family:var(--font-mono); font-size:12px; color:var(--brand-primary); font-weight:700;" data-i18n="news.ticker">
           ⚡ Jonli Texnologik Lenta • 4 ta Asosiy Yangilik
         </span>
       </div>
@@ -1484,10 +1484,10 @@
         <h2 class="section-title" data-i18n="articles.title">Foydali Ilmiy Nashrlar & Maqolalar</h2>
       </div>
       <div class="section-filters" id="pubFilters">
-        <button class="filter-btn active" data-pub-cat="all">Barchasi (4 ta)</button>
-        <button class="filter-btn" data-pub-cat="scopus">Scopus Q1 (2 ta)</button>
-        <button class="filter-btn" data-pub-cat="wos">Web of Science (2 ta)</button>
-        <button class="filter-btn" data-pub-cat="scholar">Google Scholar (1 ta)</button>
+        <button class="filter-btn active" data-pub-cat="all" data-i18n="pub.all">Barchasi (4 ta)</button>
+        <button class="filter-btn" data-pub-cat="scopus" data-i18n="pub.scopus">Scopus Q1 (2 ta)</button>
+        <button class="filter-btn" data-pub-cat="wos" data-i18n="pub.wos">Web of Science (2 ta)</button>
+        <button class="filter-btn" data-pub-cat="scholar" data-i18n="pub.scholar">Google Scholar (1 ta)</button>
       </div>
     </div>
 
@@ -1710,7 +1710,7 @@
             </div>
             <div class="brand-text">
               <div class="brand-title">ATT<span>-25</span></div>
-              <div class="brand-subtitle">Talabalar Portali</div>
+              <div class="brand-subtitle" data-i18n="brand.subtitle">Talabalar Portali</div>
             </div>
           </div>
           <p class="footer-mission" data-i18n="footer.mission">
@@ -1724,13 +1724,13 @@
           <ul class="footer-links">
             <li><a href="#bosh-sahifa" data-i18n="nav.home">Bosh Sahifa</a></li>
             <li><a href="simulyatorlar/index.html" data-i18n="footer.simulators">Simulyatorlar Markazi</a></li>
-            <li><a href="simulyatorlar/index.html#lan3d">3D LAN Simulyatori</a></li>
-            <li><a href="simulyatorlar/index.html#hardware3d">3D Hardware Sxemalari</a></li>
-            <li><a href="simulyatorlar/index.html#circuit">Circuit Lab (Sxema)</a></li>
-            <li><a href="simulyatorlar/index.html#powergrid">Smart Grid 3D (GES ➔ Uy)</a></li>
-            <li><a href="simulyatorlar/index.html#subnet">Subnet Kalkulyator</a></li>
-            <li><a href="simulyatorlar/index.html#ping">Ping Terminali</a></li>
-            <li><a href="simulyatorlar/index.html#osi">OSI Modeli</a></li>
+            <li><a href="simulyatorlar/index.html#lan3d" data-i18n="sim.lan_title">3D LAN Simulyatori</a></li>
+            <li><a href="simulyatorlar/index.html#hardware3d" data-i18n="sim.hw_title">3D Hardware Sxemalari</a></li>
+            <li><a href="simulyatorlar/index.html#circuit" data-i18n="sim.cir_title">Circuit Lab (Sxema)</a></li>
+            <li><a href="simulyatorlar/index.html#powergrid" data-i18n="sim.grid_title">Smart Grid 3D (GES ➔ Uy)</a></li>
+            <li><a href="simulyatorlar/index.html#subnet" data-i18n="hub.tab_subnet">Subnet Kalkulyator</a></li>
+            <li><a href="simulyatorlar/index.html#ping" data-i18n="hub.tab_ping">Ping Terminali</a></li>
+            <li><a href="simulyatorlar/index.html#osi" data-i18n="hub.tab_osi">OSI Modeli</a></li>
           </ul>
         </div>
 
@@ -1874,13 +1874,13 @@
     <div class="modal-dialog" style="max-width:720px;">
       <div class="modal-header">
         <div>
-          <span class="editorial-tag" style="color:var(--brand-volt);">3D Laboratoriya Markazi</span>
-          <h3 class="modal-title" style="font-size:22px; margin-top:4px;">3D Simulyatorni Tanlang</h3>
+          <span class="editorial-tag" style="color:var(--brand-volt);" data-i18n="launcher.tag">3D Laboratoriya Markazi</span>
+          <h3 class="modal-title" style="font-size:22px; margin-top:4px;" data-i18n="launcher.title">3D Simulyatorni Tanlang</h3>
         </div>
         <button class="modal-close-btn" id="simLauncherClose">✕</button>
       </div>
       <div class="modal-body" style="padding:24px;">
-        <p style="color:var(--text-dim); margin-bottom:20px; font-size:14px;">
+        <p style="color:var(--text-dim); margin-bottom:20px; font-size:14px;" data-i18n="launcher.desc">
           Quyidagi simulyatorlardan birini tanlang. Ular alohida to‘liq ekranli 3D fazoviy laboratoriya sifatida ishga
           tushadi:
         </p>
@@ -1896,13 +1896,13 @@
                   TARMOQ v2.4</span>
               </div>
               <h4
-                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">
+                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;" data-i18n="launcher.card_lan_title">
                 LAN & Topologiyalar Simulyatori</h4>
-              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Star, Ring, Bus, Tree, Mesh va Ofis
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;" data-i18n="launcher.card_lan_desc">Star, Ring, Bus, Tree, Mesh va Ofis
                 topologiyalari, real-time paketlar trafigi va qurilmalar ulanishi.</p>
             </div>
             <div
-              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-primary); font-weight:700; font-size:13px;">
+              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-primary); font-weight:700; font-size:13px;" data-i18n="launcher.enter">
               Laboratoriyaga Kirish ↗
             </div>
           </a>
@@ -1918,13 +1918,13 @@
                   3D v2.0</span>
               </div>
               <h4
-                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">
+                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;" data-i18n="launcher.card_hw_title">
                 Kompyuter Sxemalari & Atributlari</h4>
-              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Ona plata ATX PCB, CPU LGA1700,
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;" data-i18n="launcher.card_hw_desc">Ona plata ATX PCB, CPU LGA1700,
                 16-faza VRM, DDR5, PCIe 5.0 shinalar signallari va mantiqiy ALU darvozalari.</p>
             </div>
             <div
-              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-volt); font-weight:700; font-size:13px;">
+              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:var(--brand-volt); font-weight:700; font-size:13px;" data-i18n="launcher.enter">
               Laboratoriyaga Kirish ↗
             </div>
           </a>
@@ -1940,13 +1940,13 @@
                   3D EKO</span>
               </div>
               <h4
-                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">
+                style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;" data-i18n="launcher.card_grid_title">
                 Smart Grid: GESdan Xonadongacha</h4>
-              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Tog' daryosi, to'g'on, gidroturbina,
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;" data-i18n="launcher.card_grid_desc">Tog' daryosi, to'g'on, gidroturbina,
                 220 kV dala LEP magistrali, tuman GPP, qishloq KTP va xonadon smart-hisoblagichi.</p>
             </div>
             <div
-              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:#38BDF8; font-weight:700; font-size:13px;">
+              style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:#38BDF8; font-weight:700; font-size:13px;" data-i18n="launcher.enter">
               Laboratoriyaga Kirish ↗
             </div>
           </a>
@@ -1994,19 +1994,19 @@
   <div class="modal-backdrop" id="presentationModal">
     <div class="modal-dialog" style="max-width:760px;">
       <div class="modal-header">
-        <div class="modal-title" id="presModalTitle">Taqdimot Ko‘rinishi</div>
+        <div class="modal-title" id="presModalTitle" data-i18n="pres_modal.title">Taqdimot Ko‘rinishi</div>
         <button class="modal-close-btn" id="presentationModalClose">✕</button>
       </div>
       <div class="modal-body" style="text-align:center; padding:32px 24px;">
         <div style="font-size:48px; margin-bottom:16px;">📑</div>
-        <h4 style="font-size:18px; color:var(--text-white); margin-bottom:8px;">Taqdimot Yuklab Olishga Tayyor</h4>
-        <p style="font-size:13px; color:var(--text-dim); max-width:480px; margin:0 auto 24px;">Ushbu o‘quv taqdimoti va
+        <h4 style="font-size:18px; color:var(--text-white); margin-bottom:8px;" data-i18n="pres_modal.ready">Taqdimot Yuklab Olishga Tayyor</h4>
+        <p style="font-size:13px; color:var(--text-dim); max-width:480px; margin:0 auto 24px;" data-i18n="pres_modal.desc">Ushbu o‘quv taqdimoti va
           laboratoriya uslubiy ko‘rsatmasi PDF hamda PPTX formatlarida tayyorlangan.</p>
         <div style="display:flex; justify-content:center; gap:12px;">
-          <button class="btn-arsenal-primary" onclick="alert('PDF qo‘llanma yuklab olindi (Simulyatsiya)');">
+          <button class="btn-arsenal-primary" data-i18n="pres_modal.download_pdf" onclick="alert('PDF qo‘llanma yuklab olindi (Simulyatsiya)');">
             Yuklab Olish (PDF)
           </button>
-          <button class="btn-arsenal-secondary" onclick="alert('PPTX slaydlar yuklab olindi (Simulyatsiya)');">
+          <button class="btn-arsenal-secondary" data-i18n="pres_modal.view_pptx" onclick="alert('PPTX slaydlar yuklab olindi (Simulyatsiya)');">
             Slaydlarni Ko‘rish (PPTX)
           </button>
         </div>
@@ -2019,8 +2019,8 @@
     <div class="modal-dialog" style="max-width:820px; max-height:90vh; display:flex; flex-direction:column;">
       <div class="modal-header" style="flex:none;">
         <div>
-          <span class="editorial-tag" id="sylTag" style="color:var(--brand-volt);">HEMIS O‘quv Dasturi</span>
-          <h3 class="modal-title" id="sylTitle" style="font-size:22px; margin-top:4px;">Fan Silabusi</h3>
+          <span class="editorial-tag" id="sylTag" style="color:var(--brand-volt);" data-i18n="syl.tag">HEMIS O‘quv Dasturi</span>
+          <h3 class="modal-title" id="sylTitle" style="font-size:22px; margin-top:4px;" data-i18n="syl.title">Fan Silabusi & O‘quv Rejasi</h3>
         </div>
         <button class="modal-close-btn" id="syllabusModalClose">✕</button>
       </div>

@@ -189,21 +189,21 @@
       <div class="tool-tab-content">
         <div class="tool-tab-header">
           <div>
-            <h2>IP Subnet & VLSM Kalkulyatori</h2>
-            <p>Tarmoq maskasi, hostlar soni, wildcard va ikkilik ko‘rinishini hisoblash vositasi</p>
+            <h2 data-i18n="subnet.title">IP Subnet & VLSM Kalkulyatori</h2>
+            <p data-i18n="subnet.desc">Tarmoq maskasi, hostlar soni, wildcard va ikkilik ko‘rinishini hisoblash vositasi</p>
           </div>
-          <span class="arena-badge-live"><span class="status-dot"></span> REAL-TIME HISOBLASH</span>
+          <span class="arena-badge-live"><span class="status-dot"></span> <span data-i18n="subnet.status">REAL-TIME HISOBLASH</span></span>
         </div>
 
         <div class="tool-card" style="border-top-color:var(--brand-primary); max-width:850px; margin:0 auto;">
           <div class="subnet-form">
             <div class="input-row">
               <div class="form-field">
-                <label class="form-label" for="calcIp">IP Manzil</label>
+                <label class="form-label" for="calcIp" data-i18n="subnet.ip_lbl">IP Manzil</label>
                 <input type="text" id="calcIp" class="arsenal-input" value="192.168.10.15">
               </div>
               <div class="form-field" style="max-width:130px;">
-                <label class="form-label" for="calcCidr">CIDR (Prefiks /)</label>
+                <label class="form-label" for="calcCidr" data-i18n="subnet.cidr_lbl">CIDR (Prefiks /)</label>
                 <input type="number" id="calcCidr" class="arsenal-input" value="24" min="1" max="32">
               </div>
             </div>
@@ -219,13 +219,13 @@
           </div>
 
           <div class="calc-result-box" style="margin-top:20px;">
-            <div class="result-row"><span class="k">Tarmoq ID:</span><span class="v" id="resNet">192.168.10.0 /24</span></div>
-            <div class="result-row"><span class="k">Tarmoq Maskasi:</span><span class="v" id="resMask">255.255.255.0</span></div>
-            <div class="result-row"><span class="k">Wildcard Maska:</span><span class="v" id="resWild">0.0.0.255</span></div>
-            <div class="result-row"><span class="k">Hostlar Oralig‘i:</span><span class="v" id="resRange">192.168.10.1 – 192.168.10.254</span></div>
-            <div class="result-row"><span class="k">Foydalanuvchi Hostlar:</span><span class="v" id="resHosts">254 ta</span></div>
-            <div class="result-row"><span class="k">Broadcast Manzil:</span><span class="v" id="resBcast" style="color:var(--brand-volt);">192.168.10.255</span></div>
-            <div class="result-row"><span class="k">Ikkilik (Binary):</span><span class="v" id="resBinary">11111111.11111111.11111111.00000000</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_net">Tarmoq ID:</span><span class="v" id="resNet">192.168.10.0 /24</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_mask">Tarmoq Maskasi:</span><span class="v" id="resMask">255.255.255.0</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_wild">Wildcard Maska:</span><span class="v" id="resWild">0.0.0.255</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_range">Hostlar Oralig‘i:</span><span class="v" id="resRange">192.168.10.1 – 192.168.10.254</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_hosts">Foydalanuvchi Hostlar:</span><span class="v" id="resHosts">254 ta</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_bcast">Broadcast Manzil:</span><span class="v" id="resBcast" style="color:var(--brand-volt);">192.168.10.255</span></div>
+            <div class="result-row"><span class="k" data-i18n="subnet.res_binary">Ikkilik (Binary):</span><span class="v" id="resBinary">11111111.11111111.11111111.00000000</span></div>
           </div>
         </div>
       </div>
@@ -236,20 +236,20 @@
       <div class="tool-tab-content">
         <div class="tool-tab-header">
           <div>
-            <h2>Jonli Ping & Latency Terminali</h2>
-            <p>Tugunlararo kechikish, ICMP paketlar yo‘qolishi va RTT statistikasini emulyatsiya qilish</p>
+            <h2 data-i18n="ping.title">Jonli Ping & Latency Terminali</h2>
+            <p data-i18n="ping.desc">Tugunlararo kechikish, ICMP paketlar yo‘qolishi va RTT statistikasini emulyatsiya qilish</p>
           </div>
-          <span class="arena-badge-live"><span class="status-dot"></span> ICMP ECHO EMULYATORI</span>
+          <span class="arena-badge-live"><span class="status-dot"></span> <span data-i18n="ping.badge">ICMP ECHO EMULYATORI</span></span>
         </div>
 
         <div class="tool-card" style="border-top-color:var(--sim-volt); max-width:900px; margin:0 auto;">
           <div class="ping-controls">
             <div class="form-field" style="flex:1;">
-              <label class="form-label" for="pingTarget">Nishon Tugun (IP yoki Domen)</label>
+              <label class="form-label" for="pingTarget" data-i18n="ping.target_lbl">Nishon Tugun (IP yoki Domen)</label>
               <input type="text" id="pingTarget" class="arsenal-input" value="192.168.1.1">
             </div>
             <div class="form-field" style="max-width:120px;">
-              <label class="form-label" for="pingCount">Paketlar Soni</label>
+              <label class="form-label" for="pingCount" data-i18n="ping.count_lbl">Paketlar Soni</label>
               <select id="pingCount" class="arsenal-input">
                 <option value="4" selected>4 Paket</option>
                 <option value="8">8 Paket</option>
@@ -260,7 +260,7 @@
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
-              Ping Yuborish
+              <span data-i18n="ping.btn_send">Ping Yuborish</span>
             </button>
           </div>
 
@@ -277,10 +277,10 @@
       <div class="tool-tab-content">
         <div class="tool-tab-header">
           <div>
-            <h2>OSI 7 Qatlamli Model Inspektori</h2>
-            <p>Qatlamlararo PDU birliklari, tarmoq protokollari va apparat vositalarini chuqur tahlil qiling</p>
+            <h2 data-i18n="osi.title">OSI 7 Qatlamli Model Inspektori</h2>
+            <p data-i18n="osi.desc">Qatlamlararo PDU birliklari, tarmoq protokollari va apparat vositalarini chuqur tahlil qiling</p>
           </div>
-          <span class="arena-badge-live"><span class="status-dot"></span> ISO/IEC 7498-1 STANDARTI</span>
+          <span class="arena-badge-live"><span class="status-dot"></span> <span data-i18n="osi.badge">ISO/IEC 7498-1 STANDARTI</span></span>
         </div>
 
         <div class="osi-container" style="max-width:960px; margin:0 auto;">
