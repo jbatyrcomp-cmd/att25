@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initCategoryFilters();
   initSyllabusModal();
   initPhotoLightbox();
+  initHeroInteractiveLogo();
+  initUserQuote();
 });
 
 /* ==========================================================================
@@ -660,8 +662,7 @@ class ThemeManager {
   static getActiveThemeId() {
     const saved = localStorage.getItem(ThemeManager.STORAGE_KEY);
     if (saved) return saved;
-    const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-    return prefersLight ? 'high-tech-light' : ThemeManager.DEFAULT_THEME;
+    return ThemeManager.DEFAULT_THEME;
   }
 
   static applyTheme(themeId) {
@@ -3123,6 +3124,97 @@ function initPhotoLightbox() {
   if (modal) {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closePhotoLightbox();
+    });
+  }
+}
+
+/* ==========================================================================
+   14. INTERAKTIV 3D KIBER-LOGO VA MENING SITATAM
+   ========================================================================== */
+function initHeroInteractiveLogo() {
+  const hero = document.getElementById('heroSection');
+  const wrap = document.getElementById('floatingHologramWrap');
+  const svg = document.getElementById('giantHologramSvg');
+
+  if (!hero || !wrap || !svg) return;
+
+  let ticking = false;
+  let targetRotY = 0;
+  let targetRotX = 0;
+  let targetTransX = 0;
+  let targetTransY = 0;
+
+  function handlePointer(clientX, clientY) {
+    const rect = hero.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // Normalized from -1 to 1 across hero bounds
+    const normX = Math.max(-1.4, Math.min(1.4, (clientX - centerX) / (rect.width / 2)));
+    const normY = Math.max(-1.4, Math.min(1.4, (clientY - centerY) / (rect.height / 2)));
+
+    const maxRotY = 28; // degrees
+    const maxRotX = 22; // degrees
+    const maxTrans = 22; // px
+
+    targetRotY = normX * maxRotY;
+    targetRotX = -normY * maxRotX;
+    targetTransX = normX * maxTrans;
+    targetTransY = normY * (maxTrans * 0.7);
+
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        wrap.style.transform = `perspective(1000px) rotateY(${targetRotY.toFixed(2)}deg) rotateX(${targetRotX.toFixed(2)}deg) translate3d(${targetTransX.toFixed(1)}px, ${targetTransY.toFixed(1)}px, 25px)`;
+        svg.style.filter = `drop-shadow(${-normX * 18}px ${-normY * 18}px 32px rgba(0, 255, 135, 0.7)) drop-shadow(0 0 55px rgba(0, 240, 255, 0.45))`;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  // Active tracking across the whole hero section
+  hero.addEventListener('mousemove', (e) => {
+    handlePointer(e.clientX, e.clientY);
+  });
+
+  // Track across entire top viewport so movement anywhere drives the 3D logo
+  window.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    if (e.clientY >= rect.top - 80 && e.clientY <= rect.bottom + 120) {
+      handlePointer(e.clientX, e.clientY);
+    }
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => {
+    wrap.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease';
+    wrap.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0)';
+    svg.style.filter = 'drop-shadow(0 0 35px rgba(0, 255, 135, 0.6)) drop-shadow(0 0 60px rgba(0, 240, 255, 0.3))';
+    setTimeout(() => {
+      wrap.style.transition = 'transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease';
+    }, 800);
+  });
+}
+
+function initUserQuote() {
+  const quoteDisplay = document.getElementById('quoteTextDisplay');
+  const btnEdit = document.getElementById('btnEditQuote');
+  if (!quoteDisplay) return;
+
+  const savedQuote = localStorage.getItem('att25_user_quote');
+  if (savedQuote && savedQuote.trim()) {
+    quoteDisplay.textContent = `"${savedQuote.trim()}"`;
+  }
+
+  if (btnEdit) {
+    btnEdit.addEventListener('click', (e) => {
+      e.preventDefault();
+      const current = quoteDisplay.textContent.replace(/^"|"$/g, '').trim();
+      const input = prompt("Mening Sitatam (yangi iqtibosingizni kiriting):", current);
+      if (input !== null && input.trim()) {
+        const clean = input.trim();
+        localStorage.setItem('att25_user_quote', clean);
+        quoteDisplay.textContent = `"${clean}"`;
+      }
     });
   }
 }

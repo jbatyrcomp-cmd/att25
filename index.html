@@ -23,8 +23,7 @@
   <script>
     (function () {
       try {
-        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        const savedTheme = localStorage.getItem('att25_theme_id') || (prefersLight ? 'high-tech-light' : 'matrix-green');
+        const savedTheme = localStorage.getItem('att25_theme_id') || 'matrix-green';
         document.documentElement.setAttribute('data-theme', savedTheme);
         if (localStorage.getItem('att25_high_contrast') === 'true') {
           document.documentElement.classList.add('mode-high-contrast');
@@ -79,57 +78,76 @@
        ========================================================================== -->
   <header class="main-header" id="bosh-sahifa">
     <div class="header-inner">
-      <!-- ATT-25 Geometric Crest -->
+      <!-- ATT-25 Geometric Crest (Enlarged & Animated) -->
       <a href="#bosh-sahifa" class="brand-crest">
-        <div class="crest-shield" title="ATT-25 Emblemasi">
-          <svg class="att-logo-svg" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ATT-25 Logotipi">
+        <div class="crest-shield" title="ATT-25 Kiber-Emblemasi">
+          <svg class="att-logo-svg att-animated-logo" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg"
+            aria-label="ATT-25 Logotipi">
             <defs>
               <linearGradient id="attHdrShieldBg" x1="32" y1="2" x2="32" y2="72" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#0A2216"/>
-                <stop offset="50%" stop-color="#06150E"/>
-                <stop offset="100%" stop-color="#020805"/>
+                <stop offset="0%" stop-color="#0E2E1E" />
+                <stop offset="50%" stop-color="#071910" />
+                <stop offset="100%" stop-color="#020905" />
               </linearGradient>
               <linearGradient id="attHdrBorderGlow" x1="4" y1="2" x2="60" y2="72" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#00FF87"/>
-                <stop offset="45%" stop-color="#38EF7D"/>
-                <stop offset="80%" stop-color="#00F0FF"/>
-                <stop offset="100%" stop-color="#00A3FF"/>
+                <stop offset="0%" stop-color="#00FF87" />
+                <stop offset="35%" stop-color="#38EF7D" />
+                <stop offset="70%" stop-color="#00F0FF" />
+                <stop offset="100%" stop-color="#0088FF" />
               </linearGradient>
               <linearGradient id="attHdrCoreGrad" x1="16" y1="16" x2="48" y2="54" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#00FF87"/>
-                <stop offset="100%" stop-color="#00F0FF"/>
+                <stop offset="0%" stop-color="#00FF87" />
+                <stop offset="100%" stop-color="#00F0FF" />
               </linearGradient>
               <radialGradient id="attHdrCoreBloom" cx="32" cy="36" r="22" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#00FF87" stop-opacity="0.38"/>
-                <stop offset="55%" stop-color="#00F0FF" stop-opacity="0.12"/>
-                <stop offset="100%" stop-color="#00FF87" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#00FF87" stop-opacity="0.5" />
+                <stop offset="50%" stop-color="#00F0FF" stop-opacity="0.18" />
+                <stop offset="100%" stop-color="#00FF87" stop-opacity="0" />
               </radialGradient>
-              <filter id="attHdrNeonFilter" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              <filter id="attHdrNeonFilter" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="1.6" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
               </filter>
             </defs>
+            <!-- Ambient Core Bloom -->
             <circle cx="32" cy="36" r="22" fill="url(#attHdrCoreBloom)" />
-            <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#attHdrShieldBg)" stroke="url(#attHdrBorderGlow)" stroke-width="2.2" stroke-linejoin="round" />
-            <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none" stroke="rgba(0, 255, 135, 0.25)" stroke-width="1" stroke-dasharray="4 2.5" />
-            <line x1="26" y1="8.5" x2="38" y2="8.5" stroke="#00FF87" stroke-width="1.8" stroke-linecap="round" />
-            <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.8"/>
-            <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.8"/>
-            <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.07)" stroke="url(#attHdrCoreGrad)" stroke-width="2" stroke-linejoin="round" />
+            <!-- Outer Cyber Shield Base -->
+            <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#attHdrShieldBg)"
+              stroke="url(#attHdrBorderGlow)" stroke-width="2.3" stroke-linejoin="round" />
+            <!-- Inner Cyber Grid Track -->
+            <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none"
+              stroke="rgba(0, 255, 135, 0.3)" stroke-width="1" stroke-dasharray="4 2.5" />
+            <!-- Animated Rotating Radar Ring -->
+            <circle class="logo-radar-ring" cx="32" cy="36" r="16" stroke="rgba(0, 240, 255, 0.55)" stroke-width="1.3"
+              stroke-dasharray="6 4 2 4" fill="none" />
+            <!-- Corner Precision Tech Notches -->
+            <line x1="26" y1="8.5" x2="38" y2="8.5" stroke="#00FF87" stroke-width="2" stroke-linecap="round" />
+            <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.9" />
+            <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.9" />
+            <!-- Delta Architecture ("A" frame) -->
+            <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.08)" stroke="url(#attHdrCoreGrad)"
+              stroke-width="2" stroke-linejoin="round" />
+            <!-- Dual "T" Interconnects -->
             <path d="M 22.5 35.5 L 41.5 35.5" stroke="#00FF87" stroke-width="2.2" stroke-linecap="round" />
             <path d="M 27 35.5 L 27 47" stroke="url(#attHdrCoreGrad)" stroke-width="1.8" />
             <path d="M 37 35.5 L 37 47" stroke="url(#attHdrCoreGrad)" stroke-width="1.8" />
-            <line x1="32" y1="17" x2="32" y2="55" stroke="url(#attHdrCoreGrad)" stroke-width="1.5" stroke-dasharray="3 2" />
-            <polygon points="32,31 36.5,35.5 32,40 27.5,35.5" fill="#00FF87" filter="url(#attHdrNeonFilter)" />
-            <circle cx="32" cy="35.5" r="1.2" fill="#031109" />
-            <circle cx="32" cy="17" r="2.8" fill="#00FF87" filter="url(#attHdrNeonFilter)" />
-            <circle cx="32" cy="17" r="1.2" fill="#FFFFFF" />
-            <circle cx="18" cy="47" r="2.5" fill="#00F0FF" />
+            <!-- Animated Photon Flow Central Spine -->
+            <line class="logo-photon-track" x1="32" y1="17" x2="32" y2="55" stroke="#00FF87" stroke-width="1.6" />
+            <!-- Pulsing Center Hyper-Diamond Core -->
+            <g class="logo-core-pulse">
+              <polygon points="32,30.5 37,35.5 32,40.5 27,35.5" fill="#00FF87" filter="url(#attHdrNeonFilter)" />
+              <circle cx="32" cy="35.5" r="1.5" fill="#020C06" />
+            </g>
+            <!-- Network Nodes -->
+            <circle cx="32" cy="17" r="3" fill="#00FF87" filter="url(#attHdrNeonFilter)" />
+            <circle cx="32" cy="17" r="1.3" fill="#FFFFFF" />
+            <circle cx="18" cy="47" r="2.6" fill="#00F0FF" />
             <circle cx="18" cy="47" r="1" fill="#FFFFFF" />
-            <circle cx="46" cy="47" r="2.5" fill="#00FF87" />
+            <circle cx="46" cy="47" r="2.6" fill="#00FF87" />
             <circle cx="46" cy="47" r="1" fill="#FFFFFF" />
-            <circle cx="32" cy="55" r="2.2" fill="#00F0FF" />
-            <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Bottom Anchor & Beacon -->
+            <circle cx="32" cy="55" r="2.4" fill="#00F0FF" />
+            <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
           </svg>
         </div>
         <div class="brand-text">
@@ -138,7 +156,7 @@
         </div>
       </a>
 
-      <!-- Primary Navigation -->
+      <!-- Primary Navigation (Streamlined to 1 row) -->
       <nav class="main-nav" id="mainNav">
         <ul class="nav-list">
           <li class="nav-item"><a href="#bosh-sahifa" class="nav-link active">Bosh Sahifa</a></li>
@@ -151,14 +169,15 @@
           <li class="nav-item">
             <a href="ai-doska/index.html" class="nav-link" style="color:#00FF87; font-weight:700;">
               🤖 AI Doska
-              <span class="nav-badge-pill" style="background:rgba(0,255,135,0.2); color:#00FF87; border-color:rgba(0,255,135,0.4);">YANGI</span>
+              <span class="nav-badge-pill"
+                style="background:rgba(0,255,135,0.2); color:#00FF87; border-color:rgba(0,255,135,0.4);">YANGI</span>
             </a>
           </li>
-          <li class="nav-item"><a href="#oquv-dasturi" class="nav-link">O‘quv Dasturi</a></li>
-          <li class="nav-item"><a href="#taqdimotlar" class="nav-link">Taqdimotlar</a></li>
-          <li class="nav-item"><a href="#media-hub" class="nav-link">Media Hub</a></li>
+          <li class="nav-item"><a href="#oquv-dasturi" class="nav-link">Dastur</a></li>
+          <li class="nav-item"><a href="#taqdimotlar" class="nav-link">Slaydlar</a></li>
+          <li class="nav-item"><a href="#media-hub" class="nav-link">Media</a></li>
           <li class="nav-item"><a href="#yangiliklar" class="nav-link">Yangiliklar</a></li>
-          <li class="nav-item"><a href="#maqolalar" class="nav-link">Ilmiy Nashrlar</a></li>
+          <li class="nav-item"><a href="#maqolalar" class="nav-link">Maqolalar</a></li>
           <li class="nav-item"><a href="#manbalar" class="nav-link">Manbalar</a></li>
           <li class="nav-item mobile-only-cta" style="margin-top: 10px;">
             <a href="simulyatorlar/index.html" class="btn-arsenal-primary"
@@ -166,25 +185,17 @@
               ⚡ Simulyatorlar Markazi (5-in-1) ↗
             </a>
           </li>
-          <li class="nav-item mobile-only-cta" style="margin-top: 6px;">
-            <a href="ai-doska/index.html" class="btn-arsenal-secondary"
-              style="width: 100%; justify-content: center; clip-path:none; border-radius:4px; font-size:13px; padding:12px; border-color:#00FF87; color:#00FF87;">
-              🤖 AI Doska (Interaktiv Maydon) ↗
-            </a>
-          </li>
         </ul>
       </nav>
 
-      <!-- Header CTAs -->
+      <!-- Header Single Sleek CTA -->
       <div class="header-actions">
-        <a href="ai-doska/index.html" class="btn-arsenal-secondary" style="border-color:#00FF87; color:#00FF87; padding:9px 13px; font-size:12px; font-weight:700;" title="Mustaqil AI Doska maydoni">
-          🤖 AI Doska ↗
-        </a>
-        <a href="simulyatorlar/index.html" class="btn-arsenal-primary" title="Yagona Simulyatorlar Markaziga kirish">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+        <a href="simulyatorlar/index.html" class="btn-arsenal-primary" title="Yagona Simulyatorlar Markaziga kirish"
+          style="padding: 8px 14px; font-size: 12.5px; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
             <path d="M5 3l14 9-14 9V3z" />
           </svg>
-          Simulyatorlar Markazi ↗
+          Simulyatorlar ↗
         </a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menyu">
           <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
@@ -198,11 +209,140 @@
   </header>
 
   <!-- ==========================================================================
-       4. HERO EDITORIAL GRID (ARSENAL CLASSIC 1 HUGE FEATURE + 3 SIDE STORIES)
+       4. HERO TOP SECTION: MENING SITATAM (LEFT) & GIANT 3D LOGO (RIGHT)
        ========================================================================== -->
-  <section class="hero-section">
+  <section class="hero-section" id="heroSection">
     <div class="hero-grid">
-      <!-- Main Feature: 3D LAN Simulator -->
+      <!-- Left Column: FAQAT SITATANING O'ZI ("Mening Sitatam") -->
+      <div class="hero-quote-stage" id="heroQuoteCard">
+        <div class="quote-header">
+          <div class="quote-header-left">
+            <span class="quote-icon">❝</span>
+            <span class="quote-card-badge">ATT-25 FALSAFASI • MENING SITATAM</span>
+          </div>
+          <button class="quote-edit-btn" id="btnEditQuote" title="Sitatangizni tahrirlash">
+            ✏️ Tahrirlash
+          </button>
+        </div>
+
+        <blockquote class="quote-body" id="quoteTextDisplay">
+          "Kelajak texnologiyasi — bu shunchaki murakkab tarmoqlar emas, balki har bir talabaning tafakkuri va amaliy bilimlari bilan quriladigan yuksak imkoniyatdir."
+        </blockquote>
+
+        <div class="quote-author-row">
+          <div class="quote-author-left">
+            <div class="quote-avatar">JB</div>
+            <div class="quote-author-info">
+              <div class="quote-author-name">Jumamyradov Batyr</div>
+              <div class="quote-author-role">ATT-25 Tashabbuskori & Portal Admini</div>
+            </div>
+          </div>
+          <div class="quote-quick-links">
+            <a href="simulyatorlar/index.html#hardware3d" class="quote-pill-link" title="3D Sxemalar">⚡ 3D Sxema</a>
+            <a href="#media-hub" class="quote-pill-link" title="Optika darslari">🌐 Optika</a>
+            <a href="#maqolalar" class="quote-pill-link" title="Ilmiy maqolalar">🔬 Maqolalar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: ONLY THE GIANT HOLOGRAPHIC 3D LOGO (Full Area Interactive) -->
+      <div class="hero-logo-space" id="heroLogoSpace">
+        <div class="floating-hologram-wrap" id="floatingHologramWrap">
+          <div class="hologram-glow-backdrop"></div>
+          <div class="holo-orbit-ring ring-1"></div>
+          <div class="holo-orbit-ring ring-2"></div>
+          <div class="holo-orbit-ring ring-3"></div>
+
+          <svg class="giant-hologram-svg" id="giantHologramSvg" viewBox="0 0 100 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="giantShieldBg" x1="50" y1="4" x2="50" y2="110" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0E2E1E" />
+                <stop offset="50%" stop-color="#06160E" />
+                <stop offset="100%" stop-color="#020905" />
+              </linearGradient>
+              <linearGradient id="giantBorderGlow" x1="6" y1="4" x2="94" y2="110" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" />
+                <stop offset="35%" stop-color="#38EF7D" />
+                <stop offset="70%" stop-color="#00F0FF" />
+                <stop offset="100%" stop-color="#00A3FF" />
+              </linearGradient>
+              <linearGradient id="giantCoreGrad" x1="25" y1="25" x2="75" y2="85" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" />
+                <stop offset="100%" stop-color="#00F0FF" />
+              </linearGradient>
+              <radialGradient id="giantCoreBloom" cx="50" cy="56" r="38" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#00FF87" stop-opacity="0.65" />
+                <stop offset="50%" stop-color="#00F0FF" stop-opacity="0.25" />
+                <stop offset="100%" stop-color="#00FF87" stop-opacity="0" />
+              </radialGradient>
+              <filter id="giantNeonFilter" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="2.8" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            <!-- Hologram Core Light Bloom -->
+            <circle cx="50" cy="56" r="38" fill="url(#giantCoreBloom)" />
+
+            <!-- Outer Hex Cyber Shield -->
+            <path class="holo-shield-path" d="M 50 5 L 93 24 L 93 75 L 50 110 L 7 75 L 7 24 Z"
+              fill="url(#giantShieldBg)" stroke="url(#giantBorderGlow)" stroke-width="3.2" stroke-linejoin="round" />
+
+            <!-- Inner Dashed Cyber Track -->
+            <path d="M 50 13 L 85 28 L 85 70 L 50 100 L 15 28 Z" fill="none" stroke="rgba(0, 255, 135, 0.35)"
+              stroke-width="1.6" stroke-dasharray="6 4" />
+
+            <!-- Rotating Cyber Orbit Rings -->
+            <circle class="holo-radar-ring" cx="50" cy="56" r="27" stroke="rgba(0, 240, 255, 0.6)" stroke-width="2"
+              stroke-dasharray="10 5 3 5" fill="none" />
+
+            <!-- Precision Tech Notches -->
+            <line x1="40" y1="13" x2="60" y2="13" stroke="#00FF87" stroke-width="2.8" stroke-linecap="round" />
+            <circle cx="15" cy="49" r="2.8" fill="#00FF87" />
+            <circle cx="85" cy="49" r="2.8" fill="#00F0FF" />
+
+            <!-- Delta 'A' Architecture -->
+            <path d="M 50 25 L 73 74 L 27 74 Z" fill="rgba(0, 255, 135, 0.12)" stroke="url(#giantCoreGrad)"
+              stroke-width="3.2" stroke-linejoin="round" />
+
+            <!-- Dual 'T' Rails & Crossbars -->
+            <path d="M 34 54 L 66 54" stroke="#00FF87" stroke-width="3.2" stroke-linecap="round" />
+            <path d="M 42 54 L 42 74" stroke="url(#giantCoreGrad)" stroke-width="2.6" />
+            <path d="M 58 54 L 58 74" stroke="url(#giantCoreGrad)" stroke-width="2.6" />
+
+            <!-- Laser Spine -->
+            <line class="holo-photon-track" x1="50" y1="25" x2="50" y2="88" stroke="#00FF87" stroke-width="2.4" />
+
+            <!-- Pulsing Center Hyper-Diamond -->
+            <g class="holo-core-pulse">
+              <polygon points="50,46 59,55 50,64 41,55" fill="#00FF87" filter="url(#giantNeonFilter)" />
+              <circle cx="50" cy="55" r="2.2" fill="#020905" />
+            </g>
+
+            <!-- Apex & Vertex Nodes -->
+            <circle cx="50" cy="25" r="4.8" fill="#00FF87" filter="url(#giantNeonFilter)" />
+            <circle cx="50" cy="25" r="2" fill="#FFFFFF" />
+
+            <circle cx="27" cy="74" r="4" fill="#00F0FF" />
+            <circle cx="27" cy="74" r="1.6" fill="#FFFFFF" />
+
+            <circle cx="73" cy="74" r="4" fill="#00FF87" />
+            <circle cx="73" cy="74" r="1.6" fill="#FFFFFF" />
+
+            <!-- Bottom Data Anchor -->
+            <circle cx="50" cy="88" r="3.8" fill="#00F0FF" />
+            <line x1="50" y1="91" x2="50" y2="99" stroke="#00F0FF" stroke-width="2.4" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       4.1. ALOHIDA 3D LAN SIMULYATORI BO'LIMI (PASGA TUSHIRILGAN)
+       ========================================================================== -->
+  <section class="lan-simulator-section" id="lan-simulyator">
+    <div class="lan-simulator-container">
       <div class="hero-main-card">
         <div class="hero-bg-visual"></div>
         <div class="hero-gradient-overlay"></div>
@@ -213,7 +353,7 @@
             </svg>
             Asosiy Amaliy Vosita • 3D LAN
           </div>
-          <h1 class="hero-title">3D Interaktiv LAN & Topologiya Simulyatori</h1>
+          <h2 class="hero-title">3D Interaktiv LAN & Topologiya Simulyatori</h2>
           <p class="hero-desc">
             Uch o‘lchamli fazoda router, modem, server va kompyuterlarni real vaqtda joylashtiring, kabellarni ulang va
             axborot paketlarining rangli trafigini kuzating.
@@ -256,49 +396,6 @@
             </a>
           </div>
         </div>
-      </div>
-
-      <!-- Side Stories (Arsenal 3-Stack) -->
-      <div class="hero-side-stories">
-        <!-- Card 1 -->
-        <a href="simulyatorlar/index.html#hardware3d" class="side-story-card">
-          <div class="side-story-thumb">
-            <div
-              style="width:100%; height:100%; background:#091910; display:flex; align-items:center; justify-content:center; color:var(--brand-volt); font-size:26px;">
-              ⚡</div>
-          </div>
-          <div class="side-story-content">
-            <span class="side-story-badge">Yangi 3D Simulyator 2026</span>
-            <h3 class="side-story-title">Kompyuter Sxemalari & Hardware Atributlari</h3>
-            <span class="side-story-meta">CPU, VRM 16-faza, DDR5 shinalar va mantiqiy ALU</span>
-          </div>
-        </a>
-
-        <!-- Card 2 -->
-        <a href="#media-hub" class="side-story-card">
-          <div class="side-story-thumb">
-            <img src="assets/images/fiber_telecom.jpg" alt="Optika">
-          </div>
-          <div class="side-story-content">
-            <span class="side-story-badge">Video Masterklass</span>
-            <h3 class="side-story-title">Optik tola payvandlash (Fusion Splicing) amaliyoti</h3>
-            <span class="side-story-meta">Laboratoriya stendidan 45 daqiqalik video dars</span>
-          </div>
-        </a>
-
-        <!-- Card 3 -->
-        <a href="#maqolalar" class="side-story-card">
-          <div class="side-story-thumb">
-            <div
-              style="width:100%; height:100%; background:#091910; display:flex; align-items:center; justify-content:center; color:var(--brand-primary); font-size:24px;">
-              ⚡</div>
-          </div>
-          <div class="side-story-content">
-            <span class="side-story-badge">Ilmiy Tahlil</span>
-            <h3 class="side-story-title">Kvant shifrlash va zamonaviy optik magistrallar</h3>
-            <span class="side-story-meta">ATT-25 talabalari tadqiqot sharhi</span>
-          </div>
-        </a>
       </div>
     </div>
   </section>
@@ -343,7 +440,8 @@
        YANGI BO'LIM: ATT-25 AI INTERAKTIV DOSKA
        ========================================================================== -->
   <section class="section-container" id="ai-doska-promo" style="padding: 0 24px 32px;">
-    <div class="sim-hub-promo-banner" style="background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(56,189,248,0.08)); border-color: rgba(16,185,129,0.35);">
+    <div class="sim-hub-promo-banner"
+      style="background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(56,189,248,0.08)); border-color: rgba(16,185,129,0.35);">
       <div class="sim-promo-left">
         <div class="sim-promo-tag" style="color: #6EE7B7; border-color: rgba(16,185,129,0.4);">
           <span class="status-dot" style="background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
@@ -353,10 +451,13 @@
           🤖 AI Doska — Interaktiv Aqlli Maydon
         </h2>
         <p class="sim-promo-desc">
-          Cheksiz vektorli doska, erkin qalam va geometrik shakllar, rangli stikerlar, tarmoq qurilmalari sxemalari hamda Sun'iy Intellekt (AI) yordamchisi. Birgina buyruq (prompt) bilan professional diagramma va aqliy hujum (mindmap) generatsiya qiling!
+          Cheksiz vektorli doska, erkin qalam va geometrik shakllar, rangli stikerlar, tarmoq qurilmalari sxemalari
+          hamda Sun'iy Intellekt (AI) yordamchisi. Birgina buyruq (prompt) bilan professional diagramma va aqliy hujum
+          (mindmap) generatsiya qiling!
         </p>
         <div class="sim-promo-chips">
-          <span class="promo-chip" style="background: rgba(16,185,129,0.15); border-color: #10B981; color:#A7F3D0;">🪄 Matndan Diagramma Generatori</span>
+          <span class="promo-chip" style="background: rgba(16,185,129,0.15); border-color: #10B981; color:#A7F3D0;">🪄
+            Matndan Diagramma Generatori</span>
           <span class="promo-chip">🧠 Aqliy Hujum (Mindmap)</span>
           <span class="promo-chip">🌐 Tarmoq Topologiyasi Stikerlari</span>
           <span class="promo-chip">📝 Doskani Avtomatik Tahlil & Konspekt</span>
@@ -364,9 +465,11 @@
         </div>
       </div>
       <div class="sim-promo-right">
-        <a href="ai-doska/index.html" class="btn-arsenal-primary sim-promo-cta" style="background: #10B981; border-color: #10B981; color: #070C14; box-shadow: 0 0 24px rgba(16,185,129,0.4);">
+        <a href="ai-doska/index.html" class="btn-arsenal-primary sim-promo-cta"
+          style="background: #10B981; border-color: #10B981; color: #070C14; box-shadow: 0 0 24px rgba(16,185,129,0.4);">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z"/>
+            <path
+              d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z" />
           </svg>
           AI Doskaga O‘tish ↗
         </a>
@@ -429,7 +532,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">CHIZIQLI ALGEBRA</h3>
-        <p class="module-desc">Matritsalar algebrasi, chiziqli fazolar, determinantlar va chiziqli operatorlar nazariyasi.</p>
+        <p class="module-desc">Matritsalar algebrasi, chiziqli fazolar, determinantlar va chiziqli operatorlar
+          nazariyasi.</p>
         <ul class="module-topics-list">
           <li>Matritsalar va ular ustida amallar, determinantlar</li>
           <li>Chiziqli tenglamalar sistemalari (Gauss, Kramer)</li>
@@ -450,7 +554,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">MA'LUMOTLAR BAZASI</h3>
-        <p class="module-desc">Relyatsion ma'lumotlar bazasi arxitekturasi, SQL tili, normalizatsiya va tranzaksiyalar boshqaruvi.</p>
+        <p class="module-desc">Relyatsion ma'lumotlar bazasi arxitekturasi, SQL tili, normalizatsiya va tranzaksiyalar
+          boshqaruvi.</p>
         <ul class="module-topics-list">
           <li>Relyatsion model va ER-diagrammalar (ERD) loyihalash</li>
           <li>SQL: DDL, DML so‘rovlari, JOIN va subquery'lar</li>
@@ -471,7 +576,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">ELEKTRONIKA VA SXEMALAR</h3>
-        <p class="module-desc">Yarim o‘tkazgichli asboblar, tranzistorlar, mantiqiy darvozalar va raqamli mikrosxemalar asoslari.</p>
+        <p class="module-desc">Yarim o‘tkazgichli asboblar, tranzistorlar, mantiqiy darvozalar va raqamli mikrosxemalar
+          asoslari.</p>
         <ul class="module-topics-list">
           <li>Diodlar, bipolyar va maydoniy tranzistorlar (MOSFET)</li>
           <li>Operatsion kuchaytirgichlar va analog signal filtrlari</li>
@@ -492,7 +598,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">DISKRET TUZILMALAR</h3>
-        <p class="module-desc">To‘plamlar, matematik mantiq, kombinatorika, graf nazariyasi va tarmoq topologiyalari modellari.</p>
+        <p class="module-desc">To‘plamlar, matematik mantiq, kombinatorika, graf nazariyasi va tarmoq topologiyalari
+          modellari.</p>
         <ul class="module-topics-list">
           <li>To‘plamlar nazariyasi, relatsiyalar va funksiyalar</li>
           <li>Predikatlar hisobi va Bul algebrasi mantiqiy qonunlari</li>
@@ -513,7 +620,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">KOMPYUTER TARMOQLARI</h3>
-        <p class="module-desc">OSI va TCP/IP modellari, Ethernet, IP subnetting, VLAN hamda marshrutlash protokollari amaliyoti.</p>
+        <p class="module-desc">OSI va TCP/IP modellari, Ethernet, IP subnetting, VLAN hamda marshrutlash protokollari
+          amaliyoti.</p>
         <ul class="module-topics-list">
           <li>OSI 7 qatlamli model va TCP/IP protokollar steki</li>
           <li>IPv4/IPv6 manzillash, Subnetting va VLSM hisoblash</li>
@@ -534,7 +642,8 @@
           <span style="font-size:11px; color:var(--accent-gold); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">KELAJAK SOATI</h3>
-        <p class="module-desc">Zamonaviy AKT tendensiyalari, kasbiy rivojlanish, soft skills va sohaviy loyihalarni boshqarish.</p>
+        <p class="module-desc">Zamonaviy AKT tendensiyalari, kasbiy rivojlanish, soft skills va sohaviy loyihalarni
+          boshqarish.</p>
         <ul class="module-topics-list">
           <li>AKT sohasidagi global trendlar va sun'iy intellekt</li>
           <li>Rezyume (CV), portfolio tayyorlash va muhandislik etikasi</li>
@@ -556,7 +665,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">KIBERXAVFSIZLIK ASOSLARI</h3>
-        <p class="module-desc">Tarmoq xavfsizligi arxitekturasi, kriptografiya, zaifliklarni tahlil qilish va himoyalash vositalari.</p>
+        <p class="module-desc">Tarmoq xavfsizligi arxitekturasi, kriptografiya, zaifliklarni tahlil qilish va himoyalash
+          vositalari.</p>
         <ul class="module-topics-list">
           <li>Axborot xavfsizligi triadasi (CIA) va tahdidlar tahlili</li>
           <li>Simmetrik va asimmetrik shifrlash (AES, RSA, ECC)</li>
@@ -577,7 +687,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">SUN'IY INTELLEKT ASOSLARI</h3>
-        <p class="module-desc">Mashinali o‘rganish algoritmlari, neyron tarmoqlar va intellektual tizimlarni tarmoqlarga tatbiq etish.</p>
+        <p class="module-desc">Mashinali o‘rganish algoritmlari, neyron tarmoqlar va intellektual tizimlarni tarmoqlarga
+          tatbiq etish.</p>
         <ul class="module-topics-list">
           <li>Intellektual agentlar va qidiruv algoritmlari</li>
           <li>Mashinali o‘rganish: Chiziqli regressiya va klassifikatsiya</li>
@@ -598,7 +709,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">EHTIMOLLIK VA STATISTIKA</h3>
-        <p class="module-desc">Tasodifiy miqdorlar, taqsimot qonunlari, matematik statistika va tarmoq trafigini modellashtirish.</p>
+        <p class="module-desc">Tasodifiy miqdorlar, taqsimot qonunlari, matematik statistika va tarmoq trafigini
+          modellashtirish.</p>
         <ul class="module-topics-list">
           <li>Ehtimollikning asosiy teoremalari va shartli ehtimollik</li>
           <li>Diskret va uzluksiz tasodifiy miqdorlar taqsimotlari</li>
@@ -619,7 +731,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">DIFFERENSIAL TENGLAMALAR</h3>
-        <p class="module-desc">Oddiy va xususiy hosilali differensial tenglamalar hamda ularni fizik jarayonlarda qo‘llash.</p>
+        <p class="module-desc">Oddiy va xususiy hosilali differensial tenglamalar hamda ularni fizik jarayonlarda
+          qo‘llash.</p>
         <ul class="module-topics-list">
           <li>1-tartibli differensial tenglamalar va integrallash usullari</li>
           <li>Yuqori tartibli o‘zgarmas koeffitsiyentli tenglamalar</li>
@@ -640,7 +753,8 @@
           <span style="font-size:11px; color:var(--accent-cyan); font-family:var(--font-mono);">Tanlov</span>
         </div>
         <h3 class="module-title">DATA SCIENCE</h3>
-        <p class="module-desc">Katta hajmdagi ma'lumotlarni yig‘ish, tozalash, vizualizatsiya qilish va statistik tahlil modellari.</p>
+        <p class="module-desc">Katta hajmdagi ma'lumotlarni yig‘ish, tozalash, vizualizatsiya qilish va statistik tahlil
+          modellari.</p>
         <ul class="module-topics-list">
           <li>Python: NumPy, Pandas va ma'lumotlarni tozalash</li>
           <li>Exploratory Data Analysis (EDA) va vizualizatsiya (Matplotlib)</li>
@@ -661,7 +775,8 @@
           <span style="font-size:11px; color:var(--accent-cyan); font-family:var(--font-mono);">Tanlov</span>
         </div>
         <h3 class="module-title">KASBIY PEDAGOGIKA</h3>
-        <p class="module-desc">Muhandislik va axborot texnologiyalari fanlarini o‘qitish metodikasi hamda ta'lim psixologiyasi.</p>
+        <p class="module-desc">Muhandislik va axborot texnologiyalari fanlarini o‘qitish metodikasi hamda ta'lim
+          psixologiyasi.</p>
         <ul class="module-topics-list">
           <li>Zamonaviy pedagogik texnologiyalar va interaktiv uslublar</li>
           <li>AKT fanlari bo‘yicha dars ishlanmasi va silabus tuzish</li>
@@ -683,7 +798,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">O‘ZBEKISTONNING ENG YANGI TARIXI</h3>
-        <p class="module-desc">Mustaqillik yillarida O‘zbekiston davlatchiligining shakllanishi, ijtimoiy-iqtisodiy va madaniy taraqqiyot bosqichlari.</p>
+        <p class="module-desc">Mustaqillik yillarida O‘zbekiston davlatchiligining shakllanishi, ijtimoiy-iqtisodiy va
+          madaniy taraqqiyot bosqichlari.</p>
         <ul class="module-topics-list">
           <li>Mustaqillik arafasidagi ijtimoiy-siyosiy jarayonlar</li>
           <li>Yangi O‘zbekiston taraqqiyot strategiyasi va islohotlar</li>
@@ -704,7 +820,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">INGLIZ TILI I</h3>
-        <p class="module-desc">Umumiy va sohaviy ingliz tili grammatikasi, texnik matnlarni o‘qish, tushunish va muloqot ko‘nikmalari.</p>
+        <p class="module-desc">Umumiy va sohaviy ingliz tili grammatikasi, texnik matnlarni o‘qish, tushunish va muloqot
+          ko‘nikmalari.</p>
         <ul class="module-topics-list">
           <li>Grammar in Use: Tenses, Passive Voice & Conditionals</li>
           <li>Reading Comprehension of IT and Technical Articles</li>
@@ -725,7 +842,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">HISOB (CALCULUS) I</h3>
-        <p class="module-desc">Bir o‘zgaruvchili funksiyalar differensial va integral hisobi, limitlar va qatorlar nazariyasi.</p>
+        <p class="module-desc">Bir o‘zgaruvchili funksiyalar differensial va integral hisobi, limitlar va qatorlar
+          nazariyasi.</p>
         <ul class="module-topics-list">
           <li>Ketma-ketliklar va funksiyalar limiti, uzluksizlik</li>
           <li>Hosilalar va differensiallar, Teylor formulasi</li>
@@ -767,7 +885,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">DASTURLASH I</h3>
-        <p class="module-desc">Strukturali dasturlash asoslari, C/C++ tili sintaksisi, oqim boshqaruvi va funksiyalar.</p>
+        <p class="module-desc">Strukturali dasturlash asoslari, C/C++ tili sintaksisi, oqim boshqaruvi va funksiyalar.
+        </p>
         <ul class="module-topics-list">
           <li>Ma'lumot turlari, o‘zgaruvchilar va arifmetik operatorlar</li>
           <li>Shart va takrorlanish operatorlari (if, switch, for, while)</li>
@@ -788,7 +907,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">AKADEMIK YOZUV</h3>
-        <p class="module-desc">Ilmiy matnlarni shakllantirish, annotatsiya, maqola va dissertatsiya yozish qoidalari hamda akademik etika.</p>
+        <p class="module-desc">Ilmiy matnlarni shakllantirish, annotatsiya, maqola va dissertatsiya yozish qoidalari
+          hamda akademik etika.</p>
         <ul class="module-topics-list">
           <li>Ilmiy uslub va akademik maqola strukturalari (IMRAD)</li>
           <li>Adabiyotlar tahlili va iqtibos keltirish qoidalari (APA, IEEE)</li>
@@ -810,7 +930,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">HISOB (CALCULUS) II</h3>
-        <p class="module-desc">Ko‘p o‘zgaruvchili funksiyalar differensial hisobi, karrali va sirt integrallari, qatorlar nazariyasi.</p>
+        <p class="module-desc">Ko‘p o‘zgaruvchili funksiyalar differensial hisobi, karrali va sirt integrallari,
+          qatorlar nazariyasi.</p>
         <ul class="module-topics-list">
           <li>Ko‘p o‘zgaruvchili funksiyalar va xususiy hosilalar</li>
           <li>Karrali, egri chiziqli va sirt integrallari</li>
@@ -831,7 +952,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">DASTURLASH II (OOP)</h3>
-        <p class="module-desc">Ob'yektga yo‘naltirilgan dasturlash (OOP) tamoyillari, sinflar, polimorfizm va STL kutubxonasi.</p>
+        <p class="module-desc">Ob'yektga yo‘naltirilgan dasturlash (OOP) tamoyillari, sinflar, polimorfizm va STL
+          kutubxonasi.</p>
         <ul class="module-topics-list">
           <li>Klasslar va ob'yektlar, konstruktor va destruktorlar</li>
           <li>Inkapsulyatsiya, merosxo‘rlik (Inheritance) va polimorfizm</li>
@@ -852,7 +974,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">MA'LUMOTLAR TUZILMASI VA ALGORITMLAR</h3>
-        <p class="module-desc">Chiziqli va daraxtsimon ma'lumot tuzilmalari, qidirish, saralash algoritmlari va asimptotik tahlil.</p>
+        <p class="module-desc">Chiziqli va daraxtsimon ma'lumot tuzilmalari, qidirish, saralash algoritmlari va
+          asimptotik tahlil.</p>
         <ul class="module-topics-list">
           <li>Stek, navbat (queue) va bog‘langan ro‘yxatlar (linked list)</li>
           <li>Binar qidiruv daraxtlari (BST) va o‘zini muvozanatlovchi AVL daraxtlar</li>
@@ -873,7 +996,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">FALSAFA</h3>
-        <p class="module-desc">Falsafiy tafakkur taraqqiyoti, borliq va bilish nazariyalari hamda texnika va axborot jamiyati falsafasi.</p>
+        <p class="module-desc">Falsafiy tafakkur taraqqiyoti, borliq va bilish nazariyalari hamda texnika va axborot
+          jamiyati falsafasi.</p>
         <ul class="module-topics-list">
           <li>Falsafiy dunyoqarash va uning jamiyat taraqqiyotidagi o‘rni</li>
           <li>Ontologiya va gnoseologiya: borliq va bilish qonuniyatlari</li>
@@ -894,7 +1018,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">DINSHUNOSLIK</h3>
-        <p class="module-desc">Jahon dinlari tarixi, bag‘rikenglik (tolerantlik) madaniyati, islom sivilizatsiyasi va ma'naviy xavfsizlik.</p>
+        <p class="module-desc">Jahon dinlari tarixi, bag‘rikenglik (tolerantlik) madaniyati, islom sivilizatsiyasi va
+          ma'naviy xavfsizlik.</p>
         <ul class="module-topics-list">
           <li>Jahon dinlari tarixi va ularning madaniy sivilizatsiyaga ta'siri</li>
           <li>Islom ta'limoti va Markaziy Osiyo mutafakkirlari merosi</li>
@@ -915,7 +1040,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">XORIJIY TIL II (IT ENGLISH)</h3>
-        <p class="module-desc">AKT sohasi mutaxassislari uchun kasbiy ingliz tili, tarmoq hujjatlari va texnik muloqot.</p>
+        <p class="module-desc">AKT sohasi mutaxassislari uchun kasbiy ingliz tili, tarmoq hujjatlari va texnik muloqot.
+        </p>
         <ul class="module-topics-list">
           <li>Professional English for IT and Networking Specialists</li>
           <li>Reading and Writing Technical Documentation & RFCs</li>
@@ -936,7 +1062,8 @@
           <span style="font-size:11px; color:var(--brand-primary); font-family:var(--font-mono);">Majburiy</span>
         </div>
         <h3 class="module-title">FIZIKA II (ELEKTR VA MAGNETIZM)</h3>
-        <p class="module-desc">Elektrostatika, doimiy va o‘zgaruvchan tok, elektromagnit induksiya va Maksvell tenglamalari.</p>
+        <p class="module-desc">Elektrostatika, doimiy va o‘zgaruvchan tok, elektromagnit induksiya va Maksvell
+          tenglamalari.</p>
         <ul class="module-topics-list">
           <li>Kulon qonuni, elektr maydon kuchlanganligi va potensiali</li>
           <li>Doimiy elektr toki qonunlari (Om, Kirxgof qoidalari)</li>
@@ -1125,7 +1252,8 @@
     <div class="media-grid" id="mediaMainGrid">
       <!-- Main Video Spotlight -->
       <div class="video-spotlight" data-media-type="video">
-        <div class="video-player-container" id="videoPlayTrigger" onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+        <div class="video-player-container" id="videoPlayTrigger"
+          onclick="openVideoModal('Optik Tolali Liniyalarni Fusion Splicer bilan Payvandlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
           <div class="play-pulsing-btn">
             <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
               <path d="M8 5v14l11-7z" />
@@ -1164,19 +1292,23 @@
         =========================================================================
       -->
       <div class="photo-gallery-side" data-media-type="photo">
-        <div class="gallery-card" onclick="openPhotoLightbox('assets/images/lab_datacenter.jpg', 'Cisco Server Stendlari va Switch Klasteri')">
+        <div class="gallery-card"
+          onclick="openPhotoLightbox('assets/images/lab_datacenter.jpg', 'Cisco Server Stendlari va Switch Klasteri')">
           <img src="assets/images/lab_datacenter.jpg" alt="Data Center">
           <div class="gallery-caption-overlay">Cisco Server Stendlari va Switch Klasteri 🔍</div>
         </div>
-        <div class="gallery-card" onclick="openPhotoLightbox('assets/images/fiber_telecom.jpg', 'Optik Payvandlash va Spektr Analizatori')">
+        <div class="gallery-card"
+          onclick="openPhotoLightbox('assets/images/fiber_telecom.jpg', 'Optik Payvandlash va Spektr Analizatori')">
           <img src="assets/images/fiber_telecom.jpg" alt="Fiber Lab">
           <div class="gallery-caption-overlay">Optik Payvandlash va Spektr Analizatori 🔍</div>
         </div>
-        <div class="gallery-card" onclick="openPhotoLightbox('assets/images/lab_datacenter.jpg', 'NOC Tarmoq Monitoringi va Boshqaruv Zali')">
+        <div class="gallery-card"
+          onclick="openPhotoLightbox('assets/images/lab_datacenter.jpg', 'NOC Tarmoq Monitoringi va Boshqaruv Zali')">
           <img src="assets/images/lab_datacenter.jpg" alt="NOC Monitoring">
           <div class="gallery-caption-overlay">NOC Tarmoq Monitoringi va Boshqaruv Zali 🔍</div>
         </div>
-        <div class="gallery-card" onclick="openPhotoLightbox('assets/images/fiber_telecom.jpg', '10G SFP+ Magistral Kommutatsiya')">
+        <div class="gallery-card"
+          onclick="openPhotoLightbox('assets/images/fiber_telecom.jpg', '10G SFP+ Magistral Kommutatsiya')">
           <img src="assets/images/fiber_telecom.jpg" alt="Patch Panel">
           <div class="gallery-caption-overlay">10G SFP+ Magistral Kommutatsiya 🔍</div>
         </div>
@@ -1216,10 +1348,13 @@
     <div class="video-materials-grid" id="videoMaterialsGrid" data-media-type="video">
       <!-- Video 1 -->
       <div class="video-card-item">
-        <div class="video-card-thumb" onclick="openVideoModal('Cisco IOS: Router va Switchlarni Dastlabki Sozlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+        <div class="video-card-thumb"
+          onclick="openVideoModal('Cisco IOS: Router va Switchlarni Dastlabki Sozlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
           <img src="assets/images/lab_datacenter.jpg" alt="Cisco IOS">
           <div class="video-card-play-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </div>
           <span class="video-duration-pill">28:15 • 1080p</span>
         </div>
@@ -1231,10 +1366,12 @@
             </div>
             <h4 class="video-card-title">Cisco IOS: Router va Switchlarni Dastlabki Sozlash</h4>
             <p class="video-desc">
-              Cisco uskunalarida CLI interfeysi, IP manzillar biriktirish, parollarni shifrlash va SSH xavfsiz ulanishini sozlash.
+              Cisco uskunalarida CLI interfeysi, IP manzillar biriktirish, parollarni shifrlash va SSH xavfsiz
+              ulanishini sozlash.
             </p>
           </div>
-          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('Cisco IOS: Router va Switchlarni Dastlabki Sozlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <button class="btn-arsenal-secondary video-card-btn"
+            onclick="openVideoModal('Cisco IOS: Router va Switchlarni Dastlabki Sozlash', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
             ▶ Videoni ko‘rish
           </button>
         </div>
@@ -1242,10 +1379,13 @@
 
       <!-- Video 2 -->
       <div class="video-card-item">
-        <div class="video-card-thumb" onclick="openVideoModal('Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+        <div class="video-card-thumb"
+          onclick="openVideoModal('Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
           <img src="assets/images/fiber_telecom.jpg" alt="Wireshark Tahlil">
           <div class="video-card-play-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </div>
           <span class="video-duration-pill">34:50 • 1080p</span>
         </div>
@@ -1257,10 +1397,12 @@
             </div>
             <h4 class="video-card-title">Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish</h4>
             <p class="video-desc">
-              TCP 3-way handshake, DNS so‘rovlari, ARP jadvallari va shifrlanmagan HTTP ma'lumotlarni paketlar sathida tekshirish.
+              TCP 3-way handshake, DNS so‘rovlari, ARP jadvallari va shifrlanmagan HTTP ma'lumotlarni paketlar sathida
+              tekshirish.
             </p>
           </div>
-          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <button class="btn-arsenal-secondary video-card-btn"
+            onclick="openVideoModal('Wireshark Bilan Tarmoq Paketlarini Tahlil Qilish', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
             ▶ Videoni ko‘rish
           </button>
         </div>
@@ -1268,10 +1410,13 @@
 
       <!-- Video 3 -->
       <div class="video-card-item">
-        <div class="video-card-thumb" onclick="openVideoModal('MikroTik RouterOS v7: VLAN va DHCP Server', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+        <div class="video-card-thumb"
+          onclick="openVideoModal('MikroTik RouterOS v7: VLAN va DHCP Server', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
           <img src="assets/images/lab_datacenter.jpg" alt="MikroTik RouterOS">
           <div class="video-card-play-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </div>
           <span class="video-duration-pill">41:10 • 1080p</span>
         </div>
@@ -1283,10 +1428,12 @@
             </div>
             <h4 class="video-card-title">MikroTik RouterOS v7: VLAN va DHCP Server</h4>
             <p class="video-desc">
-              MikroTik routerlarida Bridge VLAN filtering, korporativ tarmoq segmentatsiyasi va pool bilan DHCP server o‘rnatish.
+              MikroTik routerlarida Bridge VLAN filtering, korporativ tarmoq segmentatsiyasi va pool bilan DHCP server
+              o‘rnatish.
             </p>
           </div>
-          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('MikroTik RouterOS v7: VLAN va DHCP Server', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <button class="btn-arsenal-secondary video-card-btn"
+            onclick="openVideoModal('MikroTik RouterOS v7: VLAN va DHCP Server', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
             ▶ Videoni ko‘rish
           </button>
         </div>
@@ -1294,10 +1441,13 @@
 
       <!-- Video 4 -->
       <div class="video-card-item">
-        <div class="video-card-thumb" onclick="openVideoModal('Server Rack & Data Center Kabel Standartlari', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+        <div class="video-card-thumb"
+          onclick="openVideoModal('Server Rack & Data Center Kabel Standartlari', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
           <img src="assets/images/fiber_telecom.jpg" alt="Server Rack">
           <div class="video-card-play-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </div>
           <span class="video-duration-pill">22:40 • 1080p</span>
         </div>
@@ -1309,10 +1459,12 @@
             </div>
             <h4 class="video-card-title">Server Rack & Data Center Kabel Standartlari</h4>
             <p class="video-desc">
-              Patch panellar montaji, Cat6A SFTP kabel marshrutlash, optik kross panellar va 10G SFP+ ulanishlar tartibi.
+              Patch panellar montaji, Cat6A SFTP kabel marshrutlash, optik kross panellar va 10G SFP+ ulanishlar
+              tartibi.
             </p>
           </div>
-          <button class="btn-arsenal-secondary video-card-btn" onclick="openVideoModal('Server Rack & Data Center Kabel Standartlari', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
+          <button class="btn-arsenal-secondary video-card-btn"
+            onclick="openVideoModal('Server Rack & Data Center Kabel Standartlari', 'https://youtu.be/1EwtSnTnXJ4?si=6WrDBCt_Ly59LcKQ')">
             ▶ Videoni ko‘rish
           </button>
         </div>
@@ -1351,9 +1503,11 @@
             "Blackwell shunchaki chip emas — bu yangi sanoat inqilobining dvigatelidir."
             <br><strong>— Jensen Huang, NVIDIA CEO (Reuters)</strong>
           </blockquote>
-          <p class="article-snippet">208 milliard tranzistor, 20 PFLOPS FP4 quvvat va suyuqlik sovutish. Reuters tahliliga ko‘ra, giper-skeylerlar energiya sarfini 25 barobar qisqartirmoqda.</p>
+          <p class="article-snippet">208 milliard tranzistor, 20 PFLOPS FP4 quvvat va suyuqlik sovutish. Reuters
+            tahliliga ko‘ra, giper-skeylerlar energiya sarfini 25 barobar qisqartirmoqda.</p>
           <div class="article-meta-foot">
-            <a href="https://www.reuters.com/technology/" target="_blank" rel="noopener" class="news-source-badge" title="Reuters sahifasiga o‘tish">
+            <a href="https://www.reuters.com/technology/" target="_blank" rel="noopener" class="news-source-badge"
+              title="Reuters sahifasiga o‘tish">
               🔗 reuters.com ↗
             </a>
             <span style="color:var(--brand-primary); font-weight:700;">To‘liq Yangilikni O‘qish →</span>
@@ -1375,9 +1529,11 @@
             "6G davrida tarmoqlar inson sezishidan oldin o‘zini-o‘zi tiklaydigan kognitiv asab tizimiga aylanadi."
             <br><strong>— Peter Vetter, Bell Labs Prezidenti</strong>
           </blockquote>
-          <p class="article-snippet">ITU-R M.2160 standarti bo‘yicha sub-teragerts (100–300 GHz) to‘lqinlar va AI raqamli egizaklar orqali tarmoq nosozliklari 3 millisekundda bartaraf etilmoqda.</p>
+          <p class="article-snippet">ITU-R M.2160 standarti bo‘yicha sub-teragerts (100–300 GHz) to‘lqinlar va AI
+            raqamli egizaklar orqali tarmoq nosozliklari 3 millisekundda bartaraf etilmoqda.</p>
           <div class="article-meta-foot">
-            <a href="https://spectrum.ieee.org/" target="_blank" rel="noopener" class="news-source-badge" title="IEEE Spectrum sahifasiga o‘tish">
+            <a href="https://spectrum.ieee.org/" target="_blank" rel="noopener" class="news-source-badge"
+              title="IEEE Spectrum sahifasiga o‘tish">
               🔗 spectrum.ieee.org ↗
             </a>
             <span style="color:var(--brand-primary); font-weight:700;">To‘liq Yangilikni O‘qish →</span>
@@ -1399,9 +1555,11 @@
             "Post-kvant standartlari raqamli sirlarimizni kvant buzilishidan himoyalashning asosiy poydevoridir."
             <br><strong>— Dr. Laurie E. Locascio, NIST Direktori</strong>
           </blockquote>
-          <p class="article-snippet">NIST tasdiqlagan FIPS 203 (ML-KEM) va FIPS 204 (ML-DSA) panjara-asosli algoritmlari "Q-Day" xavfiga qarshi global internet shifrlashini almashtirmoqda.</p>
+          <p class="article-snippet">NIST tasdiqlagan FIPS 203 (ML-KEM) va FIPS 204 (ML-DSA) panjara-asosli algoritmlari
+            "Q-Day" xavfiga qarshi global internet shifrlashini almashtirmoqda.</p>
           <div class="article-meta-foot">
-            <a href="https://www.technologyreview.com/" target="_blank" rel="noopener" class="news-source-badge" title="MIT Technology Review sahifasiga o‘tish">
+            <a href="https://www.technologyreview.com/" target="_blank" rel="noopener" class="news-source-badge"
+              title="MIT Technology Review sahifasiga o‘tish">
               🔗 technologyreview.com ↗
             </a>
             <span style="color:var(--brand-primary); font-weight:700;">To‘liq Yangilikni O‘qish →</span>
@@ -1423,9 +1581,11 @@
             "Biz passiv AI dan murakkab muhandislik rejalarini tuzuvchi Agentic AI tizimlariga o‘tmoqdamiz."
             <br><strong>— Sir Demis Hassabis, DeepMind CEO (Nobel)</strong>
           </blockquote>
-          <p class="article-snippet">Nature Machine Intelligence tadqiqotida ko‘p agentli tizimlarning BGP marshrutlash xatolarini avtonom tahlil qilib, 94% aniqlikda tuzatishi e'lon qilindi.</p>
+          <p class="article-snippet">Nature Machine Intelligence tadqiqotida ko‘p agentli tizimlarning BGP marshrutlash
+            xatolarini avtonom tahlil qilib, 94% aniqlikda tuzatishi e'lon qilindi.</p>
           <div class="article-meta-foot">
-            <a href="https://www.nature.com/articles/s42256-026-00892-4" target="_blank" rel="noopener" class="news-source-badge" title="Nature sahifasiga o‘tish">
+            <a href="https://www.nature.com/articles/s42256-026-00892-4" target="_blank" rel="noopener"
+              class="news-source-badge" title="Nature sahifasiga o‘tish">
               🔗 nature.com ↗
             </a>
             <span style="color:var(--brand-primary); font-weight:700;">To‘liq Yangilikni O‘qish →</span>
@@ -1460,8 +1620,11 @@
           <span class="pub-doi">DOI: 10.1016/j.jnca.2025.103982</span>
         </div>
         <span class="pub-journal">Journal of Network and Computer Applications (Elsevier, 2026)</span>
-        <h3 class="pub-title">Deep Reinforcement Learning for Dynamic Routing and Spectrum Allocation in SDN-Enabled Optical Networks</h3>
-        <p class="pub-snippet">Dasturiy boshqariluvchi optik tarmoqlarda (SDN/EON) chuqur mustahkamlovchi o‘rganish (DRL) algoritmlari orqali spektr taqsimoti, bloklanish ehtimolini 42% ga kamaytirish va to‘liq matematik formulalar, algoritmlar hamda tadqiqot jadvallari.</p>
+        <h3 class="pub-title">Deep Reinforcement Learning for Dynamic Routing and Spectrum Allocation in SDN-Enabled
+          Optical Networks</h3>
+        <p class="pub-snippet">Dasturiy boshqariluvchi optik tarmoqlarda (SDN/EON) chuqur mustahkamlovchi o‘rganish
+          (DRL) algoritmlari orqali spektr taqsimoti, bloklanish ehtimolini 42% ga kamaytirish va to‘liq matematik
+          formulalar, algoritmlar hamda tadqiqot jadvallari.</p>
         <div class="pub-footer">
           <span class="pub-author">Mualliflar: Dr. A. Zhang, Prof. M. Al-Hussein (Scopus indexed)</span>
           <span class="pub-read-btn">To‘liq Maqolani O‘qish (Full Paper) →</span>
@@ -1475,8 +1638,11 @@
           <span class="pub-doi">DOI: 10.1109/TQE.2025.341109</span>
         </div>
         <span class="pub-journal">IEEE Transactions on Quantum Engineering (IEEE Xplore, 2026)</span>
-        <h3 class="pub-title">Quantum Key Distribution (QKD) Protocols and Scalability in Terabit Optical Transport Networks</h3>
-        <p class="pub-snippet">Mavjud DWDM optik magistrallarda kvant kalitlarini xavfsiz tarqatish, Raman tarqalish shovqini tenglamalari, Decoy-State BB84 protokoli va 100+ km masofadagi eksperimental dala sinovlari natijalari to‘liq ilmiy matnda.</p>
+        <h3 class="pub-title">Quantum Key Distribution (QKD) Protocols and Scalability in Terabit Optical Transport
+          Networks</h3>
+        <p class="pub-snippet">Mavjud DWDM optik magistrallarda kvant kalitlarini xavfsiz tarqatish, Raman tarqalish
+          shovqini tenglamalari, Decoy-State BB84 protokoli va 100+ km masofadagi eksperimental dala sinovlari
+          natijalari to‘liq ilmiy matnda.</p>
         <div class="pub-footer">
           <span class="pub-author">Mualliflar: Dr. E. Schmidt, Prof. K. Tanaka (IEEE Fellow)</span>
           <span class="pub-read-btn">To‘liq Maqolani O‘qish (Full Paper) →</span>
@@ -1490,8 +1656,11 @@
           <span class="pub-doi">DOI: 10.1145/3624891</span>
         </div>
         <span class="pub-journal">ACM Computing Surveys (CSUR) • Top-Cited Landmark Survey</span>
-        <h3 class="pub-title">A Comprehensive Survey on Zero-Trust Architecture: Principles, Micro-segmentation, and Identity Governance</h3>
-        <p class="pub-snippet">"Hech kimga ishonma, doim tekshir" konsepsiyasi, mikrosegmentatsiya, mTLS shifrlash, SPIFFE/SPIRE identifikatsiya, PDP/PEP arxitekturasi va korporativ tarmoqlarda Zero Trust tatbiq etish yo‘l xaritasining to‘liq ilmiy tahlili.</p>
+        <h3 class="pub-title">A Comprehensive Survey on Zero-Trust Architecture: Principles, Micro-segmentation, and
+          Identity Governance</h3>
+        <p class="pub-snippet">"Hech kimga ishonma, doim tekshir" konsepsiyasi, mikrosegmentatsiya, mTLS shifrlash,
+          SPIFFE/SPIRE identifikatsiya, PDP/PEP arxitekturasi va korporativ tarmoqlarda Zero Trust tatbiq etish yo‘l
+          xaritasining to‘liq ilmiy tahlili.</p>
         <div class="pub-footer">
           <span class="pub-author">Mualliflar: Prof. R. Vance, Dr. S. Patel (ACM Distinguished)</span>
           <span class="pub-read-btn">To‘liq Maqolani O‘qish (Full Paper) →</span>
@@ -1505,8 +1674,11 @@
           <span class="pub-doi">DOI: 10.1109/JIOT.2025.3398412</span>
         </div>
         <span class="pub-journal">IEEE Internet of Things Journal (Vol. 13, Issue 4, 2026)</span>
-        <h3 class="pub-title">Federated Learning-Driven Edge Intelligence for Privacy-Preserving Industrial IoT and Smart Grid Telemetry</h3>
-        <p class="pub-snippet">Sanoat IoT va aqlli energetika tarmoqlarida chekka hisoblash (Edge AI) qurilmalari, differensial maxfiylik, FedAvg optimallashtirish tenglamalari va 80% tarmoq trafigini tejash bo‘yicha to‘liq eksperimental tadqiqot maqolasi.</p>
+        <h3 class="pub-title">Federated Learning-Driven Edge Intelligence for Privacy-Preserving Industrial IoT and
+          Smart Grid Telemetry</h3>
+        <p class="pub-snippet">Sanoat IoT va aqlli energetika tarmoqlarida chekka hisoblash (Edge AI) qurilmalari,
+          differensial maxfiylik, FedAvg optimallashtirish tenglamalari va 80% tarmoq trafigini tejash bo‘yicha to‘liq
+          eksperimental tadqiqot maqolasi.</p>
         <div class="pub-footer">
           <span class="pub-author">Mualliflar: Dr. H. Chen, Prof. L. Rossi (IEEE Senior Member)</span>
           <span class="pub-read-btn">To‘liq Maqolani O‘qish (Full Paper) →</span>
@@ -1540,31 +1712,36 @@
     -->
 
     <div class="resources-grid">
-      <a href="https://student.hemis.uz" target="_blank" rel="noopener" class="resource-card" style="border-color:rgba(0,230,118,0.35);">
+      <a href="https://student.hemis.uz" target="_blank" rel="noopener" class="resource-card"
+        style="border-color:rgba(0,230,118,0.35);">
         <div class="resource-icon" style="color:var(--brand-volt);">🎓</div>
         <h3 class="resource-title">HEMIS Student Axborot Tizimi</h3>
-        <p class="resource-desc">Oliy ta'lim talabalari o‘quv rejasi, dars jadvali, baholar va fan resurslari rasmiy portali.</p>
+        <p class="resource-desc">Oliy ta'lim talabalari o‘quv rejasi, dars jadvali, baholar va fan resurslari rasmiy
+          portali.</p>
         <span class="resource-link">Tizimga Kirish ↗</span>
       </a>
 
       <a href="https://www.netacad.com" target="_blank" rel="noopener" class="resource-card">
         <div class="resource-icon">🌐</div>
         <h3 class="resource-title">Cisco NetAcad</h3>
-        <p class="resource-desc">Rasmiy xalqaro Cisco Networking Academy portali va CCNA / CCNP sertifikatlash darsliklari.</p>
+        <p class="resource-desc">Rasmiy xalqaro Cisco Networking Academy portali va CCNA / CCNP sertifikatlash
+          darsliklari.</p>
         <span class="resource-link">Kirish ↗</span>
       </a>
 
       <a href="https://www.ietf.org/rfc/" target="_blank" rel="noopener" class="resource-card">
         <div class="resource-icon">📜</div>
         <h3 class="resource-title">IETF RFC Standartlari</h3>
-        <p class="resource-desc">Internet va tarmoq protokollarining rasmiy xalqaro spetsifikatsiyalari (RFC 791, RFC 2460, RFC 2328).</p>
+        <p class="resource-desc">Internet va tarmoq protokollarining rasmiy xalqaro spetsifikatsiyalari (RFC 791, RFC
+          2460, RFC 2328).</p>
         <span class="resource-link">Kirish ↗</span>
       </a>
 
       <a href="https://www.wireshark.org/docs/" target="_blank" rel="noopener" class="resource-card">
         <div class="resource-icon">🦈</div>
         <h3 class="resource-title">Wireshark Documentation</h3>
-        <p class="resource-desc">Tarmoq paketlarini tahlil qilish, filtrlar yaratish va protokollarni tekshirish bo‘yicha qo‘llanma.</p>
+        <p class="resource-desc">Tarmoq paketlarini tahlil qilish, filtrlar yaratish va protokollarni tekshirish
+          bo‘yicha qo‘llanma.</p>
         <span class="resource-link">Kirish ↗</span>
       </a>
 
@@ -1578,7 +1755,8 @@
       <a href="https://github.com" target="_blank" rel="noopener" class="resource-card">
         <div class="resource-icon">💻</div>
         <h3 class="resource-title">GitHub Open Source</h3>
-        <p class="resource-desc">Tarmoq simulyatorlari, skriptlar, Python va C++ laboratoriya ishlari manba kodlari repozitoriysi.</p>
+        <p class="resource-desc">Tarmoq simulyatorlari, skriptlar, Python va C++ laboratoriya ishlari manba kodlari
+          repozitoriysi.</p>
         <span class="resource-link">Kirish ↗</span>
       </a>
     </div>
@@ -1593,44 +1771,49 @@
         <div class="footer-brand-col">
           <div class="brand-crest">
             <div class="crest-shield" title="ATT-25 Emblemasi">
-              <svg class="att-logo-svg" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ATT-25 Logotipi">
+              <svg class="att-logo-svg" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg"
+                aria-label="ATT-25 Logotipi">
                 <defs>
                   <linearGradient id="attFtrShieldBg" x1="32" y1="2" x2="32" y2="72" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#0A2216"/>
-                    <stop offset="50%" stop-color="#06150E"/>
-                    <stop offset="100%" stop-color="#020805"/>
+                    <stop offset="0%" stop-color="#0A2216" />
+                    <stop offset="50%" stop-color="#06150E" />
+                    <stop offset="100%" stop-color="#020805" />
                   </linearGradient>
                   <linearGradient id="attFtrBorderGlow" x1="4" y1="2" x2="60" y2="72" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#00FF87"/>
-                    <stop offset="45%" stop-color="#38EF7D"/>
-                    <stop offset="80%" stop-color="#00F0FF"/>
-                    <stop offset="100%" stop-color="#00A3FF"/>
+                    <stop offset="0%" stop-color="#00FF87" />
+                    <stop offset="45%" stop-color="#38EF7D" />
+                    <stop offset="80%" stop-color="#00F0FF" />
+                    <stop offset="100%" stop-color="#00A3FF" />
                   </linearGradient>
                   <linearGradient id="attFtrCoreGrad" x1="16" y1="16" x2="48" y2="54" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#00FF87"/>
-                    <stop offset="100%" stop-color="#00F0FF"/>
+                    <stop offset="0%" stop-color="#00FF87" />
+                    <stop offset="100%" stop-color="#00F0FF" />
                   </linearGradient>
                   <radialGradient id="attFtrCoreBloom" cx="32" cy="36" r="22" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#00FF87" stop-opacity="0.38"/>
-                    <stop offset="55%" stop-color="#00F0FF" stop-opacity="0.12"/>
-                    <stop offset="100%" stop-color="#00FF87" stop-opacity="0"/>
+                    <stop offset="0%" stop-color="#00FF87" stop-opacity="0.38" />
+                    <stop offset="55%" stop-color="#00F0FF" stop-opacity="0.12" />
+                    <stop offset="100%" stop-color="#00FF87" stop-opacity="0" />
                   </radialGradient>
                   <filter id="attFtrNeonFilter" x="-30%" y="-30%" width="160%" height="160%">
-                    <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    <feGaussianBlur stdDeviation="1.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
                   </filter>
                 </defs>
                 <circle cx="32" cy="36" r="22" fill="url(#attFtrCoreBloom)" />
-                <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#attFtrShieldBg)" stroke="url(#attFtrBorderGlow)" stroke-width="2.2" stroke-linejoin="round" />
-                <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none" stroke="rgba(0, 255, 135, 0.25)" stroke-width="1" stroke-dasharray="4 2.5" />
+                <path d="M 32 3 L 59 14.5 L 59 47.5 L 32 70.5 L 5 47.5 L 5 14.5 Z" fill="url(#attFtrShieldBg)"
+                  stroke="url(#attFtrBorderGlow)" stroke-width="2.2" stroke-linejoin="round" />
+                <path d="M 32 8.5 L 53.5 17.5 L 53.5 44.5 L 32 64 L 10.5 44.5 L 10.5 17.5 Z" fill="none"
+                  stroke="rgba(0, 255, 135, 0.25)" stroke-width="1" stroke-dasharray="4 2.5" />
                 <line x1="26" y1="8.5" x2="38" y2="8.5" stroke="#00FF87" stroke-width="1.8" stroke-linecap="round" />
-                <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.8"/>
-                <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.8"/>
-                <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.07)" stroke="url(#attFtrCoreGrad)" stroke-width="2" stroke-linejoin="round" />
+                <circle cx="10.5" cy="31" r="1.5" fill="#00FF87" opacity="0.8" />
+                <circle cx="53.5" cy="31" r="1.5" fill="#00F0FF" opacity="0.8" />
+                <path d="M 32 17 L 46 47 L 18 47 Z" fill="rgba(0, 255, 135, 0.07)" stroke="url(#attFtrCoreGrad)"
+                  stroke-width="2" stroke-linejoin="round" />
                 <path d="M 22.5 35.5 L 41.5 35.5" stroke="#00FF87" stroke-width="2.2" stroke-linecap="round" />
                 <path d="M 27 35.5 L 27 47" stroke="url(#attFtrCoreGrad)" stroke-width="1.8" />
                 <path d="M 37 35.5 L 37 47" stroke="url(#attFtrCoreGrad)" stroke-width="1.8" />
-                <line x1="32" y1="17" x2="32" y2="55" stroke="url(#attFtrCoreGrad)" stroke-width="1.5" stroke-dasharray="3 2" />
+                <line x1="32" y1="17" x2="32" y2="55" stroke="url(#attFtrCoreGrad)" stroke-width="1.5"
+                  stroke-dasharray="3 2" />
                 <polygon points="32,31 36.5,35.5 32,40 27.5,35.5" fill="#00FF87" filter="url(#attFtrNeonFilter)" />
                 <circle cx="32" cy="35.5" r="1.2" fill="#031109" />
                 <circle cx="32" cy="17" r="2.8" fill="#00FF87" filter="url(#attFtrNeonFilter)" />
@@ -1640,7 +1823,7 @@
                 <circle cx="46" cy="47" r="2.5" fill="#00FF87" />
                 <circle cx="46" cy="47" r="1" fill="#FFFFFF" />
                 <circle cx="32" cy="55" r="2.2" fill="#00F0FF" />
-                <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.5" stroke-linecap="round" />
               </svg>
             </div>
             <div class="brand-text">
@@ -1649,7 +1832,7 @@
             </div>
           </div>
           <p class="footer-mission">
-            Axborot va telekommunikatsiya texnologiyalari (ATT-25-23a) yo‘nalishi talabalari uchun amaliy ko‘nikmalar, 3D
+            Axborot tizimlari va texnologiyalari (ATT-25-23a) yo‘nalishi talabalari uchun amaliy ko‘nikmalar, 3D
             simulyatsiyalar, HEMIS o‘quv rejasi va zamonaviy ta'lim resurslari platformasi.
           </p>
         </div>
@@ -1694,7 +1877,7 @@
       </div>
 
       <div class="footer-bottom-bar">
-        <span>© 2026 ATT-25 Yo‘nalishi. HEMIS Student tizimi bilan integratsiyalashgan.</span>
+        <span>© 2026 ATT-25 Yo‘nalishi.</span>
         <span style="color:var(--brand-primary); font-weight:700;">JUMAMYRADOV BATYR</span>
       </div>
     </div>
@@ -1732,8 +1915,10 @@
         <div class="settings-group" style="margin-bottom:22px;">
           <div class="settings-group-header">
             <span class="settings-group-badge">🎨 RANGLAR & MAVZULAR (7 TA PALITRA)</span>
-            <h4 style="font-size:15px; font-weight:800; color:var(--text-white); margin-top:4px;">Kiber-Texnik Mavzuni Tanlang</h4>
-            <p style="font-size:12px; color:var(--text-dim); margin-top:2px;">Tungi kiber-neon, klassik terminal, yumshoq och yashil va yuqori kontrastli kunduzgi oq fon</p>
+            <h4 style="font-size:15px; font-weight:800; color:var(--text-white); margin-top:4px;">Kiber-Texnik Mavzuni
+              Tanlang</h4>
+            <p style="font-size:12px; color:var(--text-dim); margin-top:2px;">Tungi kiber-neon, klassik terminal,
+              yumshoq och yashil va yuqori kontrastli kunduzgi oq fon</p>
           </div>
 
           <!-- Swatches Grid (Rendered dynamically by ThemeManager) -->
@@ -1754,7 +1939,9 @@
         <!-- 2. OTHER ACCESSIBILITY & SYSTEM SETTINGS -->
         <div class="settings-group">
           <div class="settings-group-header">
-            <span class="settings-group-badge" style="color:var(--accent-gold); border-color:rgba(251,191,36,0.3); background:rgba(251,191,36,0.1);">⚙️ QO‘SHIMCHA SOZLAMALAR</span>
+            <span class="settings-group-badge"
+              style="color:var(--accent-gold); border-color:rgba(251,191,36,0.3); background:rgba(251,191,36,0.1);">⚙️
+              QO‘SHIMCHA SOZLAMALAR</span>
           </div>
           <div class="setting-row">
             <div class="setting-meta">
@@ -1795,7 +1982,8 @@
       </div>
       <div class="modal-body" style="padding:24px;">
         <p style="color:var(--text-dim); margin-bottom:20px; font-size:14px;">
-          Quyidagi simulyatorlardan birini tanlang. Ular alohida to‘liq ekranli 3D fazoviy laboratoriya sifatida ishga tushadi:
+          Quyidagi simulyatorlardan birini tanlang. Ular alohida to‘liq ekranli 3D fazoviy laboratoriya sifatida ishga
+          tushadi:
         </p>
         <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:18px;">
           <!-- 3D LAN Card -->
@@ -1849,12 +2037,14 @@
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <span style="font-size:36px;">🏔️⚡</span>
                 <span
-                  style="font-size:10px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.15); padding:3px 8px; border-radius:4px; border:1px solid rgba(56,189,248,0.4);">YANGI 3D EKO</span>
+                  style="font-size:10px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.15); padding:3px 8px; border-radius:4px; border:1px solid rgba(56,189,248,0.4);">YANGI
+                  3D EKO</span>
               </div>
               <h4
                 style="font-size:18px; font-family:var(--font-editorial); color:var(--text-white); margin-bottom:6px;">
                 Smart Grid: GESdan Xonadongacha</h4>
-              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Tog' daryosi, to'g'on, gidroturbina, 220 kV dala LEP magistrali, tuman GPP, qishloq KTP va xonadon smart-hisoblagichi.</p>
+              <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5;">Tog' daryosi, to'g'on, gidroturbina,
+                220 kV dala LEP magistrali, tuman GPP, qishloq KTP va xonadon smart-hisoblagichi.</p>
             </div>
             <div
               style="margin-top:20px; display:inline-flex; align-items:center; gap:6px; color:#38BDF8; font-weight:700; font-size:13px;">
@@ -1891,7 +2081,8 @@
   <div class="video-modal-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
     <div class="video-modal-dialog">
       <div class="video-modal-header">
-        <h3 class="video-modal-title" id="videoModalTitle">OPTIK TOLALI LINIYALARNI FUSION SPLICER BILAN PAYVANDLASH</h3>
+        <h3 class="video-modal-title" id="videoModalTitle">OPTIK TOLALI LINIYALARNI FUSION SPLICER BILAN PAYVANDLASH
+        </h3>
         <button class="video-modal-close-btn" id="videoModalClose" aria-label="Yopish">✕</button>
       </div>
       <div class="video-modal-body">
@@ -1943,12 +2134,18 @@
   <!-- ==================== NEW: PHOTO LIGHTBOX MODAL ==================== -->
   <div class="modal-backdrop" id="photoLightboxModal">
     <div class="modal-dialog" style="max-width:900px; padding:0; background:transparent; border:none; box-shadow:none;">
-      <div style="position:relative; background:#060B08; border:1px solid var(--line-bright); border-radius:4px; overflow:hidden;">
-        <button class="modal-close-btn" id="photoLightboxClose" style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(0,0,0,0.7);">✕</button>
-        <div style="max-height:75vh; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#000;">
-          <img id="lightboxImg" src="" alt="Enlarged" style="width:100%; height:auto; max-height:75vh; object-fit:contain;">
+      <div
+        style="position:relative; background:#060B08; border:1px solid var(--line-bright); border-radius:4px; overflow:hidden;">
+        <button class="modal-close-btn" id="photoLightboxClose"
+          style="position:absolute; top:12px; right:12px; z-index:10; background:rgba(0,0,0,0.7);">✕</button>
+        <div
+          style="max-height:75vh; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#000;">
+          <img id="lightboxImg" src="" alt="Enlarged"
+            style="width:100%; height:auto; max-height:75vh; object-fit:contain;">
         </div>
-        <div id="lightboxCaption" style="padding:14px 20px; font-weight:700; color:var(--text-white); font-size:14px; background:var(--bg-surface); border-top:1px solid var(--line-base);"></div>
+        <div id="lightboxCaption"
+          style="padding:14px 20px; font-weight:700; color:var(--text-white); font-size:14px; background:var(--bg-surface); border-top:1px solid var(--line-base);">
+        </div>
       </div>
     </div>
   </div>
