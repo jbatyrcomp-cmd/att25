@@ -7,6 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>
+  (function () {
+    try {
+      const savedLang = localStorage.getItem('att25_lang') || 'uz';
+      document.documentElement.setAttribute('lang', savedLang);
+    } catch (e) { }
+  })();
+</script>
 </head>
 <body>
 
@@ -77,7 +85,7 @@
     </div>
     <div style="display:flex; flex-direction:column;">
       <b>ATT-25 <span>HARDWARE 3D</span></b>
-      <span class="sub">Talabalar Portali • Sxemotexnika & Mikroelektronika</span>
+      <span class="sub" data-i18n="brand.subtitle">Talabalar Portali</span>
     </div>
   </a>
 
@@ -304,6 +312,7 @@
 <script src="js/data.js"></script>
 <script src="js/textures.js"></script>
 <script src="js/scene.js"></script>
+<script src="../../assets/js/i18n.js"></script>
 <script src="js/app.js"></script>
 
 </body>

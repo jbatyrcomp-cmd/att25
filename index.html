@@ -19,12 +19,14 @@
   <link rel="icon" type="image/svg+xml" href="assets/images/att25-logo.svg">
   <meta name="theme-color" content="#070C09" id="themeMetaColor">
 
-  <!-- Zero-FOUC Instant Theme & Accessibility Loader -->
+  <!-- Zero-FOUC Instant Theme, Accessibility & Language Loader -->
   <script>
     (function () {
       try {
         const savedTheme = localStorage.getItem('att25_theme_id') || 'matrix-green';
         document.documentElement.setAttribute('data-theme', savedTheme);
+        const savedLang = localStorage.getItem('att25_lang') || 'uz';
+        document.documentElement.setAttribute('lang', savedLang);
         if (localStorage.getItem('att25_high_contrast') === 'true') {
           document.documentElement.classList.add('mode-high-contrast');
         }
@@ -34,6 +36,7 @@
       } catch (e) { }
     })();
   </script>
+  <script src="assets/js/i18n.js"></script>
 </head>
 
 <body>
@@ -46,20 +49,26 @@
       <div class="utility-tags">
         <span class="utility-tag-item">
           <span class="status-dot"></span>
-          LAB STATUS: <b>100% ONLINE</b>
+          <span data-i18n="topbar.lab_status">LAB STATUS: <b>100% ONLINE</b></span>
         </span>
         <span class="utility-tag-item" style="color:var(--text-muted);">|</span>
-        <span class="utility-tag-item">Guruh: <b>ATT-25-23a</b></span>
+        <span class="utility-tag-item" data-i18n="topbar.group">Guruh: <b>ATT-25-23a</b></span>
         <span class="utility-tag-item" style="color:var(--text-muted);">|</span>
-        <span class="utility-tag-item">Semestr: <b>Kuzgi 2026</b></span>
+        <span class="utility-tag-item" data-i18n="topbar.semester">Semestr: <b>Kuzgi 2026</b></span>
       </div>
       <div class="utility-actions">
+        <!-- Language Switcher Toggle (UZ / TM) -->
+        <div class="lang-switch-box" id="topLangSwitch" title="Tilni tanlang / Dili saýlaň">
+          <button class="lang-btn active" data-lang="uz" type="button" aria-label="O‘zbek tili">UZ</button>
+          <span class="lang-divider">/</span>
+          <button class="lang-btn" data-lang="tm" type="button" aria-label="Türkmen dili">TM</button>
+        </div>
         <button class="utility-btn" id="openSearchBtn" title="Portal bo‘ylab qidirish (Ctrl+K)">
           <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          Qidiruv <kbd>Ctrl+K</kbd>
+          <span data-i18n="topbar.search">Qidiruv</span> <kbd>Ctrl+K</kbd>
         </button>
         <button class="utility-btn" id="openSettingsBtn" title="Mavzu va portal sozlamalari">
           <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2">
@@ -67,7 +76,7 @@
             <path
               d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
           </svg>
-          Sozlamalar
+          <span data-i18n="topbar.settings">Sozlamalar</span>
         </button>
       </div>
     </div>
@@ -152,33 +161,33 @@
         </div>
         <div class="brand-text">
           <div class="brand-title">ATT<span>-25</span></div>
-          <div class="brand-subtitle">Talabalar Portali</div>
+          <div class="brand-subtitle" data-i18n="brand.subtitle">Talabalar Portali</div>
         </div>
       </a>
 
       <!-- Primary Navigation (Streamlined to 1 row) -->
       <nav class="main-nav" id="mainNav">
         <ul class="nav-list">
-          <li class="nav-item"><a href="#bosh-sahifa" class="nav-link active">Bosh Sahifa</a></li>
+          <li class="nav-item"><a href="#bosh-sahifa" class="nav-link active" data-i18n="nav.home">Bosh Sahifa</a></li>
           <li class="nav-item">
             <a href="simulyatorlar/index.html" class="nav-link">
-              Simulyatorlar
-              <span class="nav-badge-pill">5 IN 1</span>
+              <span data-i18n="nav.simulators">Simulyatorlar</span>
+              <span class="nav-badge-pill" data-i18n="nav.simulators_badge">5 IN 1</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="ai-doska/index.html" class="nav-link" style="color:#00FF87; font-weight:700;">
-              🤖 AI Doska
-              <span class="nav-badge-pill"
+              <span data-i18n="nav.aiboard">🤖 AI Doska</span>
+              <span class="nav-badge-pill" data-i18n="nav.aiboard_badge"
                 style="background:rgba(0,255,135,0.2); color:#00FF87; border-color:rgba(0,255,135,0.4);">YANGI</span>
             </a>
           </li>
-          <li class="nav-item"><a href="#oquv-dasturi" class="nav-link">Dastur</a></li>
-          <li class="nav-item"><a href="#taqdimotlar" class="nav-link">Slaydlar</a></li>
-          <li class="nav-item"><a href="#media-hub" class="nav-link">Media</a></li>
-          <li class="nav-item"><a href="#yangiliklar" class="nav-link">Yangiliklar</a></li>
-          <li class="nav-item"><a href="#maqolalar" class="nav-link">Maqolalar</a></li>
-          <li class="nav-item"><a href="#manbalar" class="nav-link">Manbalar</a></li>
+          <li class="nav-item"><a href="#oquv-dasturi" class="nav-link" data-i18n="nav.curriculum">Dastur</a></li>
+          <li class="nav-item"><a href="#taqdimotlar" class="nav-link" data-i18n="nav.slides">Slaydlar</a></li>
+          <li class="nav-item"><a href="#media-hub" class="nav-link" data-i18n="nav.media">Media</a></li>
+          <li class="nav-item"><a href="#yangiliklar" class="nav-link" data-i18n="nav.news">Yangiliklar</a></li>
+          <li class="nav-item"><a href="#maqolalar" class="nav-link" data-i18n="nav.articles">Maqolalar</a></li>
+          <li class="nav-item"><a href="#manbalar" class="nav-link" data-i18n="nav.resources">Manbalar</a></li>
           <li class="nav-item mobile-only-cta" style="margin-top: 10px;">
             <a href="simulyatorlar/index.html" class="btn-arsenal-primary"
               style="width: 100%; justify-content: center; clip-path:none; border-radius:4px; font-size:13px; padding:12px;">
@@ -195,7 +204,7 @@
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
             <path d="M5 3l14 9-14 9V3z" />
           </svg>
-          Simulyatorlar ↗
+          <span data-i18n="nav.sim_center_btn">Simulyatorlar ↗</span>
         </a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menyu">
           <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2">
@@ -222,32 +231,32 @@
             <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
               <circle cx="12" cy="12" r="10" />
             </svg>
-            Asosiy Amaliy Vosita • 3D LAN
+            <span data-i18n="hero.badge">Asosiy Amaliy Vosita • 3D LAN</span>
           </div>
-          <h2 class="hero-title">3D Interaktiv LAN & Topologiya Simulyatori</h2>
-          <p class="hero-desc">
+          <h2 class="hero-title" data-i18n="hero.title">3D Interaktiv LAN & Topologiya Simulyatori</h2>
+          <p class="hero-desc" data-i18n="hero.desc">
             Uch o‘lchamli fazoda router, modem, server va kompyuterlarni real vaqtda joylashtiring, kabellarni ulang va
             axborot paketlarining rangli trafigini kuzating.
           </p>
 
           <div class="hero-stats-row">
             <div class="stat-pill">
-              <span class="stat-pill-val">7 XIL</span>
-              <span class="stat-pill-lbl">Qurilma Turi</span>
+              <span class="stat-pill-val" data-i18n="hero.stat_devices">7 XIL</span>
+              <span class="stat-pill-lbl" data-i18n="hero.stat_devices_lbl">Qurilma Turi</span>
             </div>
             <div class="stat-pill">
-              <span class="stat-pill-val">REAL-TIME</span>
-              <span class="stat-pill-lbl">Fizika & Paketlar</span>
+              <span class="stat-pill-val" data-i18n="hero.stat_physics">REAL-TIME</span>
+              <span class="stat-pill-lbl" data-i18n="hero.stat_physics_lbl">Fizika & Paketlar</span>
             </div>
             <div class="stat-pill">
-              <span class="stat-pill-val">ETHERNET / WI-FI</span>
-              <span class="stat-pill-lbl">Gibrid Ulanish</span>
+              <span class="stat-pill-val" data-i18n="hero.stat_hybrid">ETHERNET / WI-FI</span>
+              <span class="stat-pill-lbl" data-i18n="hero.stat_hybrid_lbl">Gibrid Ulanish</span>
             </div>
           </div>
 
           <div class="hero-actions-group">
             <a href="simulyatorlar/index.html" class="btn-arsenal-primary">
-              Simulyatorlar Markaziga Kirish
+              <span data-i18n="hero.cta_main">Simulyatorlar Markaziga Kirish</span>
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <path d="M5 3l14 9-14 9V3z" />
               </svg>
@@ -255,15 +264,15 @@
             <a href="ai-doska/index.html" class="btn-arsenal-secondary"
               style="border-color:#00FF87; color:#00FF87; background:rgba(0,255,135,0.08);"
               title="Sun'iy intellektli interaktiv aqlli doska">
-              🤖 AI Doska ↗
+              <span data-i18n="hero.cta_aidoska">🤖 AI Doska ↗</span>
             </a>
             <a href="simulyatorlar/index.html#lan3d" class="btn-arsenal-secondary">
-              🌐 3D LAN Topologiya ↗
+              <span data-i18n="hero.cta_lan">🌐 3D LAN Topologiya ↗</span>
             </a>
             <a href="simulyatorlar/index.html#hardware3d" class="btn-arsenal-secondary"
               style="border-color:var(--brand-primary); color:var(--brand-volt);"
               title="Kompyuter sxemalari va qismlari atributlari">
-              ⚡ 3D Sxemalar ↗
+              <span data-i18n="hero.cta_hardware">⚡ 3D Sxemalar ↗</span>
             </a>
           </div>
         </div>
@@ -279,10 +288,10 @@
       <div class="sim-promo-left">
         <div class="sim-promo-tag">
           <span class="status-dot"></span>
-          YAGONA AMALIY BO‘LIM • 5-IN-1 LABORATORIYA
+          <span data-i18n="sim_promo.badge">YAGONA AMALIY BO‘LIM • 5-IN-1 LABORATORIYA</span>
         </div>
-        <h2 class="sim-promo-title">ATT-25 Simulyatorlar Markazi</h2>
-        <p class="sim-promo-desc">
+        <h2 class="sim-promo-title" data-i18n="sim_promo.title">ATT-25 Simulyatorlar Markazi</h2>
+        <p class="sim-promo-desc" data-i18n="sim_promo.desc">
           Barcha 3D tarmoq topologiyalari, kompyuter apparat sxemalari (CPU/VRM/DDR5/ALU), IP Subnet kalkulyatori, jonli
           Ping terminali va OSI 7 qatlamli model bitta yagona interaktiv bo‘limda jamlandi.
         </p>
@@ -301,7 +310,7 @@
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
             <polygon points="5 3 19 12 5 21 5 3" />
           </svg>
-          Simulyatorlar Markaziga Kirish ↗
+          <span data-i18n="sim_promo.cta">Simulyatorlar Markaziga Kirish ↗</span>
         </a>
       </div>
     </div>
@@ -316,23 +325,22 @@
       <div class="sim-promo-left">
         <div class="sim-promo-tag" style="color: #6EE7B7; border-color: rgba(16,185,129,0.4);">
           <span class="status-dot" style="background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
-          YANGI BO‘LIM • SUN'IY INTELLEKT ILG'OR MAYDONI
+          <span data-i18n="ai_promo.badge">YANGI BO‘LIM • SUN'IY INTELLEKT ILG'OR MAYDONI</span>
         </div>
-        <h2 class="sim-promo-title" style="color: #F8FAFC;">
+        <h2 class="sim-promo-title" style="color: #F8FAFC;" data-i18n="ai_promo.title">
           🤖 AI Doska — Interaktiv Aqlli Maydon
         </h2>
-        <p class="sim-promo-desc">
+        <p class="sim-promo-desc" data-i18n="ai_promo.desc">
           Cheksiz vektorli doska, erkin qalam va geometrik shakllar, rangli stikerlar, tarmoq qurilmalari sxemalari
           hamda Sun'iy Intellekt (AI) yordamchisi. Birgina buyruq (prompt) bilan professional diagramma va aqliy hujum
           (mindmap) generatsiya qiling!
         </p>
         <div class="sim-promo-chips">
-          <span class="promo-chip" style="background: rgba(16,185,129,0.15); border-color: #10B981; color:#A7F3D0;">🪄
-            Matndan Diagramma Generatori</span>
-          <span class="promo-chip">🧠 Aqliy Hujum (Mindmap)</span>
-          <span class="promo-chip">🌐 Tarmoq Topologiyasi Stikerlari</span>
-          <span class="promo-chip">📝 Doskani Avtomatik Tahlil & Konspekt</span>
-          <span class="promo-chip">💾 PNG, SVG va JSON Eksport</span>
+          <span class="promo-chip" style="background: rgba(16,185,129,0.15); border-color: #10B981; color:#A7F3D0;" data-i18n="ai_promo.chip1">🪄 Matndan Diagramma Generatori</span>
+          <span class="promo-chip" data-i18n="ai_promo.chip2">🧠 Aqliy Hujum (Mindmap)</span>
+          <span class="promo-chip" data-i18n="ai_promo.chip3">🌐 Tarmoq Topologiyasi Stikerlari</span>
+          <span class="promo-chip" data-i18n="ai_promo.chip4">📝 Doskani Avtomatik Tahlil & Konspekt</span>
+          <span class="promo-chip" data-i18n="ai_promo.chip5">💾 PNG, SVG va JSON Eksport</span>
         </div>
       </div>
       <div class="sim-promo-right">
@@ -342,7 +350,7 @@
             <path
               d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z" />
           </svg>
-          AI Doskaga O‘tish ↗
+          <span data-i18n="ai_promo.cta">AI Doskaga O‘tish ↗</span>
         </a>
       </div>
     </div>
@@ -354,8 +362,8 @@
   <section class="section-container" id="oquv-dasturi">
     <div class="section-header">
       <div class="section-title-wrap">
-        <span class="section-pretitle">HEMIS Akademik O‘quv Rejasi • ATT-25-23a</span>
-        <h2 class="section-title">O‘quv Dasturi & Fan Modullari</h2>
+        <span class="section-pretitle" data-i18n="curr.pretitle">HEMIS Akademik O‘quv Rejasi • ATT-25-23a</span>
+        <h2 class="section-title" data-i18n="curr.title">O‘quv Dasturi & Fan Modullari</h2>
       </div>
       <div class="section-filters" id="curriculumFilters">
         <button class="filter-btn" data-semester="1">1-Semestr (6 ta)</button>
@@ -957,8 +965,8 @@
   <section class="section-container" id="taqdimotlar">
     <div class="section-header">
       <div class="section-title-wrap">
-        <span class="section-pretitle">Elektron Kutubxona</span>
-        <h2 class="section-title">Qo‘llanmali Taqdimotlar & Darsliklar</h2>
+        <span class="section-pretitle" data-i18n="slides.pretitle">Elektron Kutubxona</span>
+        <h2 class="section-title" data-i18n="slides.title">Qo‘llanmali Taqdimotlar & Darsliklar</h2>
       </div>
       <div class="section-filters" id="docsFilters">
         <button class="filter-btn active" data-doc-type="all">Barchasi</button>
@@ -1110,8 +1118,8 @@
   <section class="section-container" id="media-hub">
     <div class="section-header">
       <div class="section-title-wrap">
-        <span class="section-pretitle">Vizual Kontent</span>
-        <h2 class="section-title">Media Hub: Foto & Video Materiallar</h2>
+        <span class="section-pretitle" data-i18n="media.pretitle">Vizual Kontent</span>
+        <h2 class="section-title" data-i18n="media.title">Media Hub: Foto & Video Materiallar</h2>
       </div>
       <div class="section-filters" id="mediaFilterBtns">
         <button class="filter-btn active" data-filter="all">Barchasi</button>
@@ -1349,8 +1357,8 @@
   <section class="section-container" id="yangiliklar">
     <div class="section-header">
       <div class="section-title-wrap">
-        <span class="section-pretitle">Texnologik Trendlar & AI Innovatsiyalar 2026</span>
-        <h2 class="section-title">IT & Sun'iy Intellekt Yangiliklari</h2>
+        <span class="section-pretitle" data-i18n="news.pretitle">Texnologik Trendlar & AI Innovatsiyalar 2026</span>
+        <h2 class="section-title" data-i18n="news.title">IT & Sun'iy Intellekt Yangiliklari</h2>
       </div>
       <div class="section-filters" id="newsFilters">
         <span style="font-family:var(--font-mono); font-size:12px; color:var(--brand-primary); font-weight:700;">
@@ -1472,8 +1480,8 @@
   <section class="section-container" id="maqolalar">
     <div class="section-header">
       <div class="section-title-wrap">
-        <span class="section-pretitle">Xalqaro Indekslangan Ilmiy Baza • 2025-2026</span>
-        <h2 class="section-title">Foydali Ilmiy Nashrlar & Maqolalar</h2>
+        <span class="section-pretitle" data-i18n="articles.pretitle">Xalqaro Indekslangan Ilmiy Baza • 2025-2026</span>
+        <h2 class="section-title" data-i18n="articles.title">Foydali Ilmiy Nashrlar & Maqolalar</h2>
       </div>
       <div class="section-filters" id="pubFilters">
         <button class="filter-btn active" data-pub-cat="all">Barchasi (4 ta)</button>
@@ -1564,8 +1572,8 @@
   <section class="section-container" id="manbalar">
     <div class="section-header">
       <div class="section-title-wrap">
-        <span class="section-pretitle">Tavsiya Etilgan Havolalar</span>
-        <h2 class="section-title">Internet Manbalari & Portallar</h2>
+        <span class="section-pretitle" data-i18n="res.pretitle">Tavsiya Etilgan Havolalar</span>
+        <h2 class="section-title" data-i18n="res.title">Internet Manbalari & Portallar</h2>
       </div>
     </div>
 
@@ -1705,17 +1713,17 @@
               <div class="brand-subtitle">Talabalar Portali</div>
             </div>
           </div>
-          <p class="footer-mission">
+          <p class="footer-mission" data-i18n="footer.mission">
             Axborot tizimlari va texnologiyalari (ATT-25-23a) yo‘nalishi talabalari uchun amaliy ko‘nikmalar, 3D
             simulyatsiyalar, HEMIS o‘quv rejasi va zamonaviy ta'lim resurslari platformasi.
           </p>
         </div>
 
         <div>
-          <h4 class="footer-heading">Tezkor Havolalar</h4>
+          <h4 class="footer-heading" data-i18n="footer.quick_links">Tezkor Havolalar</h4>
           <ul class="footer-links">
-            <li><a href="#bosh-sahifa">Bosh Sahifa</a></li>
-            <li><a href="simulyatorlar/index.html">Simulyatorlar Markazi</a></li>
+            <li><a href="#bosh-sahifa" data-i18n="nav.home">Bosh Sahifa</a></li>
+            <li><a href="simulyatorlar/index.html" data-i18n="footer.simulators">Simulyatorlar Markazi</a></li>
             <li><a href="simulyatorlar/index.html#lan3d">3D LAN Simulyatori</a></li>
             <li><a href="simulyatorlar/index.html#hardware3d">3D Hardware Sxemalari</a></li>
             <li><a href="simulyatorlar/index.html#circuit">Circuit Lab (Sxema)</a></li>
@@ -1727,23 +1735,23 @@
         </div>
 
         <div>
-          <h4 class="footer-heading">O‘quv Bo‘limlari</h4>
+          <h4 class="footer-heading" data-i18n="footer.study_sections">O‘quv Bo‘limlari</h4>
           <ul class="footer-links">
-            <li><a href="#oquv-dasturi">HEMIS O‘quv Rejasi</a></li>
-            <li><a href="#taqdimotlar">Slaydlar & Darsliklar</a></li>
-            <li><a href="#media-hub">Laboratoriya Videolari</a></li>
-            <li><a href="#maqolalar">Ilmiy Maqolalar</a></li>
-            <li><a href="#manbalar">Tashqi Manbalar</a></li>
+            <li><a href="#oquv-dasturi" data-i18n="nav.curriculum">HEMIS O‘quv Rejasi</a></li>
+            <li><a href="#taqdimotlar" data-i18n="nav.slides">Slaydlar & Darsliklar</a></li>
+            <li><a href="#media-hub" data-i18n="nav.media">Laboratoriya Videolari</a></li>
+            <li><a href="#maqolalar" data-i18n="nav.articles">Ilmiy Maqolalar</a></li>
+            <li><a href="#manbalar" data-i18n="nav.resources">Tashqi Manbalar</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="footer-heading">Aloqa & Kafedra</h4>
+          <h4 class="footer-heading" data-i18n="footer.contacts_title">Aloqa & Kafedra</h4>
           <ul class="footer-links">
-            <li><span style="color:var(--text-white);">Guruh:</span> 25-23a ATT</li>
-            <li><span style="color:var(--text-white);">Kafedra:</span> Axborot texnologiyalari</li>
-            <li><span style="color:var(--text-white);">Admin:</span> Jumamyradov Batyr</li>
-            <li><span style="color:var(--text-white);">Telefon:</span> +998 50 057 56 37</li>
+            <li><span style="color:var(--text-white);" data-i18n="footer.lbl_group">Guruh:</span> 25-23a ATT</li>
+            <li><span style="color:var(--text-white);" data-i18n="footer.lbl_dept">Kafedra:</span> <span data-i18n="footer.dept_name">Axborot texnologiyalari</span></li>
+            <li><span style="color:var(--text-white);" data-i18n="footer.lbl_admin">Admin:</span> Jumamyradov Batyr</li>
+            <li><span style="color:var(--text-white);" data-i18n="footer.lbl_phone">Telefon:</span> +998 50 057 56 37</li>
             <li><span style="color:var(--text-white);">Telegram:</span> @insurgent@19</li>
             <li><span style="color:var(--text-white);">Email:</span> b_jumamyradov@tiiame.uz</li>
           </ul>
@@ -1751,7 +1759,7 @@
       </div>
 
       <div class="footer-bottom-bar">
-        <span>© 2026 ATT-25 Yo‘nalishi.</span>
+        <span data-i18n="footer.copy">© 2026 ATT-25 Yo‘nalishi.</span>
         <span style="color:var(--brand-primary); font-weight:700;">JUMAMYRADOV BATYR</span>
       </div>
     </div>
@@ -1764,13 +1772,13 @@
   <div class="modal-backdrop" id="searchModal">
     <div class="modal-dialog">
       <div class="modal-header">
-        <div class="modal-title">Portal Bo‘ylab Tezkor Qidiruv</div>
+        <div class="modal-title" data-i18n="search.modal_title">Portal Bo‘ylab Tezkor Qidiruv</div>
         <button class="modal-close-btn" id="searchModalClose">✕</button>
       </div>
       <div class="modal-body">
         <div class="search-input-wrap">
           <span class="search-icon-pos">🔍</span>
-          <input type="text" id="globalSearchInput" placeholder="Fan, simulyator, mavzu yoki darslikni qidiring...">
+          <input type="text" id="globalSearchInput" data-i18n-placeholder="search.placeholder" placeholder="Fan, simulyator, mavzu yoki darslikni qidiring...">
         </div>
         <div class="search-results-list" id="searchResultsList"></div>
       </div>
@@ -1781,18 +1789,37 @@
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal-dialog" style="max-width:640px;">
       <div class="modal-header">
-        <div class="modal-title">Portal Sozlamalari & Ranglar Palitrasi</div>
+        <div class="modal-title" data-i18n="settings.modal_title">Portal Sozlamalari & Ranglar Palitrasi</div>
         <button class="modal-close-btn" id="settingsModalClose">✕</button>
       </div>
       <div class="modal-body">
+        <!-- 0. LANGUAGE SELECTION (UZ / TM) -->
+        <div class="settings-group" style="margin-bottom:22px;">
+          <div class="settings-group-header">
+            <span class="settings-group-badge" data-i18n="settings.lang_badge">🌐 DIL SAÝLAWY / INTERFEÝS TILI</span>
+            <h4 style="font-size:15px; font-weight:800; color:var(--text-white); margin-top:4px;" data-i18n="settings.lang_title">Portal Tilini Tanlang / Dili Saýlaň</h4>
+            <p style="font-size:12px; color:var(--text-dim); margin-top:2px;" data-i18n="settings.lang_desc">O‘zbek tili va Türkmen dili o‘rtasida tezkor almashtirish</p>
+          </div>
+          <div class="lang-choices-grid">
+            <div class="lang-choice-card active" data-lang="uz">
+              <div class="lang-choice-flag">🇺🇿</div>
+              <div class="lang-choice-title">O‘zbek tili</div>
+              <div class="lang-choice-sub">Lotin alifbosi (Asosiy)</div>
+            </div>
+            <div class="lang-choice-card" data-lang="tm">
+              <div class="lang-choice-flag">🇹🇲</div>
+              <div class="lang-choice-title">Türkmen dili</div>
+              <div class="lang-choice-sub">Latyn elipbiýi (Doly)</div>
+            </div>
+          </div>
+        </div>
+
         <!-- 1. DYNAMIC THEME & COLOR CUSTOMIZER -->
         <div class="settings-group" style="margin-bottom:22px;">
           <div class="settings-group-header">
-            <span class="settings-group-badge">🎨 RANGLAR & MAVZULAR (7 TA PALITRA)</span>
-            <h4 style="font-size:15px; font-weight:800; color:var(--text-white); margin-top:4px;">Kiber-Texnik Mavzuni
-              Tanlang</h4>
-            <p style="font-size:12px; color:var(--text-dim); margin-top:2px;">Tungi kiber-neon, klassik terminal,
-              yumshoq och yashil va yuqori kontrastli kunduzgi oq fon</p>
+            <span class="settings-group-badge" data-i18n="settings.themes_badge">🎨 RANGLAR & MAVZULAR (7 TA PALITRA)</span>
+            <h4 style="font-size:15px; font-weight:800; color:var(--text-white); margin-top:4px;" data-i18n="settings.themes_title">Kiber-Texnik Mavzuni Tanlang</h4>
+            <p style="font-size:12px; color:var(--text-dim); margin-top:2px;" data-i18n="settings.themes_desc">Tungi kiber-neon, klassik terminal, yumshoq och yashil va yuqori kontrastli kunduzgi oq fon</p>
           </div>
 
           <!-- Swatches Grid (Rendered dynamically by ThemeManager) -->
@@ -1804,7 +1831,7 @@
               <span class="theme-active-dot"></span>
               <span id="themeActiveName" style="font-weight:700;">Matrix Green (Faol)</span>
             </div>
-            <button class="btn-theme-reset" id="resetThemeBtn" type="button">
+            <button class="btn-theme-reset" id="resetThemeBtn" type="button" data-i18n="settings.btn_reset">
               ↺ Standartga qaytarish
             </button>
           </div>
@@ -1813,22 +1840,20 @@
         <!-- 2. OTHER ACCESSIBILITY & SYSTEM SETTINGS -->
         <div class="settings-group">
           <div class="settings-group-header">
-            <span class="settings-group-badge"
-              style="color:var(--accent-gold); border-color:rgba(251,191,36,0.3); background:rgba(251,191,36,0.1);">⚙️
-              QO‘SHIMCHA SOZLAMALAR</span>
+            <span class="settings-group-badge" style="color:var(--accent-gold); border-color:rgba(251,191,36,0.3); background:rgba(251,191,36,0.1);" data-i18n="settings.extra_badge">⚙️ QO‘SHIMCHA SOZLAMALAR</span>
           </div>
           <div class="setting-row">
             <div class="setting-meta">
-              <h4>Ultra-Kontrastli Rejim</h4>
-              <p>Yorqinlik va elementlar chegarasini maksimal darajada kuchaytirish</p>
+              <h4 data-i18n="settings.contrast_title">Ultra-Kontrastli Rejim</h4>
+              <p data-i18n="settings.contrast_desc">Yorqinlik va elementlar chegarasini maksimal darajada kuchaytirish</p>
             </div>
             <input type="checkbox" id="contrastToggle"
               style="accent-color:var(--brand-primary); width:18px; height:18px;">
           </div>
           <div class="setting-row">
             <div class="setting-meta">
-              <h4>Kattaroq Shrift</h4>
-              <p>Matn va kodlarni kattalashtirilgan o‘lchamda ko‘rsatish</p>
+              <h4 data-i18n="settings.font_title">Kattaroq Shrift</h4>
+              <p data-i18n="settings.font_desc">Matn va kodlarni kattalashtirilgan o‘lchamda ko‘rsatish</p>
             </div>
             <input type="checkbox" id="fontToggle" style="accent-color:var(--brand-primary); width:18px; height:18px;">
           </div>

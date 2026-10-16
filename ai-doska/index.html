@@ -51,6 +51,14 @@
 
   <link rel="stylesheet" href="css/style.css?v=4">
   <meta name="theme-color" content="#0F172A">
+  <script>
+    (function () {
+      try {
+        const savedLang = localStorage.getItem('att25_lang') || 'uz';
+        document.documentElement.setAttribute('lang', savedLang);
+      } catch (e) { }
+    })();
+  </script>
 </head>
 <body class="board-body">
 
@@ -69,7 +77,7 @@
           <line x1="4" y1="12" x2="20" y2="12"/>
           <line x1="4" y1="18" x2="20" y2="18"/>
         </svg>
-        <span class="menu-btn-label">Menyu</span>
+        <span class="menu-btn-label" data-i18n="aidoska.menu_btn">Menyu</span>
       </button>
 
       <div class="header-branding" style="display:flex; align-items:center; gap:10px;">
@@ -133,7 +141,7 @@
               <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
             </svg>
           </div>
-          <span class="header-app-badge" style="letter-spacing:0.8px;">ATT-25 · AI DOSKA</span>
+          <span class="header-app-badge" style="letter-spacing:0.8px;" data-i18n="aidoska.app_badge">ATT-25 · AI DOSKA</span>
         </a>
         <input type="text" id="boardTitleInput" class="board-title-input" value="Akademik Loyiha #1" title="Doska nomini o'zgartirish" maxlength="80" autocomplete="off" spellcheck="false" pattern="[^<>]*">
       </div>
@@ -141,12 +149,20 @@
 
     <!-- O'ng tomonda nozik Undo/Redo & Zoom boshqaruvi (minimal, faqat zarur) -->
     <div class="header-right-quick">
-      <button id="btnUndo" class="quick-icon-btn" title="Orqaga qaytarish (Ctrl+Z)" disabled>
+      <!-- Language Switcher (UZ / TM) -->
+      <div class="lang-switch-box" id="boardLangSwitch" style="height:28px; padding:2px 4px; margin-right:4px;">
+        <button type="button" class="lang-btn active" data-lang="uz">UZ</button>
+        <span class="lang-divider">/</span>
+        <button type="button" class="lang-btn" data-lang="tm">TM</button>
+      </div>
+      <div class="quick-divider"></div>
+
+      <button id="btnUndo" class="quick-icon-btn" data-i18n-title="aidoska.undo" title="Orqaga qaytarish (Ctrl+Z)" disabled>
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 7v6h6M3 13a9 9 0 0 1 15.36-6.36L21 9"/>
         </svg>
       </button>
-      <button id="btnRedo" class="quick-icon-btn" title="Oldinga qaytarish (Ctrl+Y)" disabled>
+      <button id="btnRedo" class="quick-icon-btn" data-i18n-title="aidoska.redo" title="Oldinga qaytarish (Ctrl+Y)" disabled>
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 7v6h-6M21 13a9 9 0 0 0-15.36-6.36L3 9"/>
         </svg>
@@ -160,7 +176,7 @@
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
       <div class="quick-divider"></div>
-      <button id="btnOpenSearch" class="quick-icon-btn" title="Doskadan qidirish (Ctrl+F)">
+      <button id="btnOpenSearch" class="quick-icon-btn" data-i18n-title="aidoska.search" title="Doskadan qidirish (Ctrl+F)">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
           <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -193,7 +209,7 @@
           <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
       </button>
-      <button id="btnBoardFullscreen" class="quick-icon-btn" title="To'liq Ekran (Fullscreen - F11)">
+      <button id="btnBoardFullscreen" class="quick-icon-btn" data-i18n-title="aidoska.fullscreen" title="To'liq Ekran (Fullscreen - F11)">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
         </svg>
@@ -268,8 +284,8 @@
           </svg>
         </div>
         <div>
-          <h4>ATT-25 AI Doska</h4>
-          <span class="drawer-sub">Talabalar Portali</span>
+          <h4 data-i18n="aidoska.drawer_title">ATT-25 AI Doska</h4>
+          <span class="drawer-sub" data-i18n="aidoska.drawer_sub">Talabalar Portali</span>
         </div>
       </div>
       <button id="btnCloseMainMenu" class="drawer-close-btn" title="Menyuni yopish (Esc)">&times;</button>
@@ -278,15 +294,15 @@
     <div class="drawer-scroll-content">
       <!-- 1. Asosiy Portal -->
       <div class="menu-section">
-        <div class="menu-section-title">Navigatsiya</div>
+        <div class="menu-section-title" data-i18n="aidoska.nav_title">Navigatsiya</div>
         <a href="../index.html" class="menu-action-item portal-item">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
           <div class="menu-item-text">
-            <strong>Talabalar Portaliga Qaytish</strong>
-            <span>ATT-25 umumiy laboratoriya va simulyatorlar</span>
+            <strong data-i18n="aidoska.back_portal">Talabalar Portaliga Qaytish</strong>
+            <span data-i18n="aidoska.back_portal_sub">ATT-25 umumiy laboratoriya va simulyatorlar</span>
           </div>
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
         </a>
@@ -294,14 +310,14 @@
 
       <!-- 2. AI Assistent & Gemini -->
       <div class="menu-section">
-        <div class="menu-section-title">Aqlli Sun'iy Intellekt</div>
+        <div class="menu-section-title" data-i18n="aidoska.ai_title">Aqlli Sun'iy Intellekt</div>
         <button id="menuBtnOpenAi" class="menu-action-item ai-highlight">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
             <path d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z"/>
           </svg>
           <div class="menu-item-text">
-            <strong>AI Assistent & Tahlilchi</strong>
-            <span>Matndan diagramma, tahlil va konspekt</span>
+            <strong data-i18n="aidoska.ai_assistant">AI Assistent & Tahlilchi</strong>
+            <span data-i18n="aidoska.ai_sub">Matndan diagramma, tahlil va konspekt</span>
           </div>
           <span class="menu-badge-neon">LIVE AI</span>
         </button>
@@ -2076,6 +2092,7 @@ else:
   <div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>
 
   <!-- Scripts -->
+  <script src="../assets/js/i18n.js"></script>
   <script src="js/board.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/smartboard.js"></script>

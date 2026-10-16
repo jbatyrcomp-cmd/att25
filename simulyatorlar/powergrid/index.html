@@ -10,6 +10,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function () {
+      try {
+        const savedLang = localStorage.getItem('att25_lang') || 'uz';
+        document.documentElement.setAttribute('lang', savedLang);
+      } catch (e) { }
+    })();
+  </script>
 
   <!-- Three.js & OrbitControls CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -82,7 +90,7 @@
           <line x1="32" y1="57" x2="32" y2="62" stroke="#00F0FF" stroke-width="1.6" stroke-linecap="round" />
         </svg>
       </div>
-      <span>ATT-25</span> TALABALAR PORTALI · SMART GRID 3D
+      <span data-i18n="brand.title">ATT-25</span> <span data-i18n="brand.subtitle">TALABALAR PORTALI</span> · SMART GRID 3D
     </a>
 
     <!-- Hotspot Jump Buttons -->
@@ -402,6 +410,7 @@
   <script src="js/house_sim.js"></script>
   <script src="js/scada.js"></script>
   <script src="js/experiments.js"></script>
+  <script src="../../assets/js/i18n.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -15,6 +15,8 @@
   <script>
     (function () {
       try {
+        const savedLang = localStorage.getItem('att25_lang') || 'uz';
+        document.documentElement.setAttribute('lang', savedLang);
         const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
         const savedTheme = localStorage.getItem('att25_theme_id') || (prefersLight ? 'high-tech-light' : 'matrix-green');
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -97,54 +99,61 @@
           </svg>
         </div>
         <div>
-          <div class="sim-hub-title">ATT-25 <span>SIMULYATORLAR</span></div>
-          <div class="sim-hub-subtitle">Talabalar Portali • Yagona 3D Laboratoriya Markazi</div>
+          <div class="sim-hub-title"><span data-i18n="brand.title">ATT-25</span> <span data-i18n="footer.simulators">SIMULYATORLAR</span></div>
+          <div class="sim-hub-subtitle" data-i18n="hub.center_subtitle">Talabalar Portali • Yagona 3D Laboratoriya Markazi</div>
         </div>
       </a>
 
       <!-- 5-in-1 Tab Switcher Bar -->
       <nav class="sim-tabs-strip" id="hubTabs" role="tablist">
         <button class="hub-tab-btn active" data-tab="lan3d" role="tab">
-          🌐 3D LAN Topologiya
+          <span data-i18n="hub.tab_lan">🌐 3D LAN Topologiya</span>
           <span class="badge-count">v2.4</span>
         </button>
         <button class="hub-tab-btn" data-tab="hardware3d" role="tab">
-          ⚡ 3D Hardware Sxemalari
+          <span data-i18n="hub.tab_hardware">⚡ 3D Hardware Sxemalari</span>
           <span class="badge-count">v2.0</span>
         </button>
         <button class="hub-tab-btn" data-tab="circuit" role="tab">
-          📐 Circuit Lab (Sxema)
+          <span data-i18n="hub.tab_circuit">📐 Circuit Lab (Sxema)</span>
           <span class="badge-count" style="background:#00FF87; color:#070B12; font-weight:800;">Yangi</span>
         </button>
         <button class="hub-tab-btn" data-tab="powergrid" role="tab">
-          ⚡ Smart Grid (GES ➔ Uy)
+          <span data-i18n="hub.tab_powergrid">⚡ Smart Grid (GES ➔ Uy)</span>
           <span class="badge-count" style="background:#38BDF8; color:#070B12; font-weight:800;">3D Eko</span>
         </button>
         <button class="hub-tab-btn" data-tab="subnet" role="tab">
-          🔢 Subnet Kalkulyator
+          <span data-i18n="hub.tab_subnet">🔢 Subnet Kalkulyator</span>
         </button>
         <button class="hub-tab-btn" data-tab="ping" role="tab">
-          💻 Jonli Ping Terminali
+          <span data-i18n="hub.tab_ping">💻 Jonli Ping Terminali</span>
         </button>
         <button class="hub-tab-btn" data-tab="osi" role="tab">
-          📶 OSI 7 Qatlam Modeli
+          <span data-i18n="hub.tab_osi">📶 OSI 7 Qatlam Modeli</span>
         </button>
       </nav>
 
       <!-- Right Header Actions -->
       <div class="hub-actions">
+        <!-- Language Switcher (UZ / TM) -->
+        <div class="lang-switch-box" id="hubLangSwitch" style="height:32px;">
+          <button type="button" class="lang-btn active" data-lang="uz">UZ</button>
+          <span class="lang-divider">/</span>
+          <button type="button" class="lang-btn" data-lang="tm">TM</button>
+        </div>
+
         <button class="hub-btn" id="hubFullscreenBtn" title="To‘liq ekranga o‘tish">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
           </svg>
-          <span class="hub-btn-lbl">To‘liq Ekran</span>
+          <span class="hub-btn-lbl" data-i18n="hub.fullscreen">To‘liq Ekran</span>
         </button>
         <a href="../index.html" class="hub-btn" target="_top" style="background:var(--brand-forest); border-color:var(--sim-accent); color:var(--sim-volt);" title="Talabalar portaliga qaytish">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
-          <span class="hub-btn-lbl">Talabalar Portali ↗</span>
+          <span class="hub-btn-lbl" data-i18n="hub.back_portal">Talabalar Portali ↗</span>
         </a>
       </div>
     </div>
@@ -343,6 +352,7 @@
   </button>
 
   <!-- Modular Scripts -->
+  <script src="../assets/js/i18n.js"></script>
   <script src="js/hub.js"></script>
   <script src="js/subnet.js"></script>
   <script src="js/ping.js"></script>

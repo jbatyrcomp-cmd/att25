@@ -832,6 +832,101 @@ a {
   border: 1px solid var(--line-base);
 }
 
+/* Language Switcher in Utility Bar */
+.lang-switch-box {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-surface-3);
+  border: 1px solid var(--line-base);
+  border-radius: var(--radius-clean);
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: var(--text-white);
+}
+
+.lang-btn.active {
+  background: var(--brand-primary);
+  color: var(--btn-text, #070B12);
+  box-shadow: 0 0 10px rgba(0, 255, 135, 0.45);
+}
+
+.lang-divider {
+  color: var(--text-muted);
+  font-size: 10px;
+  user-select: none;
+}
+
+/* Language Choice Cards in Settings Modal */
+.lang-choices-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.lang-choice-card {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--line-base);
+  border-radius: var(--radius-clean);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.lang-choice-card:hover {
+  border-color: var(--brand-primary);
+  background: var(--bg-surface-3);
+  transform: translateY(-1px);
+}
+
+.lang-choice-card.active {
+  border-color: var(--brand-primary);
+  background: rgba(0, 255, 135, 0.08);
+  box-shadow: 0 0 16px rgba(0, 255, 135, 0.2);
+}
+
+.lang-flag-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.lang-choice-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lang-choice-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--text-white);
+}
+
+.lang-choice-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
 /* ==========================================================================
    ARSENAL MEGA HEADER & BRANDING
    ========================================================================== */

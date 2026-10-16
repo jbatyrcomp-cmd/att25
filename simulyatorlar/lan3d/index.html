@@ -7,6 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=1.7">
+<script>
+  (function () {
+    try {
+      const savedLang = localStorage.getItem('att25_lang') || 'uz';
+      document.documentElement.setAttribute('lang', savedLang);
+    } catch (e) { }
+  })();
+</script>
 </head>
 <body>
 
@@ -101,7 +109,7 @@
     </div>
     <div style="display:flex; flex-direction:column;">
       <b>ATT-25 <span>LAN 3D</span></b>
-      <span>Talabalar Portali • Tarmoq Topologiyasi</span>
+      <span data-i18n="brand.subtitle">Talabalar Portali</span>
     </div>
   </a>
   <div id="actions">
@@ -1238,6 +1246,7 @@
 <script src="js/export.js?v=1.3"></script>
 <script src="js/dhcp.js"></script>
 <script src="js/quiz.js"></script>
+<script src="../../assets/js/i18n.js"></script>
 <script src="js/app.js?v=1.4"></script>
 
 </body>

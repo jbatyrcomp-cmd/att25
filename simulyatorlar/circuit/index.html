@@ -8,6 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function () {
+      try {
+        const savedLang = localStorage.getItem('att25_lang') || 'uz';
+        document.documentElement.setAttribute('lang', savedLang);
+      } catch (e) { }
+    })();
+  </script>
   
   <!-- Three.js & OrbitControls for 3D Breadboard -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -81,7 +89,7 @@
         </div>
         <div>
           <div class="brand-title">ATT-25 <span>CIRCUIT LAB</span></div>
-          <span class="brand-subtitle">Talabalar Portali • Sxemotexnika & 3D Maket</span>
+          <span class="brand-subtitle" data-i18n="brand.subtitle">Talabalar Portali</span>
         </div>
       </a>
 
@@ -990,6 +998,7 @@
 <script src="js/templates_data.js?v=6"></script>
 <script src="js/templates_modal.js?v=6"></script>
 <script src="js/live_controls.js?v=6"></script>
+<script src="../../assets/js/i18n.js"></script>
 <script src="js/app.js?v=6"></script>
 
 </body>
