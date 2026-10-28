@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import api.db as db
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
+BOT_TOKEN = (os.getenv("BOT_TOKEN") or "8999866914:AAHBbvxwd_IFwKgbW1fp1YEf1Xjmuj8oe_s").strip()
 
 
 def tg_api_call(method: str, params: dict) -> dict:
@@ -492,7 +492,7 @@ class handler(BaseHTTPRequestHandler):
 
         # Webhook o'rnatish imkoniyati: GET /api/webhook?set_webhook=1
         if "set_webhook" in query_params:
-            webhook_url = "https://att25.uz/api/webhook"
+            webhook_url = "https://www.att25.uz/api/webhook"
             res = tg_api_call("setWebhook", {"url": webhook_url})
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
