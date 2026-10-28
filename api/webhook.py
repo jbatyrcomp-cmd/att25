@@ -403,12 +403,12 @@ def handle_telegram_update(update: dict):
         tg_api_call("sendMessage", {
             "chat_id": chat_id,
             "text": (
-                f"📎 <b>6-qadam: Endi faylni yuboring!</b>\n\n"
+                f"📎 <b>6-qadam: Endi fayl yoki video havolasini yuboring!</b>\n\n"
                 f"<b>Tayyor ma'lumotlar:</b>\n"
                 f"• Bo'lim: {state_data.get('category_emoji', '📁')} {state_data.get('category_name')}\n"
                 f"• Nomi: <b>{state_data['name']}</b>\n"
                 f"• Joylovchi: <b>{state_data['uploader_name']}</b>\n\n"
-                f"Faylni (Video, Hujjat, PDF, Rasm, Audio) yuboring:"
+                f"Faylni (Video, Hujjat, PDF, Rasm, Audio) yuboring yoki video havolasini (YouTube / MP4) yozing:"
             ),
             "parse_mode": "HTML",
             "reply_markup": {
@@ -425,6 +425,9 @@ def handle_telegram_update(update: dict):
         file_type = ""
         file_size = 0
         telegram_file_id = None
+        storage_type = "telegram"
+        storage_path = ""
+        public_url = ""
 
         if "video" in msg:
             file_obj = msg["video"]
@@ -432,6 +435,7 @@ def handle_telegram_update(update: dict):
             file_name = file_obj.get("file_name", f"video_{file_obj.get('file_unique_id')}.mp4")
             file_size = file_obj.get("file_size", 0)
             file_type = ".mp4"
+            storage_path = f"tg://{telegram_file_id}"
         elif "document" in msg:
             file_obj = msg["document"]
             telegram_file_id = file_obj["file_id"]
@@ -441,28 +445,45 @@ def handle_telegram_update(update: dict):
                 file_type = "." + file_name.rsplit(".", 1)[1].lower()
             else:
                 file_type = ".bin"
+            storage_path = f"tg://{telegram_file_id}"
         elif "photo" in msg:
             file_obj = msg["photo"][-1]
             telegram_file_id = file_obj["file_id"]
             file_name = f"photo_{file_obj.get('file_unique_id')}.jpg"
             file_size = file_obj.get("file_size", 0)
             file_type = ".jpg"
+            storage_path = f"tg://{telegram_file_id}"
         elif "audio" in msg:
             file_obj = msg["audio"]
             telegram_file_id = file_obj["file_id"]
             file_name = file_obj.get("file_name", f"audio_{file_obj.get('file_unique_id')}.mp3")
             file_size = file_obj.get("file_size", 0)
             file_type = ".mp3"
+            storage_path = f"tg://{telegram_file_id}"
         elif "voice" in msg:
             file_obj = msg["voice"]
             telegram_file_id = file_obj["file_id"]
             file_name = f"voice_{file_obj.get('file_unique_id')}.ogg"
             file_size = file_obj.get("file_size", 0)
             file_type = ".ogg"
+            storage_path = f"tg://{telegram_file_id}"
+        elif text and ("http://" in text or "https://" in text or "youtu" in text):
+            file_name = text
+            file_size = 0
+            if "youtube.com" in text or "youtu.be" in text:
+                file_type = ".youtube"
+            elif any(text.lower().endswith(ext) for ext in [".mp4", ".webm", ".mov"]):
+                file_type = ".mp4"
+            else:
+                file_type = ".link"
+            telegram_file_id = ""
+            storage_type = "url"
+            storage_path = text
+            public_url = text
         else:
             tg_api_call("sendMessage", {
                 "chat_id": chat_id,
-                "text": "⚠️ Iltimos, haqiqiy fayl (video, hujjat, rasm, audio) yuboring:"
+                "text": "⚠️ Iltimos, haqiqiy fayl (video, hujjat, rasm, audio) yoki video havolasini yuboring:"
             })
             return
 
@@ -476,8 +497,9 @@ def handle_telegram_update(update: dict):
             file_name=file_name,
             file_size=file_size,
             file_type=file_type,
-            storage_type="telegram",
-            storage_path=f"tg://{telegram_file_id}",
+            storage_type=storage_type,
+            storage_path=storage_path,
+            public_url=public_url,
             telegram_file_id=telegram_file_id,
             telegram_user_id=chat_id,
             telegram_username=from_user.get("username")
