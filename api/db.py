@@ -5,6 +5,14 @@ from urllib.parse import urlparse, parse_qs
 from typing import List, Dict, Any, Optional
 import pg8000.native
 
+# Neon/PostgreSQL SSL SCRAM moslashuvchanlik xavfsizligi
+try:
+    import scramp
+    if not hasattr(scramp, "make_channel_binding"):
+        scramp.make_channel_binding = lambda *args, **kwargs: None
+except Exception:
+    pass
+
 # Standart bo'limlar
 DEFAULT_CATEGORIES = [
     {
