@@ -372,9 +372,9 @@ def delete_material(mat_id: int) -> bool:
 def get_stats() -> Dict[str, Any]:
     conn = get_db_connection()
     try:
-        tot_mat = conn.run("SELECT COUNT(*) FROM materials")[0][0]
-        tot_users = conn.run("SELECT COUNT(*) FROM users")[0][0]
-        tot_size = conn.run("SELECT COALESCE(SUM(file_size), 0) FROM materials")[0][0]
+        tot_mat = int(conn.run("SELECT COUNT(*) FROM materials")[0][0])
+        tot_users = int(conn.run("SELECT COUNT(*) FROM users")[0][0])
+        tot_size = int(conn.run("SELECT COALESCE(SUM(file_size), 0) FROM materials")[0][0])
 
         cat_rows = conn.run("""
             SELECT c.id, c.name, c.emoji, COUNT(m.id) as count
@@ -383,7 +383,7 @@ def get_stats() -> Dict[str, Any]:
             GROUP BY c.id, c.name, c.emoji
             ORDER BY c.id ASC
         """)
-        categories = [{"id": r[0], "name": r[1], "emoji": r[2], "count": r[3]} for r in cat_rows]
+        categories = [{"id": int(r[0]), "name": r[1], "emoji": r[2], "count": int(r[3])} for r in cat_rows]
 
         return {
             "total_materials": tot_mat,

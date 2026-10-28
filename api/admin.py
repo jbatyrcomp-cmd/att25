@@ -32,7 +32,7 @@ class handler(BaseHTTPRequestHandler):
             if action == "stats":
                 data = db.get_stats()
                 self._set_headers(200)
-                self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(json.dumps(data, ensure_ascii=False, default=str).encode("utf-8"))
 
             elif action == "materials":
                 cat_id = params.get("category_id", [None])[0]
@@ -45,19 +45,19 @@ class handler(BaseHTTPRequestHandler):
 
                 materials = db.get_materials(category_id=cat_id, search=search, limit=limit, offset=offset)
                 self._set_headers(200)
-                self.wfile.write(json.dumps(materials, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(json.dumps(materials, ensure_ascii=False, default=str).encode("utf-8"))
 
             elif action == "categories":
                 categories = db.get_categories()
                 self._set_headers(200)
-                self.wfile.write(json.dumps(categories, ensure_ascii=False).encode("utf-8"))
+                self.wfile.write(json.dumps(categories, ensure_ascii=False, default=str).encode("utf-8"))
 
             elif action == "material":
                 mat_id = int(params.get("id", [0])[0])
                 material = db.get_material_by_id(mat_id)
                 if material:
                     self._set_headers(200)
-                    self.wfile.write(json.dumps(material, ensure_ascii=False).encode("utf-8"))
+                    self.wfile.write(json.dumps(material, ensure_ascii=False, default=str).encode("utf-8"))
                 else:
                     self._set_headers(404)
                     self.wfile.write(json.dumps({"error": "Material topilmadi"}).encode("utf-8"))
