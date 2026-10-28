@@ -13,42 +13,49 @@ try:
 except Exception:
     pass
 
-# Standart bo'limlar
+# Standart bo'limlar (att25.uz saytidagi aniq bo'limlar bilan 100% integratsiya)
 DEFAULT_CATEGORIES = [
     {
-        "name": "Video darsliklar",
+        "name": "Taqdimotlar & Slaydlar",
+        "emoji": "📊",
+        "folder": "taqdimotlar",
+        "allowed_types": ".pptx,.ppt,.pdf",
+        "description": "Saytning #taqdimotlar bo'limiga tushadi"
+    },
+    {
+        "name": "Media Hub (Video & Foto)",
         "emoji": "📹",
-        "folder": "videos",
-        "allowed_types": ".mp4,.avi,.mkv,.mov,.webm",
-        "description": "Video darsliklar, kurslar va roliklar"
+        "folder": "media-hub",
+        "allowed_types": ".mp4,.avi,.mov,.mkv,.jpg,.png",
+        "description": "Saytning #media-hub bo'limiga tushadi"
     },
     {
-        "name": "Hujjatlar & Kitoblar",
-        "emoji": "📄",
-        "folder": "documents",
-        "allowed_types": ".pdf,.docx,.doc,.xlsx,.xls,.pptx,.ppt,.txt,.epub",
-        "description": "PDF kitoblar, taqdimotlar, konspektlar"
+        "name": "O'quv Dasturi & Lablar",
+        "emoji": "📖",
+        "folder": "oquv-dasturi",
+        "allowed_types": ".pdf,.docx,.doc",
+        "description": "Saytning #oquv-dasturi bo'limiga tushadi"
     },
     {
-        "name": "Rasmlar & Infografika",
-        "emoji": "🖼️",
-        "folder": "images",
-        "allowed_types": ".jpg,.jpeg,.png,.gif,.webp,.svg",
-        "description": "Infografikalar, diagrammalar va rasmlar"
+        "name": "Ilmiy Maqolalar",
+        "emoji": "📝",
+        "folder": "maqolalar",
+        "allowed_types": ".pdf,.docx",
+        "description": "Saytning #maqolalar bo'limiga tushadi"
     },
     {
-        "name": "Audio materiallar",
-        "emoji": "🎵",
-        "folder": "audio",
-        "allowed_types": ".mp3,.wav,.ogg,.m4a,.aac",
-        "description": "Audio darslar, podkastlar, ma'ruzalar"
+        "name": "Darsliklar & Manbalar",
+        "emoji": "📚",
+        "folder": "manbalar",
+        "allowed_types": ".pdf,.epub,.docx,.zip",
+        "description": "Saytning #manbalar bo'limiga tushadi"
     },
     {
-        "name": "Boshqa materiallar",
-        "emoji": "📦",
-        "folder": "other",
-        "allowed_types": "*",
-        "description": "Arxivlar (.zip, .rar), kodlar va boshqalar"
+        "name": "Guruh Yangiliklari",
+        "emoji": "📢",
+        "folder": "yangiliklar",
+        "allowed_types": ".jpg,.png,.pdf,.txt",
+        "description": "Saytning #yangiliklar bo'limiga tushadi"
     }
 ]
 

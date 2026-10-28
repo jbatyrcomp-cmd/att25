@@ -179,8 +179,30 @@ def handle_telegram_update(update: dict):
         return
 
     # /start
-    if text == "/start":
+    if text.startswith("/start"):
         db.clear_user_state(chat_id)
+        parts = text.split()
+        if len(parts) > 1 and parts[1].startswith("get_"):
+            try:
+                mat_id = int(parts[1].replace("get_", ""))
+                material = db.get_material_by_id(mat_id)
+                if material and material.get("telegram_file_id"):
+                    file_id = material["telegram_file_id"]
+                    file_type = (material.get("file_type") or "").lower()
+                    caption = f"📄 <b>{material['name']}</b>\n👤 {material['uploader_name']}\n🏢 att25.uz"
+
+                    if file_type in [".mp4", ".mov", ".avi", ".mkv"]:
+                        tg_api_call("sendVideo", {"chat_id": chat_id, "video": file_id, "caption": caption, "parse_mode": "HTML"})
+                    elif file_type in [".mp3", ".wav", ".ogg", ".m4a"]:
+                        tg_api_call("sendAudio", {"chat_id": chat_id, "audio": file_id, "caption": caption, "parse_mode": "HTML"})
+                    elif file_type in [".jpg", ".jpeg", ".png", ".webp"]:
+                        tg_api_call("sendPhoto", {"chat_id": chat_id, "photo": file_id, "caption": caption, "parse_mode": "HTML"})
+                    else:
+                        tg_api_call("sendDocument", {"chat_id": chat_id, "document": file_id, "caption": caption, "parse_mode": "HTML"})
+                    return
+            except Exception as e:
+                print("Error in /start get_:", e)
+
         tg_api_call("sendMessage", {
             "chat_id": chat_id,
             "text": (
