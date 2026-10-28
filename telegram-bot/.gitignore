@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Environment and secrets
+.env
+credentials/*.json
+!credentials/.gitkeep
+
+# Temporary files and uploads
+temp/*
+!temp/.gitkeep
+storage/*
+!storage/.gitkeep
+
+# SQLite database
+*.sqlite3
+*.db
+
+# Logs
+*.log

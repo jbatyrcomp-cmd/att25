@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/webhook",
+      "destination": "/api/webhook.py"
+    },
+    {
+      "source": "/api/admin",
+      "destination": "/api/admin.py"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/admin/index.html"
+    }
+  ]
+}
