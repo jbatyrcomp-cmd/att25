@@ -434,21 +434,21 @@
                         <div style="flex:1; min-width:320px; display:flex; flex-direction:column; background:#000; overflow-y:auto; padding:16px;">
                             
                             <!-- Video Screen Box -->
-                            <div id="attVideoScreenBox" style="position:relative; width:100%; aspect-ratio:16/9; max-height:58vh; background:#040605; border-radius:10px; overflow:hidden; border:1px solid rgba(0,255,135,0.3); box-shadow:0 10px 40px rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center;">
+                            <div id="attVideoScreenBox" style="position:relative; width:100%; aspect-ratio:16/9; max-height:58vh; background:#000; border-radius:10px; overflow:hidden; border:1px solid rgba(0,255,135,0.4); box-shadow:0 10px 40px rgba(0,0,0,0.9);">
                                 <!-- HTML5 Video -->
-                                <video id="attHtml5Player" controls autoplay playsinline style="width:100%; height:100%; object-fit:contain; display:none; background:#000;">
+                                <video id="attHtml5Player" controls playsinline preload="metadata" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; background:#000; display:none; z-index:2;">
                                     Brauzeringiz videoni qo'llab-quvvatlamaydi.
                                 </video>
                                 
                                 <!-- YouTube Iframe -->
-                                <iframe id="attYoutubePlayer" style="width:100%; height:100%; border:none; display:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <iframe id="attYoutubePlayer" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; display:none; z-index:2;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
                                 <!-- Telegram / Large Video Card -->
-                                <div id="attTelegramCard" style="display:none; text-align:center; padding:24px; max-width:540px;">
+                                <div id="attTelegramCard" style="position:absolute; top:0; left:0; width:100%; height:100%; display:none; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; background:linear-gradient(135deg, #071910, #040805);">
                                     <div style="font-size:52px; margin-bottom:12px;">🎬</div>
                                     <h4 id="attTgCardTitle" style="color:#fff; font-size:18px; font-weight:800; margin:0 0 8px 0;">Video Nomi</h4>
                                     <span id="attTgCardSize" style="display:inline-block; background:rgba(0,255,135,0.15); color:#00FF87; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:800; margin-bottom:14px;">1080p Full HD</span>
-                                    <p style="color:#94a3b8; font-size:13px; line-height:1.5; margin-bottom:18px;">
+                                    <p style="color:#94a3b8; font-size:13px; line-height:1.5; margin-bottom:18px; max-width:480px;">
                                         Ushbu video yuqori sifatli Full HD formatda Telegram bulutida saqlanmoqda. 1-klikda to'liq sifatda oching:
                                     </p>
                                     <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
@@ -717,28 +717,34 @@
         tgCard.style.display = 'none';
 
         // 1. YouTube video
-        if (v.publicUrl && (v.publicUrl.includes('youtube') || v.publicUrl.includes('youtu.be'))) {
-            let embedUrl = v.publicUrl;
-            if (!embedUrl.includes('embed')) {
-                const match = v.publicUrl.match(/(?:watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
-                if (match) embedUrl = `https://www.youtube.com/embed/${match[1]}?autoplay=1`;
+        const isYt = (v.publicUrl && (v.publicUrl.includes('youtube') || v.publicUrl.includes('youtu.be'))) ||
+                     (v.fileUrl && (v.fileUrl.includes('youtube') || v.fileUrl.includes('youtu.be')));
+
+        if (isYt) {
+            const rawUrl = v.publicUrl || v.fileUrl;
+            let videoId = '';
+            const match = rawUrl.match(/(?:watch\?v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/i);
+            if (match) videoId = match[1];
+
+            if (videoId) {
+                ytPlayer.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=0&rel=0&playsinline=1&enablejsapi=1`;
+                ytPlayer.style.display = 'block';
             }
-            ytPlayer.src = embedUrl;
-            ytPlayer.style.display = 'block';
         }
-        // 2. Katta Telegram video (> 20MB)
-        else if (v.isBot && v.fileSize && v.fileSize > 20 * 1024 * 1024) {
+        // 2. Katta Telegram video (> 20MB) va agar YouTube havola bo'lmasa
+        else if (v.isBot && v.fileSize && v.fileSize > 20 * 1024 * 1024 && !v.publicUrl) {
             document.getElementById('attTgCardTitle').textContent = v.title;
             document.getElementById('attTgCardSize').textContent = `Full HD 1080p • ${v.size}`;
             document.getElementById('attTgWatchBtn').href = `https://t.me/${BOT_USERNAME}?start=get_${v.id}`;
             document.getElementById('attTgDirectBtn').href = v.fileUrl;
-            tgCard.style.display = 'block';
+            tgCard.style.display = 'flex';
         }
         // 3. Standart HTML5 MP4 / WebM
         else if (v.fileUrl) {
             html5Player.src = v.fileUrl;
             html5Player.style.display = 'block';
-            html5Player.play().catch(e => console.log("Autoplay blocked:", e));
+            html5Player.load();
+            html5Player.play().catch(e => console.log("Autoplay unmuted blocked:", e));
         }
 
         renderPlaylistSidebar();
@@ -775,6 +781,35 @@
 
         renderPlaylistSidebar();
         playVideoByIndex(targetIndex);
+    };
+
+    // Sayt bo'ylab barcha mavjud video tugmalarini ham Master Cinema Playerga yo'naltirish:
+    window.openVideoModal = function(title, arg2, arg3) {
+        ensureMasterVideoModalExists();
+        collectAllVideos();
+
+        let url = arg3 || arg2 || '';
+        let foundIndex = allVideosPlaylist.findIndex(x => 
+            (title && x.title.toLowerCase().includes((title || '').toLowerCase())) ||
+            (url && x.publicUrl && x.publicUrl.includes(url))
+        );
+
+        if (foundIndex === -1 && url) {
+            allVideosPlaylist.unshift({
+                id: 'custom-' + Date.now(),
+                title: title || 'Video Darslik',
+                uploader: 'ATT-25',
+                size: 'Full HD',
+                desc: '',
+                date: '2026',
+                publicUrl: url,
+                fileUrl: url,
+                isBot: false
+            });
+            foundIndex = 0;
+        }
+
+        window.openMasterVideoPlayer(foundIndex !== -1 ? allVideosPlaylist[foundIndex].id : null);
     };
 
 
