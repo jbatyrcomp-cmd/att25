@@ -2786,37 +2786,73 @@ const SYLLABUS_DATA = {
     title: "Elektronika va sxemalar",
     code: "EE2103",
     semester: "3-Semestr (Kuzgi 2026)",
-    hours: "180 Soat (Auditoriya: 72 [M:30, A:30, L:12], Mustaqil taʼlim: 108)",
+    hours: "180 Soat (Auditoriya: 72 soat [Maʼruza: 30s, Amaliyot: 30s, Lab: 12s], Mustaqil taʼlim: 108s)",
     credits: "6.0 ECTS Kredit",
     type: "Majburiy Fan",
     description: "Talabalarga elektronika elementlar bazasini, analog va raqamli elektron qurilmalarni işlaş tamoyillarini örganiş, hisoblaş, elektron sxemalarni tuziş va loyihalaş masalalari böyiça nazariy bilim hamda amaliy könikma hosil qiliş.",
-    topics: [
-      "M1: Kiriş. Elektronika va sxemalar fanining predmeti va vazifalari (2 soat)",
-      "M2: Yarim ötkazgiçlarning elektr ötkazuvçanligi. Dreyf va diffuziya (2 soat)",
-      "M3: Diodlar. İşlaş prinsipi, p-n ötiş va volt-amper tavsifi (VAT) (2 soat)",
-      "M4: Bipolyar tranzistorlar (BJT): işlaş tamoyillari va statik tavsiflari (2 soat)",
-      "M5: Unipolyar (maydoniy) tranzistorlar (FET/MOSFET/MDP) (2 soat)",
-      "M6: Tiristorlar: tuzilişi, klassifikatsiyasi va kalit rejimida işlaşi (2 soat)",
-      "M7: Mikroelektronika komponentlari va integral mikrosxemalar (2 soat)",
-      "M8: Kuçaytirgiçlar: umumiy tasnifi, asosiy parametrlari va UE kaskadi (2 soat)",
-      "M9: Köp kaskadli va quvvat kuçaytirgiç kaskadlari (AÇT, FÇT) (2 soat)",
-      "M10: Özgarmas tok va operatsion kuçaytirgiçlar (Op-Amp) (2 soat)",
-      "M11: Garmonik tebranişli avtogeneratorlar (LC va RC sxemalar) (2 soat)",
-      "M12: Impulsli uskunalar, elektron kalitlar va RC zanjirlar (2 soat)",
-      "M13: Multivibratorlar: nosimmetrik va kutuvçi multivibrator sxemalari (2 soat)",
-      "M14: Mantiqiy elementlar (VA, YoKI, INKOR, NAND, NOR) va darvozalar (2 soat)",
-      "M15: Mikroprotsessor arxitekturasi, ALU va magistral şinalar (2 soat)",
-      "A1–A15: 15 ta Amaliy mashğulot (30 soat — Diod, Tranzistor, Töğrilagiç va Mantiqiy sxemalar hisobi)",
-      "L1–L6: 6 ta Laboratoriya işi (12 soat — Diod, BJT, Tiristor, Kuçaytirgiç va Töğrilagiç stend tadqiqi)"
+    maqsadi: "Talabalarga elektronika elementlar bazasini, analog va raqamli elektron qurilmalarni işlaş tamoyillarini örganiş, hisoblaş, elektron sxemalarni tuziş va loyihalaş masalalari böyiça nazariy bilimning qonun va tamoyillarini örgatiş hamda amaliyotga tatbiq etiş könikmasini hosil qilişdan iborat.",
+    vazifalari: "Nazariy bilimlar, amaliy könikmalar, elektron asboblar klassifikatsiyasi va işlaş tamoyillarini örganiş, elektron sxemalarni öqiy oliş, tuziş, loyihalaş hamda tavsiflarini baholaş kabi hodisa va jarayonlarga uslubiy yondaşuv hamda ilmiy dunyoqaraşini şakllantiriş, qonunlar va elektrofizik jarayonlar mazmun va mohiyatini biliş, ularga nisbatan şaxsiy munosabatni şakllantiriş orqali fanning iqtisodiyotdagi örni va ahamiyatini oçib beriş.",
+    lectures: [
+      { id: "M1", title: "Kiriş. “Elektronika va sxemalar” fanining predmeti va vazifalari.", hours: 2, ref: "[1, 2]", topics: ["Elektronika va sxemalar haqida asosiy tuşunçalar.", "Elektronika va sxemalar predmetining asosiy vazifalari.", "Elektronika fanining asosiy rivojlaniş bosqiçlari.", "Elektron asboblar va ularning ölçaş texnikasidagi örni."] },
+      { id: "M2", title: "Yarim ötkazgiçlarning elektr ötkazuvçanligi.", hours: 2, ref: "[1, 2]", topics: ["Aralaşmasiz (xususiy) va aralaşmali yarim ötkazgiçlar.", "Toza yarim ötkazgiçlarda zaryad taşuvçilar (elektron va kovaklar).", "Aralaşmali yarim ötkazgiçlarda zaryad taşuvçilar (donor va akseptor).", "Zaryad taşuvçilarning dreyf va diffuzion harakatlari."] },
+      { id: "M3", title: "Diodlar. Diodning işlaş prinsipi va volt-amper tavsifi (VAT).", hours: 2, ref: "[3]", topics: ["Taşqi kuçlaniş mavjud bölmaganda p-n ötişdagi muvozanatli elektr jarayonlar.", "Taşqi kuçlaniş mavjud bölganda p-n ötişdagi jarayonlar.", "p-n ötişning to‘siq va diffuzion siğimlari.", "Diodning turlari (Stabilitron, Varikap, Shottki, Svetodiod) va tamğalanişi."] },
+      { id: "M4", title: "Bipolyar tranzistorlar (BJT).", hours: 2, ref: "[2, 4]", topics: ["Bipolyar tranzistorlarning işlaş tamoyillari, klassifikatsiyasi (p-n-p, n-p-n).", "Ulaniş sxemalari (UE — Umumiy Emitter, UB — Umumiy Baza, UK — Umumiy Kollektor) va statik tavsiflari.", "Bipolyar tranzistorning h-parametrli ekvivalent sxemalari va fizik kattaliklari.", "Bipolyar tranzistorlarning şartli grafik ifodalanişi va tamğalanişi."] },
+      { id: "M5", title: "Unipolyar (maydoniy) tranzistorlar (FET / MOSFET).", hours: 2, ref: "[2, 5]", topics: ["Boşqariluvçi p-n ötişli va izolyatsiyalangan zatvorli maydoniy tranzistorlar.", "Maydoniy tranzistorlarning ulaniş sxemalari va kiriş-çiqiş tavsiflari.", "MDP-tranzistorlar (örnatilgan va induksiyalangan kanalli).", "Maydoniy tranzistorlarning şartli grafik ifodalanişi va tamğalanişi."] },
+      { id: "M6", title: "Tiristorlar.", hours: 2, ref: "[4]", topics: ["Tiristorlarning tö‘rt qatlamli (p-n-p-n) tuzilişi va işlaş tamoyillari.", "Klassifikatsiyasi: Dinistor, Tiristor (Trinistor), Simistor.", "Ulaniş sxemalari va statik volt-amper tavsifi.", "Elektron kalit rejimida işlaşi va boşqarilişi.", "Tiristorlarning şartli grafik ifodalanişi va tamğalanişi."] },
+      { id: "M7", title: "Mikroelektronika komponentlari.", hours: 2, ref: "[2, 4]", topics: ["Elektron komponentlarni tayyorlaşda va qöllaşda integral tamoyil.", "Yarim ötkazgiçli integral mikrosxemalar (IMS).", "Bipolyar va MDP (CMOS) mikrosxemalar.", "Aralaş va gibrid integral sxemalar, mikrominiatyuralaştiriş."] },
+      { id: "M8", title: "Kuçaytirgiçlar. Umumiy maʼlumotlar.", hours: 2, ref: "[1, 5]", topics: ["Elektron kuçaytirgiçlar tasnifi (kuçlaniş, tok, quvvat).", "Asosiy kattaliklari: kuçaytiriş koeffitsiyenti, kiriş/çiqiş qarşiligi, FIK.", "Bipolyar tranzistorlarda kuçaytirgiç kaskadlari.", "UE (Umumiy Emitter) kuçaytirgiç kaskadi va uning tahlili.", "Fazoinversli kaskad va uning qöllanilişi."] },
+      { id: "M9", title: "Köp kaskadli kuçaytirgiçlar.", hours: 2, ref: "[1, 6]", topics: ["Kuçaytirgiçlarning amplituda-çastota (AÇT) va faza-çastota (FÇT) tavsiflari.", "Kaskadlararo boğlaniş turlari (RC, transformatorli, töğridan-töğri).", "Kuçaytirgiçning amplituda tavsifi va noçiziqli buzilişlar.", "Quvvat kuçaytirgiç kaskadi. Ikki taktli (push-pull) çiqiş kuçaytiriş kaskadi."] },
+      { id: "M10", title: "Özgarmas tok kuçaytirgiçlari (ÖTK).", hours: 2, ref: "[4, 6]", topics: ["Özgarmas tok kuçaytirgiçlarining öziga xosligi va nol dreyfi muammosi.", "Differensial kuçaytirgiç kaskadi va sinfaz xalaqitlarni bostiriş.", "Operatsion kuçaytirgiç (Op-Amp) parametrlari va ideal Op-Amp qoidalari.", "Operatsion kuçaytirgiçning uzatiş koeffitsiyenti.", "Invertlovçi va invertlamovçi kuçaytirgiçlar, integrator va differensiator."] },
+      { id: "M11", title: "Garmonik tebranişli generatorlar.", hours: 2, ref: "[1, 6]", topics: ["Avtogeneratorlarning özini-özi uyğotiş fazaviy va amplitudaviy şartlari.", "LC-avtogeneratorning uç nuqtali induktiv (Hartli) va siğim (Kolpits) sxemalari.", "RC-avtogeneratorlari (Vin köprigi, fazo siljituvçi zanjirlar).", "Kvarsli çastota stabilizatorlari va ularning aniqligi."] },
+      { id: "M12", title: "Impulsli uskunalar.", hours: 2, ref: "[4, 7]", topics: ["Impulsli uskunalarning umumiy tavsiflari va signallarning kattaliklari.", "Töğri törtburçakli, arra simon va radioimpulslar.", "Impulslarning amplitudasi, davomiyligi, fronti, pasayişi va qaytariliş çastotasi.", "Elektron kalitlar rejimi. Differensiallovçi va integrallovçi RC zanjirlar."] },
+      { id: "M13", title: "Multivibratorlar.", hours: 2, ref: "[3, 7]", topics: ["Multivibratorlarning işlaş tamoyili va klassik sxemalari.", "Tranzistorli nosimmetrik va simmetrik multivibrator sxemalari.", "Differensiallovçi zanjirli işga tuşiriş.", "Bir vibrator (kutuvçi multivibrator / Odnovibrator) va uning vaqt keçikiş sxemasi."] },
+      { id: "M14", title: "Mantiqiy elementlar.", hours: 2, ref: "[2, 7]", topics: ["Mantiq algebrasi: VA (AND), YoKI (OR), INKOR (NOT) asosiy funksiyalari.", "Murakkab mantiqiy funksiyalar (NAND, NOR, XOR, XNOR).", "Mantiqiy funksiyalarning asosiy elektr kattaliklari: keçikiş vaqti, tarqaliş vaqti va çiqiş böyiça tarmoqlaniş koeffitsiyenti.", "Mantiqiy “0” va “1” kuçlaniş sathlari, şovqinbardoşlik.", "Sxemalarda grafik ifodalanişi (GOST va ANSI/IEEE standartlari)."] },
+      { id: "M15", title: "Mikroprotsessor arxitekturasi.", hours: 2, ref: "[1, 7]", topics: ["MikroEHMlarning tipik blokli tuzilişi va işlaş sikli.", "Mikroprotsessor arxitekturasi va arifmetik-mantiqiy qurilma (ALU).", "Umumiy qöllanuvçi registrlar (GPR) va dastur hisoblagiçi (PC).", "Sistemali magistrallar: Maʼlumotlar şinasi (Data Bus), Manzilli şina (Address Bus), Boşqariş şinasi (Control Bus).", "Şinalarning konstruktiv qöllanilişi va şina multipleksirlash."] }
+    ],
+    practices: [
+      { id: "A1", hours: 2, title: "Yarim ötkazgiçli diodning töğri va teskari toklarini hisoblaş.", desc: "Diodning töğri kuçlanişdagi töyiniş toki, töğri dinamik qarşiligi hamda teskari kuçlanişdagi sizib ötiş toklarini Shokli tenglamasi orqali hisoblaş." },
+      { id: "A2", hours: 2, title: "Yarim ötkazgiçli diodning VAT hisoblaş va grafigini quriş.", desc: "Berilgan harorat va parametrlarga binoan hisoblangan qiymatlar jadvalini tuziş va koordinata törida töğri va teskari sohalar uçun VAT grafigini yasash." },
+      { id: "A3", hours: 2, title: "Bipolyar tranzistorlarning kuçaytirgiç rejimida yuklamaga nisbatan parametrlarini hisoblaş hamda kiriş va çiqiş tavsiflarini quriş.", desc: "Umumiy emitter (UE) sxemasida yuklama töğri çizig‘ini quriş, işçi nuqtani (Q-point) aniqlaş va kiriş/çiqiş tavsiflarini tahlil qiliş." },
+      { id: "A4", hours: 2, title: "Maydoniy tranzistorlarning kuçaytiriş rejimida yuklamaga nisbatan parametrlarini hisoblaş.", desc: "MOSFET tranzistorlarining uzatiş qiyaligi (S), içki qarşiligi (Ri) va kuçaytiriş koeffitsiyentini analitik hamda grafik usulda aniqlaş." },
+      { id: "A5", hours: 2, title: "Bipolyar tranzistorning kalit rejimidagi parametrlarini hisoblaş.", desc: "BJT ning töyiniş (saturation) va uziliş (cutoff) sohalaridagi toklari, bazani töyintiriş koeffitsiyenti va kommutatsiya quvvat yöqotişlarini hisoblaş." },
+      { id: "A6", hours: 2, title: "Unipolyar tranzistorning kalit rejimidagi parametrlarini hisoblaş.", desc: "Maydoniy tranzistorda kanal oçiq holatdagi qarşilik (RDS(on)), parazit siğimlar va kalitning ulaniş/uziliş dinamik vaqtlarini hisoblaş." },
+      { id: "A7", hours: 2, title: "Bir va ikki yarim davrli töğrilagiçlarni hisoblaş.", desc: "Bir fazali bir yarim davrli va ikki yarim davrli (örta nuqtali) töğrilagiçlarning örtacha töğrilangan kuçlanişi, pulsatsiya koeffitsiyenti va diodlardagi teskari kuçlanişni hisoblaş." },
+      { id: "A8", hours: 2, title: "Uç fazali umumiy nuqtali töğrilagiçlarni hisoblaş.", desc: "Uç fazali nolli sxemada faza kuçlanişlari, diodlar kommutatsiyasi, yuklamadagi pulsatsiya va transformator ikkilamçi çölg‘ami parametrlarini hisoblaş." },
+      { id: "A9", hours: 2, title: "Uç fazali köprik sxemali töğrilagiçlarni hisoblaş (Larionov sxemasi).", desc: "Larionov köprik sxemasida töğrilangan kuçlaniş (Ud = 2.34 Uf), toklar, 6-pulsli pulsatsiya va diodlarni tanlaş hisob-kitoblarini bajariş." },
+      { id: "A10", hours: 2, title: "Parametrik stabilizatorda stabilitronning parametrlarini aniqlaş va uning VAT quriş.", desc: "Kremniyli stabilitronning minimal va maksimal stabilizatsiya toklari, chegaralovçi ballast rezistori (Rb) qarşiligi va stabilizatsiya koeffitsiyentini hisoblaş." },
+      { id: "A11", hours: 2, title: "Kuçaytirgiçlarning kuçlaniş, tok va quvvat böyiça kuçaytiriş koeffitsiyentini aniqlaş.", desc: "Köp kaskadli kuçaytirgiçlarning KU, KI va KP koeffitsiyentlarini çiziqli va logarifmik (desibel — dB) masshtablarda hisoblaş." },
+      { id: "A12", hours: 2, title: "Özgarmas tok kuçaytirgiçi parametrlarini aniqlaş. Tavsiflarini quriş.", desc: "Differensial kaskadning sinfaz va differensial kuçaytiriş koeffitsiyentlarini hamda sinfaz xalaqitni bostiriş koeffitsiyentini (CMRR) hisoblaş." },
+      { id: "A13", hours: 2, title: "“VA-INKOR” (NAND) elementlaridan foydalanib berilgan mantiqiy funksiyani hosil qiliş.", desc: "Ixtiyoriy mantiqiy ifodani De Morgan qonunlari yordamida faqat NAND (Şeffer ştrixi) bazisiga keltiriş va prinsipial funksional sxemasini çiziş." },
+      { id: "A14", hours: 2, title: "“YoKI-INKOR” (NOR) elementlaridan foydalanib berilgan mantiqiy funksiyani hosil qiliş.", desc: "Mantiqiy funksiyani Pirs amali (NOR bazisi) orqali ifodalaş va minimal elementlar soni bilan sxemasini sintez qiliş." },
+      { id: "A15", hours: 2, title: "“VA-YoKI-INKOR” (AOI) elementlaridan foydalanib berilgan mantiqiy funksiyani hosil qiliş.", desc: "Murakkab kombinatsion sxemalarni AOI (And-Or-Invert) mantiqiy bloklari asosida apparat tejamkor holda loyihalaş." }
+    ],
+    labs: [
+      { id: "L1", hours: 2, title: "Yarim ötkazgiçli diodning tadqiqi va VAT quriş.", desc: "Töğri va teskari ulaniş sxemalarini yiğiş, voltmetr va milliampermetr yordamida ölçaşlarni bajariş, eksperimental VAT grafigini quriş va tösiq potensialini aniqlaş." },
+      { id: "L2", hours: 2, title: "Bipolyar tranzistorning tadqiqi, kiriş va çiqiş tavsiflarini quriş.", desc: "Umumiy emitter (UE) sxemasida BJT tranzistorni tadqiq qiliş: bazaning turli özgarmas toklari (IB) uçun çiqiş oilasi IC = f(UCE) va kiriş IB = f(UBE) egri çiziqlarini eksperimental oliş va beta koeffitsiyentini aniqlaş." },
+      { id: "L3", hours: 2, title: "Tiristorning tadqiqi va VAT quriş.", desc: "Tiristorning ötkazuvçanlik holatiga ötiş şartlarini örganiş, boşqariş elektrodiga berilgan impuls yordamida oçiliş kuçlanişini fiksatsiya qiliş, uşlab turuvçi tok (IH) qiymatini ölçaş." },
+      { id: "L4", hours: 2, title: "UE sxemada ulangan bipolyar tranzistordagi kuçaytirgiçni örganiş va uning tadqiqi.", desc: "Kaskadning kirişiga generator orqali sinus signali beriş, çiqiş signali amplitudasini ossillografda kuzatiş, kuçlaniş böyiça kuçaytiriş koeffitsiyentini (KU) hisoblaş va 180° faza inversiyasini tekşiriş." },
+      { id: "L5", hours: 2, title: "Bir yarim davrli töğrilagiç sxemasini örganiş va uning tadqiqi.", desc: "Bir yarim davrli töğrilagiç sxemasini yiğiş, yuklamadagi kuçlaniş şaklini ossillografda köriş, filtrlash kondensatori (C-filtr) ulanganda va ulanmagandagi pulsatsiyalar koeffitsiyentini solıştiriş." },
+      { id: "L6", hours: 2, title: "Ikki yarim davrli töğrilagiç sxemasini örganiş va uning tadqiqi.", desc: "Diodli köprik (Grets sxemasi) töğrilagiçini yiğiş, çiqiş kuçlanişining tölqin şakli va çastotasini ölçaş, C va LC filtrlarning tebranişlarni tekislaş samaradorligini örganiş." }
+    ],
+    independentStudy: [
+      { num: 1, hours: 24, title: "Yarim ötkazgiç asboblar fizikasi va zamonaviy materiallar", desc: "GaAs, SiC va GaN asosidagi yuqori çastotali va quvvatli yarim ötkazgiçlarning tahliliy şarhi.", control: "Konspekt, ilmiy referat" },
+      { num: 2, hours: 24, title: "Tranzistorli kaskadlarni kompyuterda modellaştiriş", desc: "Bipolyar va maydoniy tranzistorli kuçaytirgiçlarning işçi nuqtasini haroratga termostabillaş usullarini hisoblaş.", control: "Hisob-çizma işi, SPICE fayllar" },
+      { num: 3, hours: 24, title: "Operatsion kuçaytirgiçlar bazasidagi analog funksional tugunlar", desc: "Aktiv filtrlar (Battervort, Çebişev), komparatorlar, Şmitt triggerlari va analog köpaytiruvçi sxemalarni hisoblaş.", control: "Individual hisob-grafik topşiriq" },
+      { num: 4, hours: 20, title: "Kombinatsion va ketma-ket mantiqiy qurilmalarni sintez qiliş", desc: "Multipleksorlar, hisoblagiçlar va siljiş registrlarini mantiqiy elementlarda loyihalaş va Karno kartalarida minimallaştiriş.", control: "Amaliy loyiha himoyasi" },
+      { num: 5, hours: 16, title: "Mikroprotsessorli boşqariş tizimlari va zamonaviy xotira texnologiyalari", desc: "DDR5, HBM, NVMe xotira interfeyslari hamda mikrokontrollerlarning (ARM Cortex, RISC-V) apparat ta'minoti tahlili.", control: "Taqdimot (Slayd) va suhbat" }
     ],
     literature: [
-      "1. Denmuxammadiyev A.M., Bokiyev A.A. 'Elektrotexnika va elektronika asoslari' darslik. Toşkent, 2023.",
-      "2. Nuraliyev A.K., Isakov A.J., Primov O.J. 'Elektronika va mikroprotsessor texnikasi'. TIQXMMI, 2020.",
+      "1. Denmuxammadiyev A.M., Bokiyev A.A. 'Elektrotexnika va elektronika asoslari' darslik. 360 b. Toşkent, 2023.",
+      "2. Nuraliyev A.K., Isakov A.J., Primov O.J. 'Elektronika va mikroprotsessor texnikasi'. TIQXMMI, 2020. - 143 b.",
       "3. Zeheng Wang, Jing-Kai Huang. 'Latest Advancements in Semiconductor Materials, Devices, and Systems'. MDPI, 2024.",
-      "4. Shimeng Yu. 'Semiconductor Memory Devices and Circuits', USA, 2022.",
-      "5. Ревич Ю.В. 'Занимательная электроника', СПб: BHV, 2019.",
-      "6. Ямпурин Н.П. 'Электроника: Учебное пособие', Академия, 2019.",
-      "7. Зиновьев Г.С. 'Силовая электроника', Юрайт, 2016."
+      "4. Shimeng Yu. 'Semiconductor Memory Devices and Circuits', USA, 2022. - 600 p.",
+      "5. Ревич Ю.В. 'Занимательная электроника', СПб: BHV, 2019. - 672 с.",
+      "6. Ямпурин Н.П. 'Электроника: Учебное пособие', Академия, 2019. - 320 с.",
+      "7. Зиновьев Г.С. 'Силовая электроника', Юрайт, 2016. - 667 с.",
+      "8. www.iitp.ru — Rossiya Fanlar Akademiyasi Axborot uzatish muammolari instituti (ИППИ РАН)",
+      "9. www.iae.nsk.su — Rossiya Fanlar Akademiyasi Avtomatika va elektrometri instituti (ИАиЭ СО РАН)",
+      "10. www.kunegin.narod.ru — Axborot va kommunikatsiya texnologiyalari portali",
+      "11. www.rsl.ru — Rossiya Davlat Kutubxonasi ilmiy resurslari"
     ],
     evaluation: "Joriy nazorat (Laboratoriya & Amaliyot): 30 ball | Oraliq nazorat: 20 ball | Mustaqil taʼlim: 10 ball | Yakuniy imtihon: 40 ball"
   },
@@ -3036,47 +3072,194 @@ function openSyllabusModal(id) {
   if (tagEl) tagEl.textContent = `${data.semester} • ${data.credits}`;
   if (titleEl) titleEl.textContent = `${data.title.toUpperCase()} (${data.code})`;
 
-  let topicsHtml = data.topics.map(t => `<li style="padding:5px 0; color:var(--text-light); font-size:13px; border-bottom:1px dashed var(--line-base); display:flex; align-items:flex-start; gap:8px;"><span style="color:var(--brand-primary); font-weight:bold;">▸</span><span>${t}</span></li>`).join('');
-  let litHtml = (data.literature || []).map(l => `<li style="color:var(--text-dim); font-size:12.5px; margin-bottom:4px;">${l}</li>`).join('');
-
-  bodyEl.innerHTML = `
-    <div style="background:var(--bg-surface-2); padding:16px; border:1px solid var(--line-base); border-radius:4px; margin-bottom:20px;">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; font-size:12.5px;">
-        <div><span style="color:var(--text-dim);">Fan Kodi:</span> <b style="color:var(--brand-volt);">${data.code}</b></div>
-        <div><span style="color:var(--text-dim);">Fan Turi:</span> <b style="color:var(--brand-primary);">${data.type}</b></div>
-        <div><span style="color:var(--text-dim);">Umumiy Yuklama:</span> <b style="color:var(--text-white);">${data.hours}</b></div>
-        <div><span style="color:var(--text-dim);">Kredit:</span> <b style="color:var(--accent-gold);">${data.credits}</b></div>
+  // If detailed multi-tab syllabus exists (like Electronics)
+  if (data.lectures && data.practices && data.labs) {
+    let lecturesHtml = data.lectures.map(m => `
+      <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; color:var(--brand-volt); font-family:var(--font-mono); font-size:13px;">${m.id} • ${m.hours} Soat</span>
+          <span style="font-size:11px; color:var(--text-dim); background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:4px;">Adabiyot: ${m.ref}</span>
+        </div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:6px;">${m.title}</div>
+        <ul style="margin:0; padding-left:18px; color:var(--text-light); font-size:13px; line-height:1.6;">
+          ${m.topics.map(t => `<li>${t}</li>`).join('')}
+        </ul>
       </div>
-      <p style="margin-top:12px; font-size:13px; color:var(--text-dim); line-height:1.5;">${data.description}</p>
-    </div>
+    `).join('');
 
-    <h4 style="color:var(--brand-primary); font-family:var(--font-editorial); font-size:16px; margin-bottom:10px; text-transform:uppercase;">
-      📅 Haftalik Mavzular Rejasi
-    </h4>
-    <ul style="list-style:none; margin-bottom:24px; padding-left:0;">
-      ${topicsHtml}
-    </ul>
-
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
-      <div style="background:var(--bg-surface); border:1px solid var(--line-base); padding:14px; border-radius:4px;">
-        <h5 style="color:var(--text-white); font-size:13px; margin-bottom:8px; text-transform:uppercase;">📚 Asosiy Adabiyotlar</h5>
-        <ul style="padding-left:16px; margin:0;">${litHtml}</ul>
+    let practicesHtml = data.practices.map(a => `
+      <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; color:var(--brand-primary); font-family:var(--font-mono); font-size:13px;">${a.id} • ${a.hours} Soat</span>
+          <span style="font-size:11px; color:var(--brand-primary); background:rgba(0,255,135,0.1); padding:2px 8px; border-radius:4px;">Amaliy hisoblaş</span>
+        </div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:4px;">${a.title}</div>
+        <div style="color:var(--text-dim); font-size:13px; line-height:1.5;">${a.desc}</div>
       </div>
-      <div style="background:var(--bg-surface); border:1px solid var(--line-base); padding:14px; border-radius:4px;">
-        <h5 style="color:var(--text-white); font-size:13px; margin-bottom:8px; text-transform:uppercase;">🎯 Baholaş Mezonlari</h5>
-        <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5; margin:0;">${data.evaluation || 'Joriy nazorat: 30 ball | Oraliq: 20 ball | Yakuniy: 50 ball'}</p>
-      </div>
-    </div>
+    `).join('');
 
-    <div style="margin-top:24px; display:flex; justify-content:flex-end; gap:12px;">
-      <button class="btn-arsenal-secondary" onclick="window.print()" style="font-size:12px; padding:8px 14px; cursor:pointer;">🖨️ Çop etiş</button>
-      <button class="btn-arsenal-primary" onclick="alert('${data.title} fan silabusi PDF yuklab olindi (Simulyatsiya)');" style="font-size:12px; padding:8px 14px; cursor:pointer;">📥 Silabusni Yuklab Oliş (PDF)</button>
-    </div>
-  `;
+    let labsHtml = data.labs.map(l => `
+      <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; color:#38BDF8; font-family:var(--font-mono); font-size:13px;">${l.id} • ${l.hours} Soat</span>
+          <span style="font-size:11px; color:#38BDF8; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:4px;">Laboratoriya tadqiqi</span>
+        </div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:4px;">${l.title}</div>
+        <div style="color:var(--text-dim); font-size:13px; line-height:1.5;">${l.desc}</div>
+      </div>
+    `).join('');
+
+    let indepHtml = (data.independentStudy || []).map(ind => `
+      <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; color:var(--accent-gold); font-family:var(--font-mono); font-size:13px;">№${ind.num} • ${ind.hours} Soat</span>
+          <span style="font-size:11px; color:var(--accent-gold); background:rgba(255,215,0,0.1); padding:2px 8px; border-radius:4px;">Nazorat: ${ind.control}</span>
+        </div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:4px;">${ind.title}</div>
+        <div style="color:var(--text-dim); font-size:13px; line-height:1.5;">${ind.desc}</div>
+      </div>
+    `).join('');
+
+    let litHtml = (data.literature || []).map(l => `<li style="color:var(--text-light); font-size:13px; margin-bottom:8px; line-height:1.5;">${l}</li>`).join('');
+
+    bodyEl.innerHTML = `
+      <div style="background:var(--bg-surface-2); padding:16px; border:1px solid var(--line-base); border-radius:6px; margin-bottom:16px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; font-size:12.5px;">
+          <div><span style="color:var(--text-dim);">Fan Kodi:</span> <b style="color:var(--brand-volt);">${data.code}</b></div>
+          <div><span style="color:var(--text-dim);">Fan Turi:</span> <b style="color:var(--brand-primary);">${data.type}</b></div>
+          <div><span style="color:var(--text-dim);">Umumiy Yuklama:</span> <b style="color:var(--text-white);">${data.hours}</b></div>
+          <div><span style="color:var(--text-dim);">Kredit Miqdori:</span> <b style="color:var(--accent-gold);">${data.credits}</b></div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div id="sylTabsNav" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; border-bottom:1px solid var(--line-base); padding-bottom:12px;">
+        <button class="syl-tab-btn active" onclick="switchSyllabusTab('lectures')" id="tabBtn_lectures" style="background:var(--brand-volt); color:#000; border:none; padding:8px 14px; border-radius:4px; font-weight:700; font-size:12.5px; cursor:pointer;">📖 15 ta Maʼruza (30s)</button>
+        <button class="syl-tab-btn" onclick="switchSyllabusTab('practices')" id="tabBtn_practices" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">📐 15 ta Amaliyot (30s)</button>
+        <button class="syl-tab-btn" onclick="switchSyllabusTab('labs')" id="tabBtn_labs" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">🔬 6 ta Laboratoriya (12s)</button>
+        <button class="syl-tab-btn" onclick="switchSyllabusTab('independent')" id="tabBtn_independent" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">💡 Mustaqil taʼlim (108s)</button>
+        <button class="syl-tab-btn" onclick="switchSyllabusTab('overview')" id="tabBtn_overview" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">📋 Maqsad & Baholaş</button>
+        <button class="syl-tab-btn" onclick="switchSyllabusTab('literature')" id="tabBtn_literature" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">📚 Adabiyotlar (11 ta)</button>
+      </div>
+
+      <!-- Tab Panes -->
+      <div id="sylPane_lectures" class="syl-pane">
+        <h4 style="color:var(--brand-volt); margin-bottom:12px; font-size:15px; text-transform:uppercase;">📖 Maʼruza Maşğulotlari Rejasi (30 soat)</h4>
+        ${lecturesHtml}
+      </div>
+
+      <div id="sylPane_practices" class="syl-pane" style="display:none;">
+        <h4 style="color:var(--brand-primary); margin-bottom:12px; font-size:15px; text-transform:uppercase;">📐 Amaliy Maşğulotlar Rejasi (30 soat)</h4>
+        ${practicesHtml}
+      </div>
+
+      <div id="sylPane_labs" class="syl-pane" style="display:none;">
+        <h4 style="color:#38BDF8; margin-bottom:12px; font-size:15px; text-transform:uppercase;">🔬 Laboratoriya Maşğulotlari Rejasi (12 soat)</h4>
+        ${labsHtml}
+      </div>
+
+      <div id="sylPane_independent" class="syl-pane" style="display:none;">
+        <h4 style="color:var(--accent-gold); margin-bottom:12px; font-size:15px; text-transform:uppercase;">💡 Mustaqil Taʼlim Rejasi (108 soat)</h4>
+        ${indepHtml}
+      </div>
+
+      <div id="sylPane_overview" class="syl-pane" style="display:none;">
+        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px; margin-bottom:16px;">
+          <h4 style="color:var(--brand-volt); margin-bottom:8px; font-size:15px;">🎯 Fanning Maqsadi</h4>
+          <p style="color:var(--text-light); font-size:13.5px; line-height:1.6; margin:0;">${data.maqsadi}</p>
+        </div>
+        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px; margin-bottom:16px;">
+          <h4 style="color:var(--brand-primary); margin-bottom:8px; font-size:15px;">📌 Fanning Vazifalari</h4>
+          <p style="color:var(--text-light); font-size:13.5px; line-height:1.6; margin:0;">${data.vazifalari}</p>
+        </div>
+        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px;">
+          <h4 style="color:var(--text-white); margin-bottom:8px; font-size:15px;">⚖️ Baholaş Mezonlari (100 ballik tizim)</h4>
+          <p style="color:var(--text-light); font-size:13px; line-height:1.6; margin:0;">${data.evaluation}</p>
+        </div>
+      </div>
+
+      <div id="sylPane_literature" class="syl-pane" style="display:none;">
+        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px;">
+          <h4 style="color:var(--brand-volt); margin-bottom:12px; font-size:15px;">📚 Foydalanilgan Adabiyotlar va Axborot Manbalari</h4>
+          <ol style="padding-left:20px; margin:0;">
+            ${litHtml}
+          </ol>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+        <button class="btn-arsenal-secondary" onclick="closeSyllabusModal()" style="font-size:13px; padding:8px 18px; cursor:pointer;">✕ Yopiş</button>
+      </div>
+    `;
+  } else {
+    // Fallback for simple subjects
+    let topicsHtml = data.topics.map(t => `<li style="padding:6px 0; color:var(--text-light); font-size:13px; border-bottom:1px dashed var(--line-base); display:flex; align-items:flex-start; gap:8px;"><span style="color:var(--brand-primary); font-weight:bold;">▸</span><span>${t}</span></li>`).join('');
+    let litHtml = (data.literature || []).map(l => `<li style="color:var(--text-dim); font-size:12.5px; margin-bottom:4px;">${l}</li>`).join('');
+
+    bodyEl.innerHTML = `
+      <div style="background:var(--bg-surface-2); padding:16px; border:1px solid var(--line-base); border-radius:4px; margin-bottom:20px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; font-size:12.5px;">
+          <div><span style="color:var(--text-dim);">Fan Kodi:</span> <b style="color:var(--brand-volt);">${data.code}</b></div>
+          <div><span style="color:var(--text-dim);">Fan Turi:</span> <b style="color:var(--brand-primary);">${data.type}</b></div>
+          <div><span style="color:var(--text-dim);">Umumiy Yuklama:</span> <b style="color:var(--text-white);">${data.hours}</b></div>
+          <div><span style="color:var(--text-dim);">Kredit:</span> <b style="color:var(--accent-gold);">${data.credits}</b></div>
+        </div>
+        <p style="margin-top:12px; font-size:13px; color:var(--text-dim); line-height:1.5;">${data.description}</p>
+      </div>
+
+      <h4 style="color:var(--brand-primary); font-family:var(--font-editorial); font-size:16px; margin-bottom:10px; text-transform:uppercase;">
+        📅 Haftalik Mavzular Rejasi
+      </h4>
+      <ul style="list-style:none; margin-bottom:24px; padding-left:0;">
+        ${topicsHtml}
+      </ul>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+        <div style="background:var(--bg-surface); border:1px solid var(--line-base); padding:14px; border-radius:4px;">
+          <h5 style="color:var(--text-white); font-size:13px; margin-bottom:8px; text-transform:uppercase;">📚 Asosiy Adabiyotlar</h5>
+          <ul style="padding-left:16px; margin:0;">${litHtml}</ul>
+        </div>
+        <div style="background:var(--bg-surface); border:1px solid var(--line-base); padding:14px; border-radius:4px;">
+          <h5 style="color:var(--text-white); font-size:13px; margin-bottom:8px; text-transform:uppercase;">🎯 Baholaş Mezonlari</h5>
+          <p style="font-size:12.5px; color:var(--text-dim); line-height:1.5; margin:0;">${data.evaluation || 'Joriy nazorat: 30 ball | Oraliq: 20 ball | Yakuniy: 50 ball'}</p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+        <button class="btn-arsenal-secondary" onclick="closeSyllabusModal()" style="font-size:13px; padding:8px 18px; cursor:pointer;">✕ Yopiş</button>
+      </div>
+    `;
+  }
 
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
+function switchSyllabusTab(tabKey) {
+  const panes = document.querySelectorAll('.syl-pane');
+  panes.forEach(p => p.style.display = 'none');
+
+  const targetPane = document.getElementById(`sylPane_${tabKey}`);
+  if (targetPane) targetPane.style.display = 'block';
+
+  const tabBtns = document.querySelectorAll('.syl-tab-btn');
+  tabBtns.forEach(btn => {
+    btn.style.background = 'var(--bg-surface-2)';
+    btn.style.color = 'var(--text-light)';
+    btn.style.borderColor = 'var(--line-base)';
+    btn.style.fontWeight = '600';
+  });
+
+  const activeBtn = document.getElementById(`tabBtn_${tabKey}`);
+  if (activeBtn) {
+    activeBtn.style.background = 'var(--brand-volt)';
+    activeBtn.style.color = '#000';
+    activeBtn.style.borderColor = 'var(--brand-volt)';
+    activeBtn.style.fontWeight = '700';
+  }
+}
+
+window.switchSyllabusTab = switchSyllabusTab;
 
 function closeSyllabusModal() {
   const modal = document.getElementById('syllabusModal');
