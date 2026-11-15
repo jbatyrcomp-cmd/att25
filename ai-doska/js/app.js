@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return safe;
   }
 
+  window.att25SafeFormatMarkdown = safeFormatMarkdown;
+
   // 1. Asosiy modullarni işga tuşiriş
   const engine = new WhiteboardEngine('whiteboardCanvas', 'minimapCanvas');
   const toolManager = new ToolManager(engine);
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mode = smartboard.detector.mode;
     const isActive = smartboard.detector.isSmartboard;
     btnSmartboardToggle.classList.toggle('active', isActive);
-    btnSmartboardToggle.title = `Interaktiv Doska Rejimi: ${mode === 'autö ? 'Avtomatik (' + (isActive ? 'Faol' : "O'çiq") + ')' : (mode === 'on' ? 'Doimiy Yoqilgan' : "O'chirilgan")}`;
+    btnSmartboardToggle.title = `Interaktiv Doska Rejimi: ${mode === 'auto' ? 'Avtomatik (' + (isActive ? 'Faol' : "O'chirilgan") + ')' : (mode === 'on' ? 'Doimiy Yoqilgan' : "O'chirilgan")}`;
   };
 
   smartboard.detector.onChange(() => {
@@ -142,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnSmartboardToggle?.addEventListener('click', () => {
     const current = smartboard.detector.mode;
-    const nextMode = current === 'autö ? (smartboard.detector.isSmartboard ? 'off' : 'on') : (current === 'on' ? 'off' : 'autö);
+    const nextMode = current === 'auto' ? (smartboard.detector.isSmartboard ? 'off' : 'on') : (current === 'on' ? 'off' : 'auto');
     smartboard.detector.setMode(nextMode);
     updateSmartboardBtnUI();
     toast(`📺 Interaktiv Doska Rejimi: ${nextMode === 'on' ? 'Doimiy Yoqildi' : (nextMode === 'off' ? "O'çirildi" : 'Avtomatik aniqlash')}`);
@@ -2012,7 +2014,7 @@ function toast(message, duration = 2800) {
   const t = document.createElement('div');
   t.className = 'board-toast';
   t.setAttribute('role', 'alert');
-  t.innerHTML = message;
+  t.textContent = typeof message === 'string' ? message : String(message);
   container.appendChild(t);
 
   setTimeout(() => {

@@ -133,7 +133,10 @@ class VoiceAssistant {
           const tabAnalyze = document.querySelector('.ai-tab[data-tab="aiAnalyze"]');
           if (tabAnalyze) tabAnalyze.click();
           const resBox = document.getElementById('aiAnalysisResult');
-          if (resBox) resBox.innerHTML = res.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+          if (resBox) {
+            const formatter = window.att25SafeFormatMarkdown;
+            resBox.innerHTML = formatter ? formatter(res) : '';
+          }
         }
       } catch (e) {
         this.showToast("Tahlil xatosi: " + e.message);

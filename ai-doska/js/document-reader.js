@@ -1626,12 +1626,14 @@ Ma'ruzachi (o'qituvchi) darsda talabalarga ushbu slaydni tushuntirib berishi uch
       const res = await this.ai.chatWithAssistant(prompt);
       if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
       if (this.presenterAiContent) {
-        this.presenterAiContent.innerHTML = `<div style="line-height: 1.6;">${(res.reply || '').replace(/\n/g, '<br>')}</div>`;
+        const formatter = window.att25SafeFormatMarkdown;
+        this.presenterAiContent.innerHTML = `<div style="line-height: 1.6;">${formatter ? formatter(res.reply || '') : ''}</div>`;
       }
     } catch (err) {
       if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
       if (this.presenterAiContent) {
-        this.presenterAiContent.innerHTML = `<div style="color: #F87171;">Izohni olishda xatolik yuz berdi: ${err.message}</div>`;
+        const formatter = window.att25SafeFormatMarkdown;
+        this.presenterAiContent.innerHTML = `<div style="color: #F87171;">${formatter ? formatter(`Izohni olishda xatolik yuz berdi: ${err.message}`) : ''}</div>`;
       }
     }
   }
@@ -1660,10 +1662,11 @@ Ma'ruzachi (o'qituvchi) darsda talabalarga ushbu slaydni tushuntirib berishi uch
       const res = await this.ai.chatWithAssistant(prompt);
       if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
       if (this.presenterAiContent) {
+        const formatter = window.att25SafeFormatMarkdown;
         this.presenterAiContent.innerHTML = `
           <div style="background: rgba(0,255,135,0.08); border: 1px solid rgba(0,255,135,0.25); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
             <strong style="color: #00FF87;">❓ Slayd Test Savoli:</strong>
-            <div style="margin-top: 6px;">${(res.reply || '').replace(/\n/g, '<br>')}</div>
+            <div style="margin-top: 6px;">${formatter ? formatter(res.reply || '') : ''}</div>
           </div>
         `;
       }

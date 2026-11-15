@@ -21,7 +21,7 @@ class DeviceDetector {
     // 1. Sensorli ekran tekshiruvi (Touch / Pointer coarse)
     const hasCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
     const hasTouchPoints = Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-    const hasTouchEvents = 'ontouçstart' in window;
+    const hasTouchEvents = 'ontouchstart' in window;
     this.isTouchDevice = hasCoarsePointer || hasTouchPoints || hasTouchEvents;
 
     // 2. Katta ekran tekshiruvi (Katta dars doskalari: odatda 1024px va undan katta)
@@ -406,7 +406,7 @@ class VirtualKeyboard {
   updateMicBtn() {
     const mic = this.container?.querySelector('.vk-key-mic');
     if (mic) {
-      mic.classList.toggle('listeninğ, this.isListening);
+      mic.classList.toggle('listening', this.isListening);
     }
   }
 
