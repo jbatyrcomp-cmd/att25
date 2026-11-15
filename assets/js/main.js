@@ -3072,16 +3072,16 @@ function openSyllabusModal(id) {
   if (tagEl) tagEl.textContent = `${data.semester} • ${data.credits}`;
   if (titleEl) titleEl.textContent = `${data.title.toUpperCase()} (${data.code})`;
 
-  // If detailed multi-tab syllabus exists (like Electronics)
+  // If detailed full program exists (Electronics)
   if (data.lectures && data.practices && data.labs) {
     let lecturesHtml = data.lectures.map(m => `
       <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-weight:700; color:var(--brand-volt); font-family:var(--font-mono); font-size:13px;">${m.id} • ${m.hours} Soat</span>
-          <span style="font-size:11px; color:var(--text-dim); background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:4px;">Adabiyot: ${m.ref}</span>
+          <span style="font-weight:800; color:var(--brand-volt); font-family:var(--font-mono); font-size:13.5px;">${m.id} • ${m.hours} Soat</span>
+          <span style="font-size:11.5px; color:var(--text-dim); background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:4px;">Adabiyot: ${m.ref}</span>
         </div>
-        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:6px;">${m.title}</div>
-        <ul style="margin:0; padding-left:18px; color:var(--text-light); font-size:13px; line-height:1.6;">
+        <div style="font-weight:700; color:var(--text-white); font-size:14.5px; margin-bottom:8px;">${m.title}</div>
+        <ul style="margin:0; padding-left:20px; color:var(--text-light); font-size:13px; line-height:1.6;">
           ${m.topics.map(t => `<li>${t}</li>`).join('')}
         </ul>
       </div>
@@ -3090,109 +3090,119 @@ function openSyllabusModal(id) {
     let practicesHtml = data.practices.map(a => `
       <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-weight:700; color:var(--brand-primary); font-family:var(--font-mono); font-size:13px;">${a.id} • ${a.hours} Soat</span>
-          <span style="font-size:11px; color:var(--brand-primary); background:rgba(0,255,135,0.1); padding:2px 8px; border-radius:4px;">Amaliy hisoblaş</span>
+          <span style="font-weight:800; color:var(--brand-primary); font-family:var(--font-mono); font-size:13.5px;">${a.id} • ${a.hours} Soat</span>
+          <span style="font-size:11.5px; color:var(--brand-primary); background:rgba(0,255,135,0.1); padding:2px 8px; border-radius:4px;">Amaliy hisoblaş</span>
         </div>
-        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:4px;">${a.title}</div>
-        <div style="color:var(--text-dim); font-size:13px; line-height:1.5;">${a.desc}</div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14.5px; margin-bottom:6px;">${a.title}</div>
+        <div style="color:var(--text-light); font-size:13px; line-height:1.5;">${a.desc}</div>
       </div>
     `).join('');
 
     let labsHtml = data.labs.map(l => `
       <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-weight:700; color:#38BDF8; font-family:var(--font-mono); font-size:13px;">${l.id} • ${l.hours} Soat</span>
-          <span style="font-size:11px; color:#38BDF8; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:4px;">Laboratoriya tadqiqi</span>
+          <span style="font-weight:800; color:#38BDF8; font-family:var(--font-mono); font-size:13.5px;">${l.id} • ${l.hours} Soat</span>
+          <span style="font-size:11.5px; color:#38BDF8; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:4px;">Laboratoriya stend tadqiqi</span>
         </div>
-        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:4px;">${l.title}</div>
-        <div style="color:var(--text-dim); font-size:13px; line-height:1.5;">${l.desc}</div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14.5px; margin-bottom:6px;">${l.title}</div>
+        <div style="color:var(--text-light); font-size:13px; line-height:1.5;">${l.desc}</div>
       </div>
     `).join('');
 
     let indepHtml = (data.independentStudy || []).map(ind => `
       <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:14px; margin-bottom:12px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-weight:700; color:var(--accent-gold); font-family:var(--font-mono); font-size:13px;">№${ind.num} • ${ind.hours} Soat</span>
-          <span style="font-size:11px; color:var(--accent-gold); background:rgba(255,215,0,0.1); padding:2px 8px; border-radius:4px;">Nazorat: ${ind.control}</span>
+          <span style="font-weight:800; color:var(--accent-gold); font-family:var(--font-mono); font-size:13.5px;">№${ind.num} • ${ind.hours} Soat</span>
+          <span style="font-size:11.5px; color:var(--accent-gold); background:rgba(255,215,0,0.1); padding:2px 8px; border-radius:4px;">Nazorat: ${ind.control}</span>
         </div>
-        <div style="font-weight:700; color:var(--text-white); font-size:14px; margin-bottom:4px;">${ind.title}</div>
-        <div style="color:var(--text-dim); font-size:13px; line-height:1.5;">${ind.desc}</div>
+        <div style="font-weight:700; color:var(--text-white); font-size:14.5px; margin-bottom:6px;">${ind.title}</div>
+        <div style="color:var(--text-light); font-size:13px; line-height:1.5;">${ind.desc}</div>
       </div>
     `).join('');
 
-    let litHtml = (data.literature || []).map(l => `<li style="color:var(--text-light); font-size:13px; margin-bottom:8px; line-height:1.5;">${l}</li>`).join('');
+    let litHtml = (data.literature || []).map(l => `<li style="color:var(--text-light); font-size:13px; margin-bottom:8px; line-height:1.6;">${l}</li>`).join('');
 
     bodyEl.innerHTML = `
-      <div style="background:var(--bg-surface-2); padding:16px; border:1px solid var(--line-base); border-radius:6px; margin-bottom:16px;">
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; font-size:12.5px;">
+      <!-- 1. Pasport & Soatlar Taqsimoti -->
+      <div style="background:var(--bg-surface-2); padding:18px 22px; border:1px solid var(--line-base); border-radius:6px; margin-bottom:24px;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; font-size:13px;">
           <div><span style="color:var(--text-dim);">Fan Kodi:</span> <b style="color:var(--brand-volt);">${data.code}</b></div>
           <div><span style="color:var(--text-dim);">Fan Turi:</span> <b style="color:var(--brand-primary);">${data.type}</b></div>
-          <div><span style="color:var(--text-dim);">Umumiy Yuklama:</span> <b style="color:var(--text-white);">${data.hours}</b></div>
           <div><span style="color:var(--text-dim);">Kredit Miqdori:</span> <b style="color:var(--accent-gold);">${data.credits}</b></div>
+          <div><span style="color:var(--text-dim);">Jami Yuklama:</span> <b style="color:var(--text-white); font-size:15px;">180 Soat</b></div>
+        </div>
+        <div style="margin-top:14px; padding-top:14px; border-top:1px dashed var(--line-base); display:flex; flex-wrap:wrap; gap:16px; font-size:13px; color:var(--text-light);">
+          <span>Auditoriya: <b style="color:var(--brand-volt);">72 soat</b></span>
+          <span>• Maʼruza: <b style="color:var(--text-white);">30 soat</b></span>
+          <span>• Amaliyot: <b style="color:var(--text-white);">30 soat</b></span>
+          <span>• Laboratoriya: <b style="color:var(--text-white);">12 soat</b></span>
+          <span style="margin-left:auto;">Mustaqil taʼlim: <b style="color:var(--accent-gold);">108 soat</b></span>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <div id="sylTabsNav" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; border-bottom:1px solid var(--line-base); padding-bottom:12px;">
-        <button class="syl-tab-btn active" onclick="switchSyllabusTab('lectures')" id="tabBtn_lectures" style="background:var(--brand-volt); color:#000; border:none; padding:8px 14px; border-radius:4px; font-weight:700; font-size:12.5px; cursor:pointer;">📖 15 ta Maʼruza (30s)</button>
-        <button class="syl-tab-btn" onclick="switchSyllabusTab('practices')" id="tabBtn_practices" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">📐 15 ta Amaliyot (30s)</button>
-        <button class="syl-tab-btn" onclick="switchSyllabusTab('labs')" id="tabBtn_labs" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">🔬 6 ta Laboratoriya (12s)</button>
-        <button class="syl-tab-btn" onclick="switchSyllabusTab('independent')" id="tabBtn_independent" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">💡 Mustaqil taʼlim (108s)</button>
-        <button class="syl-tab-btn" onclick="switchSyllabusTab('overview')" id="tabBtn_overview" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">📋 Maqsad & Baholaş</button>
-        <button class="syl-tab-btn" onclick="switchSyllabusTab('literature')" id="tabBtn_literature" style="background:var(--bg-surface-2); color:var(--text-light); border:1px solid var(--line-base); padding:8px 14px; border-radius:4px; font-weight:600; font-size:12.5px; cursor:pointer;">📚 Adabiyotlar (11 ta)</button>
+      <!-- 2. Fanning Maqsadi va Vazifalari -->
+      <div style="background:var(--bg-surface); border:1px solid var(--line-base); border-radius:6px; padding:18px; margin-bottom:24px;">
+        <h4 style="color:var(--brand-volt); font-size:16px; margin-bottom:10px; text-transform:uppercase;">1. Fanning Maqsadi va Vazifalari</h4>
+        <p style="color:var(--text-light); font-size:13.5px; line-height:1.6; margin-bottom:10px;"><b>Fanning maqsadi:</b> ${data.maqsadi}</p>
+        <p style="color:var(--text-dim); font-size:13.5px; line-height:1.6; margin:0;"><b>Fanning vazifalari:</b> ${data.vazifalari}</p>
       </div>
 
-      <!-- Tab Panes -->
-      <div id="sylPane_lectures" class="syl-pane">
-        <h4 style="color:var(--brand-volt); margin-bottom:12px; font-size:15px; text-transform:uppercase;">📖 Maʼruza Maşğulotlari Rejasi (30 soat)</h4>
+      <!-- 3. Ma'ruza Mashg'ulotlari (30 soat) -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:2px solid var(--brand-volt); padding-bottom:8px;">
+          <h4 style="color:var(--brand-volt); font-size:17px; text-transform:uppercase; margin:0;">2. Maʼruza Maşğulotlari (Jami: 30 soat • 15 ta mavzu)</h4>
+          <span style="font-size:13px; font-weight:700; color:var(--brand-volt);">15 x 2 = 30 Soat</span>
+        </div>
         ${lecturesHtml}
       </div>
 
-      <div id="sylPane_practices" class="syl-pane" style="display:none;">
-        <h4 style="color:var(--brand-primary); margin-bottom:12px; font-size:15px; text-transform:uppercase;">📐 Amaliy Maşğulotlar Rejasi (30 soat)</h4>
+      <!-- 4. Amaliy Mashg'ulotlar (30 soat) -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:2px solid var(--brand-primary); padding-bottom:8px;">
+          <h4 style="color:var(--brand-primary); font-size:17px; text-transform:uppercase; margin:0;">3. Amaliy Maşğulotlar (Jami: 30 soat • 15 ta maşğulot)</h4>
+          <span style="font-size:13px; font-weight:700; color:var(--brand-primary);">15 x 2 = 30 Soat</span>
+        </div>
         ${practicesHtml}
       </div>
 
-      <div id="sylPane_labs" class="syl-pane" style="display:none;">
-        <h4 style="color:#38BDF8; margin-bottom:12px; font-size:15px; text-transform:uppercase;">🔬 Laboratoriya Maşğulotlari Rejasi (12 soat)</h4>
+      <!-- 5. Laboratoriya Mashg'ulotlari (12 soat) -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:2px solid #38BDF8; padding-bottom:8px;">
+          <h4 style="color:#38BDF8; font-size:17px; text-transform:uppercase; margin:0;">4. Laboratoriya Maşğulotlari (Jami: 12 soat • 6 ta iş)</h4>
+          <span style="font-size:13px; font-weight:700; color:#38BDF8;">6 x 2 = 12 Soat</span>
+        </div>
         ${labsHtml}
       </div>
 
-      <div id="sylPane_independent" class="syl-pane" style="display:none;">
-        <h4 style="color:var(--accent-gold); margin-bottom:12px; font-size:15px; text-transform:uppercase;">💡 Mustaqil Taʼlim Rejasi (108 soat)</h4>
+      <!-- 6. Mustaqil Ta'lim (108 soat) -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:2px solid var(--accent-gold); padding-bottom:8px;">
+          <h4 style="color:var(--accent-gold); font-size:17px; text-transform:uppercase; margin:0;">5. Mustaqil Taʼlim Rejasi (Jami: 108 soat)</h4>
+          <span style="font-size:13px; font-weight:700; color:var(--accent-gold);">108 Soat</span>
+        </div>
         ${indepHtml}
       </div>
 
-      <div id="sylPane_overview" class="syl-pane" style="display:none;">
-        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px; margin-bottom:16px;">
-          <h4 style="color:var(--brand-volt); margin-bottom:8px; font-size:15px;">🎯 Fanning Maqsadi</h4>
-          <p style="color:var(--text-light); font-size:13.5px; line-height:1.6; margin:0;">${data.maqsadi}</p>
-        </div>
-        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px; margin-bottom:16px;">
-          <h4 style="color:var(--brand-primary); margin-bottom:8px; font-size:15px;">📌 Fanning Vazifalari</h4>
-          <p style="color:var(--text-light); font-size:13.5px; line-height:1.6; margin:0;">${data.vazifalari}</p>
-        </div>
-        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px;">
-          <h4 style="color:var(--text-white); margin-bottom:8px; font-size:15px;">⚖️ Baholaş Mezonlari (100 ballik tizim)</h4>
+      <!-- 7. Baholash Mezonlari & Adabiyotlar -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:18px; margin-bottom:24px;">
+        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:18px;">
+          <h4 style="color:var(--text-white); font-size:15px; margin-bottom:10px; text-transform:uppercase;">6. Baholaş Mezonlari (100 ball)</h4>
           <p style="color:var(--text-light); font-size:13px; line-height:1.6; margin:0;">${data.evaluation}</p>
         </div>
-      </div>
-
-      <div id="sylPane_literature" class="syl-pane" style="display:none;">
-        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:16px;">
-          <h4 style="color:var(--brand-volt); margin-bottom:12px; font-size:15px;">📚 Foydalanilgan Adabiyotlar va Axborot Manbalari</h4>
+        <div style="background:var(--bg-surface-2); border:1px solid var(--line-base); border-radius:6px; padding:18px;">
+          <h4 style="color:var(--text-white); font-size:15px; margin-bottom:10px; text-transform:uppercase;">7. Foydalanilgan Adabiyotlar</h4>
           <ol style="padding-left:20px; margin:0;">
             ${litHtml}
           </ol>
         </div>
       </div>
 
-      <div style="margin-top:20px; display:flex; justify-content:flex-end;">
-        <button class="btn-arsenal-secondary" onclick="closeSyllabusModal()" style="font-size:13px; padding:8px 18px; cursor:pointer;">✕ Yopiş</button>
+      <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line-base); display:flex; justify-content:flex-end;">
+        <button class="btn-arsenal-secondary" onclick="closeSyllabusModal()" style="font-size:13px; padding:10px 24px; cursor:pointer; font-weight:700;">✕ Yopiş</button>
       </div>
     `;
   } else {
-    // Fallback for simple subjects
+    // Fallback for simple subjects (ZERO print/download buttons)
     let topicsHtml = data.topics.map(t => `<li style="padding:6px 0; color:var(--text-light); font-size:13px; border-bottom:1px dashed var(--line-base); display:flex; align-items:flex-start; gap:8px;"><span style="color:var(--brand-primary); font-weight:bold;">▸</span><span>${t}</span></li>`).join('');
     let litHtml = (data.literature || []).map(l => `<li style="color:var(--text-dim); font-size:12.5px; margin-bottom:4px;">${l}</li>`).join('');
 
@@ -3226,7 +3236,7 @@ function openSyllabusModal(id) {
       </div>
 
       <div style="margin-top:20px; display:flex; justify-content:flex-end;">
-        <button class="btn-arsenal-secondary" onclick="closeSyllabusModal()" style="font-size:13px; padding:8px 18px; cursor:pointer;">✕ Yopiş</button>
+        <button class="btn-arsenal-secondary" onclick="closeSyllabusModal()" style="font-size:13px; padding:8px 20px; cursor:pointer; font-weight:700;">✕ Yopiş</button>
       </div>
     `;
   }
@@ -3234,32 +3244,6 @@ function openSyllabusModal(id) {
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
-function switchSyllabusTab(tabKey) {
-  const panes = document.querySelectorAll('.syl-pane');
-  panes.forEach(p => p.style.display = 'none');
-
-  const targetPane = document.getElementById(`sylPane_${tabKey}`);
-  if (targetPane) targetPane.style.display = 'block';
-
-  const tabBtns = document.querySelectorAll('.syl-tab-btn');
-  tabBtns.forEach(btn => {
-    btn.style.background = 'var(--bg-surface-2)';
-    btn.style.color = 'var(--text-light)';
-    btn.style.borderColor = 'var(--line-base)';
-    btn.style.fontWeight = '600';
-  });
-
-  const activeBtn = document.getElementById(`tabBtn_${tabKey}`);
-  if (activeBtn) {
-    activeBtn.style.background = 'var(--brand-volt)';
-    activeBtn.style.color = '#000';
-    activeBtn.style.borderColor = 'var(--brand-volt)';
-    activeBtn.style.fontWeight = '700';
-  }
-}
-
-window.switchSyllabusTab = switchSyllabusTab;
 
 function closeSyllabusModal() {
   const modal = document.getElementById('syllabusModal');
