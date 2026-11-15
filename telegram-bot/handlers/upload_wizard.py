@@ -45,7 +45,7 @@ def format_bytes(size_bytes: int) -> str:
 
 
 async def start_upload_wizard(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """1-qadam: Bo'lim tanlashni so'rash."""
+    """1-qadam: Bölim tanlaşni söraş."""
     user = update.effective_user
     db.upsert_user(
         telegram_id=user.id,
@@ -58,8 +58,8 @@ async def start_upload_wizard(update: Update, context: ContextTypes.DEFAULT_TYPE
     categories = db.get_categories()
 
     text = (
-        "<b>➕ Yangi material qo'shish</b>\n\n"
-        "<b>📂 1-qadam:</b> Material qaysi bo'limga tegishli ekanligini tanlang:"
+        "<b>➕ Yangi material qöşiş</b>\n\n"
+        "<b>📂 1-qadam:</b> Material qaysi bölimga tegişli ekanligini tanlang:"
     )
 
     if update.callback_query:
@@ -78,7 +78,7 @@ async def start_upload_wizard(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 
 async def category_selected(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Bo'lim tanlandi -> 2-qadam: Nomini so'rash."""
+    """Bölim tanlandi -> 2-qadam: Nomini söraş."""
     query = update.callback_query
     await query.answer()
 
@@ -86,7 +86,7 @@ async def category_selected(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     category = db.get_category_by_id(cat_id)
 
     if not category:
-        await query.message.reply_text("❌ Bo'lim topilmadi. Qaytadan urinib ko'ring.")
+        await query.message.reply_text("❌ Bölim topilmadi. Qaytadan urinib köring.")
         return ConversationHandler.END
 
     context.user_data["upload"]["category_id"] = cat_id
@@ -95,24 +95,24 @@ async def category_selected(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     context.user_data["upload"]["gcs_folder"] = category.get("gcs_folder", "other")
 
     text = (
-        f"✅ Bo'lim tanlandi: <b>{category.get('emoji', '📁')} {category['name']}</b>\n\n"
+        f"✅ Bölim tanlandi: <b>{category.get('emoji', '📁')} {category['name']}</b>\n\n"
         f"📝 <b>2-qadam: Material nomini (sarlavhasini) kiriting:</b>\n"
-        f"<i>(Masalan: Python asoslari - 1-dars yoki Sun'iy intellekt qo'llanmasi)</i>"
+        f"<i>(Masalan: Python asoslari - 1-dars yoki Sun'iy intellekt qöllanmasi)</i>"
     )
 
     await query.edit_message_text(text, parse_mode="HTML")
-    await query.message.reply_text("Davom etish uchun nomini yozing:", reply_markup=cancel_keyboard())
+    await query.message.reply_text("Davom etiş uçun nomini yozing:", reply_markup=cancel_keyboard())
     return TITLE
 
 
 async def title_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Nomi kiritildi -> 3-qadam: Tavsif so'rash."""
+    """Nomi kiritildi -> 3-qadam: Tavsif söraş."""
     text = update.message.text.strip()
-    if text == "❌ Bekor qilish":
+    if text == "❌ Bekor qiliş":
         return await cancel_upload(update, context)
 
     if len(text) < 2:
-        await update.message.reply_text("⚠️ Material nomi juda qisqa. Iltimos, to'liqroq nom kiriting:")
+        await update.message.reply_text("⚠️ Material nomi juda qisqa. Iltimos, töliqroq nom kiriting:")
         return TITLE
 
     context.user_data["upload"]["name"] = text
@@ -128,14 +128,14 @@ async def title_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 
 async def description_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Tavsif kiritildi -> 4-qadam: Kim joylayotganini so'rash."""
+    """Tavsif kiritildi -> 4-qadam: Kim joylayotganini söraş."""
     text = update.message.text.strip()
-    if text == "❌ Bekor qilish":
+    if text == "❌ Bekor qiliş":
         return await cancel_upload(update, context)
 
     context.user_data["upload"]["description"] = text
     user = update.effective_user
-    suggested_name = user.full_name or user.first_name or "Foydalanuvchi"
+    suggested_name = user.full_name or user.first_name or "Foydalanuvçi"
 
     prompt = (
         f"👤 <b>4-qadam: Kim joylayapti? (Muallif yoki sizning ismingiz):</b>\n"
@@ -147,17 +147,17 @@ async def description_received(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 async def uploader_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Joylovchi kiritildi -> 5-qadam: Izoh (komment) so'rash."""
+    """Joylovçi kiritildi -> 5-qadam: Izoh (komment) söraş."""
     text = update.message.text.strip()
-    if text == "❌ Bekor qilish":
+    if text == "❌ Bekor qiliş":
         return await cancel_upload(update, context)
 
     context.user_data["upload"]["uploader_name"] = text
 
     prompt = (
-        f"💬 <b>5-qadam: Qo'shimcha izoh (komment):</b>\n"
-        f"<i>(Qo'shimcha eslatma, auditoriya yoki tavsiyalar)</i>\n\n"
-        f"Agar izoh bo'lmasa, <b>⏩ O'tkazib yuborish</b> tugmasini bosing:"
+        f"💬 <b>5-qadam: Qöşimça izoh (komment):</b>\n"
+        f"<i>(Qöşimça eslatma, auditoriya yoki tavsiyalar)</i>\n\n"
+        f"Agar izoh bölmasa, <b>⏩ Ötkazib yuboriş</b> tugmasini bosing:"
     )
 
     await update.message.reply_html(prompt, reply_markup=skip_or_cancel_keyboard())
@@ -165,12 +165,12 @@ async def uploader_received(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 
 
 async def comment_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Izoh kiritildi yoki o'tkazib yuborildi -> 6-qadam: Fayl so'rash."""
+    """Izoh kiritildi yoki ötkazib yuborildi -> 6-qadam: Fayl söraş."""
     text = update.message.text.strip()
-    if text == "❌ Bekor qilish":
+    if text == "❌ Bekor qiliş":
         return await cancel_upload(update, context)
 
-    if text in ["⏩ O'tkazib yuborish", "/skip"]:
+    if text in ["⏩ Ötkazib yuboriş", "/skip"]:
         context.user_data["upload"]["comment"] = ""
     else:
         context.user_data["upload"]["comment"] = text
@@ -179,9 +179,9 @@ async def comment_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     prompt = (
         f"📎 <b>6-qadam: Endi faylni yuklang!</b>\n\n"
         f"<b>Kiritilgan ma'lumotlar:</b>\n"
-        f"• Bo'lim: {upload_data['category_emoji']} {upload_data['category_name']}\n"
+        f"• Bölim: {upload_data['category_emoji']} {upload_data['category_name']}\n"
         f"• Nomi: <b>{upload_data['name']}</b>\n"
-        f"• Joylovchi: <b>{upload_data['uploader_name']}</b>\n\n"
+        f"• Joylovçi: <b>{upload_data['uploader_name']}</b>\n\n"
         f"Faylni (Video, Hujjat, PDF, Rasm, Audio) yuboring.\n"
         f"<i>⚠️ Maksimal hajm: {MAX_FILE_SIZE_MB} MB</i>"
     )
@@ -191,10 +191,10 @@ async def comment_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 
 
 async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Faylni qabul qilish, bulutga/lokalga yuklash va bazaga saqlash."""
+    """Faylni qabul qiliş, bulutga/lokalga yuklaş va bazaga saqlaş."""
     message = update.message
 
-    if message.text == "❌ Bekor qilish":
+    if message.text == "❌ Bekor qiliş":
         return await cancel_upload(update, context)
 
     file_obj = None
@@ -253,7 +253,7 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
         await message.reply_text(
             f"❌ Fayl hajmi juda katta ({format_bytes(file_size)}).\n"
             f"Maksimal ruxsat etilgan hajm: {MAX_FILE_SIZE_MB} MB.\n"
-            f"Iltimos, kichikroq hajmli fayl yuboring:",
+            f"Iltimos, kiçikroq hajmli fayl yuboring:",
             reply_markup=cancel_keyboard()
         )
         return FILE
@@ -266,12 +266,12 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
     try:
         # 1. Telegram Storage rejimida ishlash (100% Bepul, bir zumda saqlanadi)
         if STORAGE_MODE == "telegram":
-            # Agar arxiv kanali sozlangan bo'lsa, xabarni kanalga ham nusxalash
+            # Agar arxiv kanali sozlangan bo'lsa, xabarni kanalga ham nusxalaş
             if ARCHIVE_CHANNEL_ID:
                 try:
                     await message.forward(chat_id=ARCHIVE_CHANNEL_ID)
                 except Exception as e:
-                    logger.warning(f"Arxiv kanaliga nusxalashda xato: {e}")
+                    logger.warning(f"Arxiv kanaliga nusxalaşda xato: {e}")
 
             upload_result = {
                 "storage_type": "telegram",
@@ -279,9 +279,9 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
                 "public_url": None,
                 "file_size": file_size
             }
-            storage_icon = "☁️ Telegram Bulut Ombori (Bepul & Cheksiz)"
+            storage_icon = "☁️ Telegram Bulut Ombori (Bepul & Çeksiz)"
 
-        # 2. GCS yoki Lokal rejimda ishlash
+        # 2. GCS yoki Lokal rejimda işlaş
         else:
             tg_file = await context.bot.get_file(telegram_file_id)
             temp_file_path = TEMP_DIR / f"temp_{telegram_file_id}_{file_name}"
@@ -299,7 +299,7 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
                 storage_icon = "📁 Lokal Server (storage/)"
 
         user = update.effective_user
-        # Bazaga yozish
+        # Bazaga yoziş
         material_id = db.save_material(
             category_id=upload_data["category_id"],
             name=upload_data["name"],
@@ -317,7 +317,7 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
             telegram_username=user.username
         )
 
-        # Temp faylni tozalash (agar mavjud bo'lsa)
+        # Temp faylni tozalaş (agar mavjud bo'lsa)
         if temp_file_path and temp_file_path.exists():
             temp_file_path.unlink()
 
@@ -325,11 +325,11 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 
         summary = (
             "🎉 <b>Material muvaffaqiyatli saqlandi!</b>\n\n"
-            f"<b>📂 Bo'lim:</b> {upload_data['category_emoji']} {upload_data['category_name']}\n"
+            f"<b>📂 Bölim:</b> {upload_data['category_emoji']} {upload_data['category_name']}\n"
             f"<b>📝 Nomi:</b> {upload_data['name']}\n"
-            f"<b>📋 Tavsif:</b> {upload_data.get('description') or 'Yo\'q'}\n"
-            f"<b>👤 Joylovchi:</b> {upload_data['uploader_name']}\n"
-            f"<b>💬 Izoh:</b> {upload_data.get('comment') or 'Yo\'q'}\n"
+            f"<b>📋 Tavsif:</b> {upload_data.get('description') or 'Yöq'}\n"
+            f"<b>👤 Joylovçi:</b> {upload_data['uploader_name']}\n"
+            f"<b>💬 Izoh:</b> {upload_data.get('comment') or 'Yöq'}\n"
             f"<b>📎 Fayl:</b> {file_name} ({size_str})\n"
             f"<b>🏢 Saqlandi:</b> {storage_icon}\n"
             f"<b>🆔 Raqami:</b> #MAT_{material_id}"
@@ -349,17 +349,17 @@ async def file_received(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
         return ConversationHandler.END
 
     except Exception as e:
-        logger.error(f"Fayl yuklashda xatolik: {e}", exc_info=True)
+        logger.error(f"Fayl yuklaşda xatolik: {e}", exc_info=True)
         if temp_file_path and temp_file_path.exists():
             temp_file_path.unlink()
-        await status_msg.edit_text(f"❌ Faylni saqlashda xatolik yuz berdi: {str(e)}")
+        await status_msg.edit_text(f"❌ Faylni saqlaşda xatolik yuz berdi: {str(e)}")
         return ConversationHandler.END
 
 
 async def cancel_upload(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Yuklash jarayonini bekor qilish."""
+    """Yuklaş jarayonini bekor qiliş."""
     context.user_data.pop("upload", None)
-    text = "❌ Material yuklash bekor qilindi."
+    text = "❌ Material yuklaş bekor qilindi."
 
     if update.callback_query:
         await update.callback_query.answer()
@@ -371,10 +371,10 @@ async def cancel_upload(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 
 
 def get_upload_conversation_handler() -> ConversationHandler:
-    """Material yuklash wizardi uchun ConversationHandler ni yig'ish."""
+    """Material yuklaş wizardi uçun ConversationHandler ni yiğiş."""
     return ConversationHandler(
         entry_points=[
-            MessageHandler(filters.Regex("^➕ Yangi material qo'shish$"), start_upload_wizard),
+            MessageHandler(filters.Regex("^➕ Yangi material qöşiş$"), start_upload_wizard),
             CommandHandler("upload", start_upload_wizard),
             CallbackQueryHandler(start_upload_wizard, pattern="^upload_more$")
         ],
@@ -406,7 +406,7 @@ def get_upload_conversation_handler() -> ConversationHandler:
         },
         fallbacks=[
             CommandHandler("cancel", cancel_upload),
-            MessageHandler(filters.Regex("^❌ Bekor qilish$"), cancel_upload),
+            MessageHandler(filters.Regex("^❌ Bekor qiliş$"), cancel_upload),
             CallbackQueryHandler(cancel_upload, pattern="^cancel_action$")
         ],
         allow_reentry=True

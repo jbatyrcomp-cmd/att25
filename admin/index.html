@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>att25.uz — Admin Boshqaruv Paneli</title>
+    <title>att25.uz — Admin Boşqaruv Paneli</title>
     <!-- Google Fonts Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -603,12 +603,12 @@
             <!-- Header -->
             <div class="header">
                 <div>
-                    <h1>O'quv Materiallari Boshqaruvi</h1>
-                    <p>att25.uz platformasi va Telegram bot materiallarini nazorat qilish paneli</p>
+                    <h1>Öquv Materiallari Boşqaruvi</h1>
+                    <p>att25.uz platformasi va Telegram bot materiallarini nazorat qiliş paneli</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-outline" onclick="loadDashboardData()">🔄 Yangilash</button>
-                    <a href="https://t.me/" target="_blank" class="btn btn-primary">➕ Botga o'tish</a>
+                    <button class="btn btn-outline" onclick="loadDashboardData()">🔄 Yangilaş</button>
+                    <a href="https://t.me/" target="_blank" class="btn btn-primary">➕ Botga ötiş</a>
                 </div>
             </div>
 
@@ -625,7 +625,7 @@
                     <div class="stat-icon" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">👥</div>
                     <div class="stat-info">
                         <h3 id="statTotalUsers">0</h3>
-                        <span>Foydalanuvchilar</span>
+                        <span>Foydalanuvçilar</span>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -639,7 +639,7 @@
                     <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">📂</div>
                     <div class="stat-info">
                         <h3 id="statTotalCategories">5</h3>
-                        <span>Bo'limlar Soni</span>
+                        <span>Bölimlar Soni</span>
                     </div>
                 </div>
             </div>
@@ -648,7 +648,7 @@
             <div class="charts-row">
                 <div class="panel-card">
                     <div class="panel-header">
-                        <h2>📊 Bo'limlar bo'yicha materiallar taqsimoti</h2>
+                        <h2>📊 Bölimlar böyiça materiallar taqsimoti</h2>
                     </div>
                     <div style="height: 240px; position: relative;">
                         <canvas id="categoryBarChart"></canvas>
@@ -656,7 +656,7 @@
                 </div>
                 <div class="panel-card">
                     <div class="panel-header">
-                        <h2>🎯 Ulushlar</h2>
+                        <h2>🎯 Uluşlar</h2>
                     </div>
                     <div style="height: 240px; position: relative;">
                         <canvas id="categoryDonutChart"></canvas>
@@ -667,16 +667,16 @@
             <!-- Materials Table Panel -->
             <div class="panel-card">
                 <div class="panel-header">
-                    <h2>📁 Barcha Materiallar Ro'yxati</h2>
+                    <h2>📁 Barça Materiallar Röyxati</h2>
                 </div>
 
                 <div class="table-controls">
                     <div class="search-box">
                         <span class="search-icon">🔍</span>
-                        <input type="text" id="searchInput" placeholder="Material nomi, muallif yoki tavsif bo'yicha qidirish..." oninput="filterMaterials()">
+                        <input type="text" id="searchInput" placeholder="Material nomi, muallif yoki tavsif böyiça qidiriş..." oninput="filterMaterials()">
                     </div>
                     <select id="categoryFilter" class="category-select" onchange="filterMaterials()">
-                        <option value="">Barcha bo'limlar</option>
+                        <option value="">Barça bölimlar</option>
                     </select>
                 </div>
 
@@ -686,8 +686,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nomi</th>
-                                <th>Bo'lim</th>
-                                <th>Joylovchi</th>
+                                <th>Bölim</th>
+                                <th>Joylovçi</th>
                                 <th>Fayl / Hajmi</th>
                                 <th>Sana</th>
                                 <th>Amallar</th>
@@ -713,7 +713,7 @@
             </div>
             <div id="modalContent"></div>
             <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-                <button class="btn btn-outline" onclick="closeModal('detailModal')">Yopish</button>
+                <button class="btn btn-outline" onclick="closeModal('detailModal')">Yopiş</button>
             </div>
         </div>
     </div>

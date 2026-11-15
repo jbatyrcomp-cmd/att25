@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def format_bytes(size_bytes: int) -> str:
-    """Bayt hajmini MB yoki GB ga o'tkazish."""
+    """Bayt hajmini MB yoki GB ga ötkaziş."""
     if not size_bytes:
         return "0 MB"
     mb = size_bytes / (1024 * 1024)
@@ -20,7 +20,7 @@ def format_bytes(size_bytes: int) -> str:
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Botni ishga tushirish (/start)."""
+    """Botni işga tuşiriş (/start)."""
     user = update.effective_user
     db.upsert_user(
         telegram_id=user.id,
@@ -30,7 +30,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     )
 
     if STORAGE_MODE == "telegram":
-        storage_status = "☁️ Telegram Bulut Ombori (Bepul & Cheksiz)"
+        storage_status = "☁️ Telegram Bulut Ombori (Bepul & Çeksiz)"
     elif is_gcs_configured():
         storage_status = "☁️ Google Cloud Storage (Faol)"
     else:
@@ -38,42 +38,42 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
     text = (
         f"👋 Assalomu alaykum, <b>{user.first_name}</b>!\n\n"
-        f"🎯 Bu bot o'quv videolari, hujjatlar, kitoblar va boshqa materiallarni "
-        f"tartibli saqlash va boshqarish uchun mo'ljallangan.\n\n"
-        f"<b>⚙️ Saqlash holati:</b> {storage_status}\n\n"
-        f"Quyidagi tugmalar orqali botdan foydalanishingiz mumkin:"
+        f"🎯 Bu bot öquv videolari, hujjatlar, kitoblar va boşqa materiallarni "
+        f"tartibli saqlaş va boşqariş uçun möljallangan.\n\n"
+        f"<b>⚙️ Saqlaş holati:</b> {storage_status}\n\n"
+        f"Quyidagi tugmalar orqali botdan foydalanişingiz mumkin:"
     )
 
     await update.message.reply_html(text, reply_markup=main_menu_keyboard())
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Foydalanish bo'yicha qo'llanma (/help)."""
+    """Foydalaniş böyiça qöllanma (/help)."""
     text = (
-        "<b>📖 Botdan foydalanish bo'yicha qo'llanma:</b>\n\n"
-        "<b>1️⃣ Material yuklash tartibi:</b>\n"
-        "• <b>➕ Yangi material qo'shish</b> tugmasini bosing\n"
-        "• Material turiga mos bo'limni tanlang (Video, Hujjat, Rasm va h.k.)\n"
+        "<b>📖 Botdan foydalaniş böyiça qöllanma:</b>\n\n"
+        "<b>1️⃣ Material yuklaş tartibi:</b>\n"
+        "• <b>➕ Yangi material qöşiş</b> tugmasini bosing\n"
+        "• Material turiga mos bölimni tanlang (Video, Hujjat, Rasm va h.k.)\n"
         "• Material nomini kiriting\n"
-        "• Qisqacha tavsif yozing\n"
-        "• Joylayotgan shaxs ismini kiriting\n"
-        "• Qo'shimcha izoh (komment) qoldiring yoki o'tkazib yuboring\n"
-        "• Faylni yuboring (video, PDF, rasm, audio va boshqalar)\n\n"
-        "<b>2️⃣ Materiallarni ko'rish:</b>\n"
-        "• <b>📂 Bo'limlar</b> — barcha bo'limlar va ulardagi materiallar\n"
+        "• Qisqaça tavsif yozing\n"
+        "• Joylayotgan şaxs ismini kiriting\n"
+        "• Qöşimça izoh (komment) qoldiring yoki ötkazib yuboring\n"
+        "• Faylni yuboring (video, PDF, rasm, audio va boşqalar)\n\n"
+        "<b>2️⃣ Materiallarni köriş:</b>\n"
+        "• <b>📂 Bölimlar</b> — barça bölimlar va ulardagi materiallar\n"
         "• <b>📚 Oxirgi materiallar</b> — eng oxirgi yuklangan fayllar\n\n"
-        "<b>3️⃣ Fayllarni saqlash:</b>\n"
-        "Yuklangan barcha materiallar xavfsiz holda bulutda (Google Cloud Storage) "
+        "<b>3️⃣ Fayllarni saqlaş:</b>\n"
+        "Yuklangan barça materiallar xavfsiz holda bulutda (Google Cloud Storage) "
         "yoki lokal serverda arxivlanadi."
     )
     await update.message.reply_html(text, reply_markup=main_menu_keyboard())
 
 
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Tizim statistikasini ko'rsatish (/stats)."""
+    """Tizim statistikasini körsatiş (/stats)."""
     stats = db.get_stats()
     if STORAGE_MODE == "telegram":
-        storage_type = "Telegram Buluti (Cheksiz & Bepul)"
+        storage_type = "Telegram Buluti (Çeksiz & Bepul)"
     elif is_gcs_configured():
         storage_type = "Google Cloud Storage"
     else:
@@ -82,10 +82,10 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     lines = [
         "<b>📊 Tizim Statistikasi:</b>\n",
         f"• 📚 Jami materiallar: <b>{stats['total_materials']} ta</b>",
-        f"• 👥 Foydalanuvchilar: <b>{stats['total_users']} nafar</b>",
+        f"• 👥 Foydalanuvçilar: <b>{stats['total_users']} nafar</b>",
         f"• 💾 Jami fayllar hajmi: <b>{format_bytes(stats['total_bytes'])}</b>",
         f"• ☁️ Asosiy ombor: <b>{storage_type}</b>\n",
-        "<b>📂 Bo'limlar bo'yicha:</b>"
+        "<b>📂 Bölimlar böyiça:</b>"
     ]
 
     for cat in stats["categories"]:

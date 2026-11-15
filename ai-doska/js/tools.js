@@ -1,6 +1,6 @@
 /* ==========================================================================
    ATT-25 AI DOSKA — TOOLS & INTERACTION MANAGER (tools.js)
-   Qalam, Marker, Shakllar, Stikerlar, Matn, O'chirg'ich, Pointer boshqaruvi
+   Qalam, Marker, Shakllar, Stikerlar, Matn, O'çirg'ich, Pointer boshqaruvi
    ========================================================================== */
 
 class ToolManager {
@@ -75,7 +75,7 @@ class ToolManager {
     window.addEventListener('pointermove', (e) => this.onPointerMove(e));
     window.addEventListener('pointerup', (e) => this.onPointerUp(e));
 
-    // Sichqoncha g'ildiragi orqali masshtablash (Zoom) va siljitish
+    // Sichqoncha g'ildiragi orqali masştablaş (Zoom) va siljitiş
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
       if (e.ctrlKey || e.metaKey) {
@@ -83,7 +83,7 @@ class ToolManager {
         const factor = e.deltaY < 0 ? 1.1 : 0.9;
         this.engine.setZoom(this.engine.zoom * factor, e.clientX, e.clientY);
       } else {
-        // 2D Pan (Touchpad yoki g'ildirak)
+        // 2D Pan (Touçpad yoki g'ildirak)
         this.engine.panX -= e.deltaX;
         this.engine.panY -= e.deltaY;
       }
@@ -110,7 +110,7 @@ class ToolManager {
     this.startScreenPos = { x: e.clientX, y: e.clientY };
     this.startWorldPos = this.engine.screenToWorld(e.clientX, e.clientY);
 
-    // O'rta tugma yoki Bo'sh joy (Space) bosilgan bo'lsa Pan qilish
+    // O'rta tugma yoki Bo'sh joy (Space) bosilgan bo'lsa Pan qiliş
     if (e.button === 1 || this.spacebarHeld || this.currentTool === 'pan') {
       this.viewport.className = 'canvas-viewport mode-panning';
       return;
@@ -119,7 +119,7 @@ class ToolManager {
     const wx = this.startWorldPos.x;
     const wy = this.startWorldPos.y;
 
-    // 1. Tanlash vositasi (Select)
+    // 1. Tanlaş vositasi (Select)
     if (this.currentTool === 'select') {
       // Rotation Handle bosildimi? (Yakka tanlangan ob'ektda)
       if (this.engine.selectedObjects.length === 1 && this.engine.isPointOnRotateHandle(wx, wy, this.engine.selectedObjects[0])) {
@@ -172,20 +172,20 @@ class ToolManager {
             return;
           }
 
-          // Javobni ko'rsatish / yashirish tugmasi bosildimi?
+          // Javobni ko'rsatiş / yaşiriş tugmasi bosildimi?
           const btnY = optStartY + opts.length * 36 + 8;
           if (relY >= btnY && relY <= btnY + 28 && relX >= 14 && relX <= hw - 14) {
             hit.revealed = !hit.revealed;
             this.engine.saveState();
             if (typeof window.toast === 'function') {
-              window.toast(hit.revealed ? "✅ To'g'ri javob ochildi" : "Javob yashirildi");
+              window.toast(hit.revealed ? "✅ To'g'ri javob oçildi" : "Javob yaşirildi");
             }
             this.engine.selectObject(hit, false);
             return;
           }
         }
 
-        // Agar mavjud tanlov ichida bo'lmasa, yakka tanlash
+        // Agar mavjud tanlov içida bo'lmasa, yakka tanlash
         if (!this.engine.selectedObjects.includes(hit)) {
           this.engine.selectObject(hit, false);
         }
@@ -203,7 +203,7 @@ class ToolManager {
           points: o.points ? o.points.map(p => ({ ...p })) : null
         }));
 
-        // Agar tanlangan element chizma (stroke) bo'lsa, atrofidagi barcha bog'liq chizmalarni klasterlab OCR panelini ko'rsatish
+        // Agar tanlangan element chizma (stroke) bo'lsa, atrofidagi barça bog'liq chizmalarni klasterlab OCR panelini ko'rsatiş
         if (hit.type === 'stroke') {
           const cluster = this.getClusteredStrokes(hit);
           this.showOcrFloatingToolbar(cluster);
@@ -224,7 +224,7 @@ class ToolManager {
       return;
     }
 
-    // 1b. Aqlli Bog'lovchi (Smart Connector) vositasi
+    // 1b. Aqlli Bog'lovçi (Smart Connector) vositasi
     if (this.currentTool === 'connector') {
       const hit = this.engine.hitTest(wx, wy);
       if (hit) {
@@ -258,7 +258,7 @@ class ToolManager {
       return;
     }
 
-    // 3. O'chirg'ich (Eraser)
+    // 3. O'chirg'iç (Eraser)
     if (this.currentTool === 'eraser') {
       const hit = this.engine.hitTest(wx, wy);
       if (hit) {
@@ -267,7 +267,7 @@ class ToolManager {
       return;
     }
 
-    // 4. Geometrik Shakllar
+    // 4. Geometrik Şakllar
     if (this.currentTool.startsWith('shape_')) {
       const shapeType = this.currentTool.replace('shape_', '');
       const fillColor = this.isFilled ? this.getFillColor() : 'transparent';
@@ -371,7 +371,7 @@ class ToolManager {
   }
 
   onPointerMove(e) {
-    // Smartboard Multi-Touch & Palm Eraser tekshiruvi
+    // Smartboard Multi-Touç & Palm Eraser tekşiruvi
     if (window.smartboard && window.smartboard.gestures) {
       const gRes = window.smartboard.gestures.handlePointerMove(e);
       if (gRes && gRes.handled) {
@@ -391,7 +391,7 @@ class ToolManager {
 
     if (!this.isPointerDown) return;
 
-    // Viewport siljitish (Pan)
+    // Viewport siljitiş (Pan)
     if (this.spacebarHeld || this.currentTool === 'pan' || e.buttons === 4) {
       const dx = e.clientX - this.startScreenPos.x;
       const dy = e.clientY - this.startScreenPos.y;
@@ -406,14 +406,14 @@ class ToolManager {
 
     const currWorld = this.engine.screenToWorld(e.clientX, e.clientY);
 
-    // O'chirg'ich harakatda bo'lsa
+    // O'chirg'iç harakatda bo'lsa
     if (this.currentTool === 'eraser') {
       const hit = this.engine.hitTest(currWorld.x, currWorld.y);
       if (hit) { this.engine.removeObject(hit); this.engine.markDirty(); }
       return;
     }
 
-    // 1. Ob'ektni aylantirish (Rotation)
+    // 1. Ob'ektni aylantiriş (Rotation)
     if (this.isRotatingObject && this.rotateObj && this.rotateCenter) {
       const angle = Math.atan2(currWorld.y - this.rotateCenter.y, currWorld.x - this.rotateCenter.x) + Math.PI / 2;
       this.rotateObj.rotation = angle;
@@ -433,7 +433,7 @@ class ToolManager {
       return;
     }
 
-    // 3. Aqlli Bog'lovchi jonli chizig'i (Temp Connector)
+    // 3. Aqlli Bog'lovçi jonli çizig'i (Temp Connector)
     if (this.currentTool === 'connector' && this.connectorStart && this.engine.tempConnector) {
       this.engine.tempConnector.p2 = { x: currWorld.x, y: currWorld.y };
       this.engine.markDirty();
@@ -480,7 +480,7 @@ class ToolManager {
       return;
     }
 
-    // Shakllar o'lchamini tortish (Drag resize during creation)
+    // Shakllar o'lçamini tortiş (Drag resize during creation)
     if (this.currentDrawingObject) {
       const obj = this.currentDrawingObject;
       const sx = this.startWorldPos.x;
@@ -516,7 +516,7 @@ class ToolManager {
     if (!this.isPointerDown) return;
     this.isPointerDown = false;
 
-    // Rotation yakunlash
+    // Rotation yakunlaş
     if (this.isRotatingObject) {
       this.isRotatingObject = false;
       this.rotateObj = null;
@@ -544,7 +544,7 @@ class ToolManager {
       this.engine.markDirty();
     }
 
-    // Aqlli bog'lovchi yaratish
+    // Aqlli bog'lovçi yaratiş
     if (this.currentTool === 'connector' && this.connectorStart) {
       const currWorld = this.engine.screenToWorld(e.clientX, e.clientY);
       const hit = this.engine.hitTest(currWorld.x, currWorld.y);
@@ -576,7 +576,7 @@ class ToolManager {
     }
 
     if (this.currentDrawingObject) {
-      // 1. AI Formula Rejimi faol bo'lsa: formulani fonda tahlil qilish
+      // 1. AI Formula Rejimi faol bölsa: formulani fonda tahlil qiliş
       if (this.formulaModeActive && this.currentDrawingObject.type === 'stroke' && !this.currentDrawingObject.isHighlighter) {
         this.handleFormulaStrokeComplete(this.currentDrawingObject);
         this.engine.saveState();
@@ -585,7 +585,7 @@ class ToolManager {
         return;
       }
 
-      // 2. Magic Ink: erkin chizilgan qalam shaklini geometrik shaklga aylantirish
+      // 2. Magic Ink: erkin çizilgan qalam şaklini geometrik şaklga aylantiriş
       if (this.magicInkEnabled && this.currentDrawingObject.type === 'stroke' && !this.currentDrawingObject.isHighlighter) {
         const magicShape = this.tryMagicInkRecognition(this.currentDrawingObject);
         if (magicShape) {
@@ -596,13 +596,13 @@ class ToolManager {
           this.currentDrawingObject = null;
           this.updateViewportCursor();
           if (typeof window.toast === 'function') {
-            window.toast(`✨ Magic Ink: ${magicShape.magicName || 'Shakl'} tanildi!`);
+            window.toast(`✨ Magic Ink: ${magicShape.magicName || 'Şakl'} tanildi!`);
           }
           return;
         }
       }
 
-      this.engine.saveState(); // Yangi chizilgan shaklni saqlash
+      this.engine.saveState(); // Yangi çizilgan şaklni saqlaş
       this.currentDrawingObject = null;
     }
 
@@ -610,7 +610,7 @@ class ToolManager {
   }
 
   /* ==========================================================================
-     MAGIC INK (AQLLI SHAKLLARNI TANISH)
+     MAGIC INK (AQLLI ŞAKLLARNI TANIŞ)
      ========================================================================== */
   tryMagicInkRecognition(strokeObj) {
     const pts = strokeObj.points;
@@ -677,7 +677,7 @@ class ToolManager {
         };
       }
 
-      // b) Burchaklar (Corners) tahlili
+      // b) Burçaklar (Corners) tahlili
       const step = Math.max(2, Math.floor(pts.length / 16));
       let cornerCount = 0;
       for (let i = step; i < pts.length - step; i += step) {
@@ -717,7 +717,7 @@ class ToolManager {
         }
       }
 
-      // To'g'ri to'rtburchak
+      // Töğri törtburçak
       return {
         type: 'rect',
         x: minX,
@@ -728,14 +728,14 @@ class ToolManager {
         strokeWidth,
         filled,
         fillColor,
-        magicName: "To'g'ri to'rtburchak"
+        magicName: "To'g'ri to'rtburçak"
       };
     } else {
-      // Ochiq chizma: Chiziq yoki Strelka
+      // Oçiq çizma: Çiziq yoki Strelka
       const straightRatio = pathLen / (dStartEnd || 1);
 
       if (straightRatio < 1.35 && dStartEnd > 24) {
-        // Oxirgi 25% qismida burilish / strelka uchi bormi?
+        // Oxirgi 25% qismida buriliş / strelka uçi bormi?
         const lastIdx = Math.floor(pts.length * 0.75);
         let hasFlick = false;
         for (let i = lastIdx; i < pts.length - 1; i++) {
@@ -778,7 +778,7 @@ class ToolManager {
   }
 
   /* ==========================================================================
-     INLINE TEXT TAHRIRLAGICH
+     INLINE TEXT TAHRIRLAGIÇ
      ========================================================================== */
   openTextEditor(obj, screenX, screenY) {
     this.activeTextObj = obj;
@@ -789,7 +789,7 @@ class ToolManager {
     this.textInput.focus();
     this.textInput.select();
 
-    // Smartboard virtual klaviaturasini ochish
+    // Smartboard virtual klaviaturasini oçiş
     if (window.smartboard && window.smartboard.keyboard && document.body.classList.contains('smartboard-mode')) {
       window.smartboard.keyboard.openFor(this.textInput);
     }
@@ -826,7 +826,7 @@ class ToolManager {
   }
 
   /* ==========================================================================
-     TOOLBAR VA ASBOB O'ZGARISHLARI
+     TOOLBAR VA ASBOB ÖZGARIŞLARI
      ========================================================================== */
   bindToolbarEvents() {
     // 1. Asosiy Asboblar tugmalari
@@ -838,7 +838,7 @@ class ToolManager {
       });
     });
 
-    // 2. Shakllar menyusi (Shape Popover)
+    // 2. Şakllar menyusi (Şape Popover)
     const btnShapeTool = document.getElementById('btnShapeTool');
     const shapeMenu = document.getElementById('shapeMenu');
     if (btnShapeTool) {
@@ -851,9 +851,9 @@ class ToolManager {
     document.querySelectorAll('#shapeMenu .popover-item').forEach(item => {
       item.addEventListener('click', (e) => {
         e.stopPropagation();
-        const shape = item.getAttribute('data-shape');
-        this.currentShape = shape;
-        this.setTool(shape);
+        const şape = item.getAttribute('data-şape');
+        this.currentShape = şape;
+        this.setTool(şape);
         btnShapeTool.parentElement.classList.remove('open');
       });
     });
@@ -878,7 +878,7 @@ class ToolManager {
       });
     });
 
-    // 4. Qo'shimcha / Maxsus Asboblar Menyusi (More Tools Popover)
+    // 4. Qöşimça / Maxsus Asboblar Menyusi (More Tools Popover)
     const btnMoreTools = document.getElementById('btnMoreTools');
     const moreToolsAnchor = document.getElementById('moreToolsAnchor');
     if (btnMoreTools && moreToolsAnchor) {
@@ -907,13 +907,13 @@ class ToolManager {
         this.magicInkEnabled = !this.magicInkEnabled;
         btnMagicInk.classList.toggle('active-feature', this.magicInkEnabled);
         if (typeof window.toast === 'function') {
-          window.toast(`Magic Ink: ${this.magicInkEnabled ? "Yoqildi (Avto-shakl)" : "O'chirildi"}`);
+          window.toast(`Magic Ink: ${this.magicInkEnabled ? "Yoqildi (Avto-shakl)" : "O'çirildi"}`);
         }
         moreToolsAnchor?.classList.remove('open');
       });
     }
 
-    // Tashqariga bosganda popoverlarni yopish
+    // Taşqariga bosganda popoverlarni yopiş
     window.addEventListener('click', () => {
       document.querySelectorAll('.tool-popover-anchor.open').forEach(el => el.classList.remove('open'));
       document.querySelectorAll('.dropdown-wrapper.open').forEach(el => el.classList.remove('open'));
@@ -936,7 +936,7 @@ class ToolManager {
       });
     });
 
-    // 5. Qalinlik tanlagich
+    // 5. Qalinlik tanlagiç
     document.querySelectorAll('#strokeSizeSelector .size-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('#strokeSizeSelector .size-btn').forEach(b => b.classList.remove('active'));
@@ -950,14 +950,14 @@ class ToolManager {
       });
     });
 
-    // 6. Shakl ichini bo'yash (Fill toggle)
+    // 6. Şakl içini bo'yash (Fill toggle)
     const btnFill = document.getElementById('btnToggleFill');
     if (btnFill) {
       btnFill.addEventListener('click', () => {
         this.isFilled = !this.isFilled;
         btnFill.classList.toggle('filled', this.isFilled);
         const label = document.getElementById('fillLabel');
-        if (label) label.textContent = this.isFilled ? "Bo'yalgan" : "Shaffof";
+        if (label) label.textContent = this.isFilled ? "Böyalgan" : "Şaffof";
 
         if (this.engine.selectedObject && ['rect', 'circle', 'diamond', 'triangle'].includes(this.engine.selectedObject.type)) {
           this.engine.selectedObject.filled = this.isFilled;
@@ -996,12 +996,12 @@ class ToolManager {
       }
     });
 
-    // Laser pointer ko'rinishini sozlash
+    // Laser pointer ko'rinişini sozlaş
     if (this.laserDot) {
       this.laserDot.classList.toggle('hidden', toolName !== 'laser');
     }
 
-    // Stil panelini (rang & qalinlik) faqat chizish asboblari faol bo'lganda ko'rsatish
+    // Stil panelini (rang & qalinlik) faqat çiziş asboblari faol bo'lganda ko'rsatiş
     const styleBar = document.getElementById('styleBar');
     if (styleBar) {
       const needsStyle = ['pen', 'highlighter', 'text'].includes(toolName) || toolName.startsWith('shape_');
@@ -1019,11 +1019,11 @@ class ToolManager {
   }
 
   getFillColor() {
-    return this.currentColor + '33'; // 20% shaffoflikdagi rang
+    return this.currentColor + '33'; // 20% şaffoflikdagi rang
   }
 
   getStickyColor() {
-    // Stikerlar uchun chiroyli pastel ranglar
+    // Stikerlar uçun çiroyli pastel ranglar
     const colors = ['#FEF08A', '#BAE6FD', '#BBF7D0', '#FBCFE8', '#DDD6FE'];
     return colors[Math.floor(Math.random() * colors.length)];
   }
@@ -1033,7 +1033,7 @@ class ToolManager {
      ========================================================================== */
   bindKeyboardShortcuts() {
     window.addEventListener('keydown', (e) => {
-      // Matn yozilayotgan bo'lsa hotkeylarni chetlab o'tish
+      // Matn yozilayotgan bo'lsa hotkeylarni chetlab o'tiş
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
       if (e.code === 'Space' && !this.spacebarHeld) {
@@ -1071,7 +1071,7 @@ class ToolManager {
         this.engine.copySelected();
       }
 
-      // Ctrl+V: Qo'yish
+      // Ctrl+V: Qo'yiş
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
         if (this.currentTool !== 'text') {
           e.preventDefault();
@@ -1079,38 +1079,38 @@ class ToolManager {
         }
       }
 
-      // Ctrl+D: Dublikat qilish
+      // Ctrl+D: Dublikat qiliş
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
         e.preventDefault();
         this.engine.duplicateSelected();
       }
 
-      // Ctrl+L: Qulflash / Qulfdan chiqarish
+      // Ctrl+L: Qulflaş / Qulfdan çiqariş
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
         e.preventDefault();
         this.engine.toggleLockSelected();
       }
 
-      // ]: Oldinga chiqarish
+      // ]: Oldinga çiqariş
       if (e.key === ']' && !e.ctrlKey) {
         e.preventDefault();
         this.engine.bringToFront();
       }
 
-      // [: Orqaga yuborish
+      // [: Orqaga yuboriş
       if (e.key === '[' && !e.ctrlKey) {
         e.preventDefault();
         this.engine.sendToBack();
       }
 
-      // Alt+F: AI Formula Rejimini yoqish/o'chirish
+      // Alt+F: AI Formula Rejimini yoqiş/o'chirish
       if (e.altKey && e.key.toLowerCase() === 'f') {
         e.preventDefault();
         this.toggleFormulaMode();
         return;
       }
 
-      // Enter: Agar formula tayyor bo'lsa uni tasdiqlash
+      // Enter: Agar formula tayyor bo'lsa uni tasdiqlaş
       if (e.key === 'Enter' && !e.shiftKey) {
         if (this.formulaLiveBadge && !this.formulaLiveBadge.classList.contains('hidden') && this.fbadgeReady && !this.fbadgeReady.classList.contains('hidden')) {
           e.preventDefault();
@@ -1119,7 +1119,7 @@ class ToolManager {
         }
       }
 
-      // Escape: Formulani yoki menyuni yopish
+      // Escape: Formulani yoki menyuni yopiş
       if (e.key === 'Escape') {
         const ctxMenu = document.getElementById('boardContextMenu');
         if (ctxMenu && !ctxMenu.classList.contains('hidden')) {
@@ -1131,7 +1131,7 @@ class ToolManager {
         }
       }
 
-      // Asboblar klavishlari
+      // Asboblar klavişlari
       const key = e.key.toLowerCase();
       if (key === 'v') this.setTool('select');
       else if (key === 'h') this.setTool('pan');
@@ -1225,7 +1225,7 @@ class ToolManager {
     const lockLabel = document.getElementById('ctxLockLabel');
     if (lockIcon && lockLabel) {
       lockIcon.textContent = isLocked ? '🔓' : '🔒';
-      lockLabel.textContent = isLocked ? 'Qulfdan ochish' : 'Qulflash';
+      lockLabel.textContent = isLocked ? 'Qulfdan oçiş' : 'Qulflaş';
     }
 
     const ctxCopy = document.getElementById('ctxCopy');
@@ -1319,14 +1319,14 @@ class ToolManager {
       this.engine.addObject(imgObj);
       this.engine.selectedObject = imgObj;
       if (typeof window.toast === 'function') {
-        window.toast(`🖼️ Rasm doskaga muvaffaqiyatli qo'yildi!`);
+        window.toast(`🖼️ Rasm doskaga muvaffaqiyatli qöyildi!`);
       }
     };
     reader.readAsDataURL(file);
   }
 
   /* ==========================================================================
-     QO'LYOZMA KLASTERLASH VA SUZUVCHI OCR PANELI
+     QO'LYOZMA KLASTERLAŞ VA SUZUVÇI OCR PANELI
      ========================================================================== */
   getClusteredStrokes(initialStroke, maxDist = 60) {
     const allStrokes = this.engine.objects.filter(o => o.type === 'stroke');
@@ -1451,7 +1451,7 @@ class ToolManager {
     if (this.formulaModeActive) {
       this.setTool('pen');
       if (typeof window.toast === 'function') {
-        window.toast("✨ AI Formula Rejimi faollashtirildi! Doskaga formula yozing...");
+        window.toast("✨ AI Formula Rejimi faollaştirildi! Doskaga formula yozing...");
       }
     } else {
       this.dismissFormulaSession();
@@ -1473,10 +1473,10 @@ class ToolManager {
 
     this.activeFormulaSession.strokes.push(stroke);
 
-    // Suzuvchi tahlil nishonini ko'rsatish
+    // Suzuvçi tahlil nişonini körsatiş
     this.showFormulaLiveBadgeLoading();
 
-    // Debounce: foydalanuvchi keyingi belgilarni yozayotgan bo'lsa kutish
+    // Debounce: foydalanuvçi keyingi belgilarni yozayotgan bölsa kutiş
     if (this.activeFormulaSession.timer) {
       clearTimeout(this.activeFormulaSession.timer);
     }

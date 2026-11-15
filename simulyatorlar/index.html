@@ -36,7 +36,7 @@
   <header class="sim-hub-header">
     <div class="sim-hub-topbar">
       <!-- Brand Logo -->
-      <a href="../index.html" class="sim-hub-brand" target="_top" title="ATT-25 Talabalar Portaliga Qaytish">
+      <a href="../index.html" class="sim-hub-brand" target="_top" title="ATT-25 Talabalar Portaliga Qaytiş">
         <div class="crest-shield" style="width:34px; height:40px; border-radius:4px;" title="ATT-25 Kiber-Emblemasi">
           <svg class="att-logo-svg att-animated-logo" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg"
             aria-label="ATT-25 Logotipi">
@@ -116,10 +116,6 @@
           📐 Circuit Lab (Sxema)
           <span class="badge-count" style="background:#00FF87; color:#070B12; font-weight:800;">Yangi</span>
         </button>
-        <button class="hub-tab-btn" data-tab="powergrid" role="tab">
-          ⚡ Smart Grid (GES ➔ Uy)
-          <span class="badge-count" style="background:#38BDF8; color:#070B12; font-weight:800;">3D Eko</span>
-        </button>
         <button class="hub-tab-btn" data-tab="subnet" role="tab">
           🔢 Subnet Kalkulyator
         </button>
@@ -133,13 +129,13 @@
 
       <!-- Right Header Actions -->
       <div class="hub-actions">
-        <button class="hub-btn" id="hubFullscreenBtn" title="To‘liq ekranga o‘tish">
+        <button class="hub-btn" id="hubFullscreenBtn" title="Töliq ekranga ötiş">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
             <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
           </svg>
-          <span class="hub-btn-lbl">To‘liq Ekran</span>
+          <span class="hub-btn-lbl">Töliq Ekran</span>
         </button>
-        <a href="../index.html" class="hub-btn" target="_top" style="background:var(--brand-forest); border-color:var(--sim-accent); color:var(--sim-volt);" title="Talabalar portaliga qaytish">
+        <a href="../index.html" class="hub-btn" target="_top" style="background:var(--brand-forest); border-color:var(--sim-accent); color:var(--sim-volt);" title="Talabalar portaliga qaytiş">
           <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
@@ -167,12 +163,7 @@
 
     <!-- 3. TAB: CIRCUIT LAB (SXEMA QURUVCHI & VIRTUAL ELEKTRONIKA) -->
     <div class="sim-tab-panel" id="tab-circuit" role="tabpanel">
-      <iframe src="circuit/index.html" class="sim-fullscreen-frame" id="iframeCircuit" title="Sxema Quruvchi & Elektronika Laboratoriyasi" allow="fullscreen" allowfullscreen="true"></iframe>
-    </div>
-
-    <!-- 4. TAB: SMART GRID 3D (GESDAN XONADONGACHA ELEKTR TIZIMI) -->
-    <div class="sim-tab-panel" id="tab-powergrid" role="tabpanel">
-      <iframe src="powergrid/index.html" class="sim-fullscreen-frame" id="iframePowergrid" title="Smart Grid: GESdan Xonadongacha 3D" allow="fullscreen" allowfullscreen="true"></iframe>
+      <iframe src="circuit/index.html" class="sim-fullscreen-frame" id="iframeCircuit" title="Sxema Quruvçi & Elektronika Laboratoriyasi" allow="fullscreen" allowfullscreen="true"></iframe>
     </div>
 
     <!-- 4. TAB: IP SUBNET & VLSM KALKULYATORI -->
@@ -181,9 +172,9 @@
         <div class="tool-tab-header">
           <div>
             <h2>IP Subnet & VLSM Kalkulyatori</h2>
-            <p>Tarmoq maskasi, hostlar soni, wildcard va ikkilik ko‘rinishini hisoblash vositasi</p>
+            <p>Tarmoq maskasi, hostlar soni, wildcard va ikkilik körinişini hisoblaş vositasi</p>
           </div>
-          <span class="arena-badge-live"><span class="status-dot"></span> REAL-TIME HISOBLASH</span>
+          <span class="arena-badge-live"><span class="status-dot"></span> REAL-TIME HISOBLAŞ</span>
         </div>
 
         <div class="tool-card" style="border-top-color:var(--brand-primary); max-width:850px; margin:0 auto;">
@@ -213,8 +204,8 @@
             <div class="result-row"><span class="k">Tarmoq ID:</span><span class="v" id="resNet">192.168.10.0 /24</span></div>
             <div class="result-row"><span class="k">Tarmoq Maskasi:</span><span class="v" id="resMask">255.255.255.0</span></div>
             <div class="result-row"><span class="k">Wildcard Maska:</span><span class="v" id="resWild">0.0.0.255</span></div>
-            <div class="result-row"><span class="k">Hostlar Oralig‘i:</span><span class="v" id="resRange">192.168.10.1 – 192.168.10.254</span></div>
-            <div class="result-row"><span class="k">Foydalanuvchi Hostlar:</span><span class="v" id="resHosts">254 ta</span></div>
+            <div class="result-row"><span class="k">Hostlar Oraliği:</span><span class="v" id="resRange">192.168.10.1 – 192.168.10.254</span></div>
+            <div class="result-row"><span class="k">Foydalanuvçi Hostlar:</span><span class="v" id="resHosts">254 ta</span></div>
             <div class="result-row"><span class="k">Broadcast Manzil:</span><span class="v" id="resBcast" style="color:var(--brand-volt);">192.168.10.255</span></div>
             <div class="result-row"><span class="k">Ikkilik (Binary):</span><span class="v" id="resBinary">11111111.11111111.11111111.00000000</span></div>
           </div>
@@ -228,7 +219,7 @@
         <div class="tool-tab-header">
           <div>
             <h2>Jonli Ping & Latency Terminali</h2>
-            <p>Tugunlararo kechikish, ICMP paketlar yo‘qolishi va RTT statistikasini emulyatsiya qilish</p>
+            <p>Tugunlararo keçikiş, ICMP paketlar yöqolişi va RTT statistikasini emulyatsiya qiliş</p>
           </div>
           <span class="arena-badge-live"><span class="status-dot"></span> ICMP ECHO EMULYATORI</span>
         </div>
@@ -236,7 +227,7 @@
         <div class="tool-card" style="border-top-color:var(--sim-volt); max-width:900px; margin:0 auto;">
           <div class="ping-controls">
             <div class="form-field" style="flex:1;">
-              <label class="form-label" for="pingTarget">Nishon Tugun (IP yoki Domen)</label>
+              <label class="form-label" for="pingTarget">Nişon Tugun (IP yoki Domen)</label>
               <input type="text" id="pingTarget" class="arsenal-input" value="192.168.1.1">
             </div>
             <div class="form-field" style="max-width:120px;">
@@ -251,13 +242,13 @@
               <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
-              Ping Yuborish
+              Ping Yuboriş
             </button>
           </div>
 
           <div class="terminal-screen" id="pingTerminalScreen" style="min-height:280px; margin-top:20px;">
             <div class="terminal-line system">ATT-25 Ping Diagnostika Terminali v2.4 tayyor.</div>
-            <div class="terminal-line prompt">Target IP manzilni kiriting va 'Ping Yuborish' tugmasini bosing...</div>
+            <div class="terminal-line prompt">Target IP manzilni kiriting va 'Ping Yuboriş' tugmasini bosing...</div>
           </div>
         </div>
       </div>
@@ -269,7 +260,7 @@
         <div class="tool-tab-header">
           <div>
             <h2>OSI 7 Qatlamli Model Inspektori</h2>
-            <p>Qatlamlararo PDU birliklari, tarmoq protokollari va apparat vositalarini chuqur tahlil qiling</p>
+            <p>Qatlamlararo PDU birliklari, tarmoq protokollari va apparat vositalarini çuqur tahlil qiling</p>
           </div>
           <span class="arena-badge-live"><span class="status-dot"></span> ISO/IEC 7498-1 STANDARTI</span>
         </div>
@@ -320,7 +311,7 @@
               <div><b>Protokollar:</b> HTTP/3, HTTPS, DNS, DHCP, SSH, FTP, SMTP</div>
               <div><b>Qurilmalar:</b> Gateway, Next-Gen Firewall, Web Server</div>
               <div style="margin-top:10px; color:var(--text-light); line-height:1.6;">
-                Foydalanuvchi dasturlari va tarmoq xizmatlari o‘rtasidagi to‘g‘ridan-to‘g‘ri interfeys. Brauzer va ilovalar so‘rovlari aynan shu qatlamda shakllanadi.
+                Foydalanuvçi dasturlari va tarmoq xizmatlari örtasidagi töğridan-töğri interfeys. Brauzer va ilovalar sörovlari aynan şu qatlamda şakllanadi.
               </div>
             </div>
           </div>
@@ -334,12 +325,12 @@
   <div id="hubToast"></div>
 
   <!-- Floating Exit Fullscreen Button -->
-  <button id="exitFsFloatBtn" title="To‘liq ekrandan chiqish">
+  <button id="exitFsFloatBtn" title="Töliq ekrandan çiqiş">
     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>
-    Oynaga Qaytish
+    Oynaga Qaytiş
   </button>
 
   <!-- Modular Scripts -->

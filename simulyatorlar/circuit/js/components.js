@@ -7,11 +7,11 @@ const RESISTOR_COLORS = [
   { val: 0, color: '#000000', name: 'Qora' },
   { val: 1, color: '#8B4513', name: 'Jigarrang' },
   { val: 2, color: '#EF4444', name: 'Qizil' },
-  { val: 3, color: '#F97316', name: 'To‘q sariq' },
+  { val: 3, color: '#F97316', name: 'Töq sariq' },
   { val: 4, color: '#FBBF24', name: 'Sariq' },
-  { val: 5, color: '#10B981', name: 'Yashil' },
+  { val: 5, color: '#10B981', name: 'Yaşil' },
   { val: 6, color: '#3B82F6', name: 'Moviy' },
-  { val: 7, color: '#8B5CF6', name: 'Binafsha' },
+  { val: 7, color: '#8B5CF6', name: 'Binafşa' },
   { val: 8, color: '#6B7280', name: 'Kulrang' },
   { val: 9, color: '#FFFFFF', name: 'Oq' }
 ];
@@ -1346,7 +1346,7 @@ class Timer555Component extends CircuitComponent {
     ctx.roundRect(-32, -34, 64, 68, 6);
     ctx.fill(); ctx.stroke();
 
-    // Top orientation notch
+    // Top orientation notç
     ctx.strokeStyle = '#38BDF8';
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -1394,7 +1394,7 @@ class Timer555Component extends CircuitComponent {
 
 
 /* ==========================================================================
-   17. AMMETER (AMPERMETR — Serie ulanadi, tok kuchini o'lchaydi)
+   17. AMMETER (AMPERMETR — Serie ulanadi, tok kuçini o'lchaydi)
    Internal resistance: 0.001 Ω (amalda ideal)
    ========================================================================== */
 class AmmeterComponent extends CircuitComponent {
@@ -1402,7 +1402,7 @@ class AmmeterComponent extends CircuitComponent {
     super(null, 'ammeter', 'Ampermetr (A)', x, y);
     this.resistance = 0.001; // ~0 Ohm — ideal ammeter
     this.radius = 30;
-    this.maxCurrent = 5.0; // 5A maksimum o'lchash chegarasi
+    this.maxCurrent = 5.0; // 5A maksimum o'lçaş çegarasi
     this.overloaded = false;
     this.pins = [
       { id: this.id + '_p', name: 'A+', relX: -28, relY: 0, voltage: 0 },
@@ -1476,7 +1476,7 @@ class AmmeterComponent extends CircuitComponent {
 }
 
 /* ==========================================================================
-   18. VOLTMETER (VOLTMETR — Parallel ulanadi, kuchlanishni o'lchaydi)
+   18. VOLTMETER (VOLTMETR — Parallel ulanadi, kuchlanishni o'lçaydi)
    Internal resistance: 1,000,000 Ω (10MΩ — ideal voltmeter)
    ========================================================================== */
 class VoltmeterComponent extends CircuitComponent {
@@ -1493,7 +1493,7 @@ class VoltmeterComponent extends CircuitComponent {
   }
 
   getConductance() {
-    return 1 / this.resistance; // Juda kichik tok o'tkazadi
+    return 1 / this.resistance; // Juda kiçik tok o'tkazadi
   }
 
   getReading() {
@@ -1558,7 +1558,7 @@ class VoltmeterComponent extends CircuitComponent {
 }
 
 /* ==========================================================================
-   19. DIODE (1N4007 Yarimo'tkazgich diod — faqat bir yo'nalishda tok o'tkazadi)
+   19. DIODE (1N4007 Yarimo'tkazgiç diod — faqat bir yo'nalishda tok o'tkazadi)
    Forward voltage: 0.7V | Reverse blocking
    ========================================================================== */
 class DiodeComponent extends CircuitComponent {
@@ -1640,7 +1640,7 @@ class DiodeComponent extends CircuitComponent {
 }
 
 /* ==========================================================================
-   20. DC SOURCE (Sozlanuvchi to'g'ridan-to'g'ri tok manbai — 1..30V)
+   20. DC SOURCE (Sozlanuvçi to'g'ridan-to'g'ri tok manbai — 1..30V)
    ========================================================================== */
 class DcSourceComponent extends CircuitComponent {
   constructor(x, y, voltage = 5.0) {
@@ -1711,7 +1711,7 @@ class DcSourceComponent extends CircuitComponent {
 class TransistorPNPComponent extends CircuitComponent {
   constructor(x, y) {
     super(null, 'transistor_pnp', 'PNP Tranzistor (2N3906)', x, y);
-    this.beta = 100;         // Kuchayish koeffitsienti hFE
+    this.beta = 100;         // Kuçayiş koeffitsienti hFE
     this.radius = 32;
     this.pins = [
       { id: this.id + '_e', name: 'E', relX: 22, relY: -18, voltage: 0 },  // Emitter (yuqori)
@@ -1804,13 +1804,13 @@ class TransistorPNPComponent extends CircuitComponent {
 }
 
 /* ==========================================================================
-   20. N-CHANNEL MOSFET (2N7000 / IRF540N)
+   20. N-ÇANNEL MOSFET (2N7000 / IRF540N)
    Pinlar: Gate(G) [0], Drain(D) [1], Source(S) [2]
    ========================================================================== */
 class MOSFETNComponent extends CircuitComponent {
   constructor(x, y) {
     super(null, 'mosfet_n', 'N-MOSFET (2N7000)', x, y);
-    this.Vth = 2.0;          // Threshold kuchlanish (V)
+    this.Vth = 2.0;          // Threşold kuçlaniş (V)
     this.K = 0.5;            // Transconductance parametri (A/V²)
     this.radius = 32;
     this.pins = [
@@ -1820,7 +1820,7 @@ class MOSFETNComponent extends CircuitComponent {
     ];
   }
 
-  // MOSFET mintaqasini aniqlash
+  // MOSFET mintaqasini aniqlaş
   getRegion(vGs, vDs) {
     const vTh = this.Vth;
     if (vGs < vTh) return 'cutoff';
@@ -1864,7 +1864,7 @@ class MOSFETNComponent extends CircuitComponent {
     ctx.arc(0, 0, 20, 0, Math.PI * 2);
     ctx.fill(); ctx.stroke();
 
-    // Gate insulator (dashed line)
+    // Gate insulator (daşed line)
     ctx.strokeStyle = isOn ? '#F97316' : '#94A3B8';
     ctx.lineWidth = 1.5;
     ctx.setLineDash([2, 2]);
@@ -1882,7 +1882,7 @@ class MOSFETNComponent extends CircuitComponent {
     }
     ctx.stroke();
 
-    // Arrow (N-channel: pointing inward)
+    // Arrow (N-çannel: pointing inward)
     ctx.fillStyle = isOn ? '#F97316' : '#94A3B8';
     ctx.beginPath();
     ctx.moveTo(-4, 0);
@@ -1914,7 +1914,7 @@ class MOSFETNComponent extends CircuitComponent {
 }
 
 /* ==========================================================================
-   21. P-CHANNEL MOSFET (IRF9540 / BS250)
+   21. P-ÇANNEL MOSFET (IRF9540 / BS250)
    Pinlar: Gate(G) [0], Drain(D) [1], Source(S) [2]
    ========================================================================== */
 class MOSFETPComponent extends CircuitComponent {
@@ -1974,7 +1974,7 @@ class MOSFETPComponent extends CircuitComponent {
     if (isOn) { ctx.moveTo(-4, -12); ctx.lineTo(-4, 12); }
     ctx.stroke();
 
-    // P-channel arrow (pointing outward)
+    // P-çannel arrow (pointing outward)
     ctx.fillStyle = isOn ? '#A78BFA' : '#94A3B8';
     ctx.beginPath();
     ctx.moveTo(-10, 0);
@@ -1998,7 +1998,7 @@ class MOSFETPComponent extends CircuitComponent {
 }
 
 /* ==========================================================================
-   22. INDUCTOR / COIL — Katushka (L)
+   22. INDUCTOR / COIL — Katuşka (L)
    Pinlar: pin1 [0], pin2 [1]
    ========================================================================== */
 class InductorComponent extends CircuitComponent {
@@ -2010,16 +2010,16 @@ class InductorComponent extends CircuitComponent {
                            (inductance * 1e6).toFixed(0) + ' µH';
     this.radius = 32;
     this.chargeVoltage = 0; // vL tranzient
-    this.currentL = 0;      // Katushka toki
+    this.currentL = 0;      // Katuşka toki
     this.pins = [
       { id: this.id + '_1', name: '1', relX: -32, relY: 0, voltage: 0 },
       { id: this.id + '_2', name: '2', relX: 32, relY: 0, voltage: 0 }
     ];
   }
 
-  // Ekvivalent qarshilik (induktivlik uchun AC impedansi ω×L)
+  // Ekvivalent qarşilik (induktivlik uçun AC impedansi ω×L)
   getConductance(v) {
-    const Rl = 1.0; // Katushka ichki qarshilik (∼1Ω)
+    const Rl = 1.0; // Katuşka içki qarşilik (∼1Ω)
     return 1 / Math.max(Rl, 1);
   }
 
@@ -2082,7 +2082,7 @@ class InductorComponent extends CircuitComponent {
     ctx.translate(this.x, this.y);
     ctx.rotate((this.rotation * Math.PI) / 180);
 
-    // Silindrli katushka ko'rinishi
+    // Silindrli katushka ko'rinişi
     const energized = Math.abs(this.current) > 0.001;
     ctx.fillStyle = '#1E293B';
     ctx.strokeStyle = energized ? '#FBBF24' : '#475569';
@@ -2091,7 +2091,7 @@ class InductorComponent extends CircuitComponent {
     ctx.roundRect(-22, -10, 44, 20, 4);
     ctx.fill(); ctx.stroke();
 
-    // Spiral chiziqlar
+    // Spiral çiziqlar
     ctx.strokeStyle = energized ? '#FBBF24' : '#94A3B8';
     ctx.lineWidth = 1.5;
     [-12, -4, 4, 12].forEach(cx => {
@@ -2124,19 +2124,19 @@ class InductorComponent extends CircuitComponent {
 class TransformerComponent extends CircuitComponent {
   constructor(x, y, n1 = 1, n2 = 1) {
     super(null, 'transformer', `Transformator (${n1}:${n2})`, x, y);
-    this.n1 = n1; // Birlamchi o'ramlar soni
+    this.n1 = n1; // Birlamçi o'ramlar soni
     this.n2 = n2; // Ikkilamchi o'ramlar soni
-    this.ratio = n2 / n1; // Kuchlanish nisbati
+    this.ratio = n2 / n1; // Kuçlaniş nisbati
     this.radius = 42;
     this.pins = [
-      { id: this.id + '_p1', name: 'P1', relX: -38, relY: -16, voltage: 0 }, // Birlamchi +
-      { id: this.id + '_p2', name: 'P2', relX: -38, relY: 16, voltage: 0 },  // Birlamchi -
-      { id: this.id + '_s1', name: 'S1', relX: 38, relY: -16, voltage: 0 },  // Ikkilamchi +
-      { id: this.id + '_s2', name: 'S2', relX: 38, relY: 16, voltage: 0 }    // Ikkilamchi -
+      { id: this.id + '_p1', name: 'P1', relX: -38, relY: -16, voltage: 0 }, // Birlamçi +
+      { id: this.id + '_p2', name: 'P2', relX: -38, relY: 16, voltage: 0 },  // Birlamçi -
+      { id: this.id + '_s1', name: 'S1', relX: 38, relY: -16, voltage: 0 },  // Ikkilamçi +
+      { id: this.id + '_s2', name: 'S2', relX: 38, relY: 16, voltage: 0 }    // Ikkilamçi -
     ];
   }
 
-  // Ikkilamchi kuchlanishni hisoblash
+  // Ikkilamçi kuçlanişni hisoblaş
   getSecVoltage() {
     const vP = (this.pins[0].voltage || 0) - (this.pins[1].voltage || 0);
     return vP * this.ratio;
@@ -2160,7 +2160,7 @@ class TransformerComponent extends CircuitComponent {
     ctx.moveTo(26, 16); ctx.lineTo(38, 16);
     ctx.stroke();
 
-    // Primary coil (chap)
+    // Primary coil (çap)
     ctx.strokeStyle = active ? '#38BDF8' : '#64748B';
     ctx.lineWidth = 2.5;
     if (active) { ctx.shadowColor = 'rgba(56,189,248,0.5)'; ctx.shadowBlur = 5; }

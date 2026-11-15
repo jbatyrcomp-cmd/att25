@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sxema Quruvchi & 3D Elektronika Laboratoriyasi | ATT-25 Circuit Lab</title>
+  <title>Sxema Quruvçi & 3D Elektronika Laboratoriyasi | ATT-25 Circuit Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
   <!-- Top Navigation & Toolbar -->
   <header id="topBar">
     <div class="brand-section">
-      <a href="../index.html" class="brand-badge" target="_top" title="ATT-25 Talabalar Portaliga Qaytish">
+      <a href="../index.html" class="brand-badge" target="_top" title="ATT-25 Talabalar Portaliga Qaytiş">
         <div class="crest-shield" style="width:32px; height:37px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0;" title="ATT-25 Kiber-Emblemasi">
           <svg class="att-logo-svg att-animated-logo" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg"
             aria-label="ATT-25 Logotipi" style="width:100%; height:100%;">
@@ -87,7 +87,7 @@
 
       <!-- 3-in-1 Mode Switcher (Schematic <-> 3D Breadboard <-> Split View) -->
       <div class="mode-toggle-box">
-        <button class="mode-btn active" id="btnModeSchematic" title="2D Standart Sxema Chizmasi">
+        <button class="mode-btn active" id="btnModeSchematic" title="2D Standart Sxema Çizmasi">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
           📐 Sxema
         </button>
@@ -105,9 +105,9 @@
     <!-- Quick Presets Dropdown & Top Actions -->
     <div class="top-actions">
       <!-- 200 Circuit Templates Modal Button -->
-      <button class="btn-action gold-badge" id="btnTemplatesModal" title="200 ta tayyor elektronika shablonlari">
+      <button class="btn-action gold-badge" id="btnTemplatesModal" title="200 ta tayyor elektronika şablonlari">
         <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><polyline points="10 6 14 10 10 14"/></svg>
-        <span>📚 200 ta Shablon</span>
+        <span>📚 200 ta Şablon</span>
       </button>
 
       <!-- 1-Click Presets -->
@@ -117,36 +117,36 @@
           <span>⚡ Sxemalar ▾</span>
         </button>
         <div class="presets-menu" id="presetsMenu">
-          <div class="preset-opt" data-preset="simple_bulb">💡 Oddiy Chiroq (9V + Lampochka)</div>
-          <div class="preset-opt" data-preset="switch_bulb">🔘 Kalitli Zanjir (9V + Kalit + Chiroq)</div>
+          <div class="preset-opt" data-preset="simple_bulb">💡 Oddiy Çiroq (9V + Lampoçka)</div>
+          <div class="preset-opt" data-preset="switch_bulb">🔘 Kalitli Zanjir (9V + Kalit + Çiroq)</div>
           <div class="preset-opt" data-preset="ohms_law">⚡ Ohm Qonuni (9V + 220Ω Rezistor)</div>
           <div class="preset-opt" data-preset="safe_led">🔴 Xavfsiz LED (9V + 330Ω + LED)</div>
-          <div class="preset-opt" data-preset="parallel_bulbs">💡💡 Parallel Chiroqlar (2x Chiroq)</div>
+          <div class="preset-opt" data-preset="parallel_bulbs">💡💡 Parallel Çiroqlar (2x Çiroq)</div>
           <div class="preset-opt" data-preset="buzzer_alarm">🔔 Signalizatsiya (9V + Kalit + Buzzer)</div>
         </div>
       </div>
 
       <!-- Save & Load Dropdowns -->
       <div class="presets-dropdown-box">
-        <button class="btn-action" id="btnSaveDropdown" title="Sxemani Saqlash">
+        <button class="btn-action" id="btnSaveDropdown" title="Sxemani Saqlaş">
           <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          <span>💾 Saqlash ▾</span>
+          <span>💾 Saqlaş ▾</span>
         </button>
         <div class="presets-menu" id="saveMenu">
-          <div class="preset-opt" id="optSaveFile">📁 Faylga saqlash (.json)</div>
-          <div class="preset-opt" id="optSaveBrowser">💾 Brauzerda saqlash</div>
-          <div class="preset-opt" id="optExportImage">📸 Rasm qilib yuklash (PNG)</div>
+          <div class="preset-opt" id="optSaveFile">📁 Faylga saqlaş (.json)</div>
+          <div class="preset-opt" id="optSaveBrowser">💾 Brauzerda saqlaş</div>
+          <div class="preset-opt" id="optExportImage">📸 Rasm qilib yuklaş (PNG)</div>
         </div>
       </div>
 
       <div class="presets-dropdown-box">
-        <button class="btn-action" id="btnLoadDropdown" title="Sxemani Ochish">
+        <button class="btn-action" id="btnLoadDropdown" title="Sxemani Oçiş">
           <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          <span>📂 Ochish ▾</span>
+          <span>📂 Oçiş ▾</span>
         </button>
         <div class="presets-menu" id="loadMenu">
-          <div class="preset-opt" id="optLoadFile">📁 Fayldan yuklash (.json)</div>
-          <div class="preset-opt" id="optLoadBrowser">📋 Saqlanganlar ro‘yxati</div>
+          <div class="preset-opt" id="optLoadFile">📁 Fayldan yuklaş (.json)</div>
+          <div class="preset-opt" id="optLoadBrowser">📋 Saqlanganlar röyxati</div>
         </div>
       </div>
 
@@ -180,24 +180,24 @@
         <span>Otsillograf</span>
       </button>
 
-      <button class="btn-action" id="btnTroubleshoot" title="Nosozlikni Qidirish va Tuzatish Sinovi">
+      <button class="btn-action" id="btnTroubleshoot" title="Nosozlikni Qidiriş va Tuzatiş Sinovi">
         <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
         <span>Nosozlikni Top</span>
       </button>
 
-      <button class="btn-action gold-badge" id="btnReport" title="Laboratoriya Hisobotini Shakllantirish">
+      <button class="btn-action gold-badge" id="btnReport" title="Laboratoriya Hisobotini Şakllantiriş">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         <span>📄 Hisobot</span>
       </button>
 
-      <button class="btn-action" id="btnResetBurned" style="display:none; color:var(--danger); border-color:var(--danger);" title="Kuygan qismlarni yangisiga almashtirish">
+      <button class="btn-action" id="btnResetBurned" style="display:none; color:var(--danger); border-color:var(--danger);" title="Kuygan qismlarni yangisiga almaştiriş">
         <svg viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-        <span>🔄 Tiklash</span>
+        <span>🔄 Tiklaş</span>
       </button>
 
-      <button class="btn-action" id="btnClear" title="Sxemani tozalash">
+      <button class="btn-action" id="btnClear" title="Sxemani tozalaş">
         <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
-        <span>Tozalash</span>
+        <span>Tozalaş</span>
       </button>
 
       <button class="btn-action active-pulse" id="btnSound">
@@ -214,7 +214,7 @@
 
   <!-- Short Circuit Warning Banner -->
   <div class="short-circuit-warning" id="shortWarning">
-    <span>⚠️</span> QISQA TUTASHUV (KЗ)!
+    <span>⚠️</span> QISQA TUTAŞUV (KЗ)!
   </div>
 
   <!-- Main Workspace -->
@@ -229,7 +229,7 @@
         <!-- Power Sources -->
         <div class="palette-category">
           <div class="cat-title">⚡ Quvvat Manbalari</div>
-          <div class="comp-item" draggable="true" data-type="battery_9v" title="Bosib qo‘ying yoki surib olib keling">
+          <div class="comp-item" draggable="true" data-type="battery_9v" title="Bosib qöying yoki surib olib keling">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="14" rx="2"/><circle cx="9" cy="4" r="1.5"/><rect x="14" y="3" width="3" height="3"/></svg>
             </div>
@@ -239,7 +239,7 @@
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="battery_1v5" title="Bosib qo‘ying yoki surib olib keling">
+          <div class="comp-item" draggable="true" data-type="battery_1v5" title="Bosib qöying yoki surib olib keling">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="16" rx="2"/><rect x="10" y="2" width="4" height="2"/></svg>
             </div>
@@ -249,12 +249,12 @@
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="ground" title="0V Tuproqlash">
+          <div class="comp-item" draggable="true" data-type="ground" title="0V Tuproqlaş">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><line x1="12" y1="4" x2="12" y2="12"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/><line x1="10" y1="20" x2="14" y2="20"/></svg>
             </div>
             <div class="comp-info">
-              <span class="comp-name">Tuproqlash (GND)</span>
+              <span class="comp-name">Tuproqlaş (GND)</span>
               <span class="comp-sub">0V Malumot Potensiali</span>
             </div>
           </div>
@@ -269,7 +269,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Rezistor (220 Ω)</span>
-              <span class="comp-sub">Tok cheklovchi</span>
+              <span class="comp-sub">Tok çeklovçi</span>
             </div>
           </div>
 
@@ -279,7 +279,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Rezistor (1 kΩ)</span>
-              <span class="comp-sub">Yuqori qarshilik</span>
+              <span class="comp-sub">Yuqori qarşilik</span>
             </div>
           </div>
 
@@ -289,7 +289,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Potensiometr (10 kΩ)</span>
-              <span class="comp-sub">Sozlanuvchi qarshilik</span>
+              <span class="comp-sub">Sozlanuvçi qarşilik</span>
             </div>
           </div>
 
@@ -299,7 +299,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Fotorezistor (LDR)</span>
-              <span class="comp-sub">Yorug‘lik datchigi</span>
+              <span class="comp-sub">Yoruğlik datçigi</span>
             </div>
           </div>
 
@@ -309,31 +309,31 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Kondensator (100 µF)</span>
-              <span class="comp-sub">Sig‘im / Filtr</span>
+              <span class="comp-sub">Siğim / Filtr</span>
             </div>
           </div>
         </div>
 
         <!-- Controls & Outputs -->
         <div class="palette-category">
-          <div class="cat-title">💡 Boshqaruv & Chiqarish</div>
+          <div class="cat-title">💡 Boşqaruv & Çiqariş</div>
           <div class="comp-item" draggable="true" data-type="switch" title="Kalit (Switch)">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><line x1="5" y1="12" x2="15" y2="6"/></svg>
             </div>
             <div class="comp-info">
               <span class="comp-name">Kalit (Switch)</span>
-              <span class="comp-sub">SPST Pereklyuchatel</span>
+              <span class="comp-sub">SPST Pereklyuçatel</span>
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="bulb" title="Qizdirma Lampochka">
+          <div class="comp-item" draggable="true" data-type="bulb" title="Qizdirma Lampoçka">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><path d="M7 7l10 10M7 17L17 7"/></svg>
             </div>
             <div class="comp-info">
-              <span class="comp-name">Lampochka</span>
-              <span class="comp-sub">Qizdirma chiroq 6V</span>
+              <span class="comp-name">Lampoçka</span>
+              <span class="comp-sub">Qizdirma çiroq 6V</span>
             </div>
           </div>
 
@@ -343,17 +343,17 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">LED (Qizil)</span>
-              <span class="comp-sub">Yorug‘lik diodi 1.8V</span>
+              <span class="comp-sub">Yoruğlik diodi 1.8V</span>
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="led_green" title="Yashil LED">
+          <div class="comp-item" draggable="true" data-type="led_green" title="Yaşil LED">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><polygon points="6 6 18 12 6 18 6 6"/><line x1="18" y1="6" x2="18" y2="18"/></svg>
             </div>
             <div class="comp-info">
-              <span class="comp-name">LED (Yashil)</span>
-              <span class="comp-sub">Yorug‘lik diodi 2.1V</span>
+              <span class="comp-name">LED (Yaşil)</span>
+              <span class="comp-sub">Yoruğlik diodi 2.1V</span>
             </div>
           </div>
 
@@ -363,7 +363,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Pyezo Buzzer</span>
-              <span class="comp-sub">Tovush signali</span>
+              <span class="comp-sub">Tovuş signali</span>
             </div>
           </div>
 
@@ -393,7 +393,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">N-MOSFET</span>
-              <span class="comp-sub">2N7000 Kalit/Kuchaytirgich</span>
+              <span class="comp-sub">2N7000 Kalit/Kuçaytirgiç</span>
             </div>
           </div>
 
@@ -417,13 +417,13 @@
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="inductor" title="Induktivlik Katushkasi (1mH)">
+          <div class="comp-item" draggable="true" data-type="inductor" title="Induktivlik Katuşkasi (1mH)">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="5" y2="12"/><path d="M5 12 q2,-6 4,0 q2,-6 4,0 q2,-6 4,0"/><line x1="17" y1="12" x2="22" y2="12"/></svg>
             </div>
             <div class="comp-info">
               <span class="comp-name">Induktivlik (1mH)</span>
-              <span class="comp-sub">Katushka / RL filtr</span>
+              <span class="comp-sub">Katuşka / RL filtr</span>
             </div>
           </div>
 
@@ -433,7 +433,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">Transformator (1:1)</span>
-              <span class="comp-sub">Kuchlanish o'zgartiruvchi</span>
+              <span class="comp-sub">Kuçlaniş özgartiruvçi</span>
             </div>
           </div>
         </div>
@@ -448,7 +448,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">AND (VA)</span>
-              <span class="comp-sub">Mantiqiy ko‘paytirish</span>
+              <span class="comp-sub">Mantiqiy köpaytiriş</span>
             </div>
           </div>
 
@@ -458,7 +458,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">OR (YOKI)</span>
-              <span class="comp-sub">Mantiqiy qo‘shish</span>
+              <span class="comp-sub">Mantiqiy qöşiş</span>
             </div>
           </div>
 
@@ -478,7 +478,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">NAND (VA-EMAS)</span>
-              <span class="comp-sub">Inkor ko‘paytirish</span>
+              <span class="comp-sub">Inkor köpaytiriş</span>
             </div>
           </div>
 
@@ -488,7 +488,7 @@
             </div>
             <div class="comp-info">
               <span class="comp-name">XOR Element</span>
-              <span class="comp-sub">Taqqoslash ventili</span>
+              <span class="comp-sub">Taqqoslaş ventili</span>
             </div>
           </div>
 
@@ -527,7 +527,7 @@
         <div class="palette-category">
           <div class="cat-title">🔌 DC Manbalar</div>
 
-          <div class="comp-item" draggable="true" data-type="dc_source_5v" title="5V Sozlanuvchi DC Manba">
+          <div class="comp-item" draggable="true" data-type="dc_source_5v" title="5V Sozlanuvçi DC Manba">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#F97316" stroke-width="2" fill="none"/><line x1="4" y1="12" x2="20" y2="12" stroke="#F97316" stroke-width="1.5"/><polyline points="16,8 20,12 16,16" stroke="#F97316" stroke-width="1.5" fill="none"/></svg>
             </div>
@@ -537,7 +537,7 @@
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="dc_source_12v" title="12V Sozlanuvchi DC Manba">
+          <div class="comp-item" draggable="true" data-type="dc_source_12v" title="12V Sozlanuvçi DC Manba">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#F97316" stroke-width="2" fill="none"/><line x1="4" y1="12" x2="20" y2="12" stroke="#F97316" stroke-width="1.5"/><polyline points="16,8 20,12 16,16" stroke="#F97316" stroke-width="1.5" fill="none"/></svg>
             </div>
@@ -560,35 +560,35 @@
 
         <!-- Yangi: O'lchov Asboblari (Ampermetr + Voltmetr) -->
         <div class="palette-category">
-          <div class="cat-title">📊 O'lchov Asboblari</div>
+          <div class="cat-title">📊 Ölçov Asboblari</div>
 
-          <div class="comp-item" draggable="true" data-type="ammeter" title="Ampermetr — Ketma-ket (serie) ulang, tok kuchini o'lchaydi">
+          <div class="comp-item" draggable="true" data-type="ammeter" title="Ampermetr — Ketma-ket (serie) ulang, tok kuçini ölçaydi">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#38BDF8" stroke-width="2" fill="none"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#38BDF8" font-family="monospace">A</text></svg>
             </div>
             <div class="comp-info">
               <span class="comp-name">Ampermetr</span>
-              <span class="comp-sub">Serie ulash — tok o'lchash</span>
+              <span class="comp-sub">Serie ulaş — tok ölçaş</span>
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="voltmeter" title="Voltmetr — Parallel ulang, kuchlanishni o'lchaydi">
+          <div class="comp-item" draggable="true" data-type="voltmeter" title="Voltmetr — Parallel ulang, kuçlanişni ölçaydi">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#A78BFA" stroke-width="2" fill="none"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#A78BFA" font-family="monospace">V</text></svg>
             </div>
             <div class="comp-info">
               <span class="comp-name">Voltmetr</span>
-              <span class="comp-sub">Parallel ulash — volt o'lchash</span>
+              <span class="comp-sub">Parallel ulaş — volt ölçaş</span>
             </div>
           </div>
 
-          <div class="comp-item" draggable="true" data-type="diode" title="1N4007 Yarimo'tkazgich Diodi — bir yo'nalishli">
+          <div class="comp-item" draggable="true" data-type="diode" title="1N4007 Yarimötkazgiç Diodi — bir yönalişli">
             <div class="comp-icon">
               <svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12" stroke="#94A3B8" stroke-width="2"/><polygon points="8,5 8,19 18,12" fill="#FBBF24"/><line x1="18" y1="5" x2="18" y2="19" stroke="#FBBF24" stroke-width="2.5"/></svg>
             </div>
             <div class="comp-info">
               <span class="comp-name">Diod (1N4007)</span>
-              <span class="comp-sub">Bir yo'nalishli o'tkazish</span>
+              <span class="comp-sub">Bir yönalişli ötkaziş</span>
             </div>
           </div>
         </div>
@@ -604,9 +604,9 @@
       <div class="canvas-floating-controls">
         <!-- Ambient Light (Day/Night) Control -->
         <div class="ambient-light-control" id="ambientLightControl">
-          <button class="ambient-btn active" id="btnAmbientDay" title="Kunduzgi yorug'lik (100%)">☀️ Kun</button>
-          <input type="range" class="ambient-slider" id="ambientLightSlider" min="0" max="1" step="0.05" value="0.8" title="Atrofdagi yorug'lik darajasi (Kun / Tun)">
-          <button class="ambient-btn" id="btnAmbientNight" title="Tungi qorong'ulik (0%)">🌙 Tun</button>
+          <button class="ambient-btn active" id="btnAmbientDay" title="Kunduzgi yoruğlik (100%)">☀️ Kun</button>
+          <input type="range" class="ambient-slider" id="ambientLightSlider" min="0" max="1" step="0.05" value="0.8" title="Atrofdagi yoruğlik darajasi (Kun / Tun)">
+          <button class="ambient-btn" id="btnAmbientNight" title="Tungi qoronğulik (0%)">🌙 Tun</button>
           <span class="ambient-val-badge" id="ambientValText">80%</span>
         </div>
 
@@ -614,7 +614,7 @@
           <span style="font-size:0.75rem; color:var(--text-muted); margin-right:4px;">Sim:</span>
           <button class="color-dot" style="background:#EF4444;" data-color="#EF4444" title="Qizil (+)"></button>
           <button class="color-dot active" style="background:#38BDF8;" data-color="#38BDF8" title="Moviy"></button>
-          <button class="color-dot" style="background:#00FF87;" data-color="#00FF87" title="Yashil"></button>
+          <button class="color-dot" style="background:#00FF87;" data-color="#00FF87" title="Yaşil"></button>
           <button class="color-dot" style="background:#FBBF24;" data-color="#FBBF24" title="Sariq"></button>
           <button class="color-dot" style="background:#1E293B;" data-color="#1E293B" title="Qora (-)"></button>
         </div>
@@ -626,16 +626,16 @@
 
       <!-- Quick Action Floating Bubble for Selected Component -->
       <div class="quick-action-bubble" id="quickActionBubble">
-        <button class="bubble-btn" id="bubbleRotateBtn" title="90° Burish">🔄</button>
-        <button class="bubble-btn" id="bubbleConfigBtn" title="Xususiyatlarini ochish">⚙️</button>
-        <button class="bubble-btn danger" id="bubbleDeleteBtn" title="O‘chirish">🗑️</button>
+        <button class="bubble-btn" id="bubbleRotateBtn" title="90° Buriş">🔄</button>
+        <button class="bubble-btn" id="bubbleConfigBtn" title="Xususiyatlarini oçiş">⚙️</button>
+        <button class="bubble-btn danger" id="bubbleDeleteBtn" title="Öçiriş">🗑️</button>
       </div>
     </main>
 
     <!-- 3D Breadboard Workspace (Three.js WebGL Mode) -->
     <div id="breadboard3dContainer">
       <div class="bb3d-hint">
-        <span>🖱️ <b>3D Boshqaruv:</b> Aylantirish: Chap tugma • Surish: O'ng tugma • Sim tortish: Pin ustiga bosing • Kalit/Arduino ustiga bosish</span>
+        <span>🖱️ <b>3D Boşqaruv:</b> Aylantiriş: Çap tugma • Suriş: Öng tugma • Sim tortiş: Pin ustiga bosing • Kalit/Arduino ustiga bosiş</span>
       </div>
 
       <!-- 3D Floating Wire Color Toolbar -->
@@ -645,12 +645,12 @@
           <button class="color-dot-3d active" data-color="#38BDF8" style="background:#38BDF8;" title="Moviy (Signallar)"></button>
           <button class="color-dot-3d" data-color="#EF4444" style="background:#EF4444;" title="Qizil (+5V Musbat)"></button>
           <button class="color-dot-3d" data-color="#0F172A" style="background:#0F172A; border:1px solid #475569;" title="Qora (GND Manfiy)"></button>
-          <button class="color-dot-3d" data-color="#00FF87" style="background:#00FF87;" title="Yashil (GND/Signal)"></button>
+          <button class="color-dot-3d" data-color="#00FF87" style="background:#00FF87;" title="Yaşil (GND/Signal)"></button>
           <button class="color-dot-3d" data-color="#FBBF24" style="background:#FBBF24;" title="Sariq (Signal)"></button>
-          <button class="color-dot-3d" data-color="#F97316" style="background:#F97316;" title="To'q sariq"></button>
+          <button class="color-dot-3d" data-color="#F97316" style="background:#F97316;" title="Töq sariq"></button>
           <button class="color-dot-3d" data-color="#FFFFFF" style="background:#FFFFFF;" title="Oq"></button>
         </div>
-        <span class="hint-3d-wire">💡 1-pinni, so'ng 2-pinni bosing</span>
+        <span class="hint-3d-wire">💡 1-pinni, söng 2-pinni bosing</span>
       </div>
     </div>
 
@@ -725,7 +725,7 @@
     <div class="modal-head">
       <h2>
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--danger)" fill="none" stroke-width="2.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        Nosozlikni Qidirish va Tuzatish Sinovi (Troubleshooting)
+        Nosozlikni Qidiriş va Tuzatiş Sinovi (Troubleşooting)
       </h2>
       <button class="btn-close-panel" id="closeTroubleshootModal">✕</button>
     </div>
@@ -741,10 +741,10 @@
     <div class="modal-head">
       <h2>
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--gold)" fill="none" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        Laboratoriya Ishi Hisoboti (Protokol)
+        Laboratoriya Işi Hisoboti (Protokol)
       </h2>
       <div style="display:flex; gap:8px;">
-        <button class="btn-action gold-badge" id="btnPrintReport">🖨️ Chop Etish / PDF</button>
+        <button class="btn-action gold-badge" id="btnPrintReport">🖨️ Çop Etiş / PDF</button>
         <button class="btn-close-panel" id="closeReportModal">✕</button>
       </div>
     </div>
@@ -776,7 +776,7 @@
     <div class="modal-head" style="border-bottom: 1px solid rgba(0, 135, 143, 0.3);">
       <div style="display:flex; align-items:center; gap:10px;">
         <span style="display:inline-flex; padding:4px 8px; border-radius:6px; background:rgba(0,135,143,0.2); color:#38BDF8; font-family:'JetBrains Mono', monospace; font-size:0.75rem; font-weight:bold; border:1px solid rgba(0,135,143,0.4);">UNO R3</span>
-        <h2 style="font-size:1.15rem; margin:0;">Arduino Dasturlash Muharriri (C++)</h2>
+        <h2 style="font-size:1.15rem; margin:0;">Arduino Dasturlaş Muharriri (C++)</h2>
       </div>
       <button class="btn-close-panel" id="closeArduinoModal">✕</button>
     </div>
@@ -786,22 +786,22 @@
         <div style="display:flex; align-items:center; gap:8px;">
           <label style="font-size:0.85rem; color:var(--text-muted);">Namuna loyihalar:</label>
           <select id="arduinoExampleSelect" style="background:var(--bg-card); color:var(--text-main); border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-size:0.85rem;">
-            <option value="blink">1. LED Miltillash (Blink - D13)</option>
+            <option value="blink">1. LED Miltillaş (Blink - D13)</option>
             <option value="traffic">2. Svetofor Loyihasi (D13, D12, D11)</option>
-            <option value="button">3. Tugmacha va LED (Input Pullup)</option>
+            <option value="button">3. Tugmaça va LED (Input Pullup)</option>
             <option value="pwm">4. PWM Dimmer (AnalogRead A0 & PWM D9)</option>
-            <option value="seven_segment">5. 7-Segmentli Hisoblagich (0-9 sanovchi)</option>
+            <option value="seven_segment">5. 7-Segmentli Hisoblagiç (0-9 sanovçi)</option>
           </select>
         </div>
         <div style="display:flex; gap:8px;">
           <button class="btn-action" id="arduinoRunBtn" style="background:linear-gradient(135deg, #00878F, #00FF87); color:#020617; font-weight:bold; border:none;">
-            ▶ Yuklash & Ishga tushirish
+            ▶ Yuklaş & Işga tuşiriş
           </button>
           <button class="btn-action" id="arduinoStopBtn" style="color:var(--danger); border-color:var(--danger);">
-            ⏹ To'xtatish
+            ⏹ Töxtatiş
           </button>
           <button class="btn-action" id="arduinoClearLogBtn">
-            🧹 Tozalash
+            🧹 Tozalaş
           </button>
         </div>
       </div>
@@ -832,12 +832,12 @@
         <div class="tmpl-modal-icon">📚</div>
         <div>
           <h2 class="tmpl-modal-title">Tayyor Sxemalar Kutubxonasi</h2>
-          <p class="tmpl-modal-subtitle">200 ta interaktiv elektronika va sxemotexnika shablonlari</p>
+          <p class="tmpl-modal-subtitle">200 ta interaktiv elektronika va sxemotexnika şablonlari</p>
         </div>
       </div>
       <div class="tmpl-header-right">
-        <span class="tmpl-count-badge" id="tmplCountBadge">200 ta shablon</span>
-        <button class="tmpl-close-btn" id="btnTmplClose" title="Yopish (Esc)">✕</button>
+        <span class="tmpl-count-badge" id="tmplCountBadge">200 ta şablon</span>
+        <button class="tmpl-close-btn" id="btnTmplClose" title="Yopiş (Esc)">✕</button>
       </div>
     </div>
 
@@ -845,14 +845,14 @@
     <div class="tmpl-toolbar">
       <div class="tmpl-search-box">
         <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="tmplSearchInput" placeholder="Sxema nomi, raqami (#81), komponent yoki mavzu bo'yicha qidirish..." autocomplete="off">
+        <input type="text" id="tmplSearchInput" placeholder="Sxema nomi, raqami (#81), komponent yoki mavzu böyiça qidiriş..." autocomplete="off">
       </div>
 
       <div class="tmpl-diff-filter" id="tmplDiffFilter">
         <span class="filter-label">Daraja:</span>
-        <button class="diff-btn active" data-diff="all">Barchasi</button>
-        <button class="diff-btn" data-diff="beginner">🟢 Boshlang'ich</button>
-        <button class="diff-btn" data-diff="intermediate">🟡 O'rta</button>
+        <button class="diff-btn active" data-diff="all">Barçasi</button>
+        <button class="diff-btn" data-diff="beginner">🟢 Boşlanğiç</button>
+        <button class="diff-btn" data-diff="intermediate">🟡 Örta</button>
         <button class="diff-btn" data-diff="advanced">🔴 Murakkab</button>
       </div>
     </div>
@@ -892,14 +892,14 @@
       </div>
 
       <div class="detail-section">
-        <h4>📋 Tajriba Ko'rsatmalari</h4>
+        <h4>📋 Tajriba Körsatmalari</h4>
         <ul id="detailInstructions" class="detail-steps"></ul>
       </div>
     </div>
 
     <div class="tmpl-detail-footer">
       <button class="btn-action gold-badge" id="btnDetailLoad" style="padding:10px 24px; font-size:0.95rem;">
-        ⚡ Ushbu Sxemani Ish Maydoniga Yuklash
+        ⚡ Uşbu Sxemani Iş Maydoniga Yuklaş
       </button>
     </div>
   </div>
@@ -943,7 +943,7 @@
       <label>fMin (Hz): <input type="number" id="acFMin" value="1" min="0.001" max="1000" step="0.1" class="analysis-input"></label>
       <label>fMax (Hz): <input type="number" id="acFMax" value="1000000" min="100" max="10000000" step="100" class="analysis-input"></label>
       <label>Nuqtalar: <input type="number" id="acPoints" value="100" min="20" max="500" step="10" class="analysis-input"></label>
-      <button class="btn-action" id="btnRunAC">▶ Ishga tushirish</button>
+      <button class="btn-action" id="btnRunAC">▶ Işga tuşiriş</button>
     </div>
     <canvas id="bodeCanvas" width="580" height="360" class="analysis-canvas"></canvas>
     <div class="analysis-result" id="acResult">Zanjirni ulang va ▶ ni bosing.</div>
@@ -960,7 +960,7 @@
         <option value="vp">V–P (Quvvat)</option>
         <option value="vv">Vin–Vout</option>
       </select>
-      <button class="btn-action" id="btnRunSweep">▶ Ishga tushirish</button>
+      <button class="btn-action" id="btnRunSweep">▶ Işga tuşiriş</button>
     </div>
     <canvas id="sweepCanvas" width="580" height="300" class="analysis-canvas"></canvas>
     <div class="analysis-result" id="sweepResult">Zanjirni ulang va ▶ ni bosing.</div>
@@ -971,7 +971,7 @@
     <div class="analysis-controls">
       <label>Davomiylik: <input type="number" id="trDuration" value="50" min="1" max="10000" step="1" class="analysis-input"> ms</label>
       <label>Nuqtalar: <input type="number" id="trSteps" value="500" min="50" max="2000" step="50" class="analysis-input"></label>
-      <button class="btn-action" id="btnRunTransient">▶ Ishga tushirish</button>
+      <button class="btn-action" id="btnRunTransient">▶ Işga tuşiriş</button>
     </div>
     <canvas id="transientCanvas" width="580" height="300" class="analysis-canvas"></canvas>
     <div class="analysis-result" id="transientResult">RC/RL/RLC zanjirini quring va ▶ ni bosing.</div>

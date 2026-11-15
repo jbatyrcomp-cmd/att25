@@ -18,7 +18,7 @@
     const parts = ipStr.split('.').map(Number);
     if (parts.length !== 4 || parts.some(p => isNaN(p) || p < 0 || p > 255)) {
       const el = document.getElementById('resNet');
-      if (el) el.textContent = "Noto‘g‘ri IP format";
+      if (el) el.textContent = "Notöğri IP format";
       return;
     }
 

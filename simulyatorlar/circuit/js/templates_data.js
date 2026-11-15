@@ -7,18 +7,18 @@ const CIRCUIT_TEMPLATES = [
   {
     "id": "tmpl_001",
     "num": 1,
-    "title": "Oddiy Lampochka Zanjiri",
+    "title": "Oddiy Lampoçka Zanjiri",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "Lampochka",
+      "Lampoçka",
       "Batareya",
       "Yopiq zanjir"
     ],
-    "desc": "9V batareya va lampochkadan iborat eng sodda yopiq elektr zanjiri.",
-    "theory": "Elektr toki manbaning musbat (+) qutbidan chiqib yuklama orqali manfiy (-) qutbga oqadi.",
+    "desc": "9V batareya va lampoçkadan iborat eng sodda yopiq elektr zanjiri.",
+    "theory": "Elektr toki manbaning musbat (+) qutbidan çiqib yuklama orqali manfiy (-) qutbga oqadi.",
     "components": [
       {
         "id": "b1",
@@ -51,25 +51,25 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing.",
-      "Lampochkaning qizib porlashini kuzating."
+      "Lampoçkaning qizib porlaşini kuzating."
     ]
   },
   {
     "id": "tmpl_002",
     "num": 2,
-    "title": "Kalitli Chiroq Zanjiri",
+    "title": "Kalitli Çiroq Zanjiri",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Kalit",
       "Switch",
-      "Boshqaruv",
-      "Lampochka"
+      "Boşqaruv",
+      "Lampoçka"
     ],
-    "desc": "Kalit yordamida lampochkani yoqish va o'chirish sxemasi.",
-    "theory": "Kalit zanjirni uzganda tok oqimi to'xtaydi (ochiq zanjir), ulanganda esa tok oqadi (yopiq zanjir).",
+    "desc": "Kalit yordamida lampoçkani yoqiş va öçiriş sxemasi.",
+    "theory": "Kalit zanjirni uzganda tok oqimi töxtaydi (oçiq zanjir), ulanganda esa tok oqadi (yopiq zanjir).",
     "components": [
       {
         "id": "b1",
@@ -114,8 +114,8 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "Kalit ustiga bosib zanjirni oching va yoping.",
-      "Chiroq qanday munosabat bildirishini ko'ring."
+      "Kalit ustiga bosib zanjirni oçing va yoping.",
+      "Çiroq qanday munosabat bildirişini köring."
     ]
   },
   {
@@ -123,17 +123,17 @@ const CIRCUIT_TEMPLATES = [
     "num": 3,
     "title": "Qizil LED (Ballast Rezistor bilan)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Rezistor",
-      "Tok cheklovchi",
-      "Yorug'lik diodi"
+      "Tok çeklovçi",
+      "Yoruğlik diodi"
     ],
-    "desc": "Qizil LED ni 470Ω tok cheklovchi rezistor orqali xavfsiz yoqish.",
-    "theory": "Yorug'lik diodi (LED) minimal ichki qarshilikka ega. Ballast rezistori bo'lmasa, tok oshib LED kuyadi.",
+    "desc": "Qizil LED ni 470Ω tok çeklovçi rezistor orqali xavfsiz yoqiş.",
+    "theory": "Yoruğlik diodi (LED) minimal içki qarşilikka ega. Ballast rezistori bölmasa, tok oşib LED kuyadi.",
     "components": [
       {
         "id": "b1",
@@ -179,24 +179,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_004",
     "num": 4,
-    "title": "Yashil LED Zanjiri (330Ω)",
+    "title": "Yaşil LED Zanjiri (330Ω)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "Yashil LED",
+      "Yaşil LED",
       "Rezistor 330",
       "Optoelektronika"
     ],
-    "desc": "Yashil LED (ishchi kuchlanishi 2.1V) ni 330Ω rezistor orqali yoqish.",
-    "theory": "Yashil LED qizil LED ga qaraganda bir oz yuqoriroq to'g'ri kuchlanish tushishiga ega (2.1V).",
+    "desc": "Yaşil LED (işçi kuçlanişi 2.1V) ni 330Ω rezistor orqali yoqiş.",
+    "theory": "Yaşil LED qizil LED ga qaraganda bir oz yuqoriroq töğri kuçlaniş tuşişiga ega (2.1V).",
     "components": [
       {
         "id": "b1",
@@ -242,24 +242,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_005",
     "num": 5,
-    "title": "1.5V Batareya va Kichik Lampochka",
+    "title": "1.5V Batareya va Kiçik Lampoçka",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "1.5V",
       "AA Batareya",
-      "Past kuchlanish"
+      "Past kuçlaniş"
     ],
-    "desc": "1.5V AA batareya orqali kam quvvatli lampochkani quvvatlash.",
-    "theory": "1.5V kuchlanish inson tanasi uchun mutlaqo xavfsiz va kichik portativ asboblarda keng qo'llaniladi.",
+    "desc": "1.5V AA batareya orqali kam quvvatli lampoçkani quvvatlaş.",
+    "theory": "1.5V kuçlaniş inson tanasi uçun mutlaqo xavfsiz va kiçik portativ asboblarda keng qöllaniladi.",
     "components": [
       {
         "id": "b1",
@@ -292,7 +292,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -300,16 +300,16 @@ const CIRCUIT_TEMPLATES = [
     "num": 6,
     "title": "Doimiy Pyezo Buzzer Signali",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Buzzer",
-      "Tovush",
+      "Tovuş",
       "Pyezoelektrik"
     ],
-    "desc": "9V manbaga ulangan pyezo buzzerdan uzluksiz tovush chiqarish.",
-    "theory": "Pyezo buzzer ichidagi pyezokeramik diskka kuchlanish berilganda u tebranib 2.5kHz akustik signal tarqatadi.",
+    "desc": "9V manbaga ulangan pyezo buzzerdan uzluksiz tovuş çiqariş.",
+    "theory": "Pyezo buzzer içidagi pyezokeramik diskka kuçlaniş berilganda u tebranib 2.5kHz akustik signal tarqatadi.",
     "components": [
       {
         "id": "b1",
@@ -341,25 +341,25 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_007",
     "num": 7,
-    "title": "Eshik Qo'ng'irog'i (Tugmali Buzzer)",
+    "title": "Eşik Qönğiroği (Tugmali Buzzer)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "Qo'ng'iroq",
+      "Qönğiroq",
       "Buzzer",
       "Kalit",
       "Xavfsizlik"
     ],
-    "desc": "Tugma bosilgandagina tovush chiqaruvchi eshik qo'ng'irog'i modeli.",
-    "theory": "Kalit normal holatda ochiq bo'lib, faqat bosib turilganda zanjir yopiladi.",
+    "desc": "Tugma bosilgandagina tovuş çiqaruvçi eşik qönğiroği modeli.",
+    "theory": "Kalit normal holatda oçiq bölib, faqat bosib turilganda zanjir yopiladi.",
     "components": [
       {
         "id": "b1",
@@ -404,7 +404,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -412,17 +412,17 @@ const CIRCUIT_TEMPLATES = [
     "num": 8,
     "title": "DC Dvigatel va Ventilyator",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Motor",
       "DC Dvigatel",
       "Elektromexanika",
-      "Aylanish"
+      "Aylaniş"
     ],
-    "desc": "Kalit yordamida elektr dvigatelini ishga tushirish va to'xtatish.",
-    "theory": "Elektr toki dvigatel chulg'amlarida magnit maydon hosil qilib rotorni aylantiradi.",
+    "desc": "Kalit yordamida elektr dvigatelini işga tuşiriş va töxtatiş.",
+    "theory": "Elektr toki dvigatel çulğamlarida magnit maydon hosil qilib rotorni aylantiradi.",
     "components": [
       {
         "id": "b1",
@@ -467,24 +467,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_009",
     "num": 9,
-    "title": "Umumiy Tuproqlash (GND) Zanjiri",
+    "title": "Umumiy Tuproqlaş (GND) Zanjiri",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "GND",
-      "Tuproqlash",
+      "Tuproqlaş",
       "0V Malumot"
     ],
-    "desc": "Manfiy qutb umumiy tuproqlash (GND) orqali yopiladigan klassik sxema.",
-    "theory": "Elektronikada barcha potensiallar GND (0V) nuqtasiga nisbatan o'lchanadi.",
+    "desc": "Manfiy qutb umumiy tuproqlaş (GND) orqali yopiladigan klassik sxema.",
+    "theory": "Elektronikada barça potensiallar GND (0V) nuqtasiga nisbatan ölçanadi.",
     "components": [
       {
         "id": "b1",
@@ -529,24 +529,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_010",
     "num": 10,
-    "title": "Past Qarshilikli Himoya Rezistori",
+    "title": "Past Qarşilikli Himoya Rezistori",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Himoya",
       "Rezistor",
-      "Saqlagich"
+      "Saqlagiç"
     ],
-    "desc": "Qisqa tutashuvdan asrovchi kam qarshilikli (10Ω) himoya elementi.",
-    "theory": "Zanjirda tok ortib ketganda himoya rezistori yuklamani ortiqcha tokdan asraydi.",
+    "desc": "Qisqa tutaşuvdan asrovçi kam qarşilikli (10Ω) himoya elementi.",
+    "theory": "Zanjirda tok ortib ketganda himoya rezistori yuklamani ortiqça tokdan asraydi.",
     "components": [
       {
         "id": "b1",
@@ -592,24 +592,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_011",
     "num": 11,
-    "title": "Lampochka Dimmeri (Potensiometr)",
+    "title": "Lampoçka Dimmeri (Potensiometr)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Dimmer",
       "Potensiometr",
-      "Yorug'likni rostlash"
+      "Yoruğlikni rostlaş"
     ],
-    "desc": "Potensiometr burilishi orqali lampochkaning yorqinligini silliq rostlash.",
-    "theory": "Potensiometr qarshiligi ortganda zanjirdagi tok kamayadi (I = U/R), chiroq xiralashadi.",
+    "desc": "Potensiometr burilişi orqali lampoçkaning yorqinligini silliq rostlaş.",
+    "theory": "Potensiometr qarşiligi ortganda zanjirdagi tok kamayadi (I = U/R), çiroq xiralaşadi.",
     "components": [
       {
         "id": "b1",
@@ -656,25 +656,25 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_012",
     "num": 12,
-    "title": "Motor Tezligini Rostlash (Reostat)",
+    "title": "Motor Tezligini Rostlaş (Reostat)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Motor",
       "Tezlik",
       "Reostat",
       "Potensiometr"
     ],
-    "desc": "Potensiometr yordamida DC motorning aylanish tezligini boshqarish.",
-    "theory": "Dvigatelga berilayotgan kuchlanish va tok o'zgartirilganda uning burchak tezligi o'zgaradi.",
+    "desc": "Potensiometr yordamida DC motorning aylaniş tezligini boşqariş.",
+    "theory": "Dvigatelga berilayotgan kuçlaniş va tok özgartirilganda uning burçak tezligi özgaradi.",
     "components": [
       {
         "id": "b1",
@@ -720,24 +720,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_013",
     "num": 13,
-    "title": "Buzzer Ovozini Sozlash",
+    "title": "Buzzer Ovozini Sozlaş",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Buzzer",
       "Ovoz balandligi",
       "Potensiometr"
     ],
-    "desc": "Rezistor orqali pyezo buzzerning ovoz balandligini pasaytirish.",
-    "theory": "Buzzerga ketayotgan tokni cheklash orqali uning akustik kuchi boshqariladi.",
+    "desc": "Rezistor orqali pyezo buzzerning ovoz balandligini pasaytiriş.",
+    "theory": "Buzzerga ketayotgan tokni çeklaş orqali uning akustik kuçi boşqariladi.",
     "components": [
       {
         "id": "b1",
@@ -782,7 +782,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -790,16 +790,16 @@ const CIRCUIT_TEMPLATES = [
     "num": 14,
     "title": "Ikki Kalitli Xavfsizlik Zanjiri",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Ketma-ket kalitlar",
       "Xavfsizlik",
       "Interlok"
     ],
-    "desc": "Faqat ikkala kalit ham bir vaqtda bosilgandagina lampochka yonishi.",
-    "theory": "Sanoat uskunalarida xavfsizlik uchun ikkala qo'l bilan 2 ta tugmani bosish talab qilinadi.",
+    "desc": "Faqat ikkala kalit ham bir vaqtda bosilgandagina lampoçka yonişi.",
+    "theory": "Sanoat uskunalarida xavfsizlik uçun ikkala qöl bilan 2 ta tugmani bosiş talab qilinadi.",
     "components": [
       {
         "id": "b1",
@@ -858,24 +858,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_015",
     "num": 15,
-    "title": "Parallel Kalitlar (OR mantig'i)",
+    "title": "Parallel Kalitlar (OR mantiği)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Parallel kalitlar",
-      "Boshqaruv",
+      "Boşqaruv",
       "Zanjir"
     ],
-    "desc": "Istalgan kalit bosilganda lampochka yonadigan parallel kalitli sxema.",
-    "theory": "Kalitlar parallel ulanganda, hech bo'lmaganda biri yopilishi tok oqishi uchun kifoya qiladi.",
+    "desc": "Istalgan kalit bosilganda lampoçka yonadigan parallel kalitli sxema.",
+    "theory": "Kalitlar parallel ulanganda, heç bölmaganda biri yopilişi tok oqişi uçun kifoya qiladi.",
     "components": [
       {
         "id": "b1",
@@ -940,24 +940,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_016",
     "num": 16,
-    "title": "Yo'lak Kaliti Modeli (Krossover)",
+    "title": "Yölak Kaliti Modeli (Krossover)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "Yo'lak kaliti",
-      "O'tish kaliti",
+      "Yölak kaliti",
+      "Ötiş kaliti",
       "Uy elektrigi"
     ],
-    "desc": "Uzun yo'lakning ikki boshidan chiroqni yoqish va o'chirish sxemasi.",
-    "theory": "Ko'p qavatli uylar va uzun yo'laklarda qulaylik uchun o'tuvchi kalitlar o'rnatiladi.",
+    "desc": "Uzun yölakning ikki boşidan çiroqni yoqiş va öçiriş sxemasi.",
+    "theory": "Köp qavatli uylar va uzun yölaklarda qulaylik uçun ötuvçi kalitlar örnatiladi.",
     "components": [
       {
         "id": "b1",
@@ -1016,24 +1016,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_017",
     "num": 17,
-    "title": "Batareyalarni Ketma-ket Ulash (3V Manba)",
+    "title": "Batareyalarni Ketma-ket Ulaş (3V Manba)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "1.5V x 2",
       "3V",
       "Ketma-ket batareya"
     ],
-    "desc": "Ikkita 1.5V elementni ketma-ket ulab 3.0V hosil qilish va qizil LED ni yoqish.",
-    "theory": "Batareyalar ketma-ket ulanganda ularning kuchlanishlari qo'shiladi: U = U1 + U2.",
+    "desc": "Ikkita 1.5V elementni ketma-ket ulab 3.0V hosil qiliş va qizil LED ni yoqiş.",
+    "theory": "Batareyalar ketma-ket ulanganda ularning kuçlanişlari qöşiladi: U = U1 + U2.",
     "components": [
       {
         "id": "b1",
@@ -1092,24 +1092,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_018",
     "num": 18,
-    "title": "Batareyalarni Parallel Ulash",
+    "title": "Batareyalarni Parallel Ulaş",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Parallel batareya",
-      "Sig'im",
+      "Siğim",
       "Mustahkamlik"
     ],
-    "desc": "Ikkita 9V batareyani parallel ulab yuklamani quvvatlash.",
-    "theory": "Parallel ulanganda kuchlanish o'zgarmaydi, lekin manbalarning umumiy tok berish qobiliyati va ishlash vaqti 2 baravar oshadi.",
+    "desc": "Ikkita 9V batareyani parallel ulab yuklamani quvvatlaş.",
+    "theory": "Parallel ulanganda kuçlaniş özgarmaydi, lekin manbalarning umumiy tok beriş qobiliyati va işlaş vaqti 2 baravar oşadi.",
     "components": [
       {
         "id": "b1",
@@ -1161,24 +1161,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_019",
     "num": 19,
-    "title": "Qisqa Tutashuv Namoyishi (K3)",
+    "title": "Qisqa Tutaşuv Namoyişi (K3)",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "Qisqa tutashuv",
+      "Qisqa tutaşuv",
       "K3",
       "Xavfsizlik"
     ],
-    "desc": "Yuklamasiz batareya qutblarini to'g'ridan-to'g'ri kalit orqali ulash tajribasi.",
-    "theory": "Qisqa tutashuvda qarshilik deyarli 0 ga teng bo'lib, tok cheksiz o'sadi va simlar qiziydi.",
+    "desc": "Yuklamasiz batareya qutblarini töğridan-töğri kalit orqali ulaş tajribasi.",
+    "theory": "Qisqa tutaşuvda qarşilik deyarli 0 ga teng bölib, tok çeksiz ösadi va simlar qiziydi.",
     "components": [
       {
         "id": "b1",
@@ -1210,24 +1210,24 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "Kalitni bosing va yuqori panelda Qisqa Tutashuv (K3) ogohlantirishini ko'ring."
+      "Kalitni bosing va yuqori panelda Qisqa Tutaşuv (K3) ogohlantirişini köring."
     ]
   },
   {
     "id": "tmpl_020",
     "num": 20,
-    "title": "LED Teskari Qutblanishi",
+    "title": "LED Teskari Qutblanişi",
     "category": "basic",
-    "categoryName": "Boshlang'ich & Oddiy Zanjirlar",
+    "categoryName": "Boşlanğiç & Oddiy Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Teskari qutb",
       "Diod",
       "Yopiq holat"
     ],
-    "desc": "LED katodi musbatga, anodi manfiyga ulanganda tok o'tmasligini isbotlash.",
-    "theory": "Diodlar faqat bir tomonlama (anoddan katodga) tok o'tkazadi. Teskari ulansa u ochiq kalit kabi ishlaydi.",
+    "desc": "LED katodi musbatga, anodi manfiyga ulanganda tok ötmasligini isbotlaş.",
+    "theory": "Diodlar faqat bir tomonlama (anoddan katodga) tok ötkazadi. Teskari ulansa u oçiq kalit kabi işlaydi.",
     "components": [
       {
         "id": "b1",
@@ -1273,24 +1273,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_021",
     "num": 21,
-    "title": "Ketma-ket 2 ta Lampochka",
+    "title": "Ketma-ket 2 ta Lampoçka",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Ketma-ket",
       "Series",
-      "Kuchlanish bo'linishi"
+      "Kuçlaniş bölinişi"
     ],
-    "desc": "Ikkita bir xil lampochkani ketma-ket ulash (har biriga 4.5V tushadi).",
-    "theory": "Ketma-ket ulanishda zanjirning umumiy qarshiligi oshadi (R = R1 + R2), shuning uchun lampochkalar xiraroq yonadi.",
+    "desc": "Ikkita bir xil lampoçkani ketma-ket ulaş (har biriga 4.5V tuşadi).",
+    "theory": "Ketma-ket ulanişda zanjirning umumiy qarşiligi oşadi (R = R1 + R2), şuning uçun lampoçkalar xiraroq yonadi.",
     "components": [
       {
         "id": "b1",
@@ -1336,24 +1336,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_022",
     "num": 22,
-    "title": "Ketma-ket 3 ta Lampochka",
+    "title": "Ketma-ket 3 ta Lampoçka",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Ketma-ket 3x",
-      "Chiroqlar",
-      "Kuchlanish"
+      "Çiroqlar",
+      "Kuçlaniş"
     ],
-    "desc": "Uchta lampochka ketma-ket ulanganda kuchlanish teng uchga bo'linadi (3V dan).",
-    "theory": "Agar zanjirdagi bitta lampochka kuysa yoki uzilsa, barcha lampochkalar o'chadi.",
+    "desc": "Uçta lampoçka ketma-ket ulanganda kuçlaniş teng uçga bölinadi (3V dan).",
+    "theory": "Agar zanjirdagi bitta lampoçka kuysa yoki uzilsa, barça lampoçkalar öçadi.",
     "components": [
       {
         "id": "b1",
@@ -1412,24 +1412,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_023",
     "num": 23,
-    "title": "Parallel 2 ta Lampochka",
+    "title": "Parallel 2 ta Lampoçka",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Parallel",
-      "To'liq kuchlanish",
+      "Töliq kuçlaniş",
       "Mustaqil"
     ],
-    "desc": "Ikkita lampochka parallel ulanganda har biriga to'liq 9V beriladi va ikkalasi ham yorug' yonadi.",
-    "theory": "Parallel ulanishda shoxobchalardan birortasi uzilsa ham, qolganlari ishlashda davom etadi.",
+    "desc": "Ikkita lampoçka parallel ulanganda har biriga töliq 9V beriladi va ikkalasi ham yoruğ yonadi.",
+    "theory": "Parallel ulanişda şoxobçalardan birortasi uzilsa ham, qolganlari işlaşda davom etadi.",
     "components": [
       {
         "id": "b1",
@@ -1481,24 +1481,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_024",
     "num": 24,
-    "title": "Parallel 3 ta Lampochka",
+    "title": "Parallel 3 ta Lampoçka",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Parallel 3x",
       "Katta tok",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Uchta mustaqil tarmoqda parallel ulangan lampochkalar.",
-    "theory": "Parallel zanjirda umumiy tok har bir tarmoq toklari yig'indisiga teng: I = I1 + I2 + I3.",
+    "desc": "Uçta mustaqil tarmoqda parallel ulangan lampoçkalar.",
+    "theory": "Parallel zanjirda umumiy tok har bir tarmoq toklari yiğindisiga teng: I = I1 + I2 + I3.",
     "components": [
       {
         "id": "b1",
@@ -1569,23 +1569,23 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_025",
     "num": 25,
-    "title": "Aralash Ulanish: 1 Ketma-ket + 2 Parallel",
+    "title": "Aralaş Ulaniş: 1 Ketma-ket + 2 Parallel",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Aralash ulanish",
+      "Aralaş ulaniş",
       "Murakkab zanjir"
     ],
-    "desc": "Bitta lampochka ketma-ket, undan keyin ikkita lampochka parallel ulangan.",
-    "theory": "Boshlang'ich lampochkadan to'liq tok o'tadi, keyin esa tok ikki parallel shoxobchaga bo'linadi.",
+    "desc": "Bitta lampoçka ketma-ket, undan keyin ikkita lampoçka parallel ulangan.",
+    "theory": "Boşlanğiç lampoçkadan töliq tok ötadi, keyin esa tok ikki parallel şoxobçaga bölinadi.",
     "components": [
       {
         "id": "b1",
@@ -1650,23 +1650,23 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_026",
     "num": 26,
-    "title": "Aralash Ulanish: 2 ta Ketma-ket Guruh Parallel",
+    "title": "Aralaş Ulaniş: 2 ta Ketma-ket Guruh Parallel",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Aralash ulanish 2",
+      "Aralaş ulaniş 2",
       "Simmetriya"
     ],
-    "desc": "Ikkita parallel tarmoqning har birida ikkitadan ketma-ket lampochka.",
-    "theory": "Har bir tarmoqqa 9V tushadi va har bir tarmoqdagi lampochkalar 4.5V dan oladi.",
+    "desc": "Ikkita parallel tarmoqning har birida ikkitadan ketma-ket lampoçka.",
+    "theory": "Har bir tarmoqqa 9V tuşadi va har bir tarmoqdagi lampoçkalar 4.5V dan oladi.",
     "components": [
       {
         "id": "b1",
@@ -1744,7 +1744,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -1752,16 +1752,16 @@ const CIRCUIT_TEMPLATES = [
     "num": 27,
     "title": "Ohm Qonuni: 9V va 220Ω Rezistor",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Ohm qonuni",
       "I = U / R",
-      "Tok kuchi"
+      "Tok kuçi"
     ],
-    "desc": "I = U / R formulasini amalda tekshirish: 9V / 220Ω ≈ 40.9 mA.",
-    "theory": "O'tkazgichdagi tok kuchi kuchlanishga to'g'ri, qarshilikka esa teskari mutanosibdir.",
+    "desc": "I = U / R formulasini amalda tekşiriş: 9V / 220Ω ≈ 40.9 mA.",
+    "theory": "Ötkazgiçdagi tok kuçi kuçlanişga töğri, qarşilikka esa teskari mutanosibdir.",
     "components": [
       {
         "id": "b1",
@@ -1794,7 +1794,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -1802,15 +1802,15 @@ const CIRCUIT_TEMPLATES = [
     "num": 28,
     "title": "Ohm Qonuni: 9V va 1000Ω Rezistor",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Ohm qonuni 1k",
-      "Kichik tok"
+      "Kiçik tok"
     ],
-    "desc": "Kattaroq qarshilikda tokning kamayishi: 9V / 1000Ω = 9.0 mA.",
-    "theory": "Qarshilik 4.5 baravar ortganda tok ham xuddi shuncha baravar kamayadi.",
+    "desc": "Kattaroq qarşilikda tokning kamayişi: 9V / 1000Ω = 9.0 mA.",
+    "theory": "Qarşilik 4.5 baravar ortganda tok ham xuddi şunça baravar kamayadi.",
     "components": [
       {
         "id": "b1",
@@ -1843,24 +1843,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_029",
     "num": 29,
-    "title": "Kuchlanish Bo'luvchi: 9V -> 4.5V (Teng R)",
+    "title": "Kuçlaniş Böluvçi: 9V -> 4.5V (Teng R)",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Kuchlanish bo'luvchi",
+      "Kuçlaniş böluvçi",
       "Voltage Divider",
       "4.5V"
     ],
-    "desc": "Ikkita bir xil 1kΩ rezistor yordamida 9V kuchlanishni teng 2 ga bo'lish.",
-    "theory": "U_chiq = U_kir * (R2 / (R1 + R2)) = 9V * (1000 / 2000) = 4.5V.",
+    "desc": "Ikkita bir xil 1kΩ rezistor yordamida 9V kuçlanişni teng 2 ga böliş.",
+    "theory": "U_çiq = U_kir * (R2 / (R1 + R2)) = 9V * (1000 / 2000) = 4.5V.",
     "components": [
       {
         "id": "b1",
@@ -1906,24 +1906,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_030",
     "num": 30,
-    "title": "Nometrik Bo'luvchi: 1000Ω va 220Ω",
+    "title": "Nometrik Böluvçi: 1000Ω va 220Ω",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Bo'luvchi",
+      "Böluvçi",
       "Nisbat",
       "Turli R"
     ],
-    "desc": "Turli qiymatli rezistorlar orqali 9V dan taxminan 1.62V olish.",
-    "theory": "R2 (220Ω) uchlaridagi kuchlanish: 9V * 220 / (1000 + 220) ≈ 1.62V.",
+    "desc": "Turli qiymatli rezistorlar orqali 9V dan taxminan 1.62V oliş.",
+    "theory": "R2 (220Ω) uçlaridagi kuçlaniş: 9V * 220 / (1000 + 220) ≈ 1.62V.",
     "components": [
       {
         "id": "b1",
@@ -1969,24 +1969,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_031",
     "num": 31,
-    "title": "Kirchhoff 1-Qonuni: Tugun Toklari Balansi",
+    "title": "Kirçhoff 1-Qonuni: Tugun Toklari Balansi",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Kirchhoff",
+      "Kirçhoff",
       "Tugun toki",
       "KCL"
     ],
-    "desc": "Tugunga kiruvchi umumiy tok tarmoqlardan chiquvchi toklar yig'indisiga tengligi.",
-    "theory": "∑ I_kiruvchi = ∑ I_chiquvchi. Elektr zaryadi yo'qolmaydi va yig'ilib qolmaydi.",
+    "desc": "Tugunga kiruvçi umumiy tok tarmoqlardan çiquvçi toklar yiğindisiga tengligi.",
+    "theory": "∑ I_kiruvçi = ∑ I_çiquvçi. Elektr zaryadi yöqolmaydi va yiğilib qolmaydi.",
     "components": [
       {
         "id": "b1",
@@ -2038,24 +2038,24 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_032",
     "num": 32,
-    "title": "Kirchhoff 2-Qonuni: Kontur Kuchlanishlari",
+    "title": "Kirçhoff 2-Qonuni: Kontur Kuçlanişlari",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Kirchhoff 2",
+      "Kirçhoff 2",
       "KVL",
       "Kontur balansi"
     ],
-    "desc": "Yopiq konturdagi EYuK lari yig'indisi kuchlanish tushishlari yig'indisiga teng.",
-    "theory": "∑ E = ∑ (I * R). Manba kuchlanishi (9V) rezistorlar tushishi yig'indisiga (U1 + U2) teng bo'ladi.",
+    "desc": "Yopiq konturdagi EYuK lari yiğindisi kuçlaniş tuşişlari yiğindisiga teng.",
+    "theory": "∑ E = ∑ (I * R). Manba kuçlanişi (9V) rezistorlar tuşişi yiğindisiga (U1 + U2) teng böladi.",
     "components": [
       {
         "id": "b1",
@@ -2101,7 +2101,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -2109,15 +2109,15 @@ const CIRCUIT_TEMPLATES = [
     "num": 33,
     "title": "Parallel Rezistorlar: 2x 220Ω = 110Ω",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Parallel R",
       "110 Ohm",
-      "Ekvivalent qarshilik"
+      "Ekvivalent qarşilik"
     ],
-    "desc": "Ikkita teng rezistor parallel ulanganda umumiy qarshilik 2 baravarga kamayadi.",
+    "desc": "Ikkita teng rezistor parallel ulanganda umumiy qarşilik 2 baravarga kamayadi.",
     "theory": "1 / R_umumiy = 1/R1 + 1/R2 => R_umumiy = (220 * 220) / (220 + 220) = 110 Ω.",
     "components": [
       {
@@ -2170,7 +2170,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -2178,15 +2178,15 @@ const CIRCUIT_TEMPLATES = [
     "num": 34,
     "title": "Ketma-ket Rezistorlar: 220Ω + 1000Ω = 1220Ω",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Ketma-ket R",
       "1220 Ohm",
-      "Qarshiliklar yig'indisi"
+      "Qarşiliklar yiğindisi"
     ],
-    "desc": "Ketma-ket ulanishda qarshiliklarning to'g'ridan-to'g'ri qo'shilish qoidasi.",
+    "desc": "Ketma-ket ulanişda qarşiliklarning töğridan-töğri qöşiliş qoidasi.",
     "theory": "R_umumiy = R1 + R2 = 220 + 1000 = 1220 Ω. Umumiy tok I = 9 / 1220 ≈ 7.37 mA.",
     "components": [
       {
@@ -2233,25 +2233,25 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_035",
     "num": 35,
-    "title": "Balanslangan Uitson Ko'prigi (Wheatstone)",
+    "title": "Balanslangan Uitson Köprigi (Wheatstone)",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
-      "Uitson ko'prigi",
+      "Uitson köprigi",
       "Wheatstone",
       "Balans",
-      "O'lchov"
+      "Ölçov"
     ],
-    "desc": "Ko'prik muvozanatda bo'lganda (R1/R2 = R3/R4) diagonalda kuchlanish va tok 0V bo'ladi.",
-    "theory": "Uitson ko'prigi noma'lum qarshiliklarni yuqori aniqlikda o'lchashda standart usul hisoblanadi.",
+    "desc": "Köprik muvozanatda bölganda (R1/R2 = R3/R4) diagonalda kuçlaniş va tok 0V böladi.",
+    "theory": "Uitson köprigi noma'lum qarşiliklarni yuqori aniqlikda ölçaşda standart usul hisoblanadi.",
     "components": [
       {
         "id": "b1",
@@ -2348,23 +2348,23 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_036",
     "num": 36,
-    "title": "Balanslanmagan Ko'prikli Zanjir",
+    "title": "Balanslanmagan Köprikli Zanjir",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
-      "Balanssiz ko'prik",
+      "Balanssiz köprik",
       "Diagonal toki"
     ],
-    "desc": "Yelkalardan birining qarshiligi o'zgarganda diagonal orqali tok oqishi.",
-    "theory": "Datchiklar (tenzodatchik, fotorezistor) ko'prik yelkasiga qo'yilib, nomutanosiblik signali kuchaytiriladi.",
+    "desc": "Yelkalardan birining qarşiligi özgarganda diagonal orqali tok oqişi.",
+    "theory": "Datçiklar (tenzodatçik, fotorezistor) köprik yelkasiga qöyilib, nomutanosiblik signali kuçaytiriladi.",
     "components": [
       {
         "id": "b1",
@@ -2461,7 +2461,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -2469,15 +2469,15 @@ const CIRCUIT_TEMPLATES = [
     "num": 37,
     "title": "Ketma-ket 3 ta Qizil LED",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Ketma-ket LED",
       "LED paneli"
     ],
-    "desc": "3 ta qizil LED (har biri ~1.8V) va 1 ta cheklovchi 180Ω rezistor.",
-    "theory": "LED lar to'g'ri kuchlanishlari qo'shiladi (3 * 1.8V = 5.4V). Qolgan 3.6V rezistorda so'ndiriladi.",
+    "desc": "3 ta qizil LED (har biri ~1.8V) va 1 ta çeklovçi 180Ω rezistor.",
+    "theory": "LED lar töğri kuçlanişlari qöşiladi (3 * 1.8V = 5.4V). Qolgan 3.6V rezistorda söndiriladi.",
     "components": [
       {
         "id": "b1",
@@ -2549,7 +2549,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -2557,16 +2557,16 @@ const CIRCUIT_TEMPLATES = [
     "num": 38,
     "title": "Parallel LED lar (Alohida Rezistorlar Bilan)",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Parallel LED",
       "Alohida ballast",
-      "To'g'ri sxema"
+      "Töğri sxema"
     ],
-    "desc": "Har bir LED o'zining shaxsiy rezistoriga ega bo'lgan to'g'ri parallel ulanish.",
-    "theory": "Har bir LED o'z rezistoriga ega bo'lsa, ularning volt-amper xarakteristikasi farq qilsa ham tok barqaror taqsimlanadi.",
+    "desc": "Har bir LED özining şaxsiy rezistoriga ega bölgan töğri parallel ulaniş.",
+    "theory": "Har bir LED öz rezistoriga ega bölsa, ularning volt-amper xarakteristikasi farq qilsa ham tok barqaror taqsimlanadi.",
     "components": [
       {
         "id": "b1",
@@ -2644,7 +2644,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -2652,16 +2652,16 @@ const CIRCUIT_TEMPLATES = [
     "num": 39,
     "title": "Yagona Rezistorli Parallel LED (Oqibat)",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "Noto'g'ri parallel",
+      "Notöğri parallel",
       "Tok notekisligi",
       "Xavf"
     ],
-    "desc": "Ikkita LED ni bitta umumiy rezistor orqali parallel ulashdagi xatolik tahlili.",
-    "theory": "Yashil LED (2.1V) va Qizil LED (1.8V) bitta umumiy rezistorga ulansa, pastroq kuchlanishli qizil LED barcha tokni tortib oladi!",
+    "desc": "Ikkita LED ni bitta umumiy rezistor orqali parallel ulaşdagi xatolik tahlili.",
+    "theory": "Yaşil LED (2.1V) va Qizil LED (1.8V) bitta umumiy rezistorga ulansa, pastroq kuçlanişli qizil LED barça tokni tortib oladi!",
     "components": [
       {
         "id": "b1",
@@ -2726,7 +2726,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -2734,16 +2734,16 @@ const CIRCUIT_TEMPLATES = [
     "num": 40,
     "title": "Elektr Quvvati Sarfi (P = U * I)",
     "category": "laws",
-    "categoryName": "Ulanish Usullari & Qonunlar",
+    "categoryName": "Ulaniş Usullari & Qonunlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Quvvat",
       "P = U * I",
       "Joul-Lens"
     ],
-    "desc": "Zanjirdagi ajralayotgan elektr quvvatini hisoblash va tahlil qilish.",
-    "theory": "P = U * I = I² * R. Kichikroq qarshilik ko'proq tok o'tkazadi va ko'proq quvvat sarflaydi.",
+    "desc": "Zanjirdagi ajralayotgan elektr quvvatini hisoblaş va tahlil qiliş.",
+    "theory": "P = U * I = I² * R. Kiçikroq qarşilik köproq tok ötkazadi va köproq quvvat sarflaydi.",
     "components": [
       {
         "id": "b1",
@@ -2789,27 +2789,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_041",
     "num": 41,
-    "title": "Multimetr bilan Batareya Kuchlanishini O'lchash",
+    "title": "Multimetr bilan Batareya Kuçlanişini Ölçaş",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Batareya klemmalaridagi 9.0V EYUK ni voltmetr yordamida o'lchash.",
-    "theory": "Voltmetr zanjirga har doim parallel ulanadi va juda katta ichki qarshilikka ega.",
+    "desc": "Batareya klemmalaridagi 9.0V EYUK ni voltmetr yordamida ölçaş.",
+    "theory": "Voltmetr zanjirga har doim parallel ulanadi va juda katta içki qarşilikka ega.",
     "components": [
       {
         "id": "b1",
@@ -2856,27 +2856,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_042",
     "num": 42,
-    "title": "Yuklama Ostida Kuchlanish Tushishi",
+    "title": "Yuklama Ostida Kuçlaniş Tuşişi",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Lampochka ulanganda uning uchlaridagi ishchi kuchlanishni tekshirish.",
-    "theory": "Yuklama ulanganda manbaning ichki qarshiligi sababli kuchlanish biroz pasayishi mumkin.",
+    "desc": "Lampoçka ulanganda uning uçlaridagi işçi kuçlanişni tekşiriş.",
+    "theory": "Yuklama ulanganda manbaning içki qarşiligi sababli kuçlaniş biroz pasayişi mumkin.",
     "components": [
       {
         "id": "b1",
@@ -2923,27 +2923,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_043",
     "num": 43,
-    "title": "Zanjirdagi Tok Kuchini O'lchash (Ampermetr)",
+    "title": "Zanjirdagi Tok Kuçini Ölçaş (Ampermetr)",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Ampermetrni ketma-ket ulash qoidasi va tokni aniqlash.",
-    "theory": "Ampermetr har doim zanjirga KETMA-KET ulanadi, parallel ulansa qisqa tutashuv yuz beradi!",
+    "desc": "Ampermetrni ketma-ket ulaş qoidasi va tokni aniqlaş.",
+    "theory": "Ampermetr har doim zanjirga KETMA-KET ulanadi, parallel ulansa qisqa tutaşuv yuz beradi!",
     "components": [
       {
         "id": "b1",
@@ -2990,27 +2990,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_044",
     "num": 44,
-    "title": "Rezistor Qarshiligini O'lchash (Ommetr)",
+    "title": "Rezistor Qarşiligini Ölçaş (Ommetr)",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Zanjirdan uzilgan holatda rezistorning haqiqiy qarshiligini tekshirish.",
-    "theory": "Ommetr bilan o'lchash faqat zanjir to'liq o'chirilgan holatda amalga oshirilishi shart.",
+    "desc": "Zanjirdan uzilgan holatda rezistorning haqiqiy qarşiligini tekşiriş.",
+    "theory": "Ommetr bilan ölçaş faqat zanjir töliq öçirilgan holatda amalga oşirilişi şart.",
     "components": [
       {
         "id": "b1",
@@ -3057,27 +3057,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_045",
     "num": 45,
-    "title": "LED Ishchi Kuchlanishini O'lchash",
+    "title": "LED Işçi Kuçlanişini Ölçaş",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Yoniq turgan LED uchlaridagi to'g'ri kuchlanish tushishini o'lchash.",
-    "theory": "Qizil LED odatda 1.8V - 2.0V kuchlanishda barqaror yorug'lik chiqaradi.",
+    "desc": "Yoniq turgan LED uçlaridagi töğri kuçlaniş tuşişini ölçaş.",
+    "theory": "Qizil LED odatda 1.8V - 2.0V kuçlanişda barqaror yoruğlik çiqaradi.",
     "components": [
       {
         "id": "b1",
@@ -3124,27 +3124,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_046",
     "num": 46,
-    "title": "Otsillograf bilan Doimiy Kuchlanishni Kuzatish",
+    "title": "Otsillograf bilan Doimiy Kuçlanişni Kuzatiş",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "9V DC kuchlanishning to'g'ri chiziqli vaqt grafigi.",
-    "theory": "Otsillograf kuchlanishning vaqt bo'yicha o'zgarishini ko'rsatuvchi eng muhim vizual asbobdir.",
+    "desc": "9V DC kuçlanişning töğri çiziqli vaqt grafigi.",
+    "theory": "Otsillograf kuçlanişning vaqt böyiça özgarişini körsatuvçi eng muhim vizual asbobdir.",
     "components": [
       {
         "id": "b1",
@@ -3191,27 +3191,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_047",
     "num": 47,
-    "title": "Kalit Ulanishidagi Sakrash (Contact Bounce)",
+    "title": "Kalit Ulanişidagi Sakraş (Contact Bounce)",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Kalit yopilgandagi o'tish jarayoni va tokning keskin o'sishi.",
-    "theory": "Mexanik kontaktlar ulanganda bir necha mikrosekund davomida mikrosakrashlar yuz beradi.",
+    "desc": "Kalit yopilgandagi ötiş jarayoni va tokning keskin ösişi.",
+    "theory": "Mexanik kontaktlar ulanganda bir neça mikrosekund davomida mikrosakraşlar yuz beradi.",
     "components": [
       {
         "id": "b1",
@@ -3258,27 +3258,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_048",
     "num": 48,
-    "title": "Potensiometr Kuchlanish Bo'luvchisini O'lchash",
+    "title": "Potensiometr Kuçlaniş Böluvçisini Ölçaş",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Potensiometr burilganda o'rta chiqishdagi kuchlanish (0..9V).",
-    "theory": "Potensiometrning suriluvchi kontakti kuchlanishni silliq bo'lib beradi.",
+    "desc": "Potensiometr burilganda örta çiqişdagi kuçlaniş (0..9V).",
+    "theory": "Potensiometrning suriluvçi kontakti kuçlanişni silliq bölib beradi.",
     "components": [
       {
         "id": "b1",
@@ -3325,26 +3325,26 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_049",
     "num": 49,
-    "title": "Buzzer Tokini O'lchash",
+    "title": "Buzzer Tokini Ölçaş",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Pyezo buzzer ishlayotganda sarflaydigan kichik tokni aniqlash.",
+    "desc": "Pyezo buzzer işlayotganda sarflaydigan kiçik tokni aniqlaş.",
     "theory": "Pyezo buzzerlar odatda atigi 10-25 mA tok sarflaydigan juda tejamkor akustik elementlardir.",
     "components": [
       {
@@ -3392,27 +3392,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_050",
     "num": 50,
-    "title": "Qisqa Tutashuv Diagnostikasi",
+    "title": "Qisqa Tutaşuv Diagnostikasi",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Tokning sakrashi va kuchlanishning 0V ga tushishi simulyatsiyasi.",
-    "theory": "K3 holatida manba qutblari orasidagi kuchlanish deyarli nolga teng bo'lib qoladi.",
+    "desc": "Tokning sakraşi va kuçlanişning 0V ga tuşişi simulyatsiyasi.",
+    "theory": "K3 holatida manba qutblari orasidagi kuçlaniş deyarli nolga teng bölib qoladi.",
     "components": [
       {
         "id": "b1",
@@ -3459,27 +3459,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_051",
     "num": 51,
-    "title": "Parallel Tarmoqlar Toklarini Solishtirish",
+    "title": "Parallel Tarmoqlar Toklarini Soliştiriş",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "I1 va I2 shoxobcha toklari yig'indisi umumiy tokka tengligini o'lchash.",
-    "theory": "Har bir shoxobchadagi tok uning qarshiligiga teskari mutanosib taqsimlanadi.",
+    "desc": "I1 va I2 şoxobça toklari yiğindisi umumiy tokka tengligini ölçaş.",
+    "theory": "Har bir şoxobçadagi tok uning qarşiligiga teskari mutanosib taqsimlanadi.",
     "components": [
       {
         "id": "b1",
@@ -3526,7 +3526,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -3534,19 +3534,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 52,
     "title": "Ketma-ket Tarmoqlarda Tok Tengligi",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Ketma-ket zanjirning turli nuqtalarida bir xil tok oqishini tekshirish.",
-    "theory": "Ketma-ket zanjirda tok hech qayerga yo'qolmaydi: I_kir = I_chiq = I_har_nuqta.",
+    "desc": "Ketma-ket zanjirning turli nuqtalarida bir xil tok oqişini tekşiriş.",
+    "theory": "Ketma-ket zanjirda tok heç qayerga yöqolmaydi: I_kir = I_çiq = I_har_nuqta.",
     "components": [
       {
         "id": "b1",
@@ -3593,27 +3593,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_053",
     "num": 53,
-    "title": "Sim Qarshiligi Effekti",
+    "title": "Sim Qarşiligi Effekti",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Katta masofadagi kuchlanish yo'qotilishi modeli.",
-    "theory": "Haqiqiy elektr tarmoqlarida uzun simlar o'z qarshiligiga ega bo'lib, energiya yo'qotiladi.",
+    "desc": "Katta masofadagi kuçlaniş yöqotilişi modeli.",
+    "theory": "Haqiqiy elektr tarmoqlarida uzun simlar öz qarşiligiga ega bölib, energiya yöqotiladi.",
     "components": [
       {
         "id": "b1",
@@ -3660,27 +3660,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_054",
     "num": 54,
-    "title": "Nosozlikni Qidirish: Ochiq Zanjir (Uzilish)",
+    "title": "Nosozlikni Qidiriş: Oçiq Zanjir (Uziliş)",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Uzilgan sim yoki ochiq qolgan kontaktni voltmetr bilan aniqlash.",
-    "theory": "Uzilish nuqtasining ikki tomonida to'liq manba kuchlanishi hosil bo'ladi.",
+    "desc": "Uzilgan sim yoki oçiq qolgan kontaktni voltmetr bilan aniqlaş.",
+    "theory": "Uziliş nuqtasining ikki tomonida töliq manba kuçlanişi hosil böladi.",
     "components": [
       {
         "id": "b1",
@@ -3727,27 +3727,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_055",
     "num": 55,
-    "title": "Nosozlikni Qidirish: Kuygan Rezistor",
+    "title": "Nosozlikni Qidiriş: Kuygan Rezistor",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Kuyib ichki qarshiligi cheksiz bo'lib qolgan element diagnostikasi.",
-    "theory": "Kuygan element tok o'tkazmaydi va butun kuchlanish uning uchlariga tushadi.",
+    "desc": "Kuyib içki qarşiligi çeksiz bölib qolgan element diagnostikasi.",
+    "theory": "Kuygan element tok ötkazmaydi va butun kuçlaniş uning uçlariga tuşadi.",
     "components": [
       {
         "id": "b1",
@@ -3794,27 +3794,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_056",
     "num": 56,
-    "title": "Nosozlikni Qidirish: Noto'g'ri Nominal",
+    "title": "Nosozlikni Qidiriş: Notöğri Nominal",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Keragidan 10 baravar katta qarshilik qo'yilgandagi holat.",
-    "theory": "Rezistor nominali haddan tashqari katta bo'lsa, zanjirdagi tok yetarli bo'lmay qoladi.",
+    "desc": "Keragidan 10 baravar katta qarşilik qöyilgandagi holat.",
+    "theory": "Rezistor nominali haddan taşqari katta bölsa, zanjirdagi tok yetarli bölmay qoladi.",
     "components": [
       {
         "id": "b1",
@@ -3861,27 +3861,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_057",
     "num": 57,
-    "title": "Manba Ichki Qarshiligi Tahlili",
+    "title": "Manba Içki Qarşiligi Tahlili",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Salt yurish va to'liq yuklama kuchlanishlari farqi.",
-    "theory": "Haqiqiy batareyalar o'z ichki qarshiligiga (r) ega bo'lib, katta tokda qiziydi.",
+    "desc": "Salt yuriş va töliq yuklama kuçlanişlari farqi.",
+    "theory": "Haqiqiy batareyalar öz içki qarşiligiga (r) ega bölib, katta tokda qiziydi.",
     "components": [
       {
         "id": "b1",
@@ -3928,27 +3928,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_058",
     "num": 58,
-    "title": "Kondensator Zaryad Kuchlanishi Grafigi",
+    "title": "Kondensator Zaryad Kuçlanişi Grafigi",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Vaqt o'tishi bilan kuchlanishning eksponensial o'sishi.",
-    "theory": "Kondensator dastlab tez, keyin esa sekinlashib maksimal kuchlanishgacha zaryadlanadi.",
+    "desc": "Vaqt ötişi bilan kuçlanişning eksponensial ösişi.",
+    "theory": "Kondensator dastlab tez, keyin esa sekinlaşib maksimal kuçlanişgaça zaryadlanadi.",
     "components": [
       {
         "id": "b1",
@@ -3995,27 +3995,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_059",
     "num": 59,
-    "title": "Motor Ishga Tushish Toki (Inrush Current)",
+    "title": "Motor Işga Tuşiş Toki (Inruş Current)",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
     "desc": "Dvigatel start olgandagi dastlabki yuqori tok tahlili.",
-    "theory": "Rotor to'xtab turganda qarshi-EYUK yo'qligi sababli start toki 3-5 baravar katta bo'ladi.",
+    "theory": "Rotor töxtab turganda qarşi-EYUK yöqligi sababli start toki 3-5 baravar katta böladi.",
     "components": [
       {
         "id": "b1",
@@ -4062,27 +4062,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_060",
     "num": 60,
-    "title": "To'liq Laboratoriya Sinov Stendi",
+    "title": "Töliq Laboratoriya Sinov Stendi",
     "category": "measuring",
-    "categoryName": "O'lchov & Diagnostika",
+    "categoryName": "Ölçov & Diagnostika",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
-      "O'lchov",
+      "Ölçov",
       "Multimetr",
       "Diagnostika",
       "Sinov",
       "Tok",
-      "Kuchlanish"
+      "Kuçlaniş"
     ],
-    "desc": "Voltmetr, Ampermetr va Otsillograf bir vaqtning o'zida.",
-    "theory": "Kompleks diagnostika: barcha elektr kattaliklarini bir vaqtning o'zida nazorat qilish.",
+    "desc": "Voltmetr, Ampermetr va Otsillograf bir vaqtning özida.",
+    "theory": "Kompleks diagnostika: barça elektr kattaliklarini bir vaqtning özida nazorat qiliş.",
     "components": [
       {
         "id": "b1",
@@ -4129,7 +4129,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -4137,19 +4137,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 61,
     "title": "LED ning Anod va Katod Qutblari",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "LED ning qutblarini to'g'ri aniqlash va ulash qoidalari.",
-    "theory": "Anod (+) uzun oyoqcha, Katod (-) kalta oyoqcha va korpusida kesik bo'ladi.",
+    "desc": "LED ning qutblarini töğri aniqlaş va ulaş qoidalari.",
+    "theory": "Anod (+) uzun oyoqça, Katod (-) kalta oyoqça va korpusida kesik böladi.",
     "components": [
       {
         "id": "b1",
@@ -4214,27 +4214,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_062",
     "num": 62,
-    "title": "Qarama-qarshi Parallel LED lar",
+    "title": "Qarama-qarşi Parallel LED lar",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Qutblanish almashganda qizil yoki yashil LED navbat bilan yonishi.",
-    "theory": "Teskari parallel ulangan diodlar o'zgaruvchan tok yo'nalishini ko'rsatishda ishlatiladi.",
+    "desc": "Qutblaniş almaşganda qizil yoki yaşil LED navbat bilan yonişi.",
+    "theory": "Teskari parallel ulangan diodlar özgaruvçan tok yönalişini körsatişda işlatiladi.",
     "components": [
       {
         "id": "b1",
@@ -4299,27 +4299,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_063",
     "num": 63,
-    "title": "Svetofor Modeli (Qizil, Sariq, Yashil)",
+    "title": "Svetofor Modeli (Qizil, Sariq, Yaşil)",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "3 ta alohida kalit bilan boshqariladigan svetofor LED lari.",
-    "theory": "Har bir rangdagi LED o'z to'g'ri kuchlanishiga ega (Qizil: 1.8V, Sariq: 2.0V, Yashil: 2.2V).",
+    "desc": "3 ta alohida kalit bilan boşqariladigan svetofor LED lari.",
+    "theory": "Har bir rangdagi LED öz töğri kuçlanişiga ega (Qizil: 1.8V, Sariq: 2.0V, Yaşil: 2.2V).",
     "components": [
       {
         "id": "b1",
@@ -4384,27 +4384,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_064",
     "num": 64,
-    "title": "Yuqori Kuchlanishli LED Himoyasi",
+    "title": "Yuqori Kuçlanişli LED Himoyasi",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Katta kuchlanishda LED ni saqlab qoluvchi yuqori qarshilikli rezistor.",
-    "theory": "Ballast qarshiligi R = (U_manba - U_led) / I_led formulasi bilan hisoblanadi.",
+    "desc": "Katta kuçlanişda LED ni saqlab qoluvçi yuqori qarşilikli rezistor.",
+    "theory": "Ballast qarşiligi R = (U_manba - U_led) / I_led formulasi bilan hisoblanadi.",
     "components": [
       {
         "id": "b1",
@@ -4469,27 +4469,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_065",
     "num": 65,
-    "title": "Bipolyar Yo'nalish Indikatori",
+    "title": "Bipolyar Yönaliş Indikatori",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Tok manbai qutblari to'g'riligini ko'rsatuvchi ikki rangli indikator.",
-    "theory": "Tok bir tomonga oqsa qizil, teskari oqsa yashil LED yonadi.",
+    "desc": "Tok manbai qutblari töğriligini körsatuvçi ikki rangli indikator.",
+    "theory": "Tok bir tomonga oqsa qizil, teskari oqsa yaşil LED yonadi.",
     "components": [
       {
         "id": "b1",
@@ -4554,7 +4554,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -4562,19 +4562,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 66,
     "title": "Ketma-ket 4 ta LED Zanjiri",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "9V manbaga 4 ta qizil LED ni ketma-ket ulash.",
-    "theory": "4 ta LED * 1.8V = 7.2V to'g'ri tushish hosil qiladi, energiya samaradorligi yuqori bo'ladi.",
+    "desc": "9V manbaga 4 ta qizil LED ni ketma-ket ulaş.",
+    "theory": "4 ta LED * 1.8V = 7.2V töğri tuşiş hosil qiladi, energiya samaradorligi yuqori böladi.",
     "components": [
       {
         "id": "b1",
@@ -4639,7 +4639,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -4647,19 +4647,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 67,
     "title": "Kaskadli LED Indikatori",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "3 ta LED orqali darajani ko'rsatish modeli.",
-    "theory": "Avtomobil panellarida va audio uskunalarda daraja ko'rsatkichlari shu prinsipda quriladi.",
+    "desc": "3 ta LED orqali darajani körsatiş modeli.",
+    "theory": "Avtomobil panellarida va audio uskunalarda daraja körsatkiçlari şu prinsipda quriladi.",
     "components": [
       {
         "id": "b1",
@@ -4724,27 +4724,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_068",
     "num": 68,
-    "title": "LED + Kondensator (Silliq O'chish)",
+    "title": "LED + Kondensator (Silliq Öçiş)",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Quvvat uzilgandan so'ng LED ning sekin so'nishi.",
-    "theory": "Kondensatorda to'plangan zaryad quvvat uzilgach LED orqali asta-sekin razryadlanadi.",
+    "desc": "Quvvat uzilgandan söng LED ning sekin sönişi.",
+    "theory": "Kondensatorda töplangan zaryad quvvat uzilgaç LED orqali asta-sekin razryadlanadi.",
     "components": [
       {
         "id": "b1",
@@ -4809,27 +4809,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_069",
     "num": 69,
-    "title": "LED Chaqnash Modeli",
+    "title": "LED Çaqnaş Modeli",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Kalitni bosib uzganda tezkor yorug'lik impulslari hosil qilish.",
-    "theory": "LED larning inertsiya vaqti juda kichik (nanosekundlar), shuning uchun chaqnashga tez javob beradi.",
+    "desc": "Kalitni bosib uzganda tezkor yoruğlik impulslari hosil qiliş.",
+    "theory": "LED larning inertsiya vaqti juda kiçik (nanosekundlar), şuning uçun çaqnaşga tez javob beradi.",
     "components": [
       {
         "id": "b1",
@@ -4894,27 +4894,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_070",
     "num": 70,
-    "title": "Optojuftlik (Optocoupler) Boshlang'ich Modeli",
+    "title": "Optojuftlik (Optocoupler) Boşlanğiç Modeli",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Yorug'lik orqali galvanik ajratilgan signal uzatish asosi.",
-    "theory": "Optronlar yuqori kuchlanishli zanjirlarni past kuchlanishli boshqaruvdan himoya qiladi.",
+    "desc": "Yoruğlik orqali galvanik ajratilgan signal uzatiş asosi.",
+    "theory": "Optronlar yuqori kuçlanişli zanjirlarni past kuçlanişli boşqaruvdan himoya qiladi.",
     "components": [
       {
         "id": "b1",
@@ -4979,27 +4979,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_071",
     "num": 71,
-    "title": "Motor Cho'tkalari Shovqinidan Diodli Himoya",
+    "title": "Motor Çötkalari Şovqinidan Diodli Himoya",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Dvigatel o'chirilgandagi induktiv zarbani so'ndirish.",
-    "theory": "Induktiv yuklamalar o'chirilganda teskari EYuK hosil qiladi va elektron qismlarni kuydirishi mumkin.",
+    "desc": "Dvigatel öçirilgandagi induktiv zarbani söndiriş.",
+    "theory": "Induktiv yuklamalar öçirilganda teskari EYuK hosil qiladi va elektron qismlarni kuydirişi mumkin.",
     "components": [
       {
         "id": "b1",
@@ -5064,27 +5064,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_072",
     "num": 72,
-    "title": "Bir Yarim Davrli To'g'rilagich Modeli",
+    "title": "Bir Yarim Davrli Töğrilagiç Modeli",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Diodning bir tomonlama tok o'tkazish xususiyatini tekshirish.",
-    "theory": "Diod faqat musbat yarim davrni o'tkazadi, manfiy yarim davrni esa to'sadi.",
+    "desc": "Diodning bir tomonlama tok ötkaziş xususiyatini tekşiriş.",
+    "theory": "Diod faqat musbat yarim davrni ötkazadi, manfiy yarim davrni esa tösadi.",
     "components": [
       {
         "id": "b1",
@@ -5149,27 +5149,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_073",
     "num": 73,
-    "title": "Diod orqali Kuchlanishni 0.7V ga Pasaytirish",
+    "title": "Diod orqali Kuçlanişni 0.7V ga Pasaytiriş",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Silitsiy diodi orqali kuchlanish tushishini hosil qilish.",
-    "theory": "O'tkazuvchan holatdagi p-n o'tishda doimiy ~0.7V kuchlanish tushishi mavjud bo'ladi.",
+    "desc": "Silitsiy diodi orqali kuçlaniş tuşişini hosil qiliş.",
+    "theory": "Ötkazuvçan holatdagi p-n ötişda doimiy ~0.7V kuçlaniş tuşişi mavjud böladi.",
     "components": [
       {
         "id": "b1",
@@ -5234,27 +5234,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_074",
     "num": 74,
-    "title": "Ketma-ket 3 ta Diod (2.1V Pasaytirish)",
+    "title": "Ketma-ket 3 ta Diod (2.1V Pasaytiriş)",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "9V manbadan 6.9V barqaror kuchlanish hosil qilish.",
-    "theory": "Diodlar zanjiri past kuchlanishli stabilizator vazifasini bajarishi mumkin.",
+    "desc": "9V manbadan 6.9V barqaror kuçlaniş hosil qiliş.",
+    "theory": "Diodlar zanjiri past kuçlanişli stabilizator vazifasini bajarişi mumkin.",
     "components": [
       {
         "id": "b1",
@@ -5319,7 +5319,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -5327,19 +5327,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 75,
     "title": "LED Stroboskop Zanjiri",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Tez-tez chaqnab turuvchi stroboskopik yoritish zanjiri.",
-    "theory": "Tez miltillash orqali harakatlanuvchi mexanizmlarni vizual to'xtatib ko'rish mumkin.",
+    "desc": "Tez-tez çaqnab turuvçi stroboskopik yoritiş zanjiri.",
+    "theory": "Tez miltillaş orqali harakatlanuvçi mexanizmlarni vizual töxtatib köriş mumkin.",
     "components": [
       {
         "id": "b1",
@@ -5404,7 +5404,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -5412,19 +5412,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 76,
     "title": "Batareya Holati Indikatori",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Batareya quvvati yetarli bo'lgandagina yonuvchi indikator zanjiri.",
-    "theory": "Kuchlanish ma'lum chegaradan pastga tushganda LED o'chadi.",
+    "desc": "Batareya quvvati yetarli bölgandagina yonuvçi indikator zanjiri.",
+    "theory": "Kuçlaniş ma'lum çegaradan pastga tuşganda LED öçadi.",
     "components": [
       {
         "id": "b1",
@@ -5489,7 +5489,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -5497,19 +5497,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 77,
     "title": "LED Matritsasi Asosi (2x2)",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "To'rtta LED dan iborat matritsali displey poydevori.",
-    "theory": "Matritsali boshqaruv kamroq simlar bilan ko'p sonli piksellarni yoqish imkonini beradi.",
+    "desc": "Törtta LED dan iborat matritsali displey poydevori.",
+    "theory": "Matritsali boşqaruv kamroq simlar bilan köp sonli piksellarni yoqiş imkonini beradi.",
     "components": [
       {
         "id": "b1",
@@ -5574,27 +5574,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_078",
     "num": 78,
-    "title": "Qayta Ulanishdan Himoyalangan Zanjir",
+    "title": "Qayta Ulanişdan Himoyalangan Zanjir",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
     "desc": "Batareya teskari ulansa ham kuymaydigan diodli xavfsiz zanjir.",
-    "theory": "Diod batareya teskari ulanganda tokni butunlay to'sib, qimmatbaho chiplarni asraydi.",
+    "theory": "Diod batareya teskari ulanganda tokni butunlay tösib, qimmatbaho çiplarni asraydi.",
     "components": [
       {
         "id": "b1",
@@ -5659,7 +5659,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -5667,19 +5667,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 79,
     "title": "LED va Buzzer Sinxron Indikatori",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Bir vaqtning o'zida ham tovush, ham yorug'lik signali berish.",
-    "theory": "Ogohlantirish tizimlarida eshitish va ko'rish analizatorlariga birga ta'sir qilinadi.",
+    "desc": "Bir vaqtning özida ham tovuş, ham yoruğlik signali beriş.",
+    "theory": "Ogohlantiriş tizimlarida eşitiş va köriş analizatorlariga birga ta'sir qilinadi.",
     "components": [
       {
         "id": "b1",
@@ -5744,7 +5744,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -5752,19 +5752,19 @@ const CIRCUIT_TEMPLATES = [
     "num": 80,
     "title": "Yuqori Yorqinlikdagi LED Klasteri",
     "category": "diodes",
-    "categoryName": "Diodlar & Yarimo'tkazgichlar",
+    "categoryName": "Diodlar & Yarimötkazgiçlar",
     "difficulty": "advanced",
     "difficultyName": "Murakkab",
     "tags": [
       "LED",
       "Diod",
-      "Yarimo'tkazgich",
-      "Yorug'lik",
+      "Yarimötkazgiç",
+      "Yoruğlik",
       "Anod",
       "Katod"
     ],
-    "desc": "Bir nechta LED larni klaster qilib yoritish maydonini oshirish.",
-    "theory": "Klasterli LED modullari projektorlar va ko'cha yoritgichlarida keng qo'llaniladi.",
+    "desc": "Bir neçta LED larni klaster qilib yoritiş maydonini oşiriş.",
+    "theory": "Klasterli LED modullari projektorlar va köça yoritgiçlarida keng qöllaniladi.",
     "components": [
       {
         "id": "b1",
@@ -5829,27 +5829,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_081",
     "num": 81,
-    "title": "Oddiy Tungi Chiroq (LDR + LED)",
+    "title": "Oddiy Tungi Çiroq (LDR + LED)",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Qorong'i tushganda fotorezistor qarshiligi ortishi va chiroqni yoqish.",
-    "theory": "Fotorezistor (LDR) yorug'likda past (100Ω), qorong'ida yuqori qarshilikka (1MΩ) ega bo'ladi.",
+    "desc": "Qoronği tuşganda fotorezistor qarşiligi ortişi va çiroqni yoqiş.",
+    "theory": "Fotorezistor (LDR) yoruğlikda past (100Ω), qoronğida yuqori qarşilikka (1MΩ) ega böladi.",
     "components": [
       {
         "id": "b1",
@@ -5958,9 +5958,9 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "1. Kalitni bosing: zanjirga quvvat beriladi (yoki uziladi).",
-      "2. '☀️ Kun' tugmasini bosing: LDR qarshiligi pasayadi va LED O'CHADI.",
-      "3. '🌙 Tun' tugmasini bosing: LDR qarshiligi ortadi va LED YONADI!",
-      "4. Kalitni ochsangiz: chiroq qorong'ida ham butunlay o'chadi."
+      "2. '☀️ Kun' tugmasini bosing: LDR qarşiligi pasayadi va LED ÖÇADI.",
+      "3. '🌙 Tun' tugmasini bosing: LDR qarşiligi ortadi va LED YONADI!",
+      "4. Kalitni oçsangiz: çiroq qoronğida ham butunlay öçadi."
     ]
   },
   {
@@ -5970,17 +5970,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Tong otganda yoki yorug'lik tushganda signal chaluvchi zanjir.",
-    "theory": "Yorug'lik tushganda LDR qarshiligi pasayadi va buzzer orqali tok oqib signal chaladi.",
+    "desc": "Tong otganda yoki yoruğlik tuşganda signal çaluvçi zanjir.",
+    "theory": "Yoruğlik tuşganda LDR qarşiligi pasayadi va buzzer orqali tok oqib signal çaladi.",
     "components": [
       {
         "id": "b1",
@@ -6051,28 +6051,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_083",
     "num": 83,
-    "title": "LDR Kuchlanish Bo'luvchi",
+    "title": "LDR Kuçlaniş Böluvçi",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Yorug'lik darajasiga mutanosib analog kuchlanish olish sxemasi.",
-    "theory": "U_out = U_in * (R_pastki / (R_yuqori + R_pastki)) qoidasi bo'yicha yorug'lik voltga aylanadi.",
+    "desc": "Yoruğlik darajasiga mutanosib analog kuçlaniş oliş sxemasi.",
+    "theory": "U_out = U_in * (R_pastki / (R_yuqori + R_pastki)) qoidasi böyiça yoruğlik voltga aylanadi.",
     "components": [
       {
         "id": "b1",
@@ -6143,28 +6143,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_084",
     "num": 84,
-    "title": "Avtomatik Ko'cha Chirog'i Modeli",
+    "title": "Avtomatik Köça Çiroği Modeli",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Shahar ko'cha chiroqlarining avtomatik oqshomda yonishi modeli.",
-    "theory": "Fotoelektr relelar quyosh botganda tashqi yoritish tizimlarini avtomatik ishga tushiradi.",
+    "desc": "Şahar köça çiroqlarining avtomatik oqşomda yonişi modeli.",
+    "theory": "Fotoelektr relelar quyoş botganda taşqi yoritiş tizimlarini avtomatik işga tuşiradi.",
     "components": [
       {
         "id": "b1",
@@ -6273,28 +6273,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Potensiometr orqali chiroq qaysi qorong'ilik chegarasida yonishini sozlang.",
-      "2. '☀️ Kun' va '🌙 Tun' rejimlarida avtomatika ishlashini sinang."
+      "1. Potensiometr orqali çiroq qaysi qoronğilik çegarasida yonişini sozlang.",
+      "2. '☀️ Kun' va '🌙 Tun' rejimlarida avtomatika işlaşini sinang."
     ]
   },
   {
     "id": "tmpl_085",
     "num": 85,
-    "title": "Lazerli Xavfsizlik Qo'riqchisi",
+    "title": "Lazerli Xavfsizlik Qöriqçisi",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Lazer nuri to'silganda zudlik bilan signal beruvchi qo'riqlash zanjiri.",
-    "theory": "Lazer nuri LDR ga tushib turganda zanjir tinch, nurni to'siq uzishi bilanoq signal ishlaydi.",
+    "desc": "Lazer nuri tösilganda zudlik bilan signal beruvçi qöriqlaş zanjiri.",
+    "theory": "Lazer nuri LDR ga tuşib turganda zanjir tinç, nurni tösiq uzişi bilanoq signal işlaydi.",
     "components": [
       {
         "id": "b1",
@@ -6407,28 +6407,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Lazer nuri LDR ga tushib turganda (Kun/Yorug') tizim tinch.",
-      "2. '🌙 Tun' tugmasini bosib nur to'silgandek qiling: bir zumda buzzer va qizil LED signal beradi!"
+      "1. Lazer nuri LDR ga tuşib turganda (Kun/Yoruğ) tizim tinç.",
+      "2. '🌙 Tun' tugmasini bosib nur tösilgandek qiling: bir zumda buzzer va qizil LED signal beradi!"
     ]
   },
   {
     "id": "tmpl_086",
     "num": 86,
-    "title": "Soya Detektori (Qo'l yaqinlashishi)",
+    "title": "Soya Detektori (Qöl yaqinlaşişi)",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Qo'l yaqinlashib soya tushirganda ishga tushuvchi datchik.",
-    "theory": "Ob'ektning yaqinlashishini yorug'lik oqimining kamayishi orqali aniqlash usuli.",
+    "desc": "Qöl yaqinlaşib soya tuşirganda işga tuşuvçi datçik.",
+    "theory": "Ob'ektning yaqinlaşişini yoruğlik oqimining kamayişi orqali aniqlaş usuli.",
     "components": [
       {
         "id": "b1",
@@ -6499,28 +6499,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_087",
     "num": 87,
-    "title": "Optik O'lchagich (Lyuksmeter asosi)",
+    "title": "Optik Ölçagiç (Lyuksmeter asosi)",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Yorug'lik miqdorini multimetr orqali voltlarda o'lchash.",
-    "theory": "Yorug'lik kuchi oshgan sari kuchlanish bo'luvchi chiqishidagi potensial mutanosib o'zgaradi.",
+    "desc": "Yoruğlik miqdorini multimetr orqali voltlarda ölçaş.",
+    "theory": "Yoruğlik kuçi oşgan sari kuçlaniş böluvçi çiqişidagi potensial mutanosib özgaradi.",
     "components": [
       {
         "id": "b1",
@@ -6591,28 +6591,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_088",
     "num": 88,
-    "title": "Quyosh Paneli Yo'nalish Datchigi",
+    "title": "Quyoş Paneli Yönaliş Datçigi",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Yorug'lik qayerdan tushayotganini aniqlovchi datchik asosi.",
-    "theory": "Ikkita fotorezistor solishtirilib, quyoshga qaragan burchak aniqlanadi.",
+    "desc": "Yoruğlik qayerdan tuşayotganini aniqlovçi datçik asosi.",
+    "theory": "Ikkita fotorezistor soliştirilib, quyoşga qaragan burçak aniqlanadi.",
     "components": [
       {
         "id": "b1",
@@ -6683,28 +6683,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_089",
     "num": 89,
-    "title": "Sezgirligi Sozlanuvchi LDR Zanjiri",
+    "title": "Sezgirligi Sozlanuvçi LDR Zanjiri",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Potensiometr orqali yorug'lik chegarasini erkin sozlash.",
-    "theory": "Potensiometr va LDR bo'luvchisi orqali har qanday xona yorug'ligiga moslashish mumkin.",
+    "desc": "Potensiometr orqali yoruğlik çegarasini erkin sozlaş.",
+    "theory": "Potensiometr va LDR böluvçisi orqali har qanday xona yoruğligiga moslaşiş mumkin.",
     "components": [
       {
         "id": "b1",
@@ -6775,8 +6775,8 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
@@ -6786,17 +6786,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Ikki LDR orasidagi yorug'lik farqini aniqlash.",
-    "theory": "Differensial fotodatchiklar robotlarning yorug'lik manbasiga qarab yurishida qo'llaniladi.",
+    "desc": "Ikki LDR orasidagi yoruğlik farqini aniqlaş.",
+    "theory": "Differensial fotodatçiklar robotlarning yoruğlik manbasiga qarab yurişida qöllaniladi.",
     "components": [
       {
         "id": "b1",
@@ -6867,8 +6867,8 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
@@ -6878,17 +6878,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Yorug'lik kuchayganda motorni ishga tushiruvchi tizim.",
-    "theory": "Quyosh nuri xonani qizdirmasligi uchun avtomatik pardalar yopiladi.",
+    "desc": "Yoruğlik kuçayganda motorni işga tuşiruvçi tizim.",
+    "theory": "Quyoş nuri xonani qizdirmasligi uçun avtomatik pardalar yopiladi.",
     "components": [
       {
         "id": "b1",
@@ -6959,28 +6959,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_092",
     "num": 92,
-    "title": "Qorong'ulikda Chiroq + Buzzer",
+    "title": "Qoronğulikda Çiroq + Buzzer",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Avariya xavfsizligi: qorong'i bo'lib qolsa ikkita signal berish.",
-    "theory": "Vizual va tovushli ogohlantirish avariya holatlarida ishonchlilikni oshiradi.",
+    "desc": "Avariya xavfsizligi: qoronği bölib qolsa ikkita signal beriş.",
+    "theory": "Vizual va tovuşli ogohlantiriş avariya holatlarida işonçlilikni oşiradi.",
     "components": [
       {
         "id": "b1",
@@ -7051,28 +7051,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_093",
     "num": 93,
-    "title": "Yorug'lik Pulsatsiyasi Kuzatuvi",
+    "title": "Yoruğlik Pulsatsiyasi Kuzatuvi",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Otsillografda yorug'lik o'zgarishini real vaqt rejimida ko'rish.",
-    "theory": "Sun'iy chiroqlarning ko'zga ko'rinmas miltillashini LDR orqali otsillografda tahlil qilish mumkin.",
+    "desc": "Otsillografda yoruğlik özgarişini real vaqt rejimida köriş.",
+    "theory": "Sun'iy çiroqlarning közga körinmas miltillaşini LDR orqali otsillografda tahlil qiliş mumkin.",
     "components": [
       {
         "id": "b1",
@@ -7143,28 +7143,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_094",
     "num": 94,
-    "title": "Aqlli Xona Yoritish Tizimi",
+    "title": "Aqlli Xona Yoritiş Tizimi",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Xona yoritilganligiga qarab LED larni bosqichma-bosqich yoqish.",
-    "theory": "Energiyani tejash uchun tabiiy yorug'lik yetarli bo'lganda elektr chiroqlar o'chiriladi.",
+    "desc": "Xona yoritilganligiga qarab LED larni bosqiçma-bosqiç yoqiş.",
+    "theory": "Energiyani tejaş uçun tabiiy yoruğlik yetarli bölganda elektr çiroqlar öçiriladi.",
     "components": [
       {
         "id": "b1",
@@ -7235,28 +7235,28 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_095",
     "num": 95,
-    "title": "Olov va Yong'in Detektori Modeli",
+    "title": "Olov va Yonğin Detektori Modeli",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Olov yorug'ligining o'ziga xos chaqnashi va intensivligini tutish.",
-    "theory": "Optik yong'in datchiklari tutun tarqalishidan avval olov nurini tezda payqaydi.",
+    "desc": "Olov yoruğligining öziga xos çaqnaşi va intensivligini tutiş.",
+    "theory": "Optik yonğin datçiklari tutun tarqalişidan avval olov nurini tezda payqaydi.",
     "components": [
       {
         "id": "b1",
@@ -7327,8 +7327,8 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
@@ -7342,13 +7342,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Parrak aylanganda nurning to'silish chastotasini o'lchash.",
-    "theory": "Aylanuvchi valning har bir aylanishida datchik impuls hosil qiladi.",
+    "desc": "Parrak aylanganda nurning tösiliş çastotasini ölçaş.",
+    "theory": "Aylanuvçi valning har bir aylanişida datçik impuls hosil qiladi.",
     "components": [
       {
         "id": "b1",
@@ -7419,14 +7419,14 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_097",
     "num": 97,
-    "title": "Kunduzgi Energiyani Tejovchi O'chirgich",
+    "title": "Kunduzgi Energiyani Tejovçi Öçirgiç",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "advanced",
@@ -7434,13 +7434,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Tong otishi bilan yuklamalarni o'chiruvchi avtomat.",
-    "theory": "Quyosh chiqqandan keyin keraksiz sarf bo'layotgan elektr quvvatini uzadi.",
+    "desc": "Tong otişi bilan yuklamalarni öçiruvçi avtomat.",
+    "theory": "Quyoş çiqqandan keyin keraksiz sarf bölayotgan elektr quvvatini uzadi.",
     "components": [
       {
         "id": "b1",
@@ -7511,8 +7511,8 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
@@ -7526,13 +7526,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "LED nuri LDR ga tushganda o'z-o'zini rostlash tajribasi.",
-    "theory": "Optik teskari aloqa orqali yorug'lik intensivligini barqaror saqlash mumkin.",
+    "desc": "LED nuri LDR ga tuşganda öz-özini rostlaş tajribasi.",
+    "theory": "Optik teskari aloqa orqali yoruğlik intensivligini barqaror saqlaş mumkin.",
     "components": [
       {
         "id": "b1",
@@ -7603,14 +7603,14 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_099",
     "num": 99,
-    "title": "Qorong'ilik Darajasi Ko'rsatkichi",
+    "title": "Qoronğilik Darajasi Körsatkiçi",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "advanced",
@@ -7618,13 +7618,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Yorug'likka qarab 3 xil darajani indikatsiya qilish.",
-    "theory": "Yorug', xira va to'liq qorong'i zonalarni ajratib ko'rsatish.",
+    "desc": "Yoruğlikka qarab 3 xil darajani indikatsiya qiliş.",
+    "theory": "Yoruğ, xira va töliq qoronği zonalarni ajratib körsatiş.",
     "components": [
       {
         "id": "b1",
@@ -7695,14 +7695,14 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_100",
     "num": 100,
-    "title": "Optoelektronik Xavfsizlik To'sig'i",
+    "title": "Optoelektronik Xavfsizlik Tösiği",
     "category": "sensors",
     "categoryName": "Sensorlar & Fotorezistorlar LDR",
     "difficulty": "advanced",
@@ -7710,13 +7710,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "LDR",
       "Sensor",
-      "Datchik",
+      "Datçik",
       "Fotorezistor",
       "Avtomatika",
-      "Yorug'lik"
+      "Yoruğlik"
     ],
-    "desc": "Sanoat stanoklarida xavfli hududga qo'l kirsa to'xtatish.",
-    "theory": "Optik to'siq uzilganda zudlik bilan dvigatelni to'xtatuvchi xavfsizlik standarti.",
+    "desc": "Sanoat stanoklarida xavfli hududga qöl kirsa töxtatiş.",
+    "theory": "Optik tösiq uzilganda zudlik bilan dvigatelni töxtatuvçi xavfsizlik standarti.",
     "components": [
       {
         "id": "b1",
@@ -7787,18 +7787,18 @@ const CIRCUIT_TEMPLATES = [
       }
     ],
     "instructions": [
-      "1. Kalitni bosib sxemani yoqing yoki o'chiring.",
-      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarshiligini o'zgartiring."
+      "1. Kalitni bosib sxemani yoqing yoki öçiring.",
+      "2. '☀️ Kun' / '🌙 Tun' tugmalari orqali LDR qarşiligini özgartiring."
     ]
   },
   {
     "id": "tmpl_101",
     "num": 101,
-    "title": "Kondensatorning Zaryadlanishi (RC)",
+    "title": "Kondensatorning Zaryadlanişi (RC)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -7807,8 +7807,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "9V manbadan 1kΩ rezistor orqali 100µF kondensatorni zaryadlash.",
-    "theory": "Vaqt doimiysi τ = R * C = 1000Ω * 0.0001F = 0.1 soniya. To'liq zaryad ~5τ da erishiladi.",
+    "desc": "9V manbadan 1kΩ rezistor orqali 100µF kondensatorni zaryadlaş.",
+    "theory": "Vaqt doimiysi τ = R * C = 1000Ω * 0.0001F = 0.1 soniya. Töliq zaryad ~5τ da erişiladi.",
     "components": [
       {
         "id": "b1",
@@ -7886,17 +7886,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_102",
     "num": 102,
-    "title": "Kondensatorning Razryadlanishi",
+    "title": "Kondensatorning Razryadlanişi",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -7905,8 +7905,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Zaryadlangan kondensator energiyasi orqali LED ni yoqish.",
-    "theory": "Kondensator o'z qoplamalarida elektr maydon energiyasini W = (C * U²) / 2 saqlaydi.",
+    "desc": "Zaryadlangan kondensator energiyasi orqali LED ni yoqiş.",
+    "theory": "Kondensator öz qoplamalarida elektr maydon energiyasini W = (C * U²) / 2 saqlaydi.",
     "components": [
       {
         "id": "b1",
@@ -7984,17 +7984,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_103",
     "num": 103,
-    "title": "Sekin Yonuvchi Chiroq Zanjiri",
+    "title": "Sekin Yonuvçi Çiroq Zanjiri",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8003,8 +8003,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Kondensator zaryadlangani sari LED yorqinlashib boradi.",
-    "theory": "Kondensator boshida qisqa tutashuv kabi, to'lgandan so'ng ochiq zanjir kabi harakat qiladi.",
+    "desc": "Kondensator zaryadlangani sari LED yorqinlaşib boradi.",
+    "theory": "Kondensator boşida qisqa tutaşuv kabi, tölgandan söng oçiq zanjir kabi harakat qiladi.",
     "components": [
       {
         "id": "b1",
@@ -8082,17 +8082,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_104",
     "num": 104,
-    "title": "Sekin O'chuvchi Chiroq (Fading LED)",
+    "title": "Sekin Öçuvçi Çiroq (Fading LED)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8101,8 +8101,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Kalit uzilgach LED ning 3-5 soniya davomida asta so'nishi.",
-    "theory": "Kondensator yig'ilgan zaryadni LED va rezistor orqali asta-sekin bo'shatadi.",
+    "desc": "Kalit uzilgaç LED ning 3-5 soniya davomida asta sönişi.",
+    "theory": "Kondensator yiğilgan zaryadni LED va rezistor orqali asta-sekin böşatadi.",
     "components": [
       {
         "id": "b1",
@@ -8180,17 +8180,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_105",
     "num": 105,
-    "title": "RC Filtr (Kuchlanish Tekislash)",
+    "title": "RC Filtr (Kuçlaniş Tekislaş)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "beginner",
-    "difficultyName": "Boshlang'ich",
+    "difficultyName": "Boşlanğiç",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8199,8 +8199,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "O'zgaruvchan pulsatsiyalarni tekislash va shovqinni yutish.",
-    "theory": "Sig'im filtrlari to'g'rilagichlardan so'ng pulsatsiyalarni bartaraf etishda ishlatiladi.",
+    "desc": "Özgaruvçan pulsatsiyalarni tekislaş va şovqinni yutiş.",
+    "theory": "Siğim filtrlari töğrilagiçlardan söng pulsatsiyalarni bartaraf etişda işlatiladi.",
     "components": [
       {
         "id": "b1",
@@ -8278,17 +8278,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_106",
     "num": 106,
-    "title": "Vaqt Kechikishli O'chirgich (Delay OFF)",
+    "title": "Vaqt Keçikişli Öçirgiç (Delay OFF)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8297,8 +8297,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Kalit ochilgach ma'lum vaqt o'tib yuklamaning o'chishi.",
-    "theory": "Avtomobil salonida eshik yopilgach chiroqning biroz yonib turishi shu usulda qilinadi.",
+    "desc": "Kalit oçilgaç ma'lum vaqt ötib yuklamaning öçişi.",
+    "theory": "Avtomobil salonida eşik yopilgaç çiroqning biroz yonib turişi şu usulda qilinadi.",
     "components": [
       {
         "id": "b1",
@@ -8376,17 +8376,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_107",
     "num": 107,
-    "title": "Vaqt Kechikishli Yoquvchi (Delay ON)",
+    "title": "Vaqt Keçikişli Yoquvçi (Delay ON)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8395,8 +8395,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Kalit yopilgach kondensator zaryadlanguncha kechikib yoqilish.",
-    "theory": "Elektron uskunalarni tarmoqdagi kuchlanish barqarorlashgach ishga tushirishda qo'llaniladi.",
+    "desc": "Kalit yopilgaç kondensator zaryadlangunça keçikib yoqiliş.",
+    "theory": "Elektron uskunalarni tarmoqdagi kuçlaniş barqarorlaşgaç işga tuşirişda qöllaniladi.",
     "components": [
       {
         "id": "b1",
@@ -8474,17 +8474,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_108",
     "num": 108,
-    "title": "Kondensatorli So'nuvchi Ovoz",
+    "title": "Kondensatorli Sönuvçi Ovoz",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8493,8 +8493,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Buzzer ovozining sekin pasayib so'nib borishi.",
-    "theory": "Buzzerga berilayotgan kuchlanish kondensator razryadi bilan pasayib boradi.",
+    "desc": "Buzzer ovozining sekin pasayib sönib borişi.",
+    "theory": "Buzzerga berilayotgan kuçlaniş kondensator razryadi bilan pasayib boradi.",
     "components": [
       {
         "id": "b1",
@@ -8572,17 +8572,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_109",
     "num": 109,
-    "title": "Parallel Kondensatorlar (Sig'imni Oshirish)",
+    "title": "Parallel Kondensatorlar (Siğimni Oşiriş)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8591,8 +8591,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "2 ta 100µF kondensator parallel = 200µF umumiy sig'im.",
-    "theory": "Parallel ulanganda qoplamalar maydoni qo'shiladi: C_umumiy = C1 + C2.",
+    "desc": "2 ta 100µF kondensator parallel = 200µF umumiy siğim.",
+    "theory": "Parallel ulanganda qoplamalar maydoni qöşiladi: C_umumiy = C1 + C2.",
     "components": [
       {
         "id": "b1",
@@ -8670,7 +8670,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -8680,7 +8680,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8689,8 +8689,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "2 ta 100µF kondensator ketma-ket = 50µF umumiy sig'im.",
-    "theory": "Ketma-ket ulanganda 1/C = 1/C1 + 1/C2. Ishchi kuchlanish esa ikki baravar ortadi.",
+    "desc": "2 ta 100µF kondensator ketma-ket = 50µF umumiy siğim.",
+    "theory": "Ketma-ket ulanganda 1/C = 1/C1 + 1/C2. Işçi kuçlaniş esa ikki baravar ortadi.",
     "components": [
       {
         "id": "b1",
@@ -8768,17 +8768,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_111",
     "num": 111,
-    "title": "RC Differensiallovchi Zanjir",
+    "title": "RC Differensiallovçi Zanjir",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8787,8 +8787,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Kuchlanish sakrashlaridan qisqa ignasimon impulslar ajratib olish.",
-    "theory": "Tez o'zgaruvchi signallarni ajratib olish va frontlarni detektlashda xizmat qiladi.",
+    "desc": "Kuçlaniş sakraşlaridan qisqa ignasimon impulslar ajratib oliş.",
+    "theory": "Tez özgaruvçi signallarni ajratib oliş va frontlarni detektlaşda xizmat qiladi.",
     "components": [
       {
         "id": "b1",
@@ -8866,17 +8866,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_112",
     "num": 112,
-    "title": "RC Integrallovchi Zanjir",
+    "title": "RC Integrallovçi Zanjir",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8885,8 +8885,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Impulslarni silliqlab uchburchaksimon shaklga keltirish.",
-    "theory": "Integrallovchi zanjir signallarni o'rtacha qiymatini hisoblashda ishlatiladi.",
+    "desc": "Impulslarni silliqlab uçburçaksimon şaklga keltiriş.",
+    "theory": "Integrallovçi zanjir signallarni örtaça qiymatini hisoblaşda işlatiladi.",
     "components": [
       {
         "id": "b1",
@@ -8964,17 +8964,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_113",
     "num": 113,
-    "title": "Fotochaqnoq (Flash) Zanjiri Modeli",
+    "title": "Fotoçaqnoq (Flash) Zanjiri Modeli",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -8983,8 +8983,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Sekin zaryadlanish va bir lahzada kuchli razryad orqali chaqnash.",
-    "theory": "Kam quvvatli manbadan katta oniy quvvat olishning ajoyib namunasi.",
+    "desc": "Sekin zaryadlaniş va bir lahzada kuçli razryad orqali çaqnaş.",
+    "theory": "Kam quvvatli manbadan katta oniy quvvat olişning ajoyib namunasi.",
     "components": [
       {
         "id": "b1",
@@ -9062,17 +9062,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_114",
     "num": 114,
-    "title": "Qisqa Uzilishlardan Himoya Buferi",
+    "title": "Qisqa Uzilişlardan Himoya Buferi",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -9081,8 +9081,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Manba 0.5 soniyaga uzilsa ham yuklama o'chmay turishi.",
-    "theory": "Kritik mikrosxemalar va xotira elementlarini tarmoq miltillashlaridan asraydi.",
+    "desc": "Manba 0.5 soniyaga uzilsa ham yuklama öçmay turişi.",
+    "theory": "Kritik mikrosxemalar va xotira elementlarini tarmoq miltillaşlaridan asraydi.",
     "components": [
       {
         "id": "b1",
@@ -9160,17 +9160,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_115",
     "num": 115,
-    "title": "Avtomatik Boshlang'ich Reset (Power-On Reset)",
+    "title": "Avtomatik Boşlanğiç Reset (Power-On Reset)",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Kondensator",
       "Capacitor",
@@ -9179,8 +9179,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Tizimga quvvat berilganda avtomatik reset impulsi hosil qilish.",
-    "theory": "Barcha kompyuter va kontrollerlar ishga tushishida POR zanjiri zarur.",
+    "desc": "Tizimga quvvat berilganda avtomatik reset impulsi hosil qiliş.",
+    "theory": "Barça kompyuter va kontrollerlar işga tuşişida POR zanjiri zarur.",
     "components": [
       {
         "id": "b1",
@@ -9258,13 +9258,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_116",
     "num": 116,
-    "title": "Dvigatel Shovqinini Filtrlovchi Kondensator",
+    "title": "Dvigatel Şovqinini Filtrlovçi Kondensator",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "advanced",
@@ -9277,8 +9277,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "DC motor kollektori cho'tkalaridagi uchqun shovqinini bostirish.",
-    "theory": "Kondensator yuqori chastotali shovqinlarni to'g'ridan-to'g'ri GND ga tushiradi.",
+    "desc": "DC motor kollektori çötkalaridagi uçqun şovqinini bostiriş.",
+    "theory": "Kondensator yuqori çastotali şovqinlarni töğridan-töğri GND ga tuşiradi.",
     "components": [
       {
         "id": "b1",
@@ -9356,13 +9356,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_117",
     "num": 117,
-    "title": "Otsillografda RC Eksponentasini Kuzatish",
+    "title": "Otsillografda RC Eksponentasini Kuzatiş",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "advanced",
@@ -9375,7 +9375,7 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Zaryadlanish egri chizig'ini vaqt o'qi bo'yicha tahlil qilish.",
+    "desc": "Zaryadlaniş egri çiziğini vaqt öqi böyiça tahlil qiliş.",
     "theory": "U(t) = U0 * (1 - e^(-t/RC)) formulasining haqiqiy osillogrammasi.",
     "components": [
       {
@@ -9454,13 +9454,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_118",
     "num": 118,
-    "title": "Sozlanuvchi Kechikishli RC Zanjir",
+    "title": "Sozlanuvçi Keçikişli RC Zanjir",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "advanced",
@@ -9473,8 +9473,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Potensiometr orqali kechikish vaqtini 1 dan 10 soniyagacha sozlash.",
-    "theory": "Rezistor qiymatini o'zgartirish orqali vaqt doimiysi τ silliq o'zgartiriladi.",
+    "desc": "Potensiometr orqali keçikiş vaqtini 1 dan 10 soniyagaça sozlaş.",
+    "theory": "Rezistor qiymatini özgartiriş orqali vaqt doimiysi τ silliq özgartiriladi.",
     "components": [
       {
         "id": "b1",
@@ -9552,13 +9552,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_119",
     "num": 119,
-    "title": "Ikki Bosqichli RC Kaskad",
+    "title": "Ikki Bosqiçli RC Kaskad",
     "category": "capacitors",
     "categoryName": "Kondensatorlar & RC Zanjirlar",
     "difficulty": "advanced",
@@ -9571,8 +9571,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Ikki kaskadli filtr orqali yanada toza doimiy kuchlanish olish.",
-    "theory": "Ko'p bosqichli filtrlash chastota tushish qiyaligini oshiradi.",
+    "desc": "Ikki kaskadli filtr orqali yanada toza doimiy kuçlaniş oliş.",
+    "theory": "Köp bosqiçli filtrlaş çastota tuşiş qiyaligini oşiradi.",
     "components": [
       {
         "id": "b1",
@@ -9650,7 +9650,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -9669,8 +9669,8 @@ const CIRCUIT_TEMPLATES = [
       "Zaryad",
       "Razryad"
     ],
-    "desc": "Kondensator qoplamalarida kuchlanish darajasini saqlash.",
-    "theory": "Zamonaviy dinamik operativ xotira (DRAM) katakchalari aynan shunday ishlaydi.",
+    "desc": "Kondensator qoplamalarida kuçlaniş darajasini saqlaş.",
+    "theory": "Zamonaviy dinamik operativ xotira (DRAM) katakçalari aynan şunday işlaydi.",
     "components": [
       {
         "id": "b1",
@@ -9748,7 +9748,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -9758,17 +9758,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Kichik baza toki (1mA) bilan katta yuklama tokini (100mA) boshqarish.",
-    "theory": "Tranzistor to'yinish rejimida kollektor-emitter o'tishi deyarli 0 qarshilikka ega bo'ladi.",
+    "desc": "Kiçik baza toki (1mA) bilan katta yuklama tokini (100mA) boşqariş.",
+    "theory": "Tranzistor töyiniş rejimida kollektor-emitter ötişi deyarli 0 qarşilikka ega böladi.",
     "components": [
       {
         "id": "b1",
@@ -9858,7 +9858,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -9868,17 +9868,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Inson tanasi orqali o'tuvchi mikroskopik tok bilan LED ni yoqish.",
-    "theory": "Inson tanasi katta qarshilikka ega bo'lsa ham, tranzistor kuchaytirishi hisobiga LED yonadi.",
+    "desc": "Inson tanasi orqali ötuvçi mikroskopik tok bilan LED ni yoqiş.",
+    "theory": "Inson tanasi katta qarşilikka ega bölsa ham, tranzistor kuçaytirişi hisobiga LED yonadi.",
     "components": [
       {
         "id": "b1",
@@ -9968,7 +9968,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -9978,17 +9978,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Bazaga signal berilganda chiqishdagi LED o'chadigan zanjir.",
-    "theory": "Baza toki bo'lganda tranzistor ochilib, chiqishni GND ga tortadi (chiqish 0 bo'ladi).",
+    "desc": "Bazaga signal berilganda çiqişdagi LED öçadigan zanjir.",
+    "theory": "Baza toki bölganda tranzistor oçilib, çiqişni GND ga tortadi (çiqiş 0 böladi).",
     "components": [
       {
         "id": "b1",
@@ -10078,27 +10078,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_124",
     "num": 124,
-    "title": "Darlington Juftligi (Super Kuchaytirgich)",
+    "title": "Darlington Juftligi (Super Kuçaytirgiç)",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Ikkita NPN tranzistorni ketma-ket ulab tok kuchaytirish koeffitsientini ko'paytirish.",
-    "theory": "Darlington juftligida umumiy kuchaytirish β = β1 * β2 (100 * 100 = 10,000 baravar!).",
+    "desc": "Ikkita NPN tranzistorni ketma-ket ulab tok kuçaytiriş koeffitsientini köpaytiriş.",
+    "theory": "Darlington juftligida umumiy kuçaytiriş β = β1 * β2 (100 * 100 = 10,000 baravar!).",
     "components": [
       {
         "id": "b1",
@@ -10188,27 +10188,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_125",
     "num": 125,
-    "title": "Suv Sathi / Namlik Datchigi",
+    "title": "Suv Sathi / Namlik Datçigi",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Suv orqali tok o'tganda tranzistor ochilib LED yoki buzzerni yoqadi.",
-    "theory": "Suvdagi erigan tuzlar ionlar hosil qilib tok o'tkazadi va tranzistor bazasini ochadi.",
+    "desc": "Suv orqali tok ötganda tranzistor oçilib LED yoki buzzerni yoqadi.",
+    "theory": "Suvdagi erigan tuzlar ionlar hosil qilib tok ötkazadi va tranzistor bazasini oçadi.",
     "components": [
       {
         "id": "b1",
@@ -10298,27 +10298,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_126",
     "num": 126,
-    "title": "Tranzistorli Avtomatik Tungi Chiroq",
+    "title": "Tranzistorli Avtomatik Tungi Çiroq",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "LDR va tranzistor kombinatsiyasi orqali yorug'lik avtomatikasi.",
-    "theory": "Qorong'ida LDR qarshiligi oshadi, baza kuchlanishi ko'tariladi va tranzistor ochiladi.",
+    "desc": "LDR va tranzistor kombinatsiyasi orqali yoruğlik avtomatikasi.",
+    "theory": "Qoronğida LDR qarşiligi oşadi, baza kuçlanişi kötariladi va tranzistor oçiladi.",
     "components": [
       {
         "id": "b1",
@@ -10408,27 +10408,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_127",
     "num": 127,
-    "title": "Tranzistorli Tonggi Qo'ng'iroq",
+    "title": "Tranzistorli Tonggi Qönğiroq",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Yorug'lik tushganda tranzistor ochilib signal beruvchi zanjir.",
-    "theory": "LDR va rezistor o'rni almashtirilsa, tizim qorong'ida emas, yorug'likda ishlaydi.",
+    "desc": "Yoruğlik tuşganda tranzistor oçilib signal beruvçi zanjir.",
+    "theory": "LDR va rezistor örni almaştirilsa, tizim qoronğida emas, yoruğlikda işlaydi.",
     "components": [
       {
         "id": "b1",
@@ -10518,7 +10518,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -10528,17 +10528,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Kichik mantiqiy signal bilan quvvatli DC motorni aylantirish.",
-    "theory": "Mikrokontroller yoki sensorlar to'g'ridan-to'g'ri motorga tok bera olmaydi, tranzistor drayver kerak.",
+    "desc": "Kiçik mantiqiy signal bilan quvvatli DC motorni aylantiriş.",
+    "theory": "Mikrokontroller yoki sensorlar töğridan-töğri motorga tok bera olmaydi, tranzistor drayver kerak.",
     "components": [
       {
         "id": "b1",
@@ -10628,26 +10628,26 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_129",
     "num": 129,
-    "title": "Tranzistorli Vaqt Rele (Kechikish)",
+    "title": "Tranzistorli Vaqt Rele (Keçikiş)",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Kondensator bazada zaryadlanguncha kechikib yoqiluvchi rele.",
+    "desc": "Kondensator bazada zaryadlangunça keçikib yoqiluvçi rele.",
     "theory": "RC vaqt zanjiri tranzistor bazasi bilan birgalikda aniq vaqt taymerini hosil qiladi.",
     "components": [
       {
@@ -10738,7 +10738,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -10748,17 +10748,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Ikkita tranzistor yordamida navbatma-navbat miltillovchi sxema.",
-    "theory": "Simmetrik multivibrator tashqi generatsiyasiz o'z-o'zidan tebranadi.",
+    "desc": "Ikkita tranzistor yordamida navbatma-navbat miltillovçi sxema.",
+    "theory": "Simmetrik multivibrator taşqi generatsiyasiz öz-özidan tebranadi.",
     "components": [
       {
         "id": "b1",
@@ -10848,13 +10848,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_131",
     "num": 131,
-    "title": "Harorat Datchigi Tranzistorli Modeli",
+    "title": "Harorat Datçigi Tranzistorli Modeli",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -10862,13 +10862,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Harorat ko'tarilganda qarshilik o'zgarishiga sezgir zanjir.",
-    "theory": "Tranzistorning baza-emitter kuchlanishi haroratga juda sezgir (-2mV/°C).",
+    "desc": "Harorat kötarilganda qarşilik özgarişiga sezgir zanjir.",
+    "theory": "Tranzistorning baza-emitter kuçlanişi haroratga juda sezgir (-2mV/°C).",
     "components": [
       {
         "id": "b1",
@@ -10958,13 +10958,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_132",
     "num": 132,
-    "title": "Tovush Signali Boshlang'ich Kuchaytirgichi",
+    "title": "Tovuş Signali Boşlanğiç Kuçaytirgiçi",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -10972,13 +10972,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Kichik o'zgaruvchan signal amplitudasini oshirish.",
-    "theory": "Umumiy emitterli sxema kuchlanish va tokni bir vaqtda kuchaytiradi.",
+    "desc": "Kiçik özgaruvçan signal amplitudasini oşiriş.",
+    "theory": "Umumiy emitterli sxema kuçlaniş va tokni bir vaqtda kuçaytiradi.",
     "components": [
       {
         "id": "b1",
@@ -11068,13 +11068,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_133",
     "num": 133,
-    "title": "Tranzistorli Tok Cheklovchi (Barqaror Tok)",
+    "title": "Tranzistorli Tok Çeklovçi (Barqaror Tok)",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -11082,13 +11082,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Yuklama qarshiligi o'zgarsa ham tokni bir me'yorda ushlab turuvchi zanjir.",
-    "theory": "LED lar uzoq xizmat qilishi uchun doimiy kuchlanish emas, doimiy tok talab etiladi.",
+    "desc": "Yuklama qarşiligi özgarsa ham tokni bir me'yorda uşlab turuvçi zanjir.",
+    "theory": "LED lar uzoq xizmat qilişi uçun doimiy kuçlaniş emas, doimiy tok talab etiladi.",
     "components": [
       {
         "id": "b1",
@@ -11178,7 +11178,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -11192,13 +11192,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Plastik taroq yoki kiyimdagi statik zaryadga ta'sirchan datchik.",
-    "theory": "Darlington juftligining o'ta yuqori sezgirligi havodagi elektrostatik maydonni payqaydi.",
+    "desc": "Plastik taroq yoki kiyimdagi statik zaryadga ta'sirçan datçik.",
+    "theory": "Darlington juftligining öta yuqori sezgirligi havodagi elektrostatik maydonni payqaydi.",
     "components": [
       {
         "id": "b1",
@@ -11288,7 +11288,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -11302,13 +11302,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Pyezo buzzer uchun tebranish hosil qiluvchi avtogenerator.",
-    "theory": "Ijobiy teskari aloqa orqali doimiy tok o'zgaruvchan tovush tebranishiga aylanadi.",
+    "desc": "Pyezo buzzer uçun tebraniş hosil qiluvçi avtogenerator.",
+    "theory": "Ijobiy teskari aloqa orqali doimiy tok özgaruvçan tovuş tebranişiga aylanadi.",
     "components": [
       {
         "id": "b1",
@@ -11398,13 +11398,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_136",
     "num": 136,
-    "title": "Tranzistorli Signalizatsiya Bloki (Latch)",
+    "title": "Tranzistorli Signalizatsiya Bloki (Latç)",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -11412,13 +11412,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Bir marta signal berilgach o'z-o'zini ushlab qoluvchi elektron rele.",
-    "theory": "Qo'riqlash tizimlarida datchik bir zumda uzilib qayta ulansa ham trevoga o'chmay qolishi shart.",
+    "desc": "Bir marta signal berilgaç öz-özini uşlab qoluvçi elektron rele.",
+    "theory": "Qöriqlaş tizimlarida datçik bir zumda uzilib qayta ulansa ham trevoga öçmay qolişi şart.",
     "components": [
       {
         "id": "b1",
@@ -11508,13 +11508,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_137",
     "num": 137,
-    "title": "Qisqa Tutashuvdan Tranzistorli Himoya",
+    "title": "Qisqa Tutaşuvdan Tranzistorli Himoya",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -11522,13 +11522,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Tok me'yordan oshganda yuklamani 1 millisekundda uzuvchi himoya.",
-    "theory": "Eriydigan saqlagichlarga qaraganda elektron himoya million marta tezroq ishlaydi.",
+    "desc": "Tok me'yordan oşganda yuklamani 1 millisekundda uzuvçi himoya.",
+    "theory": "Eriydigan saqlagiçlarga qaraganda elektron himoya million marta tezroq işlaydi.",
     "components": [
       {
         "id": "b1",
@@ -11618,13 +11618,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_138",
     "num": 138,
-    "title": "Dvigatelni Silliq To'xtatish (Soft Stop)",
+    "title": "Dvigatelni Silliq Töxtatiş (Soft Stop)",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -11632,13 +11632,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Baza kondensatori orqali motorni birdan emas, sekin to'xtatish.",
-    "theory": "Mexanizmlarning tishli g'ildiraklari yemirilmasligi uchun silliq to'xtatish kerak.",
+    "desc": "Baza kondensatori orqali motorni birdan emas, sekin töxtatiş.",
+    "theory": "Mexanizmlarning tişli ğildiraklari yemirilmasligi uçun silliq töxtatiş kerak.",
     "components": [
       {
         "id": "b1",
@@ -11728,13 +11728,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_139",
     "num": 139,
-    "title": "Dvigatelni Silliq Yurgizish (Soft Start)",
+    "title": "Dvigatelni Silliq Yurgiziş (Soft Start)",
     "category": "transistors",
     "categoryName": "Tranzistorlar NPN & Bipolyar",
     "difficulty": "advanced",
@@ -11742,13 +11742,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Baza kuchlanishining asta o'sishi orqali start tokini kamaytirish.",
-    "theory": "Katta dvigatellarni ishga tushirishda tarmoqqa ortiqcha zarba bermaslik usuli.",
+    "desc": "Baza kuçlanişining asta ösişi orqali start tokini kamaytiriş.",
+    "theory": "Katta dvigatellarni işga tuşirişda tarmoqqa ortiqça zarba bermaslik usuli.",
     "components": [
       {
         "id": "b1",
@@ -11838,7 +11838,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -11852,13 +11852,13 @@ const CIRCUIT_TEMPLATES = [
     "tags": [
       "Tranzistor",
       "NPN",
-      "Kuchaytirgich",
+      "Kuçaytirgiç",
       "Kalit",
       "Bipolyar",
       "2N2222"
     ],
-    "desc": "Tranzistorlar yordamida NOR mantiqiy elementini yasash.",
-    "theory": "Birinchi avlod kompyuterlari (Apollo fazo kemasi) aynan RTL mantiqda qurilgan.",
+    "desc": "Tranzistorlar yordamida NOR mantiqiy elementini yasaş.",
+    "theory": "Birinçi avlod kompyuterlari (Apollo fazo kemasi) aynan RTL mantiqda qurilgan.",
     "components": [
       {
         "id": "b1",
@@ -11948,7 +11948,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -11958,7 +11958,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -11968,8 +11968,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Faqat ikkala kirish ham '1' bo'lgandagina chiqish '1' (5V) bo'ladi.",
-    "theory": "Mantiqiy ko'paytirish amali (Y = A ∧ B). Ikkala shart bajarilishi talab qilinadi.",
+    "desc": "Faqat ikkala kiriş ham '1' bölgandagina çiqiş '1' (5V) böladi.",
+    "theory": "Mantiqiy köpaytiriş amali (Y = A ∧ B). Ikkala şart bajarilişi talab qilinadi.",
     "components": [
       {
         "id": "b1",
@@ -12046,7 +12046,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12056,7 +12056,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12066,8 +12066,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Hech bo'lmaganda bitta kirish '1' bo'lsa chiqish '1' bo'ladi.",
-    "theory": "Mantiqiy qo'shish amali (Y = A ∨ B). Alternativ shartlar uchun ishlatiladi.",
+    "desc": "Heç bölmaganda bitta kiriş '1' bölsa çiqiş '1' böladi.",
+    "theory": "Mantiqiy qöşiş amali (Y = A ∨ B). Alternativ şartlar uçun işlatiladi.",
     "components": [
       {
         "id": "b1",
@@ -12144,7 +12144,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12154,7 +12154,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12164,8 +12164,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Kirish '1' bo'lsa chiqish '0', kirish '0' bo'lsa chiqish '1'.",
-    "theory": "Mantiqiy inkor amali (Y = ¬A). Signal qutbini teskarisiga o'zgartiradi.",
+    "desc": "Kiriş '1' bölsa çiqiş '0', kiriş '0' bölsa çiqiş '1'.",
+    "theory": "Mantiqiy inkor amali (Y = ¬A). Signal qutbini teskarisiga özgartiradi.",
     "components": [
       {
         "id": "b1",
@@ -12230,7 +12230,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12240,7 +12240,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12250,8 +12250,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Universal mantiq elementi: faqat ikkala kirish '1' bo'lgandagina chiqish '0'.",
-    "theory": "NAND elementidan istalgan boshqa mantiqiy elementni (AND, OR, NOT, XOR) yasash mumkin.",
+    "desc": "Universal mantiq elementi: faqat ikkala kiriş '1' bölgandagina çiqiş '0'.",
+    "theory": "NAND elementidan istalgan boşqa mantiqiy elementni (AND, OR, NOT, XOR) yasaş mumkin.",
     "components": [
       {
         "id": "b1",
@@ -12328,7 +12328,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12338,7 +12338,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12348,8 +12348,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Ikkala kirish ham '0' bo'lgandagina chiqish '1' bo'ladi.",
-    "theory": "Inkor qo'shish amali. Kosmik apparatlarning xotira va triggerlarida keng qo'llanilgan.",
+    "desc": "Ikkala kiriş ham '0' bölgandagina çiqiş '1' böladi.",
+    "theory": "Inkor qöşiş amali. Kosmik apparatlarning xotira va triggerlarida keng qöllanilgan.",
     "components": [
       {
         "id": "b1",
@@ -12426,7 +12426,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12436,7 +12436,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12446,8 +12446,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Kirishlar har xil bo'lgandagina chiqish '1' bo'ladi.",
-    "theory": "Taqqoslash va paritet tekshiruvida, shuningdek ikkilik arifmetikasida ishlatiladi.",
+    "desc": "Kirişlar har xil bölgandagina çiqiş '1' böladi.",
+    "theory": "Taqqoslaş va paritet tekşiruvida, şuningdek ikkilik arifmetikasida işlatiladi.",
     "components": [
       {
         "id": "b1",
@@ -12524,17 +12524,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_147",
     "num": 147,
-    "title": "NAND Elementidan NOT Invertor Yasash",
+    "title": "NAND Elementidan NOT Invertor Yasaş",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12544,8 +12544,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "NAND ning ikkala kirishini birlashtirib invertor hosil qilish.",
-    "theory": "Agar A = B bo'lsa, NAND chiqishi ¬(A ∧ A) = ¬A ga teng bo'ladi.",
+    "desc": "NAND ning ikkala kirişini birlaştirib invertor hosil qiliş.",
+    "theory": "Agar A = B bölsa, NAND çiqişi ¬(A ∧ A) = ¬A ga teng böladi.",
     "components": [
       {
         "id": "b1",
@@ -12610,7 +12610,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12620,7 +12620,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Mantiq",
       "Logic Gates",
@@ -12630,7 +12630,7 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "NAND chiqishiga NOT invertor ulab oddiy AND yasash.",
+    "desc": "NAND çiqişiga NOT invertor ulab oddiy AND yasaş.",
     "theory": "¬(¬(A ∧ B)) = A ∧ B. De Morgan qonunlari amalda.",
     "components": [
       {
@@ -12708,7 +12708,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -12728,8 +12728,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Kirishlari invertlangan NAND elementi OR vazifasini bajarishi.",
-    "theory": "¬(¬A ∧ ¬B) = A ∨ B. Mantiqiy ifodalarni bir xil elementlarga keltirish usuli.",
+    "desc": "Kirişlari invertlangan NAND elementi OR vazifasini bajarişi.",
+    "theory": "¬(¬A ∧ ¬B) = A ∨ B. Mantiqiy ifodalarni bir xil elementlarga keltiriş usuli.",
     "components": [
       {
         "id": "b1",
@@ -12806,13 +12806,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_150",
     "num": 150,
-    "title": "1-Bitli Yarim Jamlagich (Half Adder)",
+    "title": "1-Bitli Yarim Jamlagiç (Half Adder)",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -12826,8 +12826,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Ikkita 1-bitli sonni qo'shish: Yig'indi (XOR) va Ko'chirish (AND).",
-    "theory": "Barcha zamonaviy protsessorlarning arifmetik-mantiqiy qurilmasi (ALU) asosi.",
+    "desc": "Ikkita 1-bitli sonni qöşiş: Yiğindi (XOR) va Köçiriş (AND).",
+    "theory": "Barça zamonaviy protsessorlarning arifmetik-mantiqiy qurilmasi (ALU) asosi.",
     "components": [
       {
         "id": "b1",
@@ -12904,13 +12904,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_151",
     "num": 151,
-    "title": "To'liq Jamlagich (Full Adder) Modeli",
+    "title": "Töliq Jamlagiç (Full Adder) Modeli",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -12924,8 +12924,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Oldingi razryaddan ko'chirishni ham hisobga oluvchi 3 kirishli jamlagich.",
-    "theory": "Ko'p xonali sonlarni ketma-ket qo'shish uchun to'liq jamlagichlar kaskadi kerak.",
+    "desc": "Oldingi razryaddan köçirişni ham hisobga oluvçi 3 kirişli jamlagiç.",
+    "theory": "Köp xonali sonlarni ketma-ket qöşiş uçun töliq jamlagiçlar kaskadi kerak.",
     "components": [
       {
         "id": "b1",
@@ -13002,13 +13002,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_152",
     "num": 152,
-    "title": "RS-Trigger (Oddiy Xotira Katakchasi)",
+    "title": "RS-Trigger (Oddiy Xotira Katakçasi)",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -13022,8 +13022,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Set (o'rnatish) va Reset (tiklash) signallari bilan 1 bit saqlash.",
-    "theory": "Trigger bir lahzalik impulsdan keyin ham o'z holatini doimiy eslab qoladi.",
+    "desc": "Set (örnatiş) va Reset (tiklaş) signallari bilan 1 bit saqlaş.",
+    "theory": "Trigger bir lahzalik impulsdan keyin ham öz holatini doimiy eslab qoladi.",
     "components": [
       {
         "id": "b1",
@@ -13100,7 +13100,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -13120,8 +13120,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Takt signali kelgandagina ma'lumotni eslab qoluvchi trigger.",
-    "theory": "Zamonaviy registrlar va kesh xotiralar D-triggerlar asosida quriladi.",
+    "desc": "Takt signali kelgandagina ma'lumotni eslab qoluvçi trigger.",
+    "theory": "Zamonaviy registrlar va keş xotiralar D-triggerlar asosida quriladi.",
     "components": [
       {
         "id": "b1",
@@ -13198,13 +13198,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_154",
     "num": 154,
-    "title": "2-Kirishli Multipleksor (MUX 2:1)",
+    "title": "2-Kirişli Multipleksor (MUX 2:1)",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -13218,8 +13218,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Boshqaruv signali orqali 2 ta kirishdan birini chiqishga ulash.",
-    "theory": "Raqamli ma'lumotlar oqimini kommutatsiya qilish va kanallarni taqsimlash qurilmasi.",
+    "desc": "Boşqaruv signali orqali 2 ta kirişdan birini çiqişga ulaş.",
+    "theory": "Raqamli ma'lumotlar oqimini kommutatsiya qiliş va kanallarni taqsimlaş qurilmasi.",
     "components": [
       {
         "id": "b1",
@@ -13296,7 +13296,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -13316,8 +13316,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Bitta kirish signalini 2 ta yo'nalishdan biriga yo'naltirish.",
-    "theory": "Multipleksorning teskarisi bo'lib, signallarni qabul qiluvchi bloklarga yo'llaydi.",
+    "desc": "Bitta kiriş signalini 2 ta yönalişdan biriga yönaltiriş.",
+    "theory": "Multipleksorning teskarisi bölib, signallarni qabul qiluvçi bloklarga yöllaydi.",
     "components": [
       {
         "id": "b1",
@@ -13394,7 +13394,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -13414,8 +13414,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Ikki signalning tengligini tekshiruvchi raqamli zanjir.",
-    "theory": "XNOR amali: ikkala kirish bir xil bo'lsa (0-0 yoki 1-1) chiqishda '1' beradi.",
+    "desc": "Ikki signalning tengligini tekşiruvçi raqamli zanjir.",
+    "theory": "XNOR amali: ikkala kiriş bir xil bölsa (0-0 yoki 1-1) çiqişda '1' beradi.",
     "components": [
       {
         "id": "b1",
@@ -13492,13 +13492,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_157",
     "num": 157,
-    "title": "Kod O'zgartiruvchi (Oddiy Enkoder)",
+    "title": "Kod Özgartiruvçi (Oddiy Enkoder)",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -13512,8 +13512,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Tugmalar bosilishini 2-bitli ikkilik kodga aylantirish.",
-    "theory": "Klaviaturalarda tugma bosilishini kompyuter tushunadigan ikkilik kodga o'tkazish asosi.",
+    "desc": "Tugmalar bosilişini 2-bitli ikkilik kodga aylantiriş.",
+    "theory": "Klaviaturalarda tugma bosilişini kompyuter tuşunadigan ikkilik kodga ötkaziş asosi.",
     "components": [
       {
         "id": "b1",
@@ -13590,13 +13590,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_158",
     "num": 158,
-    "title": "7-Segment Displey: '1' Raqamini Chiqarish",
+    "title": "7-Segment Displey: '1' Raqamini Çiqariş",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -13610,7 +13610,7 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "b va c segmentlariga yuqori kuchlanish berib '1' raqamini yoqish.",
+    "desc": "b va c segmentlariga yuqori kuçlaniş berib '1' raqamini yoqiş.",
     "theory": "Raqamli indikatorlarda har bir raqam alohida segmentlar kombinatsiyasidan iborat.",
     "components": [
       {
@@ -13688,13 +13688,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_159",
     "num": 159,
-    "title": "7-Segment Displey: '8' Raqamini Chiqarish",
+    "title": "7-Segment Displey: '8' Raqamini Çiqariş",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -13708,8 +13708,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Barcha 7 ta segmentni (a..g) bir vaqtda yoqish.",
-    "theory": "'8' raqami displeyning barcha segmentlari to'g'ri ishlayotganini tekshirish testi hisoblanadi.",
+    "desc": "Barça 7 ta segmentni (a..g) bir vaqtda yoqiş.",
+    "theory": "'8' raqami displeyning barça segmentlari töğri işlayotganini tekşiriş testi hisoblanadi.",
     "components": [
       {
         "id": "b1",
@@ -13786,13 +13786,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_160",
     "num": 160,
-    "title": "Paritet (Juftlik) Tekshiruvi Modeli",
+    "title": "Paritet (Juftlik) Tekşiruvi Modeli",
     "category": "logic",
     "categoryName": "Raqamli Mantiq Logic Gates",
     "difficulty": "advanced",
@@ -13806,8 +13806,8 @@ const CIRCUIT_TEMPLATES = [
       "NOT",
       "Raqamli"
     ],
-    "desc": "Ma'lumotlar uzatilishida xatolik yuz berganini XOR orqali aniqlash.",
-    "theory": "Tarmoq protokollarida va xotirada ma'lumot butunligini nazorat qilish usuli.",
+    "desc": "Ma'lumotlar uzatilişida xatolik yuz berganini XOR orqali aniqlaş.",
+    "theory": "Tarmoq protokollarida va xotirada ma'lumot butunligini nazorat qiliş usuli.",
     "components": [
       {
         "id": "b1",
@@ -13884,17 +13884,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_161",
     "num": 161,
-    "title": "555 Standart LED Miltillatuvchi (1 Hz)",
+    "title": "555 Standart LED Miltillatuvçi (1 Hz)",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -13903,8 +13903,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Sekundiga 1 marta o'chib-yonuvchi klassik astabil generator.",
-    "theory": "Chastota f = 1.44 / ((R1 + 2*R2) * C) formulasi bilan aniqlanadi.",
+    "desc": "Sekundiga 1 marta öçib-yonuvçi klassik astabil generator.",
+    "theory": "Çastota f = 1.44 / ((R1 + 2*R2) * C) formulasi bilan aniqlanadi.",
     "components": [
       {
         "id": "b1",
@@ -14024,17 +14024,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_162",
     "num": 162,
-    "title": "555 Tezkor Miltillatuvchi (Stroboskop 10 Hz)",
+    "title": "555 Tezkor Miltillatuvçi (Stroboskop 10 Hz)",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14043,8 +14043,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Tez chaqnovchi LED stroboskop zanjiri.",
-    "theory": "Kichikroq kondensator va rezistorlar orqali chaqnash chastotasi oshiriladi.",
+    "desc": "Tez çaqnovçi LED stroboskop zanjiri.",
+    "theory": "Kiçikroq kondensator va rezistorlar orqali çaqnaş çastotasi oşiriladi.",
     "components": [
       {
         "id": "b1",
@@ -14164,7 +14164,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -14174,7 +14174,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14183,8 +14183,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Tugma bir marta bosilganda LED 5 soniya yonib, so'ng o'chadi.",
-    "theory": "Monostabil rejimda bitta kirish impulsi aniq vaqtli bitta chiqish impulsini yaratadi: T = 1.1 * R * C.",
+    "desc": "Tugma bir marta bosilganda LED 5 soniya yonib, söng öçadi.",
+    "theory": "Monostabil rejimda bitta kiriş impulsi aniq vaqtli bitta çiqiş impulsini yaratadi: T = 1.1 * R * C.",
     "components": [
       {
         "id": "b1",
@@ -14304,17 +14304,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_164",
     "num": 164,
-    "title": "555 Pyezo Tovush Generatori (1 kHz)",
+    "title": "555 Pyezo Tovuş Generatori (1 kHz)",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14323,8 +14323,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Inson qulog'iga yaxshi eshitiluvchi jarangdor akustik signal.",
-    "theory": "Tovush chastotasi pyezo elementning rezonans chastotasiga yaqinlashtiriladi.",
+    "desc": "Inson quloğiga yaxşi eşitiluvçi jarangdor akustik signal.",
+    "theory": "Tovuş çastotasi pyezo elementning rezonans çastotasiga yaqinlaştiriladi.",
     "components": [
       {
         "id": "b1",
@@ -14444,7 +14444,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -14454,7 +14454,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14463,8 +14463,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Ikki xil chastota orasida almashinuvchi tovush generatori.",
-    "theory": "Boshqaruv pini (CV) orqali ichki komparator kuchlanishi modulyatsiya qilinadi.",
+    "desc": "Ikki xil çastota orasida almaşinuvçi tovuş generatori.",
+    "theory": "Boşqaruv pini (CV) orqali içki komparator kuçlanişi modulyatsiya qilinadi.",
     "components": [
       {
         "id": "b1",
@@ -14584,17 +14584,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_166",
     "num": 166,
-    "title": "555 Ikki Rangli LED Almashinuvi",
+    "title": "555 Ikki Rangli LED Almaşinuvi",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14603,8 +14603,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Qizil va yashil LED lar navbat bilan galma-galdan yonishi.",
-    "theory": "Chiqish 3-pini HIGH bo'lganda bitta LED, LOW bo'lganda ikkinchi LED yonadi.",
+    "desc": "Qizil va yaşil LED lar navbat bilan galma-galdan yonişi.",
+    "theory": "Çiqiş 3-pini HIGH bölganda bitta LED, LOW bölganda ikkinçi LED yonadi.",
     "components": [
       {
         "id": "b1",
@@ -14724,17 +14724,17 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_167",
     "num": 167,
-    "title": "555 PWM (KHM) Dvigatel Tezligi Boshqaruvi",
+    "title": "555 PWM (KHM) Dvigatel Tezligi Boşqaruvi",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14743,8 +14743,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Impuls kengligini o'zgartirish orqali dvigatel quvvatini yo'qotishsiz sozlash.",
-    "theory": "PWM orqali motorga to'liq kuchlanish impulslari beriladi, shuning uchun past tezlikda ham tortish kuchi saqlanadi.",
+    "desc": "Impuls kengligini özgartiriş orqali dvigatel quvvatini yöqotişsiz sozlaş.",
+    "theory": "PWM orqali motorga töliq kuçlaniş impulslari beriladi, şuning uçun past tezlikda ham tortiş kuçi saqlanadi.",
     "components": [
       {
         "id": "b1",
@@ -14864,7 +14864,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -14874,7 +14874,7 @@ const CIRCUIT_TEMPLATES = [
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "NE555",
       "Taymer",
@@ -14883,8 +14883,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Yorug'likni miltillashsiz silliq boshqarish (0..100%).",
-    "theory": "Inson ko'zi 100 Hz dan yuqori chastotali PWM ni sezmaydi va silliq yorug'lik deb qabul qiladi.",
+    "desc": "Yoruğlikni miltillaşsiz silliq boşqariş (0..100%).",
+    "theory": "Inson közi 100 Hz dan yuqori çastotali PWM ni sezmaydi va silliq yoruğlik deb qabul qiladi.",
     "components": [
       {
         "id": "b1",
@@ -15004,7 +15004,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -15023,7 +15023,7 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Musiqachilar uchun bir maromda tovush zarbalari beruvchi metronom.",
+    "desc": "Musiqaçilar uçun bir maromda tovuş zarbalari beruvçi metronom.",
     "theory": "Potensiometr yordamida daqiqadagi zarbalar soni (BPM) sozlanadi.",
     "components": [
       {
@@ -15144,13 +15144,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_170",
     "num": 170,
-    "title": "555 Yo'qolgan Impuls Detektori (Watchdog)",
+    "title": "555 Yöqolgan Impuls Detektori (Watchdog)",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "advanced",
@@ -15163,8 +15163,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Signal uzilib qolsa darhol ogohlantiruvchi xavfsizlik nazoratchisi.",
-    "theory": "Sanoat tizimlarida mikrokontroller muzlab qolishini aniqlashda qo'llaniladi.",
+    "desc": "Signal uzilib qolsa darhol ogohlantiruvçi xavfsizlik nazoratçisi.",
+    "theory": "Sanoat tizimlarida mikrokontroller muzlab qolişini aniqlaşda qöllaniladi.",
     "components": [
       {
         "id": "b1",
@@ -15284,7 +15284,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -15303,8 +15303,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Har 10 soniyada 2 soniyaga suv nasosini ishga tushiruvchi siklik rejim.",
-    "theory": "O'simliklarni tomchilatib sug'orish va akvarium filtrlari uchun tayyor avtomat.",
+    "desc": "Har 10 soniyada 2 soniyaga suv nasosini işga tuşiruvçi siklik rejim.",
+    "theory": "Ösimliklarni tomçilatib suğoriş va akvarium filtrlari uçun tayyor avtomat.",
     "components": [
       {
         "id": "b1",
@@ -15424,13 +15424,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_172",
     "num": 172,
-    "title": "555 Sozlanuvchi Chastota Generatori",
+    "title": "555 Sozlanuvçi Çastota Generatori",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "advanced",
@@ -15443,8 +15443,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Potensiometr orqali 100 Hz dan 5 kHz gacha chastotani o'zgartirish.",
-    "theory": "Laboratoriyalarda turli signallarni sinash uchun o'rganish stendi.",
+    "desc": "Potensiometr orqali 100 Hz dan 5 kHz gaça çastotani özgartiriş.",
+    "theory": "Laboratoriyalarda turli signallarni sinaş uçun örganiş stendi.",
     "components": [
       {
         "id": "b1",
@@ -15564,13 +15564,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_173",
     "num": 173,
-    "title": "555 Ovoz Balandligi Sozlanuvchi Sirena",
+    "title": "555 Ovoz Balandligi Sozlanuvçi Sirena",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "advanced",
@@ -15583,8 +15583,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Chiqishda pot va pyezo buzzer yordamida ohang va balandlikni boshqarish.",
-    "theory": "Signalizatsiya tizimlarida zarur ovoz bosimini o'rnatish imkoniyati.",
+    "desc": "Çiqişda pot va pyezo buzzer yordamida ohang va balandlikni boşqariş.",
+    "theory": "Signalizatsiya tizimlarida zarur ovoz bosimini örnatiş imkoniyati.",
     "components": [
       {
         "id": "b1",
@@ -15704,13 +15704,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_174",
     "num": 174,
-    "title": "555 To'g'ri Burchakli To'lqin Generatori (50% Duty)",
+    "title": "555 Töğri Burçakli Tölqin Generatori (50% Duty)",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "advanced",
@@ -15723,8 +15723,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Simmetrik meandr to'lqini generatori.",
-    "theory": "Raqamli soatlar va hisoblagichlar uchun aniq 50% li takt impulslari.",
+    "desc": "Simmetrik meandr tölqini generatori.",
+    "theory": "Raqamli soatlar va hisoblagiçlar uçun aniq 50% li takt impulslari.",
     "components": [
       {
         "id": "b1",
@@ -15844,7 +15844,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -15863,8 +15863,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "LDR datchigiga qo'l yaqinlashganda tovush ohangi o'zgarishi.",
-    "theory": "Qo'l harakati bilan havodan musiqa chaluvchi mashhur fizika asbobi.",
+    "desc": "LDR datçigiga qöl yaqinlaşganda tovuş ohangi özgarişi.",
+    "theory": "Qöl harakati bilan havodan musiqa çaluvçi maşhur fizika asbobi.",
     "components": [
       {
         "id": "b1",
@@ -15984,7 +15984,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -16003,8 +16003,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Raqamli triggerlar va registrlar uchun sinxronlash signali.",
-    "theory": "Raqamli sxemalar faqat CLK impulsi kelgandagina yangi holatga o'tadi.",
+    "desc": "Raqamli triggerlar va registrlar uçun sinxronlaş signali.",
+    "theory": "Raqamli sxemalar faqat CLK impulsi kelgandagina yangi holatga ötadi.",
     "components": [
       {
         "id": "b1",
@@ -16124,7 +16124,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -16143,8 +16143,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Katta sig'im va qarshilik bilan 30 soniyalik kutish zanjiri.",
-    "theory": "Inson xonadan chiqib ketguncha chiroqni o'chirmay turuvchi kechikish.",
+    "desc": "Katta siğim va qarşilik bilan 30 soniyalik kutiş zanjiri.",
+    "theory": "Inson xonadan çiqib ketgunça çiroqni öçirmay turuvçi keçikiş.",
     "components": [
       {
         "id": "b1",
@@ -16264,7 +16264,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -16283,8 +16283,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Dvigatelni navbat bilan oldinga va orqaga aylantiruvchi generator.",
-    "theory": "Mexanik sinov stendlarida resursni tekshirish uchun siklik harakat.",
+    "desc": "Dvigatelni navbat bilan oldinga va orqaga aylantiruvçi generator.",
+    "theory": "Mexanik sinov stendlarida resursni tekşiriş uçun siklik harakat.",
     "components": [
       {
         "id": "b1",
@@ -16404,13 +16404,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_179",
     "num": 179,
-    "title": "555 Tranzistorli Quvvat Kuchaytirgich",
+    "title": "555 Tranzistorli Quvvat Kuçaytirgiç",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "advanced",
@@ -16423,8 +16423,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "555 chiqishiga quvvatli tranzistor ulab katta yuklamani boshqarish.",
-    "theory": "555 IC maksimal 200mA tok bera oladi, undan katta yuklamalar uchun tranzistor shart.",
+    "desc": "555 çiqişiga quvvatli tranzistor ulab katta yuklamani boşqariş.",
+    "theory": "555 IC maksimal 200mA tok bera oladi, undan katta yuklamalar uçun tranzistor şart.",
     "components": [
       {
         "id": "b1",
@@ -16544,13 +16544,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_180",
     "num": 180,
-    "title": "555 Avtonom Qo'riqlash Tizimi",
+    "title": "555 Avtonom Qöriqlaş Tizimi",
     "category": "timer555",
     "categoryName": "NE555 Taymer & Generatorlar",
     "difficulty": "advanced",
@@ -16563,8 +16563,8 @@ const CIRCUIT_TEMPLATES = [
       "Multivibrator",
       "Impuls"
     ],
-    "desc": "Datchik ishga tushganda 10 soniya sirena chalib o'chuvchi signalizatsiya.",
-    "theory": "Qo'riqlanadigan ob'ektlar uchun tejamkor va ishonchli xavfsizlik bloki.",
+    "desc": "Datçik işga tuşganda 10 soniya sirena çalib öçuvçi signalizatsiya.",
+    "theory": "Qöriqlanadigan ob'ektlar uçun tejamkor va işonçli xavfsizlik bloki.",
     "components": [
       {
         "id": "b1",
@@ -16684,7 +16684,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -16694,17 +16694,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Arduino",
       "Mikrokontroller",
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "13-pindagi o'rnatilgan 'L' LED ni 1 soniya oralig'ida miltillatish.",
-    "theory": "Arduino dasturlashining eng birinchi darsi: pinMode, digitalWrite va delay funksiyalari.",
+    "desc": "13-pindagi örnatilgan 'L' LED ni 1 soniya oraliğida miltillatiş.",
+    "theory": "Arduino dasturlaşining eng birinçi darsi: pinMode, digitalWrite va delay funksiyalari.",
     "components": [
       {
         "id": "ard1",
@@ -16768,27 +16768,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_182",
     "num": 182,
-    "title": "Arduino Tashqi Qizil LED Boshqaruvi",
+    "title": "Arduino Taşqi Qizil LED Boşqaruvi",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Arduino",
       "Mikrokontroller",
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "8-pin orqali tashqi LED ni yoqish va o'chirish.",
-    "theory": "Tashqi komponentlar uchun tok chegaralovchi 220Ω rezistor ulanishi shart.",
+    "desc": "8-pin orqali taşqi LED ni yoqiş va öçiriş.",
+    "theory": "Taşqi komponentlar uçun tok çegaralovçi 220Ω rezistor ulanişi şart.",
     "components": [
       {
         "id": "ard1",
@@ -16852,7 +16852,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -16862,17 +16862,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Arduino",
       "Mikrokontroller",
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "3 ta LED (Qizil, Sariq, Yashil) orqali to'liq svetofor sikli.",
-    "theory": "Haqiqiy shahar svetoforlarining vaqt algoritmlari dasturlashtiriladi.",
+    "desc": "3 ta LED (Qizil, Sariq, Yaşil) orqali töliq svetofor sikli.",
+    "theory": "Haqiqiy şahar svetoforlarining vaqt algoritmlari dasturlaştiriladi.",
     "components": [
       {
         "id": "ard1",
@@ -16936,7 +16936,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -16946,17 +16946,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Arduino",
       "Mikrokontroller",
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Tugma bosilgandagina avtomobillar to'xtab, piyodaga yashil chiroq yonishi.",
-    "theory": "Tugma holatini digitalRead() bilan tekshirib dinamik o'zgarish kiritish.",
+    "desc": "Tugma bosilgandagina avtomobillar töxtab, piyodaga yaşil çiroq yonişi.",
+    "theory": "Tugma holatini digitalRead() bilan tekşirib dinamik özgariş kiritiş.",
     "components": [
       {
         "id": "ard1",
@@ -17020,7 +17020,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -17030,17 +17030,17 @@ const CIRCUIT_TEMPLATES = [
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Arduino",
       "Mikrokontroller",
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Tugmani 1 marta bossa yonadi, yana 1 marta bossa o'chadi.",
-    "theory": "Holat o'zgaruvchisi (state toggle) orqali bitta tugma bilan 2 ta holatni boshqarish.",
+    "desc": "Tugmani 1 marta bossa yonadi, yana 1 marta bossa öçadi.",
+    "theory": "Holat özgaruvçisi (state toggle) orqali bitta tugma bilan 2 ta holatni boşqariş.",
     "components": [
       {
         "id": "ard1",
@@ -17104,27 +17104,27 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_186",
     "num": 186,
-    "title": "Arduino Tugma Tebranishini Filtrlash (Debounce)",
+    "title": "Arduino Tugma Tebranişini Filtrlaş (Debounce)",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "intermediate",
-    "difficultyName": "O'rta",
+    "difficultyName": "Örta",
     "tags": [
       "Arduino",
       "Mikrokontroller",
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Mexanik kontaktlarning shovqinini dasturiy yo'l bilan tozalash.",
-    "theory": "Kontakt tebranishi noto'g'ri bir necha marta bosilish deb qabul qilinishini oldini olish.",
+    "desc": "Mexanik kontaktlarning şovqinini dasturiy yöl bilan tozalaş.",
+    "theory": "Kontakt tebranişi notöğri bir neça marta bosiliş deb qabul qilinişini oldini oliş.",
     "components": [
       {
         "id": "ard1",
@@ -17188,13 +17188,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_187",
     "num": 187,
-    "title": "Arduino PWM Silliq Yonish (Fade Effect)",
+    "title": "Arduino PWM Silliq Yoniş (Fade Effect)",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17205,10 +17205,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "analogWrite() orqali LED yorug'ligini nafas olishdek silliq oshirish.",
-    "theory": "PWM 0 dan 255 gacha qiymat qabul qilib, o'rtacha kuchlanishni 0V dan 5V gacha o'zgartiradi.",
+    "desc": "analogWrite() orqali LED yoruğligini nafas olişdek silliq oşiriş.",
+    "theory": "PWM 0 dan 255 gaça qiymat qabul qilib, örtaça kuçlanişni 0V dan 5V gaça özgartiradi.",
     "components": [
       {
         "id": "ard1",
@@ -17272,13 +17272,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_188",
     "num": 188,
-    "title": "Arduino Potensiometr bilan Analog O'qish (ADC)",
+    "title": "Arduino Potensiometr bilan Analog Öqiş (ADC)",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17289,10 +17289,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "A0 pinidan 0 dan 1023 gacha bo'lgan kuchlanish qiymatini o'qish.",
-    "theory": "ATmega328P ning 10-bitli analog-raqamli o'zgartirgichi (ADC) 0..5V ni 1024 pog'onaga bo'ladi.",
+    "desc": "A0 pinidan 0 dan 1023 gaça bölgan kuçlaniş qiymatini öqiş.",
+    "theory": "ATmega328P ning 10-bitli analog-raqamli özgartirgiçi (ADC) 0..5V ni 1024 poğonaga böladi.",
     "components": [
       {
         "id": "ard1",
@@ -17356,7 +17356,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -17373,10 +17373,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "map() funksiyasi orqali ADC (0..1023) ni PWM (0..255) ga o'tkazish.",
-    "theory": "Qo'lda boshqariladigan silliq mikrokontrollerli dimmer.",
+    "desc": "map() funksiyasi orqali ADC (0..1023) ni PWM (0..255) ga ötkaziş.",
+    "theory": "Qölda boşqariladigan silliq mikrokontrollerli dimmer.",
     "components": [
       {
         "id": "ard1",
@@ -17440,13 +17440,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_190",
     "num": 190,
-    "title": "Arduino LDR Aqlli Tungi Chiroq",
+    "title": "Arduino LDR Aqlli Tungi Çiroq",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17457,10 +17457,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Qorong'i tushganda avtomatik yonuvchi mikrokontrollerli ko'cha chirog'i.",
-    "theory": "LDR datchigi o'qilib, chegara qiymatidan (masalan, 500) past bo'lsa LED yoqiladi.",
+    "desc": "Qoronği tuşganda avtomatik yonuvçi mikrokontrollerli köça çiroği.",
+    "theory": "LDR datçigi öqilib, çegara qiymatidan (masalan, 500) past bölsa LED yoqiladi.",
     "components": [
       {
         "id": "ard1",
@@ -17524,13 +17524,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_191",
     "num": 191,
-    "title": "Arduino LDR Yorug'lik Darajasini O'lchash",
+    "title": "Arduino LDR Yoruğlik Darajasini Ölçaş",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17541,10 +17541,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Yorug'lik miqdorini Serial Monitorga foizlarda chiqarish.",
-    "theory": "Serial.print() orqali datchik ma'lumotlarini kompyuterga uzatish.",
+    "desc": "Yoruğlik miqdorini Serial Monitorga foizlarda çiqariş.",
+    "theory": "Serial.print() orqali datçik ma'lumotlarini kompyuterga uzatiş.",
     "components": [
       {
         "id": "ard1",
@@ -17608,7 +17608,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -17625,10 +17625,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "tone() funksiyasi yordamida musiqiy notalarni chalish.",
-    "theory": "Har bir musiqa notasi (Do, Re, Mi...) o'z chastotasiga (Hz) ega bo'lib, tone() bilan chiqariladi.",
+    "desc": "tone() funksiyasi yordamida musiqiy notalarni çaliş.",
+    "theory": "Har bir musiqa notasi (Do, Re, Mi...) öz çastotasiga (Hz) ega bölib, tone() bilan çiqariladi.",
     "components": [
       {
         "id": "ard1",
@@ -17692,7 +17692,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -17709,10 +17709,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Ikki xil chastotani navbat bilan chiqaruvchi akustik sirenasi.",
-    "theory": "Favqulodda xizmatlar transporti uchun ogohlantiruvchi signal.",
+    "desc": "Ikki xil çastotani navbat bilan çiqaruvçi akustik sirenasi.",
+    "theory": "Favqulodda xizmatlar transporti uçun ogohlantiruvçi signal.",
     "components": [
       {
         "id": "ard1",
@@ -17776,13 +17776,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_194",
     "num": 194,
-    "title": "Arduino DC Motor Boshqaruvi (Tranzistor orqali)",
+    "title": "Arduino DC Motor Boşqaruvi (Tranzistor orqali)",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17793,10 +17793,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "D9 pini orqali tranzistorni ochib dvigatelni yoqish.",
-    "theory": "Arduino pinlari maksimal 40mA tok bera oladi, shuning uchun motorlar tranzistor orqali boshqariladi.",
+    "desc": "D9 pini orqali tranzistorni oçib dvigatelni yoqiş.",
+    "theory": "Arduino pinlari maksimal 40mA tok bera oladi, şuning uçun motorlar tranzistor orqali boşqariladi.",
     "components": [
       {
         "id": "ard1",
@@ -17860,13 +17860,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_195",
     "num": 195,
-    "title": "Arduino PWM Motor Tezligini Sozlash",
+    "title": "Arduino PWM Motor Tezligini Sozlaş",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17877,10 +17877,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Potensiometr burilganda dvigatelning silliq tezlashishi.",
-    "theory": "Sanoat konveyerlari va robot g'ildiraklari tezligini boshqarish standarti.",
+    "desc": "Potensiometr burilganda dvigatelning silliq tezlaşişi.",
+    "theory": "Sanoat konveyerlari va robot ğildiraklari tezligini boşqariş standarti.",
     "components": [
       {
         "id": "ard1",
@@ -17944,13 +17944,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_196",
     "num": 196,
-    "title": "Arduino 7-Segment Hisoblagich (0 dan 9 gacha)",
+    "title": "Arduino 7-Segment Hisoblagiç (0 dan 9 gaça)",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -17961,10 +17961,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "D2..D8 pinlari orqali raqamlarni birma-bir sanash.",
-    "theory": "Binar massivlar va bitli mantiq orqali 7 ta segmentni sinxron boshqarish.",
+    "desc": "D2..D8 pinlari orqali raqamlarni birma-bir sanaş.",
+    "theory": "Binar massivlar va bitli mantiq orqali 7 ta segmentni sinxron boşqariş.",
     "components": [
       {
         "id": "ard1",
@@ -18028,7 +18028,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -18045,10 +18045,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Nur to'silganda uzluksiz qizil chiroq va sirena beruvchi qo'riqchi.",
-    "theory": "Bir vaqtning o'zida sensor, vizual indikator va tovushni uyg'un boshqarish.",
+    "desc": "Nur tösilganda uzluksiz qizil çiroq va sirena beruvçi qöriqçi.",
+    "theory": "Bir vaqtning özida sensor, vizual indikator va tovuşni uyğun boşqariş.",
     "components": [
       {
         "id": "ard1",
@@ -18112,13 +18112,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_198",
     "num": 198,
-    "title": "Arduino Start / Stop Ikki Tugmali Boshqaruv",
+    "title": "Arduino Start / Stop Ikki Tugmali Boşqaruv",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -18129,10 +18129,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "1-tugma yoqadi, 2-tugma o'chiradi (Sanoat standarti).",
-    "theory": "Xavfsizlik talablariga ko'ra yoqish va o'chirish har doim alohida jismoniy tugmalar bilan bo'ladi.",
+    "desc": "1-tugma yoqadi, 2-tugma öçiradi (Sanoat standarti).",
+    "theory": "Xavfsizlik talablariga köra yoqiş va öçiriş har doim alohida jismoniy tugmalar bilan böladi.",
     "components": [
       {
         "id": "ard1",
@@ -18196,13 +18196,13 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
     "id": "tmpl_199",
     "num": 199,
-    "title": "Arduino Qayta Sanash Taymeri (Countdown)",
+    "title": "Arduino Qayta Sanaş Taymeri (Countdown)",
     "category": "arduino",
     "categoryName": "Arduino & Aqlli Tizimlar",
     "difficulty": "advanced",
@@ -18213,10 +18213,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Belgilangan vaqt tugagach pyezo signal beruvchi taymer.",
-    "theory": "Oshxona taymerlari va jarayon nazoratchilarining ishlash mexanizmi.",
+    "desc": "Belgilangan vaqt tugagaç pyezo signal beruvçi taymer.",
+    "theory": "Oşxona taymerlari va jarayon nazoratçilarining işlaş mexanizmi.",
     "components": [
       {
         "id": "ard1",
@@ -18280,7 +18280,7 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   },
   {
@@ -18297,10 +18297,10 @@ const CIRCUIT_TEMPLATES = [
       "C++",
       "Uno R3",
       "Aqlli tizim",
-      "Dasturlash"
+      "Dasturlaş"
     ],
-    "desc": "Yoritish, datchik, motor va indikator birgalikda ishlovchi boshqaruv markazi.",
-    "theory": "Barcha o'rganilgan sensorlar va ijro mexanizmlarining yagona aqlli tizimga birlashishi.",
+    "desc": "Yoritiş, datçik, motor va indikator birgalikda işlovçi boşqaruv markazi.",
+    "theory": "Barça örganilgan sensorlar va ijro mexanizmlarining yagona aqlli tizimga birlaşişi.",
     "components": [
       {
         "id": "ard1",
@@ -18364,18 +18364,18 @@ const CIRCUIT_TEMPLATES = [
     ],
     "instructions": [
       "Simulyatsiyani yoqing va elektr tokining harakatini kuzating.",
-      "Multimetr yoki otsillograf yordamida parametrlarini tekshiring."
+      "Multimetr yoki otsillograf yordamida parametrlarini tekşiring."
     ]
   }
 ];
 
 // Category definitions with icons and counts
 const CIRCUIT_CATEGORIES = [
-  { id: "all", name: "Barchasi", icon: "⚡", count: 200 },
-  { id: "basic", name: "Boshlang'ich & Asosiy", icon: "💡", count: 20 },
-  { id: "laws", name: "Ulanish Usullari & Qonunlar", icon: "📐", count: 20 },
-  { id: "measuring", name: "O'lchov & Diagnostika", icon: "📟", count: 20 },
-  { id: "diodes", name: "Diodlar & Yarimo'tkazgichlar", icon: "🔴", count: 20 },
+  { id: "all", name: "Barçasi", icon: "⚡", count: 200 },
+  { id: "basic", name: "Boşlanğiç & Asosiy", icon: "💡", count: 20 },
+  { id: "laws", name: "Ulaniş Usullari & Qonunlar", icon: "📐", count: 20 },
+  { id: "measuring", name: "Ölçov & Diagnostika", icon: "📟", count: 20 },
+  { id: "diodes", name: "Diodlar & Yarimötkazgiçlar", icon: "🔴", count: 20 },
   { id: "sensors", name: "Sensorlar & LDR", icon: "☀️", count: 20 },
   { id: "capacitors", name: "Kondensatorlar & RC", icon: "🔋", count: 20 },
   { id: "transistors", name: "Tranzistorlar NPN", icon: "🔀", count: 20 },

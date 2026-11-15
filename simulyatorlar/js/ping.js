@@ -18,7 +18,7 @@
       pingBtn.style.opacity = '0.6';
 
       terminal.innerHTML = `
-        <div class="terminal-line system">PING ${host} (${host}) 56(84) bayt ma'lumot jo‘natilmoqda...</div>
+        <div class="terminal-line system">PING ${host} (${host}) 56(84) bayt ma'lumot jönatilmoqda...</div>
       `;
 
       let seq = 1;
@@ -33,7 +33,7 @@
 
           terminal.innerHTML += `
             <div class="terminal-line system" style="margin-top:8px;">--- ${host} ping statistikasi ---</div>
-            <div class="terminal-line system">${maxPackets} paket yuborildi, ${maxPackets} qabul qilindi, 0.0% paket yo‘qolishi</div>
+            <div class="terminal-line system">${maxPackets} paket yuborildi, ${maxPackets} qabul qilindi, 0.0% paket yöqolişi</div>
             <div class="terminal-line success">rtt min/avg/max = ${min}/${avg}/${max} ms</div>
           `;
           terminal.scrollTop = terminal.scrollHeight;

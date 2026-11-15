@@ -13,7 +13,7 @@ BOT_TOKEN = (os.getenv("BOT_TOKEN") or "8999866914:AAHBbvxwd_IFwKgbW1fp1YEf1Xjmu
 
 
 class handler(BaseHTTPRequestHandler):
-    """Faylni to'g'ridan-to'g'ri saytda ko'rish va yuklab olish handleri."""
+    """Faylni töğridan-töğri saytda köriş va yuklab oliş handleri."""
 
     def do_GET(self):
         query = urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query)
@@ -21,7 +21,7 @@ class handler(BaseHTTPRequestHandler):
 
         if not mat_id_str or not mat_id_str.isdigit():
             self.send_response(400)
-            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Type", "text/plain; çarset=utf-8")
             self.end_headers()
             self.wfile.write("Material ID raqami kiritilmadi".encode("utf-8"))
             return
@@ -31,7 +31,7 @@ class handler(BaseHTTPRequestHandler):
 
         if not material:
             self.send_response(404)
-            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Type", "text/plain; çarset=utf-8")
             self.end_headers()
             self.wfile.write("Bunday material topilmadi".encode("utf-8"))
             return
@@ -39,12 +39,12 @@ class handler(BaseHTTPRequestHandler):
         file_id = material.get("telegram_file_id")
         if not file_id:
             self.send_response(404)
-            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Type", "text/plain; çarset=utf-8")
             self.end_headers()
             self.wfile.write("Fayl identifikatori topilmadi".encode("utf-8"))
             return
 
-        # Telegram Bot API getFile orqali fayl yo'lini olish
+        # Telegram Bot API getFile orqali fayl yo'lini oliş
         tg_url = f"https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}"
         bot_link = f"https://t.me/att_upload_bot?start=get_{mat_id}"
 
@@ -66,7 +66,7 @@ class handler(BaseHTTPRequestHandler):
                 return
 
             else:
-                # Fayl 20MB dan katta bo'lsa (Telegram Bot API cheklovi), Telegram Botga yo'naltirish
+                # Fayl 20MB dan katta bo'lsa (Telegram Bot API çeklovi), Telegram Botga yo'naltirish
                 self.send_response(302)
                 self.send_header("Location", bot_link)
                 self.end_headers()

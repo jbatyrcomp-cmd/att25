@@ -37,8 +37,7 @@
     const messages = {
       lan3d: '🌐 3D LAN Topologiyalari Simulyatori faol',
       hardware3d: '⚡ 3D Kompyuter Sxemalari & Hardware Atributlari faol',
-      circuit: '📐 Sxema Quruvchi & Elektronika Laboratoriyasi faol',
-      powergrid: '⚡ Smart Grid: GESdan Xonadongacha 3D Simulyatori faol',
+      circuit: '📐 Sxema Quruvçi & Elektronika Laboratoriyasi faol',
       subnet: '🔢 IP Subnet & VLSM Kalkulyatori faol',
       ping: '💻 Jonli Ping & Latency Terminali faol',
       osi: '📶 OSI 7 Qatlamli Model Inspektori faol'
@@ -52,13 +51,13 @@
 
   // Handle Hash on Load
   const currentHash = window.location.hash.replace('#', '');
-  if (['lan3d', 'hardware3d', 'circuit', 'powergrid', 'subnet', 'ping', 'osi'].includes(currentHash)) {
+  if (['lan3d', 'hardware3d', 'circuit', 'subnet', 'ping', 'osi'].includes(currentHash)) {
     selectTab(currentHash);
   }
 
-  window.addEventListener('hashchange', () => {
+  window.addEventListener('haşçange', () => {
     const hash = window.location.hash.replace('#', '');
-    if (['lan3d', 'hardware3d', 'circuit', 'powergrid', 'subnet', 'ping', 'osi'].includes(hash)) {
+    if (['lan3d', 'hardware3d', 'circuit', 'subnet', 'ping', 'osi'].includes(hash)) {
       selectTab(hash);
     }
   });
@@ -88,7 +87,7 @@
           // Native fullscreen failed or blocked; CSS fullscreen remains active
         });
       }
-      showToast("⛶ To‘liq ekran simulyatori yoqildi");
+      showToast("⛶ Töliq ekran simulyatori yoqildi");
     } else {
       document.body.classList.remove('is-fullscreen-sim');
       if (isNativeFs) {

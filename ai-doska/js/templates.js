@@ -8,7 +8,7 @@ const BoardTemplates = {
   osi_model: {
     id: 'osi_model',
     title: '🌐 OSI 7 Qatlamli Modeli',
-    desc: 'Barcha 7 ta qatlam: Amaliy, Taqdimot, Seans, Transport, Tarmoq, Kanal, Jismoniy',
+    desc: 'Barça 7 ta qatlam: Amaliy, Taqdimot, Seans, Transport, Tarmoq, Kanal, Jismoniy',
     icon: '🌐',
     generate: (originX = -200, originY = -300) => {
       const layers = [
@@ -28,7 +28,7 @@ const BoardTemplates = {
 
       layers.forEach((l, i) => {
         const y = originY + i * (h + gap);
-        // Blok to'rtburchagi
+        // Blok to'rtburçagi
         objects.push({
           type: 'rect',
           x: originX,
@@ -132,7 +132,7 @@ const BoardTemplates = {
       // 4. Database
       objects.push({ type: 'net_node', x: originX + 680, y: originY, nodeType: 'server', label: 'PostgreSQL DB', ip: '10.0.0.20' });
 
-      // Bog'lovchi strelkalar (So'rov va Javob)
+      // Bog'lovçi strelkalar (So'rov va Javob)
       objects.push({ type: 'arrow', x1: originX + 40, y1: originY - 10, x2: originX + 200, y2: originY - 10, color: '#10B981', strokeWidth: 3 });
       objects.push({ type: 'arrow', x1: originX + 280, y1: originY - 10, x2: originX + 440, y2: originY - 10, color: '#10B981', strokeWidth: 3 });
       objects.push({ type: 'arrow', x1: originX + 520, y1: originY, x2: originX + 640, y2: originY, color: '#F59E0B', strokeWidth: 3 });
@@ -146,7 +146,7 @@ const BoardTemplates = {
         height: 100,
         bgColor: '#FEF08A',
         textColor: '#1E293B',
-        text: 'HTTPS GET /api/data\nTLS 1.3 shifrlangan kanal orqali xavfsiz so‘rov'
+        text: 'HTTPS GET /api/data\nTLS 1.3 şifrlangan kanal orqali xavfsiz sörov'
       });
       return objects;
     }
@@ -156,7 +156,7 @@ const BoardTemplates = {
   tcp_handshake: {
     id: 'tcp_handshake',
     title: '🤝 TCP 3-Way Handshake',
-    desc: 'Mijoz va Server o‘rtasida ulanish o‘rnatish bosqichlari (SYN, SYN-ACK, ACK)',
+    desc: 'Mijoz va Server örtasida ulaniş örnatiş bosqiçlari (SYN, SYN-ACK, ACK)',
     icon: '🤝',
     generate: (originX = -200, originY = -200) => {
       const objects = [];
@@ -180,7 +180,7 @@ const BoardTemplates = {
       objects.push({ type: 'text', x: originX + 140, y: originY + 265, text: '3. ACK (ack=301)', color: '#F59E0B', fontSize: 13, fontWeight: 700 });
 
       // Status
-      objects.push({ type: 'text', x: originX + 120, y: originY + 340, text: '✅ ESTABLISHED (Ulanish faol)', color: '#10B981', fontSize: 14, fontWeight: 700 });
+      objects.push({ type: 'text', x: originX + 120, y: originY + 340, text: '✅ ESTABLIŞED (Ulaniş faol)', color: '#10B981', fontSize: 14, fontWeight: 700 });
       return objects;
     }
   },
@@ -189,7 +189,7 @@ const BoardTemplates = {
   flowchart: {
     id: 'flowchart',
     title: '🔄 Algoritm Blok-Sxemasi',
-    desc: 'Boshlanish, maʼlumot kiritish, shartni tekshirish, hisoblash va natija',
+    desc: 'Boşlaniş, maʼlumot kiritiş, şartni tekşiriş, hisoblaş va natija',
     icon: '🔄',
     generate: (originX = 0, originY = -220) => {
       const objects = [];
@@ -198,13 +198,13 @@ const BoardTemplates = {
 
       // 1. Boshlanish
       objects.push({ type: 'circle', x: originX - 70, y: originY, radiusX: 70, radiusY: 28, color: '#10B981', strokeWidth: 2, filled: true, fillColor: 'rgba(16,185,129,0.2)' });
-      objects.push({ type: 'text', x: originX - 44, y: originY + 18, text: 'Boshlash', color: '#F8FAFC', fontSize: 14, fontWeight: 700 });
+      objects.push({ type: 'text', x: originX - 44, y: originY + 18, text: 'Boşlaş', color: '#F8FAFC', fontSize: 14, fontWeight: 700 });
 
       objects.push({ type: 'arrow', x1: originX, y1: originY + 56, x2: originX, y2: originY + 100, color: '#64748B', strokeWidth: 2 });
 
       // 2. Kiritish
       objects.push({ type: 'rect', x: originX - 90, y: originY + 100, width: w, height: h, color: '#38BDF8', strokeWidth: 2, filled: true, fillColor: 'rgba(56,189,248,0.2)' });
-      objects.push({ type: 'text', x: originX - 60, y: originY + 118, text: 'A va B ni kiritish', color: '#F8FAFC', fontSize: 13, fontWeight: 600 });
+      objects.push({ type: 'text', x: originX - 60, y: originY + 118, text: 'A va B ni kiritiş', color: '#F8FAFC', fontSize: 13, fontWeight: 600 });
 
       objects.push({ type: 'arrow', x1: originX, y1: originY + 156, x2: originX, y2: originY + 200, color: '#64748B', strokeWidth: 2 });
 
@@ -212,7 +212,7 @@ const BoardTemplates = {
       objects.push({ type: 'diamond', x: originX - 90, y: originY + 200, width: w, height: 76, color: '#F59E0B', strokeWidth: 2, filled: true, fillColor: 'rgba(245,158,11,0.2)' });
       objects.push({ type: 'text', x: originX - 40, y: originY + 228, text: 'A > B mi?', color: '#F8FAFC', fontSize: 13, fontWeight: 700 });
 
-      // Ha / Yo'q shoxlari
+      // Ha / Yo'q şoxlari
       objects.push({ type: 'arrow', x1: originX + 90, y1: originY + 238, x2: originX + 180, y2: originY + 238, color: '#10B981', strokeWidth: 2 });
       objects.push({ type: 'text', x: originX + 110, y: originY + 218, text: 'Ha (Max=A)', color: '#10B981', fontSize: 11, fontWeight: 600 });
 
@@ -310,7 +310,7 @@ const BoardTemplates = {
     icon: '🛡️',
     generate: (originX = -380, originY = -120) => {
       const objects = [];
-      // DMZ va Ichki Tarmoq fon zonalari
+      // DMZ va Içki Tarmoq fon zonalari
       objects.push({
         type: 'rect',
         x: originX + 220,
@@ -362,7 +362,7 @@ const BoardTemplates = {
       objects.push({ type: 'net_node', x: originX + 660, y: originY + 10, nodeType: 'server', label: 'SQL Database', ip: '10.0.0.5' });
       objects.push({ type: 'net_node', x: originX + 660, y: originY + 120, nodeType: 'pc', label: 'Admin PC', ip: '10.0.0.50' });
 
-      // Aloqa chiziqlari
+      // Aloqa çiziqlari
       objects.push({ type: 'arrow', x1: originX + 30, y1: originY + 60, x2: originX + 100, y2: originY + 60, color: '#EF4444', strokeWidth: 2 });
       objects.push({ type: 'arrow', x1: originX + 160, y1: originY + 50, x2: originX + 270, y2: originY + 20, color: '#38BDF8', strokeWidth: 2 });
       objects.push({ type: 'arrow', x1: originX + 160, y1: originY + 70, x2: originX + 270, y2: originY + 110, color: '#38BDF8', strokeWidth: 2 });
@@ -457,13 +457,13 @@ const BoardTemplates = {
     icon: '🧠',
     generate: (originX = 0, originY = 0) => {
       const objects = [];
-      const cw = 200, ch = 56;
+      const cw = 200, ç = 56;
       objects.push({
         type: 'rect',
         x: originX - cw / 2,
-        y: originY - ch / 2,
+        y: originY - ç / 2,
         width: cw,
-        height: ch,
+        height: ç,
         color: '#00FF87',
         strokeWidth: 3,
         filled: true,
@@ -479,14 +479,14 @@ const BoardTemplates = {
         fontWeight: 800
       });
 
-      const branches = [
+      const brançes = [
         { name: '🌐 TARMOQ PROTOKOLLARI', items: '• TCP / UDP\n• IPv4 va IPv6\n• BGP, OSPF, RIP\n• DNS, DHCP', x: originX - 340, y: originY - 170, color: '#38BDF8' },
         { name: '📡 SIMSIZ ALOQA & 5G', items: '• 5G NR va LTE\n• Wi-Fi 6 va Wi-Fi 7\n• Sunʼiy Yo‘ldosh\n• Modulyatsiya (QAM)', x: originX + 160, y: originY - 170, color: '#F59E0B' },
         { name: '🔒 KIBERXAVFSIZLIK', items: '• Next-Gen Firewall\n• VPN (IPsec, Wireguard)\n• IDS / IPS tizimlari\n• Shifrlash (AES, RSA)', x: originX - 340, y: originY + 80, color: '#EF4444' },
         { name: '☁️ BULUT & SERVERTARMOQ', items: '• SDN (Dasturiy tarmoq)\n• NFV virtualizatsiya\n• Docker va Kubernetes\n• CDN va Balansirovka', x: originX + 160, y: originY + 80, color: '#A855F7' }
       ];
 
-      branches.forEach(b => {
+      brançes.forEach(b => {
         const targetCenterX = b.x + 95;
         const targetCenterY = b.y + 55;
         objects.push({
@@ -625,8 +625,8 @@ const BoardTemplates = {
     }
   },
 
-  // 13. Elektr Zanjiri va Kirchhoff Qonunlari
-  kirchhoff_circuit: {
+  // 13. Elektr Zanjiri va Kirçhoff Qonunlari
+  kirçhoff_circuit: {
     id: 'kirchhoff_circuit',
     title: '⚡ Elektr Zanjiri va Kirchhoff Qonunlari',
     desc: 'Tugunlar, parallel rezistorlar, tok oqimi va I hamda II Kirchhoff tenglamalari',
@@ -685,14 +685,14 @@ const BoardTemplates = {
       const tables = [
         {
           name: 'USERS',
-          fields: ['🔑 id: INT (PK)', '• name: VARCHAR(100)', '• email: VARCHAR(150)', '• created_at: DATETIME'],
+          fields: ['🔑 id: INT (PK)', '• name: VARÇAR(100)', '• email: VARÇAR(150)', '• created_at: DATETIME'],
           x: originX,
           y: originY,
           color: '#38BDF8'
         },
         {
           name: 'ORDERS',
-          fields: ['🔑 id: INT (PK)', '🔗 user_id: INT (FK)', '• total_price: DECIMAL', '• status: VARCHAR(20)'],
+          fields: ['🔑 id: INT (PK)', '🔗 user_id: INT (FK)', '• total_price: DECIMAL', '• status: VARÇAR(20)'],
           x: originX + 250,
           y: originY,
           color: '#10B981'
@@ -764,7 +764,7 @@ const BoardTemplates = {
   lecture_plan: {
     id: 'lecture_plan',
     title: '📑 Akademik Dars va Taqdimot Konspekti',
-    desc: 'Mavzu, Maqsadlar, Nazariya, Laboratoriya va Xulosa bo‘limlari',
+    desc: 'Mavzu, Maqsadlar, Nazariya, Laboratoriya va Xulosa bölimlari',
     icon: '📑',
     generate: (originX = -320, originY = -180) => {
       const objects = [];
@@ -790,10 +790,10 @@ const BoardTemplates = {
       });
 
       const sections = [
-        { title: '1. DARS MAQSADLARI', text: '• OSI va TCP/IP farqi\n• IP manzil turlari (A, B, C)\n• Paketlar harakatini kuzatish', bg: '#BAE6FD', textC: '#0C4A6E', x: originX, y: originY + 64 },
-        { title: '2. ASOSIY TUSHUNCHALAR', text: '• Router — 3-qatlam qurilmasi\n• Switch — 2-qatlam MAC\n• Hub — fizik takrorlagich', bg: '#FEF08A', textC: '#713F12', x: originX + 330, y: originY + 64 },
-        { title: '3. AMALIY LAB TOPSHIRIQLARI', text: '• Wireshark dasturida paket ushlash\n• Ping va Traceroute tahlili\n• Subnet mask hisoblash', bg: '#BBF7D0', textC: '#064E3B', x: originX, y: originY + 210 },
-        { title: '4. SAVOLLAR VA XULOSA', text: '• Qaysi protokol ishonchli: TCP/UDP?\n• Nima uchun NAT kerak?\n• Uyga vazifa: Laboratoriya hisoboti', bg: '#FECDD3', textC: '#881337', x: originX + 330, y: originY + 210 }
+        { title: '1. DARS MAQSADLARI', text: '• OSI va TCP/IP farqi\n• IP manzil turlari (A, B, C)\n• Paketlar harakatini kuzatiş', bg: '#BAE6FD', textC: '#0C4A6E', x: originX, y: originY + 64 },
+        { title: '2. ASOSIY TUŞUNÇALAR', text: '• Router — 3-qatlam qurilmasi\n• Switch — 2-qatlam MAC\n• Hub — fizik takrorlagiç', bg: '#FEF08A', textC: '#713F12', x: originX + 330, y: originY + 64 },
+        { title: '3. AMALIY LAB TOPŞIRIQLARI', text: '• Wireshark dasturida paket uşlaş\n• Ping va Traceroute tahlili\n• Subnet mask hisoblaş', bg: '#BBF7D0', textC: '#064E3B', x: originX, y: originY + 210 },
+        { title: '4. SAVOLLAR VA XULOSA', text: '• Qaysi protokol işonçli: TCP/UDP?\n• Nima uçun NAT kerak?\n• Uyga vazifa: Laboratoriya hisoboti', bg: '#FECDD3', textC: '#881337', x: originX + 330, y: originY + 210 }
       ];
 
       sections.forEach(s => {
@@ -816,7 +816,7 @@ const BoardTemplates = {
   // 16. OSPF Multi-Area Arxitekturasi
   ospf_architecture: {
     id: 'ospf_architecture',
-    title: '🗺️ OSPF Multi-Area Marshrutlash',
+    title: '🗺️ OSPF Multi-Area Marşrutlaş',
     desc: 'Area 0 (Backbone), Area 1 (Standard), ABR va ASBR routerlar arxitekturasi',
     icon: '🗺️',
     generate: (originX = -320, originY = -180) => {
@@ -911,7 +911,7 @@ const BoardTemplates = {
         height: 100,
         bgColor: '#CFFAFE',
         textColor: '#0C4A6E',
-        text: '📌 ABR vazifasi:\nArea 0 va boshqa arealar o\'rtasida Type 3 Summary LSA larni aylantiradi.'
+        text: '📌 ABR vazifasi:\nArea 0 va boşqa arealar örtasida Type 3 Summary LSA larni aylantiradi.'
       });
 
       objects.push({
@@ -933,7 +933,7 @@ const BoardTemplates = {
   pki_cryptography: {
     id: 'pki_cryptography',
     title: '🔐 PKI va Raqamli Imzo (Kriptografiya)',
-    desc: 'Ochiq va maxfiy kalitlar, SHA-256 xesh, CA sertifikat va imzo tekshirish',
+    desc: 'Oçiq va maxfiy kalitlar, SHA-256 xeş, CA sertifikat va imzo tekşiriş',
     icon: '🔐',
     generate: (originX = -320, originY = -180) => {
       const objects = [];
@@ -1033,7 +1033,7 @@ const BoardTemplates = {
         height: 110,
         bgColor: '#FEF3C7',
         textColor: '#78350F',
-        text: '📌 Xavfsizlik Uchligi (CIA):\n1. Butunlik (Integrity) — SHA-256 hash orqali\n2. Rad etib bo\'lmaslik (Non-repudiation)\n3. Haqiqiylik (Authentication)'
+        text: '📌 Xavfsizlik Uçligi (CIA):\n1. Butunlik (Integrity) — SHA-256 hash orqali\n2. Rad etib bölmaslik (Non-repudiation)\n3. Haqiqiylik (Authentication)'
       });
 
       objects.push({
@@ -1044,7 +1044,7 @@ const BoardTemplates = {
         height: 110,
         bgColor: '#E0E7FF',
         textColor: '#312E81',
-        text: '📌 Tekshirish (Verification):\nQabul qiluvchi jo\'natuvchining OCHIQ kaliti (Public Key) orqali imzoni deshifrlaydi va xeshni solishtiradi.'
+        text: '📌 Tekşiriş (Verification):\nQabul qiluvçi jönatuvçining OÇIQ kaliti (Public Key) orqali imzoni deşifrlaydi va xeşni soliştiradi.'
       });
 
       return objects;
@@ -1054,8 +1054,8 @@ const BoardTemplates = {
   // 18. WebRTC P2P Video Qo'ng'iroq
   webrtc_call: {
     id: 'webrtc_call',
-    title: '📹 WebRTC P2P Video Qo‘ng‘iroq',
-    desc: 'SDP Offer/Answer, STUN/TURN serverlar va to‘g‘ridan-to‘g‘ri media oqimi',
+    title: '📹 WebRTC P2P Video Qönğiroq',
+    desc: 'SDP Offer/Answer, STUN/TURN serverlar va töğridan-töğri media oqimi',
     icon: '📹',
     generate: (originX = -320, originY = -180) => {
       const objects = [];
@@ -1143,7 +1143,7 @@ const BoardTemplates = {
         type: 'text',
         x: originX + 20,
         y: originY + 12,
-        text: '⚙️ MODERN DEVOPS CI/CD & GITOPS AVTOMATLASHTIRISH',
+        text: '⚙️ MODERN DEVOPS CI/CD & GITOPS AVTOMATLAŞTIRIŞ',
         color: '#A855F7',
         fontSize: 14,
         fontWeight: 800
@@ -1208,7 +1208,7 @@ const BoardTemplates = {
         height: 70,
         bgColor: '#FEF9C3',
         textColor: '#854D0E',
-        text: '💡 GitOps Tamoyili: Git reponing holati — yagona haqiqat manbai (Single Source of Truth). ArgoCD repodagi o\'zgarishni ko\'rib, Kubernetes klasterini avtomatik yangilaydi.'
+        text: '💡 GitOps Tamoyili: Git reponing holati — yagona haqiqat manbai (Single Source of Truth). ArgoCD repodagi özgarişni körib, Kubernetes klasterini avtomatik yangilaydi.'
       });
 
       return objects;
@@ -1219,7 +1219,7 @@ const BoardTemplates = {
   zero_trust_security: {
     id: 'zero_trust_security',
     title: '🛡️ Zero Trust Xavfsizlik Arxitekturasi (ZTNA)',
-    desc: 'Hech qachon ishonma, doim tekshir: IDP, PDP, PEP va Mikro-segmentatsiya',
+    desc: 'Heç qaçon işonma, doim tekşir: IDP, PDP, PEP va Mikro-segmentatsiya',
     icon: '🛡️',
     generate: (originX = -320, originY = -180) => {
       const objects = [];
@@ -1260,7 +1260,7 @@ const BoardTemplates = {
         filled: true,
         fillColor: 'rgba(245, 158, 11, 0.18)'
       });
-      objects.push({ type: 'text', x: originX + 205, y: originY + 74, text: '🧠 PDP (Qaror Markazi)\n• Shaxs (IDP / SSO)\n• Xavf darajasi', color: '#F8FAFC', fontSize: 11, fontWeight: 700 });
+      objects.push({ type: 'text', x: originX + 205, y: originY + 74, text: '🧠 PDP (Qaror Markazi)\n• Şaxs (IDP / SSO)\n• Xavf darajasi', color: '#F8FAFC', fontSize: 11, fontWeight: 700 });
 
       // PEP - Policy Enforcement Point
       objects.push({
@@ -1274,7 +1274,7 @@ const BoardTemplates = {
         filled: true,
         fillColor: 'rgba(56, 189, 248, 0.18)'
       });
-      objects.push({ type: 'text', x: originX + 205, y: originY + 176, text: '🚪 PEP (Darvoza / Proxy)\n• mTLS Shifrlash\n• Sessiyani tekshirish', color: '#F8FAFC', fontSize: 11, fontWeight: 700 });
+      objects.push({ type: 'text', x: originX + 205, y: originY + 176, text: '🚪 PEP (Darvoza / Proxy)\n• mTLS Şifrlaş\n• Sessiyani tekşiriş', color: '#F8FAFC', fontSize: 11, fontWeight: 700 });
 
       // Mikro-segmentlangan resurslar
       objects.push({ type: 'net_node', x: originX + 500, y: originY + 90, nodeType: 'server', label: 'HR & Moliya DB\n(Izolyatsiya)', ip: 'Micro-segment A' });

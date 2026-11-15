@@ -1,7 +1,7 @@
 /* ==========================================================================
    ATT-25 AI DOSKA — SMARTBOARD & TOUCH ADAPTER (smartboard.js)
    Interaktiv sensorli doskalar (SMART Board, Promethean, ViewSonic va h.k.)
-   uchun avtomatik moslashuv, Multi-touch imo-ishoralar, Kaft bilan o'chirish
+   uchun avtomatik moslashuv, Multi-touch imo-ishoralar, Kaft bilan o'çiriş
    va O'zbek/Lotin + Matematik Virtual Ekran Klaviaturasi.
    ========================================================================== */
 
@@ -21,7 +21,7 @@ class DeviceDetector {
     // 1. Sensorli ekran tekshiruvi (Touch / Pointer coarse)
     const hasCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
     const hasTouchPoints = Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-    const hasTouchEvents = 'ontouchstart' in window;
+    const hasTouchEvents = 'ontouçstart' in window;
     this.isTouchDevice = hasCoarsePointer || hasTouchPoints || hasTouchEvents;
 
     // 2. Katta ekran tekshiruvi (Katta dars doskalari: odatda 1024px va undan katta)
@@ -39,7 +39,7 @@ class DeviceDetector {
     } else if (this.mode === 'off') {
       this.isSmartboard = false;
     } else {
-      // Auto: Sensorli ekran va yetarli o'lcham bo'lsa
+      // Auto: Sensorli ekran va yetarli o'lçam bo'lsa
       this.isSmartboard = (this.isTouchDevice && this.isLargeScreen) || isInteractiveKiosk || this.isTouchDevice;
     }
 
@@ -96,7 +96,7 @@ class MultiTouchController {
     this.longPressDuration = 520; // ms
     this.rippleEl = null;
 
-    // Kaft (Palm) bilan o'chirish holati
+    // Kaft (Palm) bilan o'çiriş holati
     this.isPalmActive = false;
     this.palmEraserRadius = 36; // px
 
@@ -140,7 +140,7 @@ class MultiTouchController {
       time: performance.now()
     });
 
-    // 1. Kaft bilan o'chirish (Palm Eraser Detection)
+    // 1. Kaft bilan o'çiriş (Palm Eraser Detection)
     // Ekranga keng yuzali narsa (kaft, qo'l qirrasi) tegsa
     if (e.pointerType === 'touch' && (e.width > 34 || e.height > 34 || (e.width * e.height) > 1200)) {
       this.isPalmActive = true;
@@ -179,13 +179,13 @@ class MultiTouchController {
       return { handled: true };
     }
 
-    // 2. Ikki barmoqli imo-ishora (Pinch Zoom & Pan)
+    // 2. Ikki barmoqli imo-işora (Pinç Zoom & Pan)
     if (this.isTwoFingerGesture && this.activePointers.size >= 2) {
       this.updateTwoFingerGesture();
       return { handled: true };
     }
 
-    // 3. Long-press tekshiruvi (agar barmoq siljigan bo'lsa bekor qilish)
+    // 3. Long-press tekşiruvi (agar barmoq siljigan bo'lsa bekor qilish)
     if (this.longPressTimer && this.longPressStartPos) {
       const dist = Math.hypot(e.clientX - this.longPressStartPos.x, e.clientY - this.longPressStartPos.y);
       if (dist > this.longPressThreshold) {
@@ -272,7 +272,7 @@ class MultiTouchController {
     const currentDist = Math.hypot(p2.clientX - p1.clientX, p2.clientY - p1.clientY);
     if (currentDist < 5) return;
 
-    // Masshtablash omili (Zoom factor)
+    // Masştablaş omili (Zoom factor)
     const scale = currentDist / this.initialPinchDist;
     const newZoom = Math.min(4.0, Math.max(0.15, this.initialZoom * scale));
 
@@ -328,7 +328,7 @@ class MultiTouchController {
 
 /* ==========================================================================
    SENSORLI EKRAN VIRTUAL KLAVIATURASI (VIRTUAL ON-SCREEN KEYBOARD)
-   O'zbekcha / Lotin, Ingliz tili, Raqamlar va Tezkor Matematik belgilar
+   O'zbekça / Lotin, Ingliz tili, Raqamlar va Tezkor Matematik belgilar
    ========================================================================== */
 class VirtualKeyboard {
   constructor(engine) {
@@ -340,7 +340,7 @@ class VirtualKeyboard {
     this.isMathMode = false;
     this.isOpen = false;
 
-    // Web Speech API — Ovozli kiritish (Voice Dictation)
+    // Web Speeç API — Ovozli kiritiş (Voice Dictation)
     this.recognition = null;
     this.isListening = false;
     this.initSpeech();
@@ -362,7 +362,7 @@ class VirtualKeyboard {
       this.recognition.onstart = () => {
         this.isListening = true;
         this.updateMicBtn();
-        if (typeof window.toast === 'function') window.toast("🎙️ Eshitilmoqda... Gapiring!");
+        if (typeof window.toast === 'function') window.toast("🎙️ Eşitilmoqda... Gapiring!");
       };
 
       this.recognition.onresult = (event) => {
@@ -383,13 +383,13 @@ class VirtualKeyboard {
         this.updateMicBtn();
       };
     } catch (e) {
-      console.warn("Speech recognition error:", e);
+      console.warn("Speeç recognition error:", e);
     }
   }
 
   toggleSpeech() {
     if (!this.recognition) {
-      if (typeof window.toast === 'function') window.toast("⚠️ Brauzer ovozli yozishni qo'llab-quvvatlamaydi.");
+      if (typeof window.toast === 'function') window.toast("⚠️ Brauzer ovozli yozişni qo'llab-quvvatlamaydi.");
       return;
     }
     if (this.isListening) {
@@ -406,7 +406,7 @@ class VirtualKeyboard {
   updateMicBtn() {
     const mic = this.container?.querySelector('.vk-key-mic');
     if (mic) {
-      mic.classList.toggle('listening', this.isListening);
+      mic.classList.toggle('listeninğ, this.isListening);
     }
   }
 
@@ -520,7 +520,7 @@ class VirtualKeyboard {
           btn.textContent = 'Enter ↵';
         } else if (key === 'Space') {
           btn.classList.add('vk-key-space');
-          btn.textContent = 'Bo\'sh joy (Space)';
+          btn.textContent = 'Bo\'ş joy (Space)';
         } else if (key === 'Mic') {
           btn.classList.add('vk-key-special', 'vk-key-mic');
           if (this.isListening) btn.classList.add('listening');
@@ -687,7 +687,7 @@ class VirtualKeyboard {
 }
 
 /* ==========================================================================
-   SMARTBOARD MANAGER ASOSIY BOSHQARUVCHI
+   SMARTBOARD MANAGER ASOSIY BOŞQARUVÇI
    ========================================================================== */
 class SmartboardManager {
   constructor(engine, toolManager) {
@@ -703,7 +703,7 @@ class SmartboardManager {
   }
 
   initFullscreen() {
-    // To'liq ekran rejimini qo'llab-quvvatlash
+    // To'liq ekran rejimini qo'llab-quvvatlaş
     this.isFullscreen = false;
     document.addEventListener('fullscreenchange', () => {
       this.isFullscreen = Boolean(document.fullscreenElement);

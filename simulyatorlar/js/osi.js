@@ -10,49 +10,49 @@
       pdu: "Ma'lumotlar (Data)",
       protocols: "HTTP/3, HTTPS, DNS, DHCP, SSH, FTP, SMTP",
       devices: "Gateway, Next-Gen Firewall, Web Server",
-      desc: "Foydalanuvchi dasturlari va tarmoq xizmatlari o‘rtasidagi to‘g‘ridan-to‘g‘ri interfeys. Brauzer va ilovalar so‘rovlari aynan shu qatlamda shakllanadi."
+      desc: "Foydalanuvçi dasturlari va tarmoq xizmatlari örtasidagi töğridan-töğri interfeys. Brauzer va ilovalar sörovlari aynan şu qatlamda şakllanadi."
     },
     6: {
       name: "Presentation (Taqdimot)",
       pdu: "Formatlangan Ma'lumot",
       protocols: "TLS 1.3, SSL, JPEG, ASCII, GZIP",
       devices: "OS Kriptografik Modullari, Proxy",
-      desc: "Ma'lumotlarni shifrlash (encryption), siqish (compression) va sintaksisini formatlash vazifasini bajaradi."
+      desc: "Ma'lumotlarni şifrlaş (encryption), siqiş (compression) va sintaksisini formatlaş vazifasini bajaradi."
     },
     5: {
       name: "Session (Seans)",
-      pdu: "Sinxronlash Seansi",
+      pdu: "Sinxronlaş Seansi",
       protocols: "NetBIOS, RPC, PPTP, Sockets",
       devices: "Dasturiy soketlar, Operatsion tizim",
-      desc: "Ikkita tugun o‘rtasidagi ulanish seansini o‘rnatadi, boshqaradi va yakunlaydi."
+      desc: "Ikkita tugun örtasidagi ulaniş seansini örnatadi, boşqaradi va yakunlaydi."
     },
     4: {
       name: "Transport (Transport)",
       pdu: "Segment (TCP) / Datagram (UDP)",
       protocols: "TCP, UDP, QUIC, SCTP",
       devices: "L4 Switch, Stateful Firewall",
-      desc: "Portlar orqali ma'lumotlarni ishonchli (TCP) yoki tezkor (UDP) yetkazib berish, oqimni nazorat qilish (Flow Control)."
+      desc: "Portlar orqali ma'lumotlarni işonçli (TCP) yoki tezkor (UDP) yetkazib beriş, oqimni nazorat qiliş (Flow Control)."
     },
     3: {
       name: "Network (Tarmoq)",
       pdu: "Paket (Packet)",
       protocols: "IPv4, IPv6, ICMP, OSPF, BGP, ARP",
-      devices: "Router (Yo‘riqnoma), L3 Switch",
-      desc: "Mantiqiy IP manzillash va paketlarni manbadan manzilga marshrutlash (routing) bo‘yicha global yo‘lni tanlaydi."
+      devices: "Router (Yöriqnoma), L3 Switch",
+      desc: "Mantiqiy IP manzillaş va paketlarni manbadan manzilga marşrutlaş (routing) böyiça global yölni tanlaydi."
     },
     2: {
       name: "Data Link (Kanal)",
       pdu: "Kadr (Frame)",
       protocols: "Ethernet (802.3), Wi-Fi (802.11), PPP, VLAN (802.1Q)",
       devices: "Switch (Kommutator), Bridge, NIC",
-      desc: "Jismoniy MAC manzillar orqali bir xil lokal segment ichida kadrlar almashinuvi va xatoliklarni tekshirish (CRC)."
+      desc: "Jismoniy MAC manzillar orqali bir xil lokal segment içida kadrlar almaşinuvi va xatoliklarni tekşiriş (CRC)."
     },
     1: {
       name: "Physical (Jismoniy)",
       pdu: "Bitlar (0 va 1 signallari)",
       protocols: "1000BASE-T, Optik tola (Single/Multi Mode), Radio",
-      devices: "Optik payvandlagich, Patch panel, Kabel, Repeater",
-      desc: "Elektr, yorug‘lik yoki radio signallarni jismoniy vositalar (mis kabel, optik tola, efir) orqali uzatish."
+      devices: "Optik payvandlagiç, Patch panel, Kabel, Repeater",
+      desc: "Elektr, yoruğlik yoki radio signallarni jismoniy vositalar (mis kabel, optik tola, efir) orqali uzatiş."
     }
   };
 

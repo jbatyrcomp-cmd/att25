@@ -24,7 +24,7 @@ def format_bytes(size_bytes: int) -> str:
 
 
 async def show_categories_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Bo'limlar ro'yxatini ko'rsatish."""
+    """Bölimlar röyxatini körsatiş."""
     categories = db.get_categories()
     stats = {cat["id"]: cat["count"] for cat in db.get_stats()["categories"]}
 
@@ -34,7 +34,7 @@ async def show_categories_menu(update: Update, context: ContextTypes.DEFAULT_TYP
         btn_text = f"{cat.get('emoji', '📁')} {cat['name']} ({count})"
         keyboard.append([InlineKeyboardButton(btn_text, callback_data=f"list_cat_{cat['id']}")])
 
-    text = "<b>📂 Qaysi bo'limdagi materiallarni ko'rmoqchisiz?</b>\nKerakli bo'limni tanlang:"
+    text = "<b>📂 Qaysi bölimdagi materiallarni körmoqçisiz?</b>\nKerakli bölimni tanlang:"
     markup = InlineKeyboardMarkup(keyboard)
 
     if update.callback_query:
@@ -45,7 +45,7 @@ async def show_categories_menu(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 async def category_materials_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Tanlangan bo'limdagi materiallarni ko'rsatish."""
+    """Tanlangan bölimdagi materiallarni körsatiş."""
     query = update.callback_query
     await query.answer()
 
@@ -54,14 +54,14 @@ async def category_materials_callback(update: Update, context: ContextTypes.DEFA
     materials = db.get_materials_by_category(cat_id, limit=20)
 
     if not category:
-        await query.edit_message_text("❌ Bo'lim topilmadi.")
+        await query.edit_message_text("❌ Bölim topilmadi.")
         return
 
     if not materials:
-        keyboard = [[InlineKeyboardButton("🔙 Bo'limlar ro'yxatiga", callback_data="nav_categories")]]
+        keyboard = [[InlineKeyboardButton("🔙 Bölimlar röyxatiga", callback_data="nav_categories")]]
         await query.edit_message_text(
-            f"<b>{category.get('emoji', '📁')} {category['name']}</b> bo'limida hozircha materiallar yo'q.\n\n"
-            f"<i>Birinchi bo'lib material qo'shish uchun quyidagi menyudan foydalaning!</i>",
+            f"<b>{category.get('emoji', '📁')} {category['name']}</b> bölimida hozirça materiallar yöq.\n\n"
+            f"<i>Birinçi bölib material qöşiş uçun quyidagi menyudan foydalaning!</i>",
             parse_mode="HTML",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
@@ -77,25 +77,25 @@ async def category_materials_callback(update: Update, context: ContextTypes.DEFA
             InlineKeyboardButton(f"📄 {title} ({size_str})", callback_data=f"mat_detail_{mat['id']}")
         ])
 
-    keyboard.append([InlineKeyboardButton("🔙 Bo'limlarga qaytish", callback_data="nav_categories")])
+    keyboard.append([InlineKeyboardButton("🔙 Bölimlarga qaytiş", callback_data="nav_categories")])
 
     text = (
         f"<b>{category.get('emoji', '📁')} {category['name']}</b>\n"
         f"<i>Jami materiallar: {len(materials)} ta</i>\n\n"
-        f"Batafsil ma'lumot va faylni olish uchun material ustiga bosing:"
+        f"Batafsil ma'lumot va faylni oliş uçun material ustiga bosing:"
     )
 
     await query.edit_message_text(text, parse_mode="HTML", reply_markup=InlineKeyboardMarkup(keyboard))
 
 
 async def recent_materials_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Oxirgi yuklangan materiallar ro'yxati."""
+    """Oxirgi yuklangan materiallar röyxati."""
     materials = db.get_recent_materials(limit=10)
 
     if not materials:
         await update.message.reply_html(
-            "📚 Hozircha hech qanday material yuklanmagan.\n"
-            "Material qo'shish uchun <b>➕ Yangi material qo'shish</b> tugmasini bosing.",
+            "📚 Hozirça heç qanday material yuklanmagan.\n"
+            "Material qöşiş uçun <b>➕ Yangi material qöşiş</b> tugmasini bosing.",
             reply_markup=main_menu_keyboard()
         )
         return
@@ -110,12 +110,12 @@ async def recent_materials_handler(update: Update, context: ContextTypes.DEFAULT
             InlineKeyboardButton(f"{cat_emoji} {title}", callback_data=f"mat_detail_{mat['id']}")
         ])
 
-    text = "<b>📚 Eng oxirgi yuklangan 10 ta material:</b>\nKo'rmoqchi bo'lgan faylingizni tanlang:"
+    text = "<b>📚 Eng oxirgi yuklangan 10 ta material:</b>\nKo'rmoqchi bölgan faylingizni tanlang:"
     await update.message.reply_html(text, reply_markup=InlineKeyboardMarkup(keyboard))
 
 
 async def material_detail_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Materialning to'liq kartasi."""
+    """Materialning töliq kartasi."""
     query = update.callback_query
     await query.answer()
 
@@ -123,12 +123,12 @@ async def material_detail_callback(update: Update, context: ContextTypes.DEFAULT
     material = db.get_material_by_id(mat_id)
 
     if not material:
-        await query.edit_message_text("❌ Material topilmadi yoki o'chirilgan.")
+        await query.edit_message_text("❌ Material topilmadi yoki öçirilgan.")
         return
 
     size_str = format_bytes(material.get("file_size") or 0)
     if material.get("storage_type") == "telegram":
-        storage_display = "☁️ Telegram Buluti (Cheksiz)"
+        storage_display = "☁️ Telegram Buluti (Çeksiz)"
     elif material.get("storage_type") == "gcs":
         storage_display = "☁️ Google Cloud Storage"
     else:
@@ -136,10 +136,10 @@ async def material_detail_callback(update: Update, context: ContextTypes.DEFAULT
 
     text = (
         f"<b>{material.get('category_emoji', '📁')} {material['name']}</b>\n\n"
-        f"<b>📂 Bo'lim:</b> {material.get('category_name')}\n"
-        f"<b>📋 Tavsif:</b> {material.get('description') or 'Ko\'rsatilmagan'}\n"
-        f"<b>👤 Joylovchi:</b> {material.get('uploader_name')}\n"
-        f"<b>💬 Izoh:</b> {material.get('comment') or 'Yo\'q'}\n\n"
+        f"<b>📂 Bölim:</b> {material.get('category_name')}\n"
+        f"<b>📋 Tavsif:</b> {material.get('description') or 'Körsatilmagan'}\n"
+        f"<b>👤 Joylovçi:</b> {material.get('uploader_name')}\n"
+        f"<b>💬 Izoh:</b> {material.get('comment') or 'Yöq'}\n\n"
         f"<b>📎 Fayl nomi:</b> <code>{material.get('file_name')}</code>\n"
         f"<b>📊 Hajmi:</b> {size_str}\n"
         f"<b>🏢 Saqlangan joy:</b> {storage_display}\n"
@@ -155,7 +155,7 @@ async def material_detail_callback(update: Update, context: ContextTypes.DEFAULT
 
 
 async def send_file_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Foydalanuvchiga faylni yuborish."""
+    """Foydalanuvçiga faylni yuboriş."""
     query = update.callback_query
     await query.answer("⏳ Fayl tayyorlanmoqda...")
 
@@ -185,7 +185,7 @@ async def send_file_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
                 await context.bot.send_document(chat_id=chat_id, document=file_id, caption=caption, parse_mode="HTML")
             return
         except Exception as e:
-            logger.warning(f"Telegram file_id orqali yuborishda xato: {e}. Zaxira usulga o'tilmoqda.")
+            logger.warning(f"Telegram file_id orqali yuborişda xato: {e}. Zaxira usulga ötilmoqda.")
 
     # 2. Agar lokal fayl bo'lsa
     if material.get("storage_type") == "local":
@@ -204,8 +204,8 @@ async def send_file_callback(update: Update, context: ContextTypes.DEFAULT_TYPE)
     # 3. Agar faqat URL bo'lsa
     if material.get("public_url"):
         await query.message.reply_html(
-            f"📥 Faylni to'g'ridan-to'g'ri bulutdan yuklab olishingiz mumkin:\n\n"
-            f"🔗 <a href='{material['public_url']}'>Yuklab olish havolasi (GCS)</a>"
+            f"📥 Faylni töğridan-töğri bulutdan yuklab olişingiz mumkin:\n\n"
+            f"🔗 <a href='{material['public_url']}'>Yuklab oliş havolasi (GCS)</a>"
         )
     else:
-        await query.message.reply_text("❌ Fayl mavjud emas yoki yuklab bo'lmadi.")
+        await query.message.reply_text("❌ Fayl mavjud emas yoki yuklab bölmadi.")

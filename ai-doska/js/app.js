@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return safe;
   }
 
-  // 1. Asosiy modullarni ishga tushirish
+  // 1. Asosiy modullarni işga tuşiriş
   const engine = new WhiteboardEngine('whiteboardCanvas', 'minimapCanvas');
   const toolManager = new ToolManager(engine);
   const aiEngine = new AIBoardEngine(engine);
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const smartboard = new SmartboardManager(engine, toolManager);
   const documentReader = (typeof DocumentReader !== 'undefined') ? new DocumentReader(engine, aiEngine) : null;
 
-  // Global ob'ektlar (debug va qulaylik uchun)
+  // Global ob'ektlar (debug va qulaylik uçun)
   window.boardEngine = engine;
   window.toolManager = toolManager;
   window.aiEngine = aiEngine;
@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.smartboard = smartboard;
   window.documentReader = documentReader;
 
-  // 2. Mahalliy xotiradan yuklash (yoki boshlang'ich shablon)
+  // 2. Mahalliy xotiradan yuklaş (yoki boşlanğiç şablon)
   const hasSaved = engine.loadFromStorage();
   if (!hasSaved) {
-    // Bo'sh bo'lsa boshlang'ich chiroyli xush kelibsiz stikeri va diagramma
+    // Böş bölsa boşlanğiç çiroyli xuş kelibsiz stikeri va diagramma
     const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
     engine.addObject({
       type: 'sticky',
@@ -61,17 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
       height: 160,
       bgColor: '#FEF08A',
       textColor: '#1E293B',
-      text: '👋 XUSH KELIBSIZ!\n\nBu ATT-25 ning mustaqil AI Doskasi.\n\n• Qalam (P), Shakllar (S), Stiker (N)\n• AI Assistent (Ctrl+I) orqali matndan diagramma chizing!'
+      text: '👋 XUŞ KELIBSIZ!\n\nBu ATT-25 ning mustaqil AI Doskasi.\n\n• Qalam (P), Şakllar (S), Stiker (N)\n• AI Assistent (Ctrl+I) orqali matndan diagramma çizing!'
     }, false);
 
-    // Kichik tarmoq namunasi
-    engine.addObject({ type: 'net_node', x: center.x + 80, y: center.y - 40, nodeType: 'router', label: 'Bosh Router', ip: '192.168.1.1' }, false);
+    // Kiçik tarmoq namunasi
+    engine.addObject({ type: 'net_node', x: center.x + 80, y: center.y - 40, nodeType: 'router', label: 'Boş Router', ip: '192.168.1.1' }, false);
     engine.addObject({ type: 'net_node', x: center.x + 240, y: center.y - 40, nodeType: 'server', label: 'Portal Server', ip: '10.0.0.5' }, false);
     engine.addObject({ type: 'arrow', x1: center.x + 110, y1: center.y - 40, x2: center.x + 210, y2: center.y - 40, color: '#10B981', strokeWidth: 3 }, false);
     engine.saveState();
   }
 
-  // Oyna o'lchami o'zgarganda
+  // Oyna ölçami özgarganda
   window.addEventListener('resize', () => {
     engine.initCanvasSize();
   });
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnCloseMainMenu?.addEventListener('click', closeMainMenu);
   mainMenuOverlay?.addEventListener('click', closeMainMenu);
 
-  // Esc bosilganda asosiy menyuni yopish
+  // Esc bosilganda asosiy menyuni yopiş
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && mainMenuDrawer && !mainMenuDrawer.classList.contains('hidden')) {
       closeMainMenu();
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnZoomOut) btnZoomOut.addEventListener('click', () => engine.setZoom(engine.zoom * 0.85));
   if (btnZoomReset) btnZoomReset.addEventListener('click', () => engine.setZoom(1.0));
 
-  // Smartboard va Fullscreen boshqaruvi
+  // Smartboard va Fullscreen boşqaruvi
   const btnSmartboardToggle = document.getElementById('btnSmartboardToggle');
   const btnBoardFullscreen = document.getElementById('btnBoardFullscreen');
 
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mode = smartboard.detector.mode;
     const isActive = smartboard.detector.isSmartboard;
     btnSmartboardToggle.classList.toggle('active', isActive);
-    btnSmartboardToggle.title = `Interaktiv Doska Rejimi: ${mode === 'auto' ? 'Avtomatik (' + (isActive ? 'Faol' : "O'chiq") + ')' : (mode === 'on' ? 'Doimiy Yoqilgan' : "O'chirilgan")}`;
+    btnSmartboardToggle.title = `Interaktiv Doska Rejimi: ${mode === 'autö ? 'Avtomatik (' + (isActive ? 'Faol' : "O'çiq") + ')' : (mode === 'on' ? 'Doimiy Yoqilgan' : "O'chirilgan")}`;
   };
 
   smartboard.detector.onChange(() => {
@@ -142,23 +142,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnSmartboardToggle?.addEventListener('click', () => {
     const current = smartboard.detector.mode;
-    const nextMode = current === 'auto' ? (smartboard.detector.isSmartboard ? 'off' : 'on') : (current === 'on' ? 'off' : 'auto');
+    const nextMode = current === 'autö ? (smartboard.detector.isSmartboard ? 'off' : 'on') : (current === 'on' ? 'off' : 'autö);
     smartboard.detector.setMode(nextMode);
     updateSmartboardBtnUI();
-    toast(`📺 Interaktiv Doska Rejimi: ${nextMode === 'on' ? 'Doimiy Yoqildi' : (nextMode === 'off' ? "O'chirildi" : 'Avtomatik aniqlash')}`);
+    toast(`📺 Interaktiv Doska Rejimi: ${nextMode === 'on' ? 'Doimiy Yoqildi' : (nextMode === 'off' ? "O'çirildi" : 'Avtomatik aniqlash')}`);
   });
 
   btnBoardFullscreen?.addEventListener('click', () => {
     smartboard.toggleFullscreen();
   });
 
-  // Sensorli virtual klaviaturani ochish tugmalari
+  // Sensorli virtual klaviaturani oçiş tugmalari
   document.getElementById('btnToggleVirtualKeyboard')?.addEventListener('click', () => smartboard.keyboard.toggle());
   document.getElementById('btnFloatingKeyboard')?.addEventListener('click', () => smartboard.keyboard.toggle());
 
 
 
-  // Menyu ichidagi AI Assistent tugmasi
+  // Menyu içidagi AI Assistent tugmasi
   document.getElementById('menuBtnOpenAi')?.addEventListener('click', () => {
     closeMainMenu();
     if (aiDrawer) {
@@ -167,28 +167,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Menyu ichidagi Shablonlar tugmasi
+  // Menyu içidagi Şablonlar tugmasi
   document.getElementById('menuBtnTemplates')?.addEventListener('click', () => {
     closeMainMenu();
     templatesModal?.classList.remove('hidden');
   });
 
-  // Menyu ichidagi Eksport tugmasi
+  // Menyu içidagi Eksport tugmasi
   document.getElementById('menuBtnExport')?.addEventListener('click', () => {
     closeMainMenu();
     exportModal?.classList.remove('hidden');
   });
 
-  // Menyu ichidagi Doskani Tozalash tugmasi
+  // Menyu içidagi Doskani Tozalaş tugmasi
   document.getElementById('menuBtnClearBoard')?.addEventListener('click', () => {
     closeMainMenu();
-    if (confirm("Haqiqatan ham doskadagi barcha elementlarni tozalamoqchimisiz?")) {
+    if (confirm("Haqiqatan ham doskadagi barça elementlarni tozalamoqçimisiz?")) {
       engine.clearBoard();
-      toast("Doska tozalandi (Ctrl+Z bilan qaytarish mumkin)");
+      toast("Doska tozalandi (Ctrl+Z bilan qaytariş mumkin)");
     }
   });
 
-  // Menyu ichidagi Mavzu tanlash (Theme)
+  // Menyu içidagi Mavzu tanlaş (Theme)
   document.querySelectorAll('.theme-choice-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.theme-choice-btn').forEach(b => b.classList.remove('active'));
@@ -199,14 +199,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Menyu ichidagi To'r tanlash (Grid)
+  // Menyu içidagi To'r tanlash (Grid)
   document.querySelectorAll('.grid-choice-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.grid-choice-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const grid = btn.getAttribute('data-grid');
       engine.setGridMode(grid);
-      toast(`To'r rejimi: ${btn.textContent.trim()}`);
+      toast(`Tör rejimi: ${btn.textContent.trim()}`);
     });
   });
 
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (objs && objs.length > 0) {
           engine.saveState();
           objs.forEach(o => engine.addObject(o, false));
-          toast(`"${tmpl.title}" shabloni joylashtirildi`);
+          toast(`"${tmpl.title}" şabloni joylaştirildi`);
           templatesModal.classList.add('hidden');
         }
       });
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnExportSvg')?.addEventListener('click', () => {
     engine.exportSVG();
     exportModal.classList.add('hidden');
-    toast("SVG vektorli chizma yuklab olindi");
+    toast("SVG vektorli çizma yuklab olindi");
   });
 
   document.getElementById('btnExportJson')?.addEventListener('click', () => {
@@ -297,10 +297,10 @@ document.addEventListener('DOMContentLoaded', () => {
       reader.onload = (ev) => {
         const success = engine.importJSON(ev.target.result);
         if (success) {
-          toast("Doska loyihasi muvaffaqiyatli ochildi!");
+          toast("Doska loyihasi muvaffaqiyatli oçildi!");
           exportModal.classList.add('hidden');
         } else {
-          toast("⚠️ Fayl formati noto'g'ri yoki buzilgan.");
+          toast("⚠️ Fayl formati notöğri yoki buzilgan.");
         }
       };
       reader.readAsText(file);
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       formulaModal.classList.add('hidden');
-      toast("📐 Matematik formula doskaga joylashtirildi!");
+      toast("📐 Matematik formula doskaga joylaştirildi!");
     });
   }
 
@@ -411,7 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnMagicInkToggle.addEventListener('click', () => {
       toolManager.magicInkEnabled = !toolManager.magicInkEnabled;
       btnMagicInkToggle.classList.toggle('active-feature', toolManager.magicInkEnabled);
-      toast(`✨ Magic Ink: ${toolManager.magicInkEnabled ? "Faollashtirildi (Qo'lda chizilgan shakllar avtomatik to'g'irlanadi)" : "O'chirildi"}`);
+      toast(`✨ Magic Ink: ${toolManager.magicInkEnabled ? "Faollaştirildi (Qölda çizilgan şakllar avtomatik töğirlanadi)" : "Öçirildi"}`);
     });
   }
 
@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
       engine.addObject(graphObj);
       engine.selectedObject = graphObj;
       graphModal.classList.add('hidden');
-      toast("📈 2D Funksiya grafigi doskaga muvaffaqiyatli chizildi!");
+      toast("📈 2D Funksiya grafigi doskaga muvaffaqiyatli çizildi!");
     });
   }
 
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSolveMathSteps.addEventListener('click', () => {
       const expr = graphFuncInput.value.trim();
       if (!expr) {
-        toast("Iltimos, yechish uchun tenglamani kiriting!");
+        toast("Iltimos, yeçiş uçun tenglamani kiriting!");
         graphFuncInput.focus();
         return;
       }
@@ -492,9 +492,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (solution && solution.steps && solution.steps.length > 0) {
         mathSolver.renderSolutionOnBoard(solution, center.x - 240, center.y - 180);
         graphModal.classList.add('hidden');
-        toast(`🧮 "${solution.type.toUpperCase()}" yechimi bosqichma-bosqich doskaga joylashtirildi!`);
+        toast(`🧮 "${solution.type.toUpperCase()}" yeçimi bosqiçma-bosqiç doskaga joylaştirildi!`);
       } else {
-        toast("⚠️ Bu tenglama uchun yechim qadamlari hisoblanmadi.");
+        toast("⚠️ Bu tenglama uçun yeçim qadamlari hisoblanmadi.");
       }
     });
   }
@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
       codeBridge.codeToFlowchart(code, center.x, center.y - 180);
       codeBridgeModal.classList.add('hidden');
-      toast("💻 Algoritm blok-sxemasi doskaga chizildi!");
+      toast("💻 Algoritm blok-sxemasi doskaga çizildi!");
     });
   }
 
@@ -588,40 +588,40 @@ document.addEventListener('DOMContentLoaded', () => {
       const q = btn.getAttribute('data-quiz');
       if (q === 'osi') {
         quizTopicInput.value = 'TARMOQ PROTOKOLLARI';
-        quizQuestionInput.value = 'OSI modelining 3-qatlamida (Tarmoq qatlamida) qaysi protokol ishlaydi?';
+        quizQuestionInput.value = 'OSI modelining 3-qatlamida (Tarmoq qatlamida) qaysi protokol işlaydi?';
         quizOptA.value = 'TCP (Transport)';
         quizOptB.value = 'IP (Internet Protocol)';
         quizOptC.value = 'HTTP (Ilova)';
         quizOptD.value = 'Ethernet (Kanal)';
         quizCorrectSelect.value = '1';
-        quizExplanationInput.value = 'IP protokoli paketlarni marshrutlash bilan shug‘ullanadi va OSI ning 3-qatlamida ishlaydi.';
+        quizExplanationInput.value = 'IP protokoli paketlarni marşrutlaş bilan şuğullanadi va OSI ning 3-qatlamida işlaydi.';
       } else if (q === 'quad') {
         quizTopicInput.value = 'MATEMATIKA & ALGEBRA';
-        quizQuestionInput.value = 'Kvadrat tenglama D > 0 bo‘lganda nechta haqiqiy ildizga ega bo‘ladi?';
+        quizQuestionInput.value = 'Kvadrat tenglama D > 0 bölganda neçta haqiqiy ildizga ega böladi?';
         quizOptA.value = '2 ta turli haqiqiy ildiz';
         quizOptB.value = '1 ta karrali ildiz';
         quizOptC.value = 'Haqiqiy ildizga ega emas';
-        quizOptD.value = 'Cheksiz ko‘p ildiz';
+        quizOptD.value = 'Çeksiz köp ildiz';
         quizCorrectSelect.value = '0';
-        quizExplanationInput.value = 'Diskriminant musbat (D > 0) bo‘lsa, tenglama doimo 2 ta haqiqiy ildizga ega bo‘ladi.';
+        quizExplanationInput.value = 'Diskriminant musbat (D > 0) bölsa, tenglama doimo 2 ta haqiqiy ildizga ega böladi.';
       } else if (q === 'ohm') {
         quizTopicInput.value = 'FIZIKA & ELEKTR';
-        quizQuestionInput.value = 'Zanjir qismi uchun Ohm qonunining to‘g‘ri ifodasini toping:';
+        quizQuestionInput.value = 'Zanjir qismi uçun Ohm qonunining töğri ifodasini toping:';
         quizOptA.value = 'I = U * R';
         quizOptB.value = 'R = I * U';
         quizOptC.value = 'I = U / R';
         quizOptD.value = 'U = I / R';
         quizCorrectSelect.value = '2';
-        quizExplanationInput.value = 'Tok kuchi (I) kuchlanishga (U) to‘g‘ri, qarshilikka (R) teskari proportsionaldir.';
+        quizExplanationInput.value = 'Tok kuçi (I) kuçlanişga (U) töğri, qarşilikka (R) teskari proportsionaldir.';
       } else if (q === 'dsa') {
         quizTopicInput.value = 'ALGORITMLAR & DSA';
-        quizQuestionInput.value = 'Massivning ixtiyoriy indeksidagi elementiga kirish vaqti qanday baholanadi?';
+        quizQuestionInput.value = 'Massivning ixtiyoriy indeksidagi elementiga kiriş vaqti qanday baholanadi?';
         quizOptA.value = 'O(n)';
-        quizOptB.value = 'O(1) — O‘zgarmas vaqt';
+        quizOptB.value = 'O(1) — Özgarmas vaqt';
         quizOptC.value = 'O(log n)';
         quizOptD.value = 'O(n^2)';
         quizCorrectSelect.value = '1';
-        quizExplanationInput.value = 'Massiv xotirada ketma-ket joylashgani uchun indeks orqali to‘g‘ridan-to‘g‘ri O(1) vaqtda o‘qiladi.';
+        quizExplanationInput.value = 'Massiv xotirada ketma-ket joylaşgani uçun indeks orqali töğridan-töğri O(1) vaqtda öqiladi.';
       }
     });
   });
@@ -663,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
       engine.addObject(quizObj);
       engine.selectedObject = quizObj;
       quizModal.classList.add('hidden');
-      toast("❓ Interaktiv test kartochkasi doskaga joylashtirildi!");
+      toast("❓ Interaktiv test kartoçkasi doskaga joylaştirildi!");
     });
   }
 
@@ -735,7 +735,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnInsertSubnetTable.addEventListener('click', () => {
       updateSubnetMetrics();
       if (!currentSubnetCalc || !currentSubnetCalc.success) {
-        toast("Iltimos, to'g'ri IPv4 manzilini kiriting!");
+        toast("Iltimos, töğri IPv4 manzilini kiriting!");
         return;
       }
       const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
@@ -744,7 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
       objects.forEach(obj => engine.addObject(obj, false));
       engine.render();
       subnetModal.classList.add('hidden');
-      toast(`🔢 ${currentSubnetCalc.inputIp}/${currentSubnetCalc.cidr} hisob jadvali doskaga joylashtirildi!`);
+      toast(`🔢 ${currentSubnetCalc.inputIp}/${currentSubnetCalc.cidr} hisob jadvali doskaga joylaştirildi!`);
     });
   }
 
@@ -752,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnInsertSubnetTopology.addEventListener('click', () => {
       updateSubnetMetrics();
       if (!currentSubnetCalc || !currentSubnetCalc.success) {
-        toast("Iltimos, to'g'ri IPv4 manzilini kiriting!");
+        toast("Iltimos, töğri IPv4 manzilini kiriting!");
         return;
       }
       const center = engine.screenToWorld(engine.width / 2, engine.height / 2);
@@ -761,7 +761,7 @@ document.addEventListener('DOMContentLoaded', () => {
       objects.forEach(obj => engine.addObject(obj, false));
       engine.render();
       subnetModal.classList.add('hidden');
-      toast(`🌐 ${currentSubnetCalc.networkIp}/${currentSubnetCalc.cidr} topologiyasi doskaga chizildi!`);
+      toast(`🌐 ${currentSubnetCalc.networkIp}/${currentSubnetCalc.cidr} topologiyasi doskaga çizildi!`);
     });
   }
 
@@ -825,12 +825,12 @@ document.addEventListener('DOMContentLoaded', () => {
       objects.forEach(obj => engine.addObject(obj, false));
       engine.render();
       comparisonModal.classList.add('hidden');
-      toast("📊 Taqqoslash jadvali doskaga muvaffaqiyatli joylashtirildi!");
+      toast("📊 Taqqoslaş jadvali doskaga muvaffaqiyatli joylaştirildi!");
     });
   }
 
   /* ==========================================================================
-     HUJJATLARNI O'QISH VA TO'G'RIDAN-TO'G'RI NAMOYISH (DOCUMENT & PRESENTER)
+     HUJJATLARNI O'QIŞ VA TO'G'RIDAN-TO'G'RI NAMOYIŞ (DOCUMENT & PRESENTER)
      ========================================================================== */
   const btnDocumentImportTool = document.getElementById('btnDocumentImportTool');
   const menuBtnImportDoc = document.getElementById('menuBtnImportDoc');
@@ -838,7 +838,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuBtnDirectPresent = document.getElementById('menuBtnDirectPresent');
   const btnDirectPresentTool = document.getElementById('btnDirectPresentTool');
 
-  // Oddiy Doska Namoyishi elementlari
+  // Oddiy Doska Namoyişi elementlari
   const boardPresenterBar = document.getElementById('boardPresenterBar');
   const btnBoardPresPrev = document.getElementById('btnBoardPresPrev');
   const btnBoardPresNext = document.getElementById('btnBoardPresNext');
@@ -871,12 +871,12 @@ document.addEventListener('DOMContentLoaded', () => {
     btnBoardPresLaser?.classList.add('active');
     btnBoardPresPen?.classList.remove('active');
 
-    // Doskani ekranga moslashtirish (Zoom to Fit)
+    // Doskani ekranga moslaştiriş (Zoom to Fit)
     if (typeof engine.zoomToFit === 'function') {
       engine.zoomToFit(60);
     }
 
-    toast("▶️ Doska Namoyishi (Lazer: L, Sahifalar: →, Chiqish: Esc)");
+    toast("▶️ Doska Namoyişi (Lazer: L, Sahifalar: →, Çiqiş: Esc)");
   }
 
   function exitBoardPresentation() {
@@ -884,7 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('board-presentation-active');
     boardPresenterBar?.classList.add('hidden');
     toolManager.setTool(prevToolBeforePresentation || 'select');
-    toast("Namoyish yakunlandi");
+    toast("Namoyiş yakunlandi");
   }
 
   function triggerDirectPresentation() {
@@ -894,7 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // 2. Agar hujjat bo'lmasa — to'g'ridan-to'g'ri doskani namoyish qiladi!
+    // 2. Agar hujjat bo'lmasa — to'g'ridan-to'g'ri doskani namoyiş qiladi!
     startBoardPresentation();
   }
 
@@ -965,7 +965,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     SUZUVCHI SELECTION AI TEZKOR BUYRUQLAR BAR
+     SUZUVÇI SELECTION AI TEZKOR BUYRUQLAR BAR
      ========================================================================== */
   const selectionFloatingBar = document.getElementById('selectionFloatingBar');
   const btnSelAiExplain = document.getElementById('btnSelAiExplain');
@@ -982,13 +982,13 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSelAiExplain?.addEventListener('click', async () => {
     const obj = engine.selectedObject;
     if (!obj) { toast("Avval doskadan element tanlang!"); return; }
-    toast("💡 AI elementni tushuntirmoqda...");
+    toast("💡 AI elementni tuşuntirmoqda...");
     const desc = obj.text || obj.label || obj.latex || obj.type;
     const center = engine.getObjectBounds ? engine.getObjectBounds(obj) : { x: obj.x, y: obj.y, width: 200, height: 100 };
     const stickyX = (center?.x || obj.x || 0) + (center?.width || 200) + 24;
     const stickyY = (center?.y || obj.y || 0);
 
-    const prompt = `Element: ${desc}. Ushbu mavzuni qisqa va aniq konspekt qilib tushuntir.`;
+    const prompt = `Element: ${desc}. Uşbu mavzuni qisqa va aniq konspekt qilib tuşuntir.`;
     const resp = await aiEngine.chatWithAssistant(prompt);
 
     const stickyObj = {
@@ -1005,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
     engine.saveState();
     engine.addObject(stickyObj);
     engine.render();
-    toast("✅ AI tushuntirish stikeri joylashtirildi!");
+    toast("✅ AI tuşuntiriş stikeri joylaştirildi!");
   });
 
   btnSelAiQuiz?.addEventListener('click', async () => {
@@ -1076,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
       engine.addObject(newNode);
       engine.selectObject(newNode);
 
-      toast(`🌐 ${labelMap[nodeType] || nodeType} doskaga joylashtirildi`);
+      toast(`🌐 ${labelMap[nodeType] || nodeType} doskaga joylaştirildi`);
 
       document.getElementById('moreToolsAnchor')?.classList.remove('open');
       btn.parentElement?.classList.remove('open');
@@ -1114,12 +1114,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 1. Qo'lyozmani KaTeX formulaga aylantirish
+  // 1. Qo'lyozmani KaTeX formulaga aylantiriş
   if (btnOcrToFormula) {
     btnOcrToFormula.addEventListener('click', async () => {
       const strokes = toolManager.selectedStrokesForOcr;
       if (!strokes || strokes.length === 0) {
-        toast("⚠️ Tanish uchun chizmalar tanlanmadi.");
+        toast("⚠️ Taniş uçun çizmalar tanlanmadi.");
         return;
       }
 
@@ -1158,7 +1158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Jonli KaTeX tahrirlash (LaTeX input o'zgarganda)
+  // Jonli KaTeX tahrirlaş (LaTeX input özgarganda)
   if (ocrLatexResultInput && ocrFormulaLivePreview) {
     ocrLatexResultInput.addEventListener('input', () => {
       const val = ocrLatexResultInput.value.trim();
@@ -1174,7 +1174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Formulani doskaga tatbiq etish (Replace strokes with Word-style KaTeX formula)
+  // Formulani doskaga tatbiq etiş (Replace strokes with Word-style KaTeX formula)
   if (btnApplyOcrResult) {
     btnApplyOcrResult.addEventListener('click', () => {
       if (!activeOcrStrokes || !activeOcrBounds) return;
@@ -1206,7 +1206,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnCloseOcrConfirm) btnCloseOcrConfirm.addEventListener('click', () => ocrConfirmModal?.classList.add('hidden'));
   if (btnCancelOcr) btnCancelOcr.addEventListener('click', () => ocrConfirmModal?.classList.add('hidden'));
 
-  // 2. Qo'lyozmani standart matnga aylantirish
+  // 2. Qölyozmani standart matnga aylantiriş
   if (btnOcrToText) {
     btnOcrToText.addEventListener('click', async () => {
       const strokes = toolManager.selectedStrokesForOcr;
@@ -1252,7 +1252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // AI Tab almashtirish
+  // AI Tab almaştiriş
   document.querySelectorAll('.ai-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.ai-tab').forEach(t => t.classList.remove('active'));
@@ -1265,7 +1265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // AI Generatsiya qilish tugmasi
+  // AI Generatsiya qiliş tugmasi
   const btnAiRun = document.getElementById('btnAiRunGenerate');
   const aiGenType = document.getElementById('aiGenType');
   const aiGenStatus = document.getElementById('aiGenStatus');
@@ -1280,18 +1280,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       btnAiRun.disabled = true;
-      btnAiRun.innerHTML = `<span>Chizilmoqda...</span>`;
+      btnAiRun.innerHTML = `<span>Çizilmoqda...</span>`;
       if (aiGenStatus) {
         aiGenStatus.classList.remove('hidden');
-        aiGenStatus.innerHTML = `⏳ AI doskaga diagramma elementlarini hisoblab joylashtirmoqda...`;
+        aiGenStatus.innerHTML = `⏳ AI doskaga diagramma elementlarini hisoblab joylaştirmoqda...`;
       }
 
       try {
         const type = aiGenType ? aiGenType.value : 'diagram';
         const res = await aiEngine.generateFromPrompt(prompt, type);
-        toast(`✨ AI muvaffaqiyatli ${res.count} ta element chizdi!`);
+        toast(`✨ AI muvaffaqiyatli ${res.count} ta element çizdi!`);
         if (aiGenStatus) {
-          aiGenStatus.innerHTML = `✅ <b>Muvaffaqiyatli:</b> ${res.count} ta element doskaga joylashtirildi (${res.mode === 'gemini' ? 'Gemini AI' : 'Tezkor generator'}).`;
+          aiGenStatus.innerHTML = `✅ <b>Muvaffaqiyatli:</b> ${res.count} ta element doskaga joylaştirildi (${res.mode === 'gemini' ? 'Gemini AI' : 'Tezkor generator'}).`;
         }
       } catch (err) {
         toast(`⚠️ Xatolik: ${err.message}`);
@@ -1300,7 +1300,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } finally {
         btnAiRun.disabled = false;
-        btnAiRun.innerHTML = `<span>Doskaga Chizish</span> <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+        btnAiRun.innerHTML = `<span>Doskaga Çiziş</span> <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
       }
     });
   }
@@ -1314,29 +1314,29 @@ document.addEventListener('DOMContentLoaded', () => {
     neural_net: "Neyron tarmoq sun'iy intellekt deep learning",
     sql_joins: 'SQL Join relyatsion ma\'lumotlar bazasi',
     load_balancer: 'Load Balancer Nginx proxy',
-    dns: 'DNS domen ip qidirish',
+    dns: 'DNS domen ip qidiriş',
     osi: 'OSI 7 qatlam modeli',
     client_server: 'Client server mijoz arxitektura',
     tcp_handshake: 'TCP handshake syn',
     flowchart: 'Algoritm flowchart blok sxema',
-    ospf_bgp: 'OSPF BGP marshrutlash protokol',
-    zero_trust: 'Zero-Trust ZTNA sifr ishonch',
+    ospf_bgp: 'OSPF BGP marşrutlaş protokol',
+    zero_trust: 'Zero-Trust ZTNA sifr işonç',
     rest_api: 'REST API dizayn HTTP metod endpoint',
     oauth_jwt: 'OAuth JWT autentifikatsiya token',
     cloud_arch: 'Cloud AWS Azure bulut arxitektura',
-    cache_redis: 'Cache Redis kesh arxitektura',
+    cache_redis: 'Cache Redis keş arxitektura',
     kafka: 'Kafka Message Queue rabbitmq navbat',
     vlan: 'VLAN kommutatsiya switch trunk 802.1q',
-    dhcp: 'DHCP ip berish ip discovery',
-    tls: 'TLS SSL HTTPS shifrlash handshake',
+    dhcp: 'DHCP ip beriş ip discovery',
+    tls: 'TLS SSL HTTPS şifrlaş handshake',
     erd: "ERD entity ma'lumotlar bazasi diagramma",
     big_o: 'Big O algoritmlar murakkablik tahlil',
-    sorting: 'Sorting saralash quicksort mergesort algoritm',
-    swot: 'SWOT kuchli zaif',
+    sorting: 'Sorting saralaş quicksort mergesort algoritm',
+    swot: 'SWOT kuçli zaif',
     math_formulas: 'Formula matematik fizika tenglama',
     subnet_calc: '192.168.10.0/26 subnet hisob',
     tcp_udp_comp: 'TCP vs UDP taqqos jadval',
-    osi_comp: 'OSI vs TCP/IP solishtir jadval',
+    osi_comp: 'OSI vs TCP/IP soliştir jadval',
     pki_flow: 'PKI raqamli imzo kriptografiya',
     webrtc_call: 'WebRTC video call p2p',
     cicd_gitops: 'DevOps CI/CD GitOps pipeline',
@@ -1364,14 +1364,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const resultText = await aiEngine.analyzeBoard(action);
       aiAnalysisResult.innerHTML = safeFormatMarkdown(resultText);
     } catch (e) {
-      aiAnalysisResult.innerHTML = `❌ Tahlil qilishda xatolik: ${sanitizeHTML(e.message)}`;
+      aiAnalysisResult.innerHTML = `❌ Tahlil qilişda xatolik: ${sanitizeHTML(e.message)}`;
     }
   };
 
   if (btnAiSummarize) btnAiSummarize.addEventListener('click', () => runAnalysis('summarize'));
   if (btnAiExplain) btnAiExplain.addEventListener('click', () => runAnalysis('explain'));
 
-  // Yangi: doska bo'yicha quiz generatsiyasi tahlil ko'rinishida
+  // Yangi: doska bo'yiça quiz generatsiyasi tahlil ko'rinishida
   const btnAiQuizAnalysis = document.getElementById('btnAiQuizAnalysis');
   if (btnAiQuizAnalysis) btnAiQuizAnalysis.addEventListener('click', () => runAnalysis('quiz'));
 
@@ -1386,9 +1386,9 @@ document.addEventListener('DOMContentLoaded', () => {
           ${palette.colors.map(c => `<div title="${c}" onclick="navigator.clipboard.writeText('${c}');toast('Rang nusxalandi: ${c}')" style="cursor:pointer;width:36px;height:36px;border-radius:6px;background:${c};border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(0,0,0,0.7);" title="${c}"></div>`).join('')}
         </div>
         <b>Fon:</b> <code style="background:rgba(255,255,255,0.1);padding:1px 6px;border-radius:3px;">${palette.bg}</code><br>
-        <br><span style="color:#94A3B8;font-size:11px;">Rangni bosing — buferga ko'chiriladi</span>
+        <br><span style="color:#94A3B8;font-size:11px;">Rangni bosing — buferga köçiriladi</span>
       `;
-      toast('🎨 Tavsiya rang palitasi ko\'rsatildi');
+      toast('🎨 Tavsiya rang palitasi körsatildi');
     });
   }
 
@@ -1400,8 +1400,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (aiAnalysisResult) {
         aiAnalysisResult.innerHTML = `
           <div class="validation-card success">
-            <strong>✨ Chizmalar Muvaffaqiyatli Tekislandi!</strong>
-            Doskadagi ${count} ta element to'r bo'yicha mukammal tekislandi va tartibga keltirildi. (Kerak bo'lsa, Ctrl+Z orqali qaytarishingiz mumkin).
+            <strong>✨ Çizmalar Muvaffaqiyatli Tekislandi!</strong>
+            Doskadagi ${count} ta element tör böyiça mukammal tekislandi va tartibga keltirildi. (Kerak bölsa, Ctrl+Z orqali qaytarişingiz mumkin).
           </div>
         `;
       }
@@ -1422,7 +1422,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `).join('');
       }
-      toast("🔍 Doska mantiqi tekshirildi");
+      toast("🔍 Doska mantiqi tekşirildi");
     });
   }
 
@@ -1487,7 +1487,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const appendChatMessage = (text, sender = 'bot') => {
     if (!aiChatMessages) return;
     const msgDiv = document.createElement('div');
-    msgDiv.className = `chat-msg ${sender}`;
+    msgDiv.className = `çat-msg ${sender}`;
 
     const formatted = safeFormatMarkdown(text);
 
@@ -1496,7 +1496,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sender === 'bot') {
       innerHtml += `
         <div class="chat-actions">
-          <button class="btn-chat-insert" title="Ushbu ma'lumotni doskaga stiker qilib joylashtirish">📥 Doskaga qo'shish</button>
+          <button class="btn-chat-insert" title="Uşbu ma'lumotni doskaga stiker qilib joylaştiriş">📥 Doskaga qöşiş</button>
         </div>
       `;
     }
@@ -1508,7 +1508,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnInsert) {
         btnInsert.addEventListener('click', () => {
           aiEngine.insertChatResponseToBoard(text);
-          toast("✅ AI javobi doskaga stiker sifatida joylashtirildi!");
+          toast("✅ AI javobi doskaga stiker sifatida joylaştirildi!");
         });
       }
     }
@@ -1538,7 +1538,7 @@ document.addEventListener('DOMContentLoaded', () => {
       appendChatMessage(res.reply, 'bot');
     } catch (err) {
       typingDiv.remove();
-      appendChatMessage(`Kechirasiz, xatolik yuz berdi: ${err.message}`, 'bot');
+      appendChatMessage(`Keçirasiz, xatolik yuz berdi: ${err.message}`, 'bot');
     }
   };
 
@@ -1562,14 +1562,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Chat tarixini tozalash
+  // Chat tarixini tozalaş
   const btnClearChat = document.getElementById('btnClearChat');
   if (btnClearChat && aiChatMessages) {
     btnClearChat.addEventListener('click', () => {
       aiEngine.clearHistory();
       aiChatMessages.innerHTML = `
         <div class="chat-msg bot">
-          <div class="chat-bubble">💬 Suhbat tarixi tozalandi. Yangi suhbat boshlandi! Nima haqida gaplashamiz?</div>
+          <div class="chat-bubble">💬 Suhbat tarixi tozalandi. Yangi suhbat boşlandi! Nima haqida gaplaşamiz?</div>
         </div>
       `;
       toast('🗑️ Chat tarixi tozalandi');
@@ -1577,7 +1577,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     YANGI: AI ELEMENTLARNI TAHRIRLASH PANELI
+     YANGI: AI ELEMENTLARNI TAHRIRLAŞ PANELI
      ========================================================================== */
   const aiEditInput = document.getElementById('aiEditInput');
   const btnAiEdit = document.getElementById('btnAiEdit');
@@ -1647,16 +1647,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aiQuizStatus) {
           aiQuizStatus.classList.remove('hidden');
           aiQuizStatus.innerHTML = `
-            ✅ <b>"${res.topic}"</b> mavzusida test yaratildi va doska markaziga joylashtirildi!<br>
+            ✅ <b>"${res.topic}"</b> mavzusida test yaratildi va doska markaziga joylaştirildi!<br>
             <span style="font-size: 11px; color: #CBD5E1;">Savol: ${res.question}</span>
           `;
         }
-        toast("🧠 Doskadan test kartochkasi yaratildi!");
+        toast("🧠 Doskadan test kartoçkasi yaratildi!");
       } catch (e) {
-        toast("Test yaratish xatosi: " + e.message);
+        toast("Test yaratiş xatosi: " + e.message);
       } finally {
         btnAiAutoQuiz.disabled = false;
-        btnAiAutoQuiz.innerHTML = `<span>Doska Asosida Test Yaratish</span> <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
+        btnAiAutoQuiz.innerHTML = `<span>Doska Asosida Test Yaratiş</span> <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`;
       }
     });
   }
@@ -1690,7 +1690,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSaveKey.addEventListener('click', () => {
       const key = geminiKeyInput.value.trim();
       aiEngine.saveApiKey(key);
-      toast(key ? "✅ Gemini API kaliti saqlandi va faollashtirildi!" : "Kalit tozalandi.");
+      toast(key ? "✅ Gemini API kaliti saqlandi va faollaştirildi!" : "Kalit tozalandi.");
     });
   }
 
@@ -1708,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     KO'P SAHIFA (MULTI-PAGE) BOSHQARUV TIZIMI
+     KO'P SAHIFA (MULTI-PAGE) BOŞQARUV TIZIMI
      ========================================================================== */
   const pagesTabsContainer = document.getElementById('pagesTabsContainer');
   const btnAddPage = document.getElementById('btnAddPage');
@@ -1720,7 +1720,7 @@ document.addEventListener('DOMContentLoaded', () => {
     engine.pages.forEach((p, idx) => {
       const tab = document.createElement('div');
       tab.className = `page-tab ${p.id === engine.currentPageId ? 'active' : ''}`;
-      tab.title = "Ochish uchun bosing. Nomini o'zgartirish uchun ikki marta bosing.";
+      tab.title = "Oçiş uçun bosing. Nomini o'zgartirish uchun ikki marta bosing.";
 
       const titleSpan = document.createElement('span');
       titleSpan.className = 'page-tab-title';
@@ -1728,30 +1728,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
       tab.appendChild(titleSpan);
 
-      // Faqat 1 tadan ko'p sahifa bo'lganda o'chirish tugmasi ko'rinadi
+      // Faqat 1 tadan köp sahifa bölganda öçiriş tugmasi körinadi
       if (engine.pages.length > 1) {
         const closeBtn = document.createElement('button');
         closeBtn.className = 'page-tab-close';
         closeBtn.innerHTML = '&times;';
-        closeBtn.title = "Ushbu sahifani o'chirish";
+        closeBtn.title = "Ushbu sahifani o'çiriş";
         closeBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           if (confirm(`"${p.title || `Sahifa ${idx + 1}`}" sahifasini o'chirmoqchimisiz?`)) {
             engine.deletePage(p.id);
-            toast("Sahifa o'chirildi");
+            toast("Sahifa öçirildi");
           }
         });
         tab.appendChild(closeBtn);
       }
 
-      // Sahifaga o'tish
+      // Sahifaga ötiş
       tab.addEventListener('click', () => {
         if (p.id !== engine.currentPageId) {
           engine.switchPage(p.id);
         }
       });
 
-      // Sahifa nomini tahrirlash (Dblclick)
+      // Sahifa nomini tahrirlaş (Dblclick)
       tab.addEventListener('dblclick', (e) => {
         e.stopPropagation();
         const newTitle = prompt("Sahifa nomini kiriting:", p.title || `Sahifa ${idx + 1}`);
@@ -1764,22 +1764,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Engine hodisasiga bog'lash
+  // Engine hodisasiga boğlaş
   engine.onPageChange(() => {
     renderPagesTabs();
   });
 
-  // Boshlang'ich render
+  // Boşlanğiç render
   renderPagesTabs();
 
-  // Yangi sahifa qo'shish
+  // Yangi sahifa qöşiş
   btnAddPage?.addEventListener('click', () => {
     const newPage = engine.addPage();
     toast(`📄 Yangi sahifa ochildi: "${newPage.title}"`);
   });
 
   /* ==========================================================================
-     OB'EKTLARNI QIDIRISH (SEARCH - CTRL+F) SUZUVCHI PANELI
+     OB'EKTLARNI QIDIRIŞ (SEARCH - CTRL+F) SUZUVÇI PANELI
      ========================================================================== */
   const boardSearchBar = document.getElementById('boardSearchBar');
   const boardSearchInput = document.getElementById('boardSearchInput');
@@ -1926,7 +1926,7 @@ document.addEventListener('DOMContentLoaded', () => {
         editTab?.click();
         document.getElementById('aiEditInput')?.focus();
       }, 100);
-      toast('✦ AI Tahrirlash paneli ochildi');
+      toast('✦ AI Tahrirlaş paneli oçildi');
       return;
     }
 
@@ -1936,14 +1936,14 @@ document.addEventListener('DOMContentLoaded', () => {
              (aiDrawer && aiDrawer.classList.contains('open'));
     };
 
-    // F5: To'g'ridan-to'g'ri Namoyish (Presenter Mode)
+    // F5: To'g'ridan-to'g'ri Namoyiş (Presenter Mode)
     if (e.key === 'F5') {
       e.preventDefault();
       triggerDirectPresentation();
       return;
     }
 
-    // Doska namoyishi faol paytidagi tezkor tugmalar
+    // Doska namoyişi faol paytidagi tezkor tugmalar
     if (isBoardPresentationActive) {
       if (e.key === 'Escape') {
         e.preventDefault();
@@ -1974,7 +1974,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Ctrl+O: Hujjat yuklash (Document Import) modali
+    // Ctrl+O: Hujjat yuklaş (Document Import) modali
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o') {
       e.preventDefault();
       btnDocumentImportTool?.click();
@@ -1990,11 +1990,11 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (e.key.toLowerCase() === 'c') {
         btnCodeModalTool?.click();
       }
-      // Q: Quiz kartochkasi modali
+      // Q: Quiz kartoçkasi modali
       else if (e.key.toLowerCase() === 'q') {
         btnQuizModalTool?.click();
       }
-      // D: Hujjat import qilish modali
+      // D: Hujjat import qiliş modali
       else if (e.key.toLowerCase() === 'd') {
         btnDocumentImportTool?.click();
       }
@@ -2003,7 +2003,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   TOAST BILDIRISHNOMA YORDAMCHISI
+   TOAST BILDIRIŞNOMA YORDAMÇISI
    ========================================================================== */
 function toast(message, duration = 2800) {
   const container = document.getElementById('toastContainer');

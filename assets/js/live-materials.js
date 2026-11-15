@@ -1,6 +1,6 @@
 /**
- * att25.uz — Mukammal Slayd-ba-Slayd Prezentatsiyalar Ko'ruvchisi
- * va Cheklanmagan Videolar Pleyeri Dvigateli
+ * att25.uz — Mukammal Slayd-ba-Slayd Prezentatsiyalar Ko'ruvçisi
+ * va Çeklanmagan Videolar Pleyeri Dvigateli
  */
 
 (function () {
@@ -54,8 +54,8 @@
 
                         <!-- Center: Slayd-ba-Slayd O'tkazish Boshqaruvi -->
                         <div id="attSlideNavControls" style="display:flex; align-items:center; gap:8px; background:rgba(0,0,0,0.5); padding:4px 10px; border-radius:30px; border:1px solid rgba(0,255,135,0.3);">
-                            <button id="attFirstSlideBtn" title="Birinchi slayd (Home)" style="background:none; border:none; color:#94a3b8; font-size:14px; cursor:pointer; padding:4px 8px; border-radius:4px;">⏮️</button>
-                            <button id="attPrevSlideBtn" title="Oldingi slayd (← Chapga)" style="background:rgba(0,255,135,0.15); border:1px solid rgba(0,255,135,0.4); color:#00FF87; font-size:13px; font-weight:800; cursor:pointer; padding:6px 14px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                            <button id="attFirstSlideBtn" title="Birinçi slayd (Home)" style="background:none; border:none; color:#94a3b8; font-size:14px; cursor:pointer; padding:4px 8px; border-radius:4px;">⏮️</button>
+                            <button id="attPrevSlideBtn" title="Oldingi slayd (← Çapga)" style="background:rgba(0,255,135,0.15); border:1px solid rgba(0,255,135,0.4); color:#00FF87; font-size:13px; font-weight:800; cursor:pointer; padding:6px 14px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
                                 ◀ Oldingi
                             </button>
                             
@@ -66,7 +66,7 @@
                                 <span id="attTotalSlidesCount" style="color:#94a3b8; font-weight:700;">1</span>
                             </div>
 
-                            <button id="attNextSlideBtn" title="Keyingi slayd (→ O'ngga / Probel)" style="background:linear-gradient(135deg, #00FF87, #00F0FF); border:none; color:#04150C; font-size:13px; font-weight:800; cursor:pointer; padding:6px 16px; border-radius:6px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 10px rgba(0,255,135,0.3);">
+                            <button id="attNextSlideBtn" title="Keyingi slayd (→ Öngga / Probel)" style="background:linear-gradient(135deg, #00FF87, #00F0FF); border:none; color:#04150C; font-size:13px; font-weight:800; cursor:pointer; padding:6px 16px; border-radius:6px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 10px rgba(0,255,135,0.3);">
                                 Keyingi ▶
                             </button>
                             <button id="attLastSlideBtn" title="Oxirgi slayd (End)" style="background:none; border:none; color:#94a3b8; font-size:14px; cursor:pointer; padding:4px 8px; border-radius:4px;">⏭️</button>
@@ -75,8 +75,8 @@
                         <!-- Right: Actions & Fullscreen -->
                         <div style="display:flex; align-items:center; gap:8px;">
                             <div id="attZoomControls" style="display:flex; gap:4px;">
-                                <button id="attZoomOutBtn" title="Kichraytirish (-)" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:30px; height:30px; border-radius:6px; font-weight:bold; cursor:pointer;">-</button>
-                                <button id="attZoomInBtn" title="Kattalashtirish (+)" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:30px; height:30px; border-radius:6px; font-weight:bold; cursor:pointer;">+</button>
+                                <button id="attZoomOutBtn" title="Kiçraytiriş (-)" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:30px; height:30px; border-radius:6px; font-weight:bold; cursor:pointer;">-</button>
+                                <button id="attZoomInBtn" title="Kattalaştiriş (+)" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:30px; height:30px; border-radius:6px; font-weight:bold; cursor:pointer;">+</button>
                             </div>
                             
                             <button id="attFullscreenSlideBtn" title="Butun Ekran Rejimi (F11)" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
@@ -84,7 +84,7 @@
                             </button>
 
                             <a id="attDownloadPresBtn" href="#" target="_blank" style="text-decoration:none; background:rgba(0,255,135,0.1); border:1px solid rgba(0,255,135,0.4); color:#00FF87; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:4px;">
-                                📥 Yuklab Olish
+                                📥 Yuklab Oliş
                             </a>
 
                             <button onclick="closePresentationModal()" style="background:rgba(255,255,255,0.08); border:none; color:#fff; width:34px; height:34px; border-radius:8px; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
@@ -93,7 +93,7 @@
 
                     <!-- PPTX Engine Switcher Toolbar (Faqat PPTX uchun chiqadi) -->
                     <div id="attPptxToolbar" style="padding:6px 20px; background:rgba(0,0,0,0.6); border-bottom:1px solid rgba(255,255,255,0.08); display:none; align-items:center; justify-content:space-between; font-size:12px;">
-                        <span style="color:#94a3b8;">Slaydlarni ko'rish dvigateli:</span>
+                        <span style="color:#94a3b8;">Slaydlarni köriş dvigateli:</span>
                         <div style="display:flex; gap:6px;">
                             <button id="enginePowerPointBtn" style="background:#00FF87; color:#04150C; border:none; padding:4px 10px; border-radius:4px; font-weight:800; font-size:11px; cursor:pointer;">PowerPoint Online 🏢</button>
                             <button id="engineGoogleSlidesBtn" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:4px 10px; border-radius:4px; font-size:11px; cursor:pointer;">Google Slides 📑</button>
@@ -204,7 +204,7 @@
         const stage = document.getElementById('attSlideStage');
         if (!document.fullscreenElement) {
             stage.requestFullscreen().catch(err => {
-                alert(`Butun ekran rejimiga o'tishda xatolik: ${err.message}`);
+                alert(`Butun ekran rejimiga ötişda xatolik: ${err.message}`);
             });
         } else {
             document.exitFullscreen();
@@ -317,7 +317,7 @@
 
         modal.style.display = 'flex';
 
-        // 1. AGAR PDF BO'LSA — PDF.JS orqali sahifama-sahifa render qilish
+        // 1. AGAR PDF BO'LSA — PDF.JS orqali sahifama-sahifa render qiliş
         if (ext === '.pdf') {
             slideNavControls.style.display = 'flex';
             zoomControls.style.display = 'flex';
@@ -335,7 +335,7 @@
                 totalPdfPages = pdf.numPages;
                 document.getElementById('attTotalSlidesCount').textContent = totalPdfPages;
 
-                // Miniatyura tugmalarini yaratish
+                // Miniatyura tugmalarini yaratiş
                 for (let i = 1; i <= totalPdfPages; i++) {
                     const pill = document.createElement('button');
                     pill.className = 'att-thumb-pill' + (i === 1 ? ' active' : '');
@@ -348,7 +348,7 @@
                 currentPdfPage = 1;
                 renderPdfPage(1);
             }).catch(err => {
-                console.error("PDF yuklashda xatolik:", err);
+                console.error("PDF yuklaşda xatolik:", err);
                 pptxIframe.src = fileViewUrl;
                 pptxIframe.style.display = 'block';
                 loading.style.display = 'none';
@@ -367,7 +367,7 @@
             pptxIframe.style.display = 'block';
             loading.style.display = 'none';
 
-            // Dvigatelni o'zgartirish
+            // Dvigatelni o'zgartiriş
             const msBtn = document.getElementById('enginePowerPointBtn');
             const googleBtn = document.getElementById('engineGoogleSlidesBtn');
 
@@ -391,7 +391,7 @@
             thumbnailsStrip.innerHTML = `
                 <div style="font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:12px;">
                     <span style="color:#00FF87; font-weight:700;">💡 PowerPoint Ko'rsatmasi:</span>
-                    <span>Slaydlarni pastdagi ko'rsatgichlar yoki klaviatura orqali birma-bir o'tkazishingiz mumkin.</span>
+                    <span>Slaydlarni pastdagi ko'rsatgiçlar yoki klaviatura orqali birma-bir o'tkazishingiz mumkin.</span>
                 </div>
             `;
         }
@@ -399,7 +399,7 @@
 
 
     // =========================================================================
-    // 2. CHEKLANMAGAN VIDEOLAR PLEYERI (UNLIMITED VIDEO CINEMA & PLAYLIST HUB)
+    // 2. ÇEKLANMAGAN VIDEOLAR PLEYERI (UNLIMITED VIDEO CINEMA & PLAYLIST HUB)
     // =========================================================================
 
     function ensureMasterVideoModalExists() {
@@ -449,7 +449,7 @@
                                     <h4 id="attTgCardTitle" style="color:#fff; font-size:18px; font-weight:800; margin:0 0 8px 0;">Video Nomi</h4>
                                     <span id="attTgCardSize" style="display:inline-block; background:rgba(0,255,135,0.15); color:#00FF87; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:800; margin-bottom:14px;">1080p Full HD</span>
                                     <p style="color:#94a3b8; font-size:13px; line-height:1.5; margin-bottom:18px; max-width:480px;">
-                                        Ushbu video yuqori sifatli Full HD formatda Telegram bulutida saqlanmoqda. 1-klikda to'liq sifatda oching:
+                                        Uşbu video yuqori sifatli Full HD formatda Telegram bulutida saqlanmoqda. 1-klikda to'liq sifatda oching:
                                     </p>
                                     <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
                                         <a id="attTgWatchBtn" href="#" target="_blank" style="text-decoration:none; background:linear-gradient(135deg, #00FF87, #00F0FF); color:#04150C; padding:12px 22px; border-radius:8px; font-weight:800; font-size:13px; box-shadow:0 4px 20px rgba(0,255,135,0.4);">
@@ -472,7 +472,7 @@
                                             <span>•</span>
                                             <span id="attCurrentVideoDate">Sana</span>
                                             <span>•</span>
-                                            <span id="attCurrentVideoSize" style="font-family:'JetBrains Mono', monospace;">Hajmi</span>
+                                            <span id="attCurrentVideoSize" style="font-family:'JetBrains Monö, monospace;">Hajmi</span>
                                         </div>
                                     </div>
 
@@ -502,7 +502,7 @@
                                     <span style="font-weight:800; color:#fff; font-size:14px;">🎬 Pleylist (Barcha Videolar)</span>
                                     <span id="attPlaylistCountBadge" style="background:rgba(0,255,135,0.18); color:#00FF87; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:800;">0 ta video</span>
                                 </div>
-                                <input id="attPlaylistSearchInput" type="text" placeholder="🔍 Videolarni qidirish..." style="width:100%; box-sizing:border-box; background:#0D2115; border:1px solid rgba(0,255,135,0.3); border-radius:6px; padding:8px 12px; color:#fff; font-size:12px; outline:none;">
+                                <input id="attPlaylistSearchInput" type="text" placeholder="🔍 Videolarni qidiriş..." style="width:100%; box-sizing:border-box; background:#0D2115; border:1px solid rgba(0,255,135,0.3); border-radius:6px; padding:8px 12px; color:#fff; font-size:12px; outline:none;">
                             </div>
 
                             <!-- Scrollable Videos List -->
@@ -512,7 +512,7 @@
 
                             <!-- Playlist Footer -->
                             <div style="padding:12px 16px; border-top:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.3); font-size:11px; color:#94a3b8; text-align:center;">
-                                💡 Istalgan yangi videoni <a href="https://t.me/${BOT_USERNAME}" target="_blank" style="color:#00FF87; text-decoration:none; font-weight:700;">@${BOT_USERNAME}</a> orqali qo'shishingiz mumkin.
+                                💡 Istalgan yangi videoni <a href="https://t.me/${BOT_USERNAME}" target="_blank" style="color:#00FF87; text-decoration:none; font-weight:700;">@${BOT_USERNAME}</a> orqali qo'şişingiz mumkin.
                             </div>
                         </div>
                     </div>
@@ -666,7 +666,7 @@
         document.getElementById('attPlaylistCountBadge').textContent = `${allVideosPlaylist.length} ta video`;
 
         if (filtered.length === 0) {
-            container.innerHTML = `<div style="text-align:center; padding:20px; color:#94a3b8; font-size:12px;">Hech qanday video topilmadi</div>`;
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:#94a3b8; font-size:12px;">Heç qanday video topilmadi</div>`;
             return;
         }
 
@@ -677,7 +677,7 @@
             const item = document.createElement('div');
             item.className = 'att-video-item' + (isActive ? ' active' : '');
             item.innerHTML = `
-                <div style="width:36px; height:36px; border-radius:6px; background:${isActive ? '#00FF87' : 'rgba(0,255,135,0.15)'}; color:${isActive ? '#04150C' : '#00FF87'}; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">
+                <div style="width:36px; height:36px; border-radius:6px; background:${isActive ? '#00FF87' : 'rgba(0,255,135,0.15)'}; color:${isActive ? '#04150C' : '#00FF87'}; display:flex; align-items:center; justify-content:center; font-size:16px; flex-şrink:0;">
                     ${isActive ? '▶' : '🎬'}
                 </div>
                 <div style="flex:1; overflow:hidden;">
@@ -701,10 +701,10 @@
         const v = allVideosPlaylist[index];
 
         document.getElementById('attCurrentVideoTitle').textContent = v.title;
-        document.getElementById('attCurrentVideoUploader').textContent = `Joylovchi: ${v.uploader}`;
+        document.getElementById('attCurrentVideoUploader').textContent = `Joylovçi: ${v.uploader}`;
         document.getElementById('attCurrentVideoDate').textContent = v.date || 'ATT-25';
         document.getElementById('attCurrentVideoSize').textContent = v.size || '';
-        document.getElementById('attCurrentVideoDesc').textContent = v.desc || 'Ushbu video ATT-25 o\'quv portali foydalanuvchisi tomonidan taqdim etildi.';
+        document.getElementById('attCurrentVideoDesc').textContent = v.desc || 'Ushbu video ATT-25 o\'quv portali foydalanuvçisi tomonidan taqdim etildi.';
 
         const html5Player = document.getElementById('attHtml5Player');
         const ytPlayer = document.getElementById('attYoutubePlayer');
@@ -783,7 +783,7 @@
         playVideoByIndex(targetIndex);
     };
 
-    // Sayt bo'ylab barcha mavjud video tugmalarini ham Master Cinema Playerga yo'naltirish:
+    // Sayt bo'ylab barcha mavjud video tugmalarini ham Master Cinema Playerga yo'naltiriş:
     window.openVideoModal = function(title, arg2, arg3) {
         ensureMasterVideoModalExists();
         collectAllVideos();
@@ -814,7 +814,7 @@
 
 
     // =========================================================================
-    // 3. MATERIALLARNI YUKLASH VA BO'LIMLARGA INTEGRATSIYA QILISH
+    // 3. MATERIALLARNI YUKLAŞ VA BO'LIMLARGA INTEGRATSIYA QILISH
     // =========================================================================
 
     async function loadLiveMaterials() {
@@ -858,16 +858,16 @@
 
                     card.innerHTML = `
                         <div class="doc-preview-header" onclick="openPresentationDeck(${m.id})" style="cursor:pointer; background:linear-gradient(135deg, rgba(0,255,135,0.15), rgba(0,0,0,0.5));">
-                            <span class="doc-badge-type" style="background:rgba(0,255,135,0.22); color:#00FF87; border:1px solid rgba(0,255,135,0.6); font-weight:800;">⚡ SLAYD-BA-SLAYD KO‘RISH</span>
+                            <span class="doc-badge-type" style="background:rgba(0,255,135,0.22); color:#00FF87; border:1px solid rgba(0,255,135,0.6); font-weight:800;">⚡ SLAYD-BA-SLAYD KÖRIŞ</span>
                             <div class="doc-icon-watermark">📊</div>
                         </div>
                         <div class="doc-body">
                             <h3 class="doc-title" onclick="openPresentationDeck(${m.id})" style="cursor:pointer;" title="${m.name}">${m.name}</h3>
-                            <span class="doc-author">Yuklovchi: <b>${m.uploader_name}</b></span>
+                            <span class="doc-author">Yuklovçi: <b>${m.uploader_name}</b></span>
                             <div class="doc-footer">
                                 <span class="doc-pages">${ext} • ${sizeStr}</span>
                                 <button onclick="openPresentationDeck(${m.id})" class="doc-btn" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #00FF87, #00F0FF); color:#04150C; font-weight:800; border:none; padding:8px 16px; border-radius:6px; box-shadow:0 2px 10px rgba(0,255,135,0.3);">
-                                    Slaydlarni Ko‘rish 👁️
+                                    Slaydlarni Köriş 👁️
                                 </button>
                             </div>
                         </div>
@@ -903,10 +903,10 @@
                                     <span style="font-size:11px; color:var(--text-dim);">${m.uploader_name}</span>
                                 </div>
                                 <h4 class="video-card-title" onclick="openMasterVideoPlayer(${m.id})" style="cursor:pointer;">${m.name}</h4>
-                                <p class="video-desc">${m.description || 'Sayt foydalanuvchisi tomonidan joylangan video material.'}</p>
+                                <p class="video-desc">${m.description || 'Sayt foydalanuvçisi tomonidan joylangan video material.'}</p>
                             </div>
                             <button class="btn-arsenal-secondary video-card-btn" onclick="openMasterVideoPlayer(${m.id})" style="cursor:pointer; background:linear-gradient(135deg, rgba(0,255,135,0.18), rgba(0,240,255,0.12)); border-color:#00FF87; color:#00FF87; font-weight:800;">
-                                ▶ Pleyerda Ko‘rish 🎬
+                                ▶ Pleyerda Köriş 🎬
                             </button>
                         </div>
                     `;
@@ -928,11 +928,11 @@
                             <span class="pub-doi">${ext} • ${sizeStr}</span>
                         </div>
                         <h3 class="pub-title" onclick="openPresentationDeck(${m.id})" style="cursor:pointer;">${m.name}</h3>
-                        <p class="pub-snippet">${m.description || 'Talabalar va o‘qituvchilar tomonidan joylangan ilmiy maqola.'}</p>
+                        <p class="pub-snippet">${m.description || 'Talabalar va öqituvçilar tomonidan joylangan ilmiy maqola.'}</p>
                         <div class="pub-footer">
                             <span class="pub-author">Muallif: <b>${m.uploader_name}</b></span>
                             <button onclick="openPresentationDeck(${m.id})" class="pub-read-btn" style="background:none; border:none; cursor:pointer; font-weight:800; color:#00F0FF;">
-                                Mutolaa Qilish 👁️ →
+                                Mutolaa Qiliş 👁️ →
                             </button>
                         </div>
                     `;
@@ -952,8 +952,8 @@
                     card.innerHTML = `
                         <div class="resource-icon" style="color:#00FF87;">📚</div>
                         <h3 class="resource-title">${m.name}</h3>
-                        <p class="resource-desc">${m.description || 'Yuklovchi: ' + m.uploader_name}</p>
-                        <span class="resource-link" style="color:#00FF87; font-weight:700;">Saytda O‘qish & Yuklash (${sizeStr}) 👁️</span>
+                        <p class="resource-desc">${m.description || 'Yuklovçi: ' + m.uploader_name}</p>
+                        <span class="resource-link" style="color:#00FF87; font-weight:700;">Saytda Öqiş & Yuklaş (${sizeStr}) 👁️</span>
                     `;
                     resourcesGrid.prepend(card);
                 }

@@ -9,11 +9,11 @@ const QUIZ_TASKS = [
     id: 'q1',
     title: '⭐ Yulduz (Star) Topologiyasi',
     category: 'Topologiya',
-    description: `Yulduz topologiyasini qurib chiqing:
+    description: `Yulduz topologiyasini qurib çiqing:
 • 1 ta Kommutator (Switch)
 • Kamida 4 ta Kompyuter (Desktop/Laptop)
-• Har bir kompyuter faqat switchga ulangan bo'lishi kerak`,
-    hint: 'Avval Switch qo\'shing, keyin 4 ta PC qo\'shing va har birini Switchga ulang.',
+• Har bir kompyuter faqat switchga ulangan bölişi kerak`,
+    hint: 'Avval Switch qöşing, keyin 4 ta PC qöşing va har birini Switchga ulang.',
     maxScore: 20,
     validate() {
       const sw = [...devices.values()].filter(d => d.type === 'switch');
@@ -29,19 +29,19 @@ const QUIZ_TASKS = [
           return od && od.type === 'switch';
         });
       });
-      if (!allPcToSwitch) return { ok: false, msg: '❌ Har bir PC faqat Switchga ulangan bo\'lishi kerak' };
-      return { ok: true, msg: '✅ Yulduz topologiyasi to\'g\'ri qurildi!' };
+      if (!allPcToSwitch) return { ok: false, msg: '❌ Har bir PC faqat Switchga ulangan bölişi kerak' };
+      return { ok: true, msg: '✅ Yulduz topologiyasi töğri qurildi!' };
     }
   },
   {
     id: 'q2',
     title: '⭕ Halqa (Ring) Topologiyasi',
     category: 'Topologiya',
-    description: `Halqa topologiyasini qurib chiqing:
-• Kamida 4 ta qurilma halqa shaklida ulangan
-• Har bir qurilma aniq 2 ta qo'shni bilan ulangan
-• Halqa yopiq bo'lishi kerak`,
-    hint: 'Qurilmalarni aylana bo\'ylab joylashtiring va ketma-ket ulang. Oxirgi qurilma birinchisiga ham ulanishi kerak.',
+    description: `Halqa topologiyasini qurib çiqing:
+• Kamida 4 ta qurilma halqa şaklida ulangan
+• Har bir qurilma aniq 2 ta qöşni bilan ulangan
+• Halqa yopiq bölişi kerak`,
+    hint: 'Qurilmalarni aylana böylab joylaştiring va ketma-ket ulang. Oxirgi qurilma birinçisiga ham ulanişi kerak.',
     maxScore: 25,
     validate() {
       const devList = [...devices.values()];
@@ -51,19 +51,19 @@ const QUIZ_TASKS = [
         const cnt = [...connections.values()].filter(c => c.a === d.id || c.b === d.id).length;
         return cnt !== 2;
       });
-      if (notTwo.length > 0) return { ok: false, msg: `❌ ${notTwo.map(d=>d.name).join(', ')} qurilmalari aniq 2 ta ulanishga ega bo'lishi kerak` };
-      return { ok: true, msg: '✅ Halqa topologiyasi to\'g\'ri qurildi!' };
+      if (notTwo.length > 0) return { ok: false, msg: `❌ ${notTwo.map(d=>d.name).join(', ')} qurilmalari aniq 2 ta ulanişga ega bölişi kerak` };
+      return { ok: true, msg: '✅ Halqa topologiyasi töğri qurildi!' };
     }
   },
   {
     id: 'q3',
-    title: '🌐 Marshrutlash (Routing) Sozlamalari',
+    title: '🌐 Marşrutlaş (Routing) Sozlamalari',
     category: 'Tarmoq',
     description: `Turli subnetlarni Router orqali ulang:
 • Kamida 1 ta Router
-• 2 ta turli subnetda (masalan 192.168.1.x va 192.168.2.x) qurilmalar bo'lsin
-• Router har ikkala subnetga ulangan bo'lsin`,
-    hint: 'Router qo\'shing. Bir gruppada 192.168.1.x IP li PC lar, boshqasida 192.168.2.x IP li PC lar qo\'shing.',
+• 2 ta turli subnetda (masalan 192.168.1.x va 192.168.2.x) qurilmalar bölsin
+• Router har ikkala subnetga ulangan bölsin`,
+    hint: 'Router qöşing. Bir gruppada 192.168.1.x IP li PC lar, boşqasida 192.168.2.x IP li PC lar qöşing.',
     maxScore: 30,
     validate() {
       const routers = [...devices.values()].filter(d => d.type === 'router');
@@ -83,43 +83,43 @@ const QUIZ_TASKS = [
         const rConns = [...connections.values()].filter(c => c.a === r.id || c.b === r.id);
         return rConns.length >= 2;
       });
-      if (!routerConnected) return { ok: false, msg: '❌ Router kamida 2 ta qurilmaga ulangan bo\'lishi kerak' };
+      if (!routerConnected) return { ok: false, msg: '❌ Router kamida 2 ta qurilmaga ulangan bölişi kerak' };
 
-      return { ok: true, msg: '✅ Routing topologiyasi to\'g\'ri qurildi!' };
+      return { ok: true, msg: '✅ Routing topologiyasi töğri qurildi!' };
     }
   },
   {
     id: 'q4',
     title: '📶 Wi-Fi Tarmoqi',
     category: 'Wireless',
-    description: `Simsiz tarmoq qurib chiqing:
+    description: `Simsiz tarmoq qurib çiqing:
 • 1 ta Router yoki AP (Wi-Fi yoqilgan)
 • Kamida 2 ta simsiz ulangan qurilma (Laptop/Phone/Tablet)
-• Barcha qurilmalar bir xil subnetda bo'lsin`,
-    hint: 'Router qo\'shing va uning Wi-Fi panelidan SSID ni sozlang. Keyin Laptop/Phone larni Wi-Fi scanner orqali uling.',
+• Barça qurilmalar bir xil subnetda bölsin`,
+    hint: 'Router qöşing va uning Wi-Fi panelidan SSID ni sozlang. Keyin Laptop/Phone larni Wi-Fi scanner orqali uling.',
     maxScore: 25,
     validate() {
       const wifiConns = [...connections.values()].filter(c => c.wireless);
-      if (wifiConns.length < 2) return { ok: false, msg: `❌ Kamida 2 ta Wi-Fi ulanish kerak (hozir ${wifiConns.length} ta)` };
+      if (wifiConns.length < 2) return { ok: false, msg: `❌ Kamida 2 ta Wi-Fi ulaniş kerak (hozir ${wifiConns.length} ta)` };
 
       const aps = [...devices.values()].filter(d => d.wifi && d.wifi.isAp && d.wifi.enabled);
       if (aps.length < 1) return { ok: false, msg: '❌ Kamida 1 ta yoqilgan Wi-Fi AP kerak' };
 
-      return { ok: true, msg: '✅ Wi-Fi tarmoq to\'g\'ri sozlandi!' };
+      return { ok: true, msg: '✅ Wi-Fi tarmoq töğri sozlandi!' };
     }
   },
   {
     id: 'q5',
     title: '🏢 Korporativ Tarmoq',
     category: 'Murakkab',
-    description: `To'liq korporativ ofis tarmog'ini qurib chiqing:
+    description: `Töliq korporativ ofis tarmoğini qurib çiqing:
 • 1 ta Router (Internet gateway)
-• 1 ta yoki ko'proq Switch
+• 1 ta yoki köproq Switch
 • Kamida 3 ta Desktop PC
 • 1 ta Server
 • 1 ta Printer
-• Barcha qurilmalar bir-biriga paket uzata olsin`,
-    hint: 'Avval tuzilmani rejalashtiring: Router → Switch → Server, PC lar, Printer.',
+• Barça qurilmalar bir-biriga paket uzata olsin`,
+    hint: 'Avval tuzilmani rejalaştiring: Router → Switch → Server, PC lar, Printer.',
     maxScore: 40,
     validate() {
       const types = {};
@@ -138,23 +138,23 @@ const QUIZ_TASKS = [
         const cnt = [...connections.values()].filter(c => c.a === d.id || c.b === d.id).length;
         if (cnt === 0) disconnected++;
       });
-      if (disconnected > 0) return { ok: false, msg: `❌ ${disconnected} ta qurilma hech narsaga ulanmagan` };
+      if (disconnected > 0) return { ok: false, msg: `❌ ${disconnected} ta qurilma heç narsaga ulanmagan` };
 
-      return { ok: true, msg: '✅ Korporativ tarmoq to\'g\'ri qurildi!' };
+      return { ok: true, msg: '✅ Korporativ tarmoq töğri qurildi!' };
     }
   },
   {
     id: 'q6',
     title: '🔢 Subnet Masala',
-    category: 'Hisoblash',
+    category: 'Hisoblaş',
     description: `Subnet kalkulyator masalasi:\n\nBerilgan: IP: <b id="quizSubnetIp">192.168.10.50</b>, Mask: <b id="quizSubnetMask">255.255.255.192</b>\n\nTopish kerak: Usable hostlar soni?`,
     hint: 'Subnet Kalkulyator (🔢) tugmasini bosib, berilgan IP va maskni kiriting.',
     maxScore: 15,
     _answer: 62,
     validate() {
       const answer = parseInt(document.getElementById('quizAnswerInput')?.value || 0);
-      if (answer === this._answer) return { ok: true, msg: `✅ To'g'ri! ${this._answer} ta host` };
-      return { ok: false, msg: `❌ Noto'g'ri: ${answer}. Hint: /26 subnet = 64 - 2 = 62 host` };
+      if (answer === this._answer) return { ok: true, msg: `✅ Töğri! ${this._answer} ta host` };
+      return { ok: false, msg: `❌ Notöğri: ${answer}. Hint: /26 subnet = 64 - 2 = 62 host` };
     },
     hasInput: true
   },
@@ -162,11 +162,11 @@ const QUIZ_TASKS = [
     id: 'q7',
     title: '🏷️ VLAN Segmentatsiyasi',
     category: 'VLAN',
-    description: `Switchda VLAN segmentatsiyasini amalga oshiring:
+    description: `Switchda VLAN segmentatsiyasini amalga oşiring:
 • 1 ta Switch
-• Switchda VLAN 10 va VLAN 20 yaratilgan bo'lsin
+• Switchda VLAN 10 va VLAN 20 yaratilgan bölsin
 • Kamida 2 ta PC VLAN 10 portlariga, 2 ta PC VLAN 20 portlariga ulansin`,
-    hint: 'Switch qo\'shing, "VLAN" tugmasi orqali VLAN 10 va 20 ni yarating va portlarga biriktiring.',
+    hint: 'Switch qöşing, "VLAN" tugmasi orqali VLAN 10 va 20 ni yarating va portlarga biriktiring.',
     maxScore: 30,
     validate() {
       const switches = [...devices.values()].filter(d => d.type === 'switch');
@@ -174,14 +174,14 @@ const QUIZ_TASKS = [
 
       const sw = switches[0];
       if (!sw.vlans || !sw.vlans.some(v => v.id === 10) || !sw.vlans.some(v => v.id === 20)) {
-        return { ok: false, msg: '❌ Switchda VLAN 10 va VLAN 20 yaratilgan bo\'lishi kerak' };
+        return { ok: false, msg: '❌ Switchda VLAN 10 va VLAN 20 yaratilgan bölişi kerak' };
       }
 
       const vlan10Ports = (sw.ports || []).filter(p => p.vlan === 10 && p.connectedTo);
       const vlan20Ports = (sw.ports || []).filter(p => p.vlan === 20 && p.connectedTo);
 
-      if (vlan10Ports.length < 2) return { ok: false, msg: `❌ VLAN 10 ga kamida 2 ta qurilma ulangan bo'lishi kerak (hozir ${vlan10Ports.length} ta)` };
-      if (vlan20Ports.length < 2) return { ok: false, msg: `❌ VLAN 20 ga kamida 2 ta qurilma ulangan bo'lishi kerak (hozir ${vlan20Ports.length} ta)` };
+      if (vlan10Ports.length < 2) return { ok: false, msg: `❌ VLAN 10 ga kamida 2 ta qurilma ulangan bölişi kerak (hozir ${vlan10Ports.length} ta)` };
+      if (vlan20Ports.length < 2) return { ok: false, msg: `❌ VLAN 20 ga kamida 2 ta qurilma ulangan bölişi kerak (hozir ${vlan20Ports.length} ta)` };
 
       return { ok: true, msg: '✅ VLAN segmentatsiyasi muvaffaqiyatli bajarildi!' };
     }
@@ -191,9 +191,9 @@ const QUIZ_TASKS = [
     title: '🔄 Router-on-a-Stick (Inter-VLAN)',
     category: 'VLAN',
     description: `Router-on-a-Stick sozlamalarini quring:
-• 1 ta Switch va 1 ta Router o'zaro Trunk kabeli orqali ulansin
+• 1 ta Switch va 1 ta Router özaro Trunk kabeli orqali ulansin
 • Routerda kamida 2 ta sub-interfeys (masalan Gi0/0.10 va Gi0/0.20) sozlang`,
-    hint: 'Switch va Router o\'rtasidagi portni Trunk qiling (Shift+Klik). Routerda sub-interfeyslar qo\'shing.',
+    hint: 'Switch va Router örtasidagi portni Trunk qiling (Shift+Klik). Routerda sub-interfeyslar qöşing.',
     maxScore: 35,
     validate() {
       const switches = [...devices.values()].filter(d => d.type === 'switch');
@@ -213,13 +213,13 @@ const QUIZ_TASKS = [
         return false;
       });
 
-      if (!trunkConn) return { ok: false, msg: '❌ Switch va Router o\'rtasidagi port Trunk rejimida bo\'lishi shart' };
+      if (!trunkConn) return { ok: false, msg: '❌ Switch va Router örtasidagi port Trunk rejimida bölişi şart' };
 
       // Router sub-interfeyslari tekshiruvi
       const subKeys = router.subinterfaces ? Object.keys(router.subinterfaces) : [];
-      if (subKeys.length < 2) return { ok: false, msg: `❌ Routerda kamida 2 ta sub-interfeys bo'lishi kerak (hozir ${subKeys.length} ta)` };
+      if (subKeys.length < 2) return { ok: false, msg: `❌ Routerda kamida 2 ta sub-interfeys bölişi kerak (hozir ${subKeys.length} ta)` };
 
-      return { ok: true, msg: '✅ Router-on-a-Stick konfiguratsiyasi a\'lo darajada bajarildi!' };
+      return { ok: true, msg: '✅ Router-on-a-Stick konfiguratsiyasi a'lo darajada bajarildi!' };
     }
   }
 ];
@@ -274,7 +274,7 @@ function renderQuizTaskList() {
   `;
 }
 
-/* ---------- Vazifani boshlash ---------- */
+/* ---------- Vazifani boşlaş ---------- */
 function startQuizTask(taskId) {
   const task = QUIZ_TASKS.find(t => t.id === taskId);
   if (!task) return;
@@ -337,7 +337,7 @@ function stopQuizTimer() {
   if (quizTimerHandle) { clearInterval(quizTimerHandle); quizTimerHandle = null; }
 }
 
-/* ---------- Tekshirish ---------- */
+/* ---------- Tekşiriş ---------- */
 function checkQuizTask(taskId) {
   const task = QUIZ_TASKS.find(t => t.id === taskId);
   if (!task) return;
@@ -358,7 +358,7 @@ function checkQuizTask(taskId) {
       <div style="background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.4);border-radius:8px;padding:10px;text-align:center;">
         <div style="font-size:16px;margin-bottom:4px;">${result.msg}</div>
         <div style="color:#FFB454;font-size:12px;">+${earned} ball · ${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')}</div>
-        ${timeBonus > 0 ? `<div style="color:#38BDF8;font-size:11px;">⚡ Tez bajarganingiz uchun +${timeBonus} bonus ball!</div>` : ''}
+        ${timeBonus > 0 ? `<div style="color:#38BDF8;font-size:11px;">⚡ Tez bajarganingiz uçun +${timeBonus} bonus ball!</div>` : ''}
       </div>
     `;
     toast(`🎉 +${earned} ball! ${task.title} bajarildi!`);
@@ -401,7 +401,7 @@ function showQuizFinalResult() {
           pct >= 70 ? 'Yaxshi natija! Biroz mashq kerak.' :
           'Davom eting! Har bir urinish tajriba beradi.'}
       </div>
-      <button class="actbtn on" style="margin-top:20px;padding:10px 24px;" onclick="resetQuiz()">🔄 Qayta boshlash</button>
+      <button class="actbtn on" style="margin-top:20px;padding:10px 24px;" onclick="resetQuiz()">🔄 Qayta boşlaş</button>
     </div>
   `;
 }
