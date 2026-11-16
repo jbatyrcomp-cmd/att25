@@ -328,7 +328,7 @@ class MultiTouchController {
 
 /* ==========================================================================
    SENSORLI EKRAN VIRTUAL KLAVIATURASI (VIRTUAL ON-SCREEN KEYBOARD)
-   O'zbekça / Lotin, Ingliz tili, Raqamlar va Tezkor Matematik belgilar
+   Yangi O'zbek alifbosi / Lotin, Raqamlar va Tezkor Matematik belgilar
    ========================================================================== */
 class VirtualKeyboard {
   constructor(engine) {
@@ -484,10 +484,10 @@ class VirtualKeyboard {
         ['ABC', ',', 'Space', '.', 'Backspace', 'Enter']
       ];
     } else {
-      // Asosiy O'zbekcha / Lotin QWERTY (O', G', Sh, Ch qo'llab-quvvatlanadi)
-      const r1 = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', "o'", "g'"];
-      const r2 = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'sh', 'ch'];
-      const r3 = ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'Backspace'];
+      // Yangi O'zbek alifbosi: Ö, Ğ, Ş va Ç alohida tugmalar sifatida beriladi.
+      const r1 = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'ö', 'p'];
+      const r2 = ['a', 's', 'd', 'f', 'g', 'ğ', 'h', 'j', 'k', 'l', 'ş'];
+      const r3 = ['Shift', 'z', 'x', 'c', 'ç', 'v', 'b', 'n', 'm', 'Backspace'];
       const r4 = ['?123', 'Mic', 'Space', '.', 'Enter'];
 
       rows = [
