@@ -17,3 +17,7 @@ env/
 # Database files
 *.db
 *.sqlite3
+
+# Scratch & IDE
+scratch/
+.vscode/

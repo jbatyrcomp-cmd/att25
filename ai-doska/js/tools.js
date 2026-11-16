@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    ATT-25 AI DOSKA — TOOLS & INTERACTION MANAGER (tools.js)
    Qalam, Marker, Shakllar, Stikerlar, Matn, O'çirg'ich, Pointer boshqaruvi
    ========================================================================== */
@@ -44,9 +44,6 @@ class ToolManager {
 
     // Laser pointer elementi
     this.laserDot = document.getElementById('laserPointerDot');
-
-    // Aqlli Shakllarni aniqlash (Magic Ink / AI Shape Recognition)
-    this.magicInkEnabled = true;
 
     // AI Formula Rejimi (Active Real-time Handwriting Math OCR Mode)
     this.formulaModeActive = false;
@@ -585,23 +582,6 @@ class ToolManager {
         return;
       }
 
-      // 2. Magic Ink: erkin çizilgan qalam şaklini geometrik şaklga aylantiriş
-      if (this.magicInkEnabled && this.currentDrawingObject.type === 'stroke' && !this.currentDrawingObject.isHighlighter) {
-        const magicShape = this.tryMagicInkRecognition(this.currentDrawingObject);
-        if (magicShape) {
-          this.engine.removeObject(this.currentDrawingObject, false);
-          this.engine.addObject(magicShape, false);
-          this.engine.selectedObject = magicShape;
-          this.engine.saveState();
-          this.currentDrawingObject = null;
-          this.updateViewportCursor();
-          if (typeof window.toast === 'function') {
-            window.toast(`✨ Magic Ink: ${magicShape.magicName || 'Şakl'} tanildi!`);
-          }
-          return;
-        }
-      }
-
       this.engine.saveState(); // Yangi çizilgan şaklni saqlaş
       this.currentDrawingObject = null;
     }
@@ -609,175 +589,7 @@ class ToolManager {
     this.updateViewportCursor();
   }
 
-  /* ==========================================================================
-     MAGIC INK (AQLLI ŞAKLLARNI TANIŞ)
-     ========================================================================== */
-  tryMagicInkRecognition(strokeObj) {
-    const pts = strokeObj.points;
-    if (!pts || pts.length < 8) return null;
-
-    // 1. Bounding box va xarakteristikalar
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-    let pathLen = 0;
-    for (let i = 0; i < pts.length; i++) {
-      const p = pts[i];
-      if (p.x < minX) minX = p.x;
-      if (p.x > maxX) maxX = p.x;
-      if (p.y < minY) minY = p.y;
-      if (p.y > maxY) maxY = p.y;
-      if (i > 0) {
-        pathLen += Math.hypot(p.x - pts[i - 1].x, p.y - pts[i - 1].y);
-      }
-    }
-
-    const w = maxX - minX;
-    const h = maxY - minY;
-    if (w < 16 && h < 16) return null; // Juda kichik nuqta/chiziqcha
-
-    const diag = Math.hypot(w, h);
-    const startP = pts[0];
-    const endP = pts[pts.length - 1];
-    const dStartEnd = Math.hypot(endP.x - startP.x, endP.y - startP.y);
-
-    const isClosed = dStartEnd < Math.min(60, diag * 0.35);
-
-    const color = strokeObj.color || this.currentColor;
-    const strokeWidth = strokeObj.width || this.currentSize;
-    const filled = this.isFilled;
-    const fillColor = filled ? this.getFillColor() : 'transparent';
-
-    if (isClosed) {
-      // Markaz va o'rtacha radius
-      const cx = (minX + maxX) / 2;
-      const cy = (minY + maxY) / 2;
-      const rx = w / 2;
-      const ry = h / 2;
-
-      // Aylanasimonlikni tekshirish (Circularity test)
-      let radialDiffSum = 0;
-      for (const p of pts) {
-        const d = Math.hypot((p.x - cx) / (rx || 1), (p.y - cy) / (ry || 1));
-        radialDiffSum += Math.abs(d - 1.0);
-      }
-      const avgRadialDiff = radialDiffSum / pts.length;
-
-      // a) Agar barcha nuqtalar markazdan taxminan bir xil uzoqlikda bo'lsa -> Aylana / Ellips
-      if (avgRadialDiff < 0.22) {
-        return {
-          type: 'circle',
-          x: minX,
-          y: minY,
-          radiusX: rx,
-          radiusY: ry,
-          color,
-          strokeWidth,
-          filled,
-          fillColor,
-          magicName: "Aylana"
-        };
-      }
-
-      // b) Burçaklar (Corners) tahlili
-      const step = Math.max(2, Math.floor(pts.length / 16));
-      let cornerCount = 0;
-      for (let i = step; i < pts.length - step; i += step) {
-        const prev = pts[i - step];
-        const curr = pts[i];
-        const next = pts[i + step];
-
-        const v1x = curr.x - prev.x, v1y = curr.y - prev.y;
-        const v2x = next.x - curr.x, v2y = next.y - curr.y;
-        const l1 = Math.hypot(v1x, v1y), l2 = Math.hypot(v2x, v2y);
-
-        if (l1 > 3 && l2 > 3) {
-          const dot = (v1x * v2x + v1y * v2y) / (l1 * l2);
-          const clampedDot = Math.max(-1, Math.min(1, dot));
-          const angleDeg = Math.acos(clampedDot) * (180 / Math.PI);
-          if (angleDeg > 45 && angleDeg < 135) {
-            cornerCount++;
-          }
-        }
-      }
-
-      // Uchburchak
-      if (cornerCount >= 2 && cornerCount <= 4 && pathLen < diag * 3.5) {
-        if (cornerCount === 3 || (cornerCount === 2 && pts.length < 32)) {
-          return {
-            type: 'triangle',
-            x: minX,
-            y: minY,
-            width: w,
-            height: h,
-            color,
-            strokeWidth,
-            filled,
-            fillColor,
-            magicName: "Uchburchak"
-          };
-        }
-      }
-
-      // Töğri törtburçak
-      return {
-        type: 'rect',
-        x: minX,
-        y: minY,
-        width: w,
-        height: h,
-        color,
-        strokeWidth,
-        filled,
-        fillColor,
-        magicName: "To'g'ri to'rtburçak"
-      };
-    } else {
-      // Oçiq çizma: Çiziq yoki Strelka
-      const straightRatio = pathLen / (dStartEnd || 1);
-
-      if (straightRatio < 1.35 && dStartEnd > 24) {
-        // Oxirgi 25% qismida buriliş / strelka uçi bormi?
-        const lastIdx = Math.floor(pts.length * 0.75);
-        let hasFlick = false;
-        for (let i = lastIdx; i < pts.length - 1; i++) {
-          const p = pts[i];
-          const dToStart = Math.hypot(p.x - startP.x, p.y - startP.y);
-          const dNextToStart = Math.hypot(pts[i+1].x - startP.x, pts[i+1].y - startP.y);
-          if (dNextToStart < dToStart - 4) {
-            hasFlick = true;
-            break;
-          }
-        }
-
-        if (hasFlick) {
-          return {
-            type: 'arrow',
-            x1: startP.x,
-            y1: startP.y,
-            x2: endP.x,
-            y2: endP.y,
-            color,
-            strokeWidth,
-            magicName: "Yo'naltirilgan Strelka"
-          };
-        } else {
-          return {
-            type: 'line',
-            x1: startP.x,
-            y1: startP.y,
-            x2: endP.x,
-            y2: endP.y,
-            color,
-            strokeWidth,
-            magicName: "To'g'ri Chiziq"
-          };
-        }
-      }
-    }
-
-    return null;
-  }
-
-  /* ==========================================================================
+  /* ==========================================================================`r
      INLINE TEXT TAHRIRLAGIÇ
      ========================================================================== */
   openTextEditor(obj, screenX, screenY) {
@@ -899,73 +711,6 @@ class ToolManager {
       });
     });
 
-    // Magic Ink toggle
-    const btnMagicInk = document.getElementById('btnMagicInkToggle');
-    if (btnMagicInk) {
-      btnMagicInk.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.magicInkEnabled = !this.magicInkEnabled;
-        btnMagicInk.classList.toggle('active-feature', this.magicInkEnabled);
-        if (typeof window.toast === 'function') {
-          window.toast(`Magic Ink: ${this.magicInkEnabled ? "Yoqildi (Avto-shakl)" : "O'çirildi"}`);
-        }
-        moreToolsAnchor?.classList.remove('open');
-      });
-    }
-
-    // Taşqariga bosganda popoverlarni yopiş
-    window.addEventListener('click', () => {
-      document.querySelectorAll('.tool-popover-anchor.open').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.dropdown-wrapper.open').forEach(el => el.classList.remove('open'));
-    });
-
-    // 4. Ranglar palitrasi
-    document.querySelectorAll('#colorPalette .color-swatch').forEach(swatch => {
-      swatch.addEventListener('click', () => {
-        document.querySelectorAll('#colorPalette .color-swatch').forEach(s => s.classList.remove('active'));
-        swatch.classList.add('active');
-        this.currentColor = swatch.getAttribute('data-color');
-
-        if (this.engine.selectedObject) {
-          this.engine.selectedObject.color = this.currentColor;
-          if (this.engine.selectedObject.type === 'rect' || this.engine.selectedObject.type === 'circle') {
-            this.engine.selectedObject.fillColor = this.getFillColor();
-          }
-          this.engine.saveState();
-        }
-      });
-    });
-
-    // 5. Qalinlik tanlagiç
-    document.querySelectorAll('#strokeSizeSelector .size-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#strokeSizeSelector .size-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.currentSize = parseInt(btn.getAttribute('data-size'), 10) || 4;
-
-        if (this.engine.selectedObject && this.engine.selectedObject.strokeWidth) {
-          this.engine.selectedObject.strokeWidth = this.currentSize;
-          this.engine.saveState();
-        }
-      });
-    });
-
-    // 6. Şakl içini bo'yash (Fill toggle)
-    const btnFill = document.getElementById('btnToggleFill');
-    if (btnFill) {
-      btnFill.addEventListener('click', () => {
-        this.isFilled = !this.isFilled;
-        btnFill.classList.toggle('filled', this.isFilled);
-        const label = document.getElementById('fillLabel');
-        if (label) label.textContent = this.isFilled ? "Böyalgan" : "Şaffof";
-
-        if (this.engine.selectedObject && ['rect', 'circle', 'diamond', 'triangle'].includes(this.engine.selectedObject.type)) {
-          this.engine.selectedObject.filled = this.isFilled;
-          this.engine.selectedObject.fillColor = this.getFillColor();
-          this.engine.saveState();
-        }
-      });
-    }
   }
 
   setTool(toolName) {
@@ -1509,18 +1254,13 @@ class ToolManager {
     this.fbadgeReady?.classList.add('hidden');
   }
 
-  showFormulaLiveBadgeReady(latex, mode = 'gemini') {
+  showFormulaLiveBadgeReady(latex, mode = 'offline') {
     if (!this.formulaLiveBadge || !this.activeFormulaSession) return;
 
     const modeIndicator = document.getElementById('fbadgeModeIndicator');
     if (modeIndicator) {
-      if (mode === 'gemini') {
-        modeIndicator.textContent = '✨ Gemini 2.5 Vision';
-        modeIndicator.style.color = '#10B981';
-      } else {
-        modeIndicator.textContent = '⚡ Lokal Fazoviy OCR';
-        modeIndicator.style.color = '#38BDF8';
-      }
+      modeIndicator.textContent = '⚡ Lokal Fazoviy OCR';
+      modeIndicator.style.color = '#38BDF8';
     }
 
     if (this.fbadgeKatexPreview) {

@@ -1565,8 +1565,7 @@ const ARTICLES_CONTENT = {
         </ul>
 
         <div class="paper-actions-bar">
-          <button class="btn-arsenal-secondary" onclick="window.print()" style="cursor:pointer; font-size:12px; padding:8px 14px;">🖨️ Maqolani Çop Etiş (Print Full Paper)</button>
-          <button class="btn-arsenal-primary" onclick="alert('Elsevier JNCA (DOI: 10.1016/j.jnca.2025.103982) to‘liq ilmiy maqolasi PDF nusxasi yuklab olindi.');" style="cursor:pointer; font-size:12px; padding:8px 14px;">📥 Rasmiy PDF Nusxani Yuklab Oliş</button>
+          <a class="btn-arsenal-primary" href="https://doi.org/10.1016/j.jnca.2025.103982" target="_blank" rel="noopener" style="cursor:pointer; font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">🔗 Rasmiy DOI (Elsevier) Maqolasini Oçiş</a>
         </div>
       </div>
     `
@@ -1717,8 +1716,7 @@ const ARTICLES_CONTENT = {
         </ul>
 
         <div class="paper-actions-bar">
-          <button class="btn-arsenal-secondary" onclick="window.print()" style="cursor:pointer; font-size:12px; padding:8px 14px;">🖨️ Maqolani Çop Etiş (Print Full Paper)</button>
-          <button class="btn-arsenal-primary" onclick="alert('IEEE TQE (DOI: 10.1109/TQE.2025.341109) to‘liq ilmiy maqolasi PDF nusxasi yuklab olindi.');" style="cursor:pointer; font-size:12px; padding:8px 14px;">📥 Rasmiy PDF Nusxani Yuklab Oliş</button>
+          <a class="btn-arsenal-primary" href="https://doi.org/10.1109/TQE.2025.341109" target="_blank" rel="noopener" style="cursor:pointer; font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">🔗 Rasmiy DOI (IEEE Xplore) Maqolasini Oçiş</a>
         </div>
       </div>
     `
@@ -1873,8 +1871,7 @@ const ARTICLES_CONTENT = {
         </ul>
 
         <div class="paper-actions-bar">
-          <button class="btn-arsenal-secondary" onclick="window.print()" style="cursor:pointer; font-size:12px; padding:8px 14px;">🖨️ Maqolani Çop Etiş (Print Full Paper)</button>
-          <button class="btn-arsenal-primary" onclick="alert('ACM CSUR (DOI: 10.1145/3624891) to‘liq ilmiy sharh maqolasi PDF nusxasi yuklab olindi.');" style="cursor:pointer; font-size:12px; padding:8px 14px;">📥 Rasmiy PDF Nusxani Yuklab Oliş</button>
+          <a class="btn-arsenal-primary" href="https://doi.org/10.1145/3624891" target="_blank" rel="noopener" style="cursor:pointer; font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">🔗 Rasmiy DOI (ACM) Maqolasini Oçiş</a>
         </div>
       </div>
     `
@@ -2030,8 +2027,7 @@ const ARTICLES_CONTENT = {
         </ul>
 
         <div class="paper-actions-bar">
-          <button class="btn-arsenal-secondary" onclick="window.print()" style="cursor:pointer; font-size:12px; padding:8px 14px;">🖨️ Maqolani Çop Etiş (Print Full Paper)</button>
-          <button class="btn-arsenal-primary" onclick="alert('IEEE IoT-J (DOI: 10.1109/JIOT.2025.3398412) to‘liq ilmiy maqolasi PDF nusxasi yuklab olindi.');" style="cursor:pointer; font-size:12px; padding:8px 14px;">📥 Rasmiy PDF Nusxani Yuklab Oliş</button>
+          <a class="btn-arsenal-primary" href="https://doi.org/10.1109/JIOT.2025.3398412" target="_blank" rel="noopener" style="cursor:pointer; font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">🔗 Rasmiy DOI (IEEE IoT-J) Maqolasini Oçiş</a>
         </div>
       </div>
     `
@@ -2238,11 +2234,14 @@ function initVideoPlayer() {
 function initPresentationModal() {
   const docModal = document.getElementById('presentationModal');
   const docClose = document.getElementById('presentationModalClose');
-  const docBtns = document.querySelectorAll('.doc-btn');
+  const docBtns = document.querySelectorAll('#docsGrid .doc-card .doc-btn');
 
   if (!docModal) return;
 
-  function closeDoc() { docModal.classList.remove('open'); }
+  function closeDoc() {
+    docModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
   if (docClose) docClose.addEventListener('click', closeDoc);
 
   docModal.addEventListener('click', (e) => {
@@ -2253,9 +2252,32 @@ function initPresentationModal() {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const card = btn.closest('.doc-card');
-      const title = card ? card.querySelector('.doc-title').textContent : "Taqdimot";
-      document.getElementById('presModalTitle').textContent = title;
+      if (!card) return;
+      const title = card.querySelector('.doc-title') ? card.querySelector('.doc-title').textContent : "Öquv Materiali";
+      const author = card.querySelector('.doc-author') ? card.querySelector('.doc-author').textContent : "ATT-25 Kafedrasi";
+      const pages = card.querySelector('.doc-pages') ? card.querySelector('.doc-pages').textContent : "";
+      const badge = card.querySelector('.doc-badge-type') ? card.querySelector('.doc-badge-type').textContent : "MATERIAL";
+
+      const titleEl = document.getElementById('presModalTitle');
+      const subTitleEl = document.getElementById('presModalSubTitle');
+      const detailsEl = document.getElementById('presModalDetails');
+
+      if (titleEl) titleEl.textContent = title;
+      if (subTitleEl) subTitleEl.textContent = title;
+      if (detailsEl) {
+        detailsEl.innerHTML = `
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:12px;">
+            <div><span style="color:var(--text-muted); font-size:11px;">Hujjat turi:</span><br><b style="color:var(--brand-primary);">${badge}</b></div>
+            <div><span style="color:var(--text-muted); font-size:11px;">Muallif / Manba:</span><br><b style="color:var(--text-white);">${author}</b></div>
+            <div><span style="color:var(--text-muted); font-size:11px;">Hajmi:</span><br><b style="color:var(--accent-gold);">${pages}</b></div>
+          </div>
+          <div style="border-top:1px solid var(--line-base); padding-top:10px; font-size:12px; color:var(--text-dim); line-height:1.6;">
+            Mazkur taqdimot va uslubiy qöllanma kafedraning öquv rejasiga muvofiq laboratoriya stendlari, simulyatorlar va amaliy mashğulotlar bilan töliq integratsiya qilingan.
+          </div>
+        `;
+      }
       docModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
     });
   });
 }
@@ -3061,6 +3083,8 @@ const SYLLABUS_DATA = {
 
 function openSyllabusModal(id) {
   const modal = document.getElementById('syllabusModal');
+  const presModal = document.getElementById('presentationModal');
+  if (presModal) presModal.classList.remove('open');
   const tagEl = document.getElementById('sylTag');
   const titleEl = document.getElementById('sylTitle');
   const bodyEl = document.getElementById('sylBody');
@@ -3248,6 +3272,8 @@ function openSyllabusModal(id) {
 function closeSyllabusModal() {
   const modal = document.getElementById('syllabusModal');
   if (modal) modal.classList.remove('open');
+  const presModal = document.getElementById('presentationModal');
+  if (presModal) presModal.classList.remove('open');
   document.body.style.overflow = '';
 }
 

@@ -2747,7 +2747,7 @@ a {
   color: var(--text-muted);
 }
 
-.doc-btn {
+.doc-btn, .syllabus-btn {
   background: var(--bg-surface-2);
   border: 1px solid var(--line-base);
   color: var(--brand-primary);
@@ -2760,7 +2760,7 @@ a {
   transition: all 0.2s;
 }
 
-.doc-btn:hover {
+.doc-btn:hover, .syllabus-btn:hover {
   background: var(--brand-primary);
   color: var(--btn-text);
 }

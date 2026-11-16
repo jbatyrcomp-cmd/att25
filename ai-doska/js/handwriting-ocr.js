@@ -4,9 +4,8 @@
    ========================================================================== */
 
 class HandwritingOCR {
-  constructor(boardEngine, aiEngine) {
+  constructor(boardEngine) {
     this.board = boardEngine;
-    this.ai = aiEngine;
   }
 
   /* ==========================================================================
@@ -91,26 +90,6 @@ class HandwritingOCR {
     const raster = this.renderStrokesToImage(strokes);
     if (!raster) throw new Error("Tanish uchun chizmalar topilmadi.");
 
-    // 1. Agar Gemini API kaliti mavjud bo'lsa (online multimodal AI)
-    const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
-    if (apiKey) {
-      try {
-        const result = await this.onlineRecognizeWithGemini(raster.dataUrl, 'math');
-        if (result && result.latex) {
-          return {
-            latex: result.latex,
-            confidence: result.confidence || 0.99,
-            mode: 'gemini',
-            bounds: raster.bounds,
-            previewUrl: raster.dataUrl
-          };
-        }
-      } catch (err) {
-        console.warn("Gemini Vision xatosi, avtonom fazoviy OCR ga o'tilmoqda:", err);
-      }
-    }
-
-    // 2. Avtonom fazoviy segmentatsiyalangan tanish (Offline)
     const offlineResult = this.offlineRecognizeMath(strokes, raster.bounds);
     return {
       latex: offlineResult.latex,
@@ -125,23 +104,6 @@ class HandwritingOCR {
     const raster = this.renderStrokesToImage(strokes);
     if (!raster) throw new Error("Tanish uchun chizmalar topilmadi.");
 
-    const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
-    if (apiKey) {
-      try {
-        const result = await this.onlineRecognizeWithGemini(raster.dataUrl, 'text');
-        if (result && result.text) {
-          return {
-            text: result.text,
-            mode: 'gemini',
-            bounds: raster.bounds,
-            previewUrl: raster.dataUrl
-          };
-        }
-      } catch (err) {
-        console.warn("Gemini Vision xatosi, avtonom matn tahliliga o'tilmoqda:", err);
-      }
-    }
-
     const offlineText = this.offlineRecognizeText(strokes, raster.bounds);
     return {
       text: offlineText,
@@ -149,81 +111,6 @@ class HandwritingOCR {
       bounds: raster.bounds,
       previewUrl: raster.dataUrl
     };
-  }
-
-  /* ==========================================================================
-     3. ONLINE GOOGLE GEMINI MULTIMODAL VISION RECOGNITION (GEMINI 2.5 FLASH)
-     ========================================================================== */
-  async onlineRecognizeWithGemini(dataUrl, type = 'math') {
-    const base64Data = dataUrl.replace(/^data:image\/\w+;base64,/, '');
-    const model = this.ai?.model || 'gemini-1.5-flash';
-    const apiKey = this.ai?.apiKey || localStorage.getItem('att25_gemini_api_key') || '';
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-    const prompt = type === 'math'
-      ? `You are an expert mathematical handwriting recognition OCR engine for Microsoft Word / KaTeX format.
-Transcribe the handwritten mathematical formula, power, fraction, or scientific expression in the image into standard, clean LaTeX syntax matching Microsoft Word Equation Editor standards.
-RULES:
-1. Return ONLY the raw LaTeX string without any markdown backticks, without dollar signs, and without explanations.
-2. Standard MS Word Equation standards:
-   - Powers / Superscripts: use x^2, x^3, a^2+b^2=c^2, e^{i\\pi}+1=0, (a+b)^2
-   - Fractions: always use \\frac{numerator}{denominator} (e.g. \\frac{a}{b}, \\frac{U}{R}, \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a})
-   - Square roots: use \\sqrt{expression}
-   - Indices: use x_i, a_n
-   - Multiplications: use \\cdot or juxtaposition
-3. Return concise, clean LaTeX.`
-      : `You are an expert handwriting OCR engine.
-Transcribe the handwritten text in the image into plain text (Latin or Cyrillic, Uzbek/English).
-RULES:
-1. Return ONLY the transcribed text without commentary or quotes.`;
-
-    const payload = {
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            { text: prompt },
-            {
-              inlineData: {
-                mimeType: 'image/png',
-                data: base64Data
-              }
-            }
-          ]
-        }
-      ],
-      generationConfig: {
-        temperature: 0.1,
-        maxOutputTokens: 256
-      }
-    };
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error(`Gemini Vision so'rovi xatosi: ${response.status}`);
-    }
-
-    const data = await response.json();
-    let text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-
-    // Tozalash (Markdown bloklari va $ belgilarini olib tashlash)
-    text = text.replace(/```latex/gi, '')
-               .replace(/```math/gi, '')
-               .replace(/```/g, '')
-               .replace(/^\$+/, '')
-               .replace(/\$+$/, '')
-               .trim();
-
-    if (type === 'math') {
-      return { latex: text, confidence: 0.99 };
-    } else {
-      return { text: text, confidence: 0.96 };
-    }
   }
 
   /* ==========================================================================

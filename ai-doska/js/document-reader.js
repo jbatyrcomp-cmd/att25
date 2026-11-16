@@ -1,13 +1,12 @@
 /* ==========================================================================
    ATT-25 AI DOSKA — DOCUMENT READER & IMPORTER (document-reader.js)
    Ko'p formatli hujjatlarni o'qish (PDF, DOCX, XLSX, PPTX, TXT),
-   doskaga slaydlar/jadvallar qilib joylashtirish va AI yordamida tahlil qilish
+   doskaga slaydlar/jadvallar qilib joylashtirish
    ========================================================================== */
 
 class DocumentReader {
-  constructor(boardEngine, aiEngine) {
+  constructor(boardEngine) {
     this.board = boardEngine;
-    this.ai = aiEngine;
 
     // Hozirgi yuklangan va tahlil qilingan hujjat
     this.currentDoc = null;
@@ -173,26 +172,6 @@ class DocumentReader {
       this.closeModal();
     });
 
-    // 5. AI Konspekt va Tahlil
-    document.getElementById('btnActionAiSummarize')?.addEventListener('click', () => {
-      if (!this.currentDoc) return;
-      this.sendToAI('summarize', this.currentDoc);
-      this.closeModal();
-    });
-
-    // 6. AI Mindmap / Sxema
-    document.getElementById('btnActionAiMindmap')?.addEventListener('click', () => {
-      if (!this.currentDoc) return;
-      this.sendToAI('mindmap', this.currentDoc);
-      this.closeModal();
-    });
-
-    // 7. AI Test Savollari (Quiz)
-    document.getElementById('btnActionAiQuiz')?.addEventListener('click', () => {
-      if (!this.currentDoc) return;
-      this.sendToAI('quiz', this.currentDoc);
-      this.closeModal();
-    });
   }
 
   openModal() {
@@ -964,134 +943,6 @@ class DocumentReader {
   }
 
   /* ==========================================================================
-     AI INTEGRATSIYASI (KONSPEKT, MINDMAP, QUIZ)
-     ========================================================================== */
-  async sendToAI(action, doc) {
-    if (!this.ai) return;
-
-    const aiDrawer = document.getElementById('aiDrawer');
-    const aiPromptInput = document.getElementById('aiPromptInput');
-    const aiGenType = document.getElementById('aiGenType');
-    const btnAiRun = document.getElementById('btnAiRunGenerate');
-
-    if (action === 'summarize') {
-      if (typeof window.toast === 'function') {
-        window.toast(`🪄 AI "${doc.name}" bo'yicha konspekt tayyorlamoqda...`);
-      }
-
-      const prompt = `Quyidagi hujjat matnini diqqat bilan o'rganib chiq:
-Nomi: ${doc.name}
-Matn mazmuni:
-${doc.text.substring(0, 2500)}
-
-Vazifa: Ushbu hujjatning eng muhim qoidalarini, xulosalarini va asosiy g'oyasini o'quvchiga tushunarli qilib 5-6 banddan iborat qisqa, aniq konspekt (xulosa) shaklida tuzib ber.`;
-
-      try {
-        const res = await this.ai.chatWithAssistant(prompt);
-        const center = this.board.screenToWorld(this.board.width / 2, this.board.height / 2);
-
-        this.board.saveState();
-        this.board.addObject({
-          type: 'sticky',
-          x: Math.round(center.x - 160),
-          y: Math.round(center.y - 120),
-          width: 320,
-          height: 240,
-          bgColor: '#FEF08A',
-          textColor: '#1E293B',
-          text: `📑 "${doc.name}" KONSPEKTI:\n\n${res.reply.substring(0, 480)}...`
-        });
-
-        if (typeof window.toast === 'function') {
-          window.toast("✅ AI konspekt stikeri doskaga joylashtirildi!");
-        }
-      } catch (err) {
-        if (typeof window.toast === 'function') {
-          window.toast(`❌ AI xatosi: ${err.message}`);
-        }
-      }
-    } else if (action === 'mindmap') {
-      // AI Drawer-ni ochish va promptni yuborish
-      if (aiDrawer) aiDrawer.classList.add('open');
-      if (aiGenType) aiGenType.value = 'mindmap';
-      if (aiPromptInput) {
-        aiPromptInput.value = `${doc.title} aqliy xaritasi (mindmap)`;
-      }
-      setTimeout(() => {
-        btnAiRun?.click();
-      }, 300);
-      if (typeof window.toast === 'function') {
-        window.toast("🧠 Mindmap generatsiya qilinmoqda...");
-      }
-    } else if (action === 'quiz') {
-      if (typeof window.toast === 'function') {
-        window.toast(`❓ AI "${doc.name}" bo'yicha test savolini yaratmoqda...`);
-      }
-
-      const prompt = `Quyidagi matn bo'yicha talabalar bilimini sinash uchun bitta qiziqarli test savoli tuz:
-${doc.text.substring(0, 1800)}
-
-Quyidagi JSON formatda qaytar:
-{
-  "topic": "${doc.title}",
-  "question": "Savol matni?",
-  "options": ["A variant", "B variant", "C variant", "D variant"],
-  "correct": 0,
-  "explanation": "Nima uchun bu to'g'ri ekanligi tushuntirish"
-}`;
-
-      try {
-        const res = await this.ai.chatWithAssistant(prompt);
-        // JSON ni ajratib olish
-        const jsonMatch = res.reply.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const qData = JSON.parse(jsonMatch[0]);
-          const center = this.board.screenToWorld(this.board.width / 2, this.board.height / 2);
-
-          this.board.saveState();
-          this.board.addObject({
-            type: 'quiz_card',
-            x: Math.round(center.x - 170),
-            y: Math.round(center.y - 120),
-            width: 340,
-            height: 240,
-            topic: qData.topic || doc.title,
-            question: qData.question,
-            options: qData.options,
-            correctIndex: qData.correct !== undefined ? qData.correct : 0,
-            explanation: qData.explanation || ''
-          });
-
-          if (typeof window.toast === 'function') {
-            window.toast("🧠 Interaktiv test kartochkasi yaratildi!");
-          }
-        } else {
-          throw new Error("JSON formatda javob olinmadi");
-        }
-      } catch (err) {
-        // Fallback: Oddiy test kartasi yaratish
-        const center = this.board.screenToWorld(this.board.width / 2, this.board.height / 2);
-        this.board.saveState();
-        this.board.addObject({
-          type: 'quiz_card',
-          x: Math.round(center.x - 170),
-          y: Math.round(center.y - 120),
-          width: 340,
-          height: 240,
-          topic: doc.title,
-          question: `"${doc.title}" hujjatining asosiy mavzusi nima?`,
-          options: ["Nazariy asoslar", "Amaliy tadqiqot", "Tarmoq arxitekturasi", "Hisobot tahlili"],
-          correctIndex: 0,
-          explanation: "Hujjat matni asosida umumlashtirilgan savol."
-        });
-        if (typeof window.toast === 'function') {
-          window.toast("🧠 Hujjat testi doskaga joylashtirildi!");
-        }
-      }
-    }
-  }
-
-  /* ==========================================================================
      TO'G'RIDAN-TO'G'RI NAMOYISH REJIMI (INTERACTIVE PRESENTATION MODE)
      ========================================================================== */
   initPresenter() {
@@ -1107,9 +958,6 @@ Quyidagi JSON formatda qaytar:
     this.presenterDocTitle = document.getElementById('presenterDocTitle');
     this.presenterThumbDrawer = document.getElementById('presenterThumbnailDrawer');
     this.presenterThumbGrid = document.getElementById('presenterThumbGrid');
-    this.presenterAiPanel = document.getElementById('presenterAiPanel');
-    this.presenterAiContent = document.getElementById('presenterAiContent');
-    this.presenterAiLoading = document.getElementById('presenterAiLoading');
 
     this.currentSlideIndex = 0;
     this.isPresentationActive = false;
@@ -1139,11 +987,6 @@ Quyidagi JSON formatda qaytar:
     // Send to Board
     document.getElementById('btnPresenterSendToBoard')?.addEventListener('click', () => this.sendCurrentSlideToBoard());
 
-    // AI Izoh & Quiz
-    document.getElementById('btnPresenterAiExplain')?.addEventListener('click', () => this.toggleAiPanel());
-    document.getElementById('btnClosePresenterAi')?.addEventListener('click', () => this.toggleAiPanel(false));
-    document.getElementById('btnPresenterAiQuiz')?.addEventListener('click', () => this.generateAiSlideQuiz());
-    document.getElementById('btnPresenterAiKeyPoints')?.addEventListener('click', () => this.explainCurrentSlideWithAI());
 
     // Chizish asboblari
     document.querySelectorAll('.presenter-tool-btn[data-ptool]').forEach(btn => {
@@ -1585,93 +1428,6 @@ Quyidagi JSON formatda qaytar:
       });
 
       this.presenterThumbGrid.appendChild(item);
-    }
-  }
-
-  toggleAiPanel(forceState = null) {
-    if (!this.presenterAiPanel) return;
-    const isHidden = this.presenterAiPanel.classList.contains('hidden');
-    const show = forceState !== null ? forceState : isHidden;
-    this.presenterAiPanel.classList.toggle('hidden', !show);
-    if (show && (!this.presenterAiContent || !this.presenterAiContent.textContent.trim())) {
-      this.explainCurrentSlideWithAI();
-    }
-  }
-
-  async explainCurrentSlideWithAI() {
-    if (!this.currentDoc || !this.ai) return;
-    this.toggleAiPanel(true);
-    if (this.presenterAiLoading) this.presenterAiLoading.classList.remove('hidden');
-    if (this.presenterAiContent) this.presenterAiContent.innerHTML = '';
-
-    const doc = this.currentDoc;
-    const index = this.currentSlideIndex;
-    let slideText = '';
-
-    if (doc.type === 'pdf' && doc.pages && doc.pages[index]) {
-      slideText = doc.pages[index].text || `Sahifa ${index + 1}`;
-    } else if (doc.type === 'pptx' && doc.slides && doc.slides[index]) {
-      const sl = doc.slides[index];
-      slideText = `${sl.title}\n${sl.bullets.join('\n')}\n${sl.text}`;
-    } else if (doc.sections && doc.sections[index]) {
-      const sec = doc.sections[index];
-      slideText = `${sec.title}\n${sec.content}`;
-    } else {
-      slideText = doc.name;
-    }
-
-    try {
-      const prompt = `Ushbu taqdimot slaydi matni: "${slideText.substring(0, 900)}".
-Ma'ruzachi (o'qituvchi) darsda talabalarga ushbu slaydni tushuntirib berishi uchun 3 ta asosiy va muhim tezis va jonli misollar yozib ber. O'zbek tilida, qisqa va lo'nda bo'lsin.`;
-      const res = await this.ai.chatWithAssistant(prompt);
-      if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
-      if (this.presenterAiContent) {
-        const formatter = window.att25SafeFormatMarkdown;
-        this.presenterAiContent.innerHTML = `<div style="line-height: 1.6;">${formatter ? formatter(res.reply || '') : ''}</div>`;
-      }
-    } catch (err) {
-      if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
-      if (this.presenterAiContent) {
-        const formatter = window.att25SafeFormatMarkdown;
-        this.presenterAiContent.innerHTML = `<div style="color: #F87171;">${formatter ? formatter(`Izohni olishda xatolik yuz berdi: ${err.message}`) : ''}</div>`;
-      }
-    }
-  }
-
-  async generateAiSlideQuiz() {
-    if (!this.currentDoc || !this.ai) return;
-    this.toggleAiPanel(true);
-    if (this.presenterAiLoading) this.presenterAiLoading.classList.remove('hidden');
-
-    const doc = this.currentDoc;
-    const index = this.currentSlideIndex;
-    let slideText = '';
-
-    if (doc.type === 'pdf' && doc.pages && doc.pages[index]) {
-      slideText = doc.pages[index].text || `Sahifa ${index + 1}`;
-    } else if (doc.type === 'pptx' && doc.slides && doc.slides[index]) {
-      const sl = doc.slides[index];
-      slideText = `${sl.title}\n${sl.bullets.join('\n')}\n${sl.text}`;
-    } else if (doc.sections && doc.sections[index]) {
-      const sec = doc.sections[index];
-      slideText = `${sec.title}\n${sec.content}`;
-    }
-
-    try {
-      const prompt = `Ushbu slayd: "${slideText.substring(0, 700)}" bo'yicha talabalarga berish uchun 1 ta test savoli (A, B, C, D variantlari bilan) va to'g'ri javobni yozib ber.`;
-      const res = await this.ai.chatWithAssistant(prompt);
-      if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
-      if (this.presenterAiContent) {
-        const formatter = window.att25SafeFormatMarkdown;
-        this.presenterAiContent.innerHTML = `
-          <div style="background: rgba(0,255,135,0.08); border: 1px solid rgba(0,255,135,0.25); border-radius: 8px; padding: 12px; margin-bottom: 10px;">
-            <strong style="color: #00FF87;">❓ Slayd Test Savoli:</strong>
-            <div style="margin-top: 6px;">${formatter ? formatter(res.reply || '') : ''}</div>
-          </div>
-        `;
-      }
-    } catch (err) {
-      if (this.presenterAiLoading) this.presenterAiLoading.classList.add('hidden');
     }
   }
 

@@ -4,8 +4,7 @@
    ========================================================================== */
 
 class VoiceAssistant {
-  constructor(aiEngine, mathSolver, boardEngine) {
-    this.ai = aiEngine;
+  constructor(mathSolver, boardEngine) {
     this.math = mathSolver;
     this.board = boardEngine;
 
@@ -123,42 +122,19 @@ class VoiceAssistant {
 
     // 2. Konspekt tuzish / Tahlil qilish
     if (text.includes('konspekt') || text.includes('tahlil') || text.includes('xulosa') || text.includes('summarize')) {
-      this.showToast("Doska tahlil qilinmoqda...");
-      try {
-        const res = await this.ai.analyzeBoard('summarize');
-        // AI Drawer-ni ochish
-        const aiDrawer = document.getElementById('aiDrawer');
-        if (aiDrawer) {
-          aiDrawer.classList.add('open');
-          const tabAnalyze = document.querySelector('.ai-tab[data-tab="aiAnalyze"]');
-          if (tabAnalyze) tabAnalyze.click();
-          const resBox = document.getElementById('aiAnalysisResult');
-          if (resBox) {
-            const formatter = window.att25SafeFormatMarkdown;
-            resBox.innerHTML = formatter ? formatter(res) : '';
-          }
-        }
-      } catch (e) {
-        this.showToast("Tahlil xatosi: " + e.message);
-      }
+      this.showToast("AI tahlil bo‘limi vaqtincha olib tashlangan.");
       return;
     }
 
     // 3. Doskadan test / quiz yaratish
     if (text.includes('test') || text.includes('savol') || text.includes('quiz')) {
-      this.showToast("Doska asosida test tuzilmoqda...");
-      try {
-        await this.ai.generateQuizFromBoard();
-      } catch (e) {
-        this.showToast("Test yaratish xatosi: " + e.message);
-      }
+      this.showToast("AI test bo‘limi vaqtincha olib tashlangan.");
       return;
     }
 
     // 4. Chizmalarni tekislash (Auto-align)
     if (text.includes('tekisla') || text.includes('tartib') || text.includes('beautify') || text.includes('align')) {
-      this.showToast("Doska elementlari tekislanmoqda...");
-      this.ai.beautifyAndAlign();
+      this.showToast("AI tekislash bo‘limi vaqtincha olib tashlangan.");
       return;
     }
 
@@ -199,12 +175,7 @@ class VoiceAssistant {
 
     if (prompt.length < 3) prompt = rawText;
 
-    this.showToast(`AI doskaga chizmoqda: "${prompt}"`);
-    try {
-      await this.ai.generateFromPrompt(prompt, 'diagram');
-    } catch (e) {
-      this.showToast("Chizishda xatolik: " + e.message);
-    }
+    this.showToast("AI diagramma bo‘limi vaqtincha olib tashlangan.");
   }
 
   showToast(msg) {

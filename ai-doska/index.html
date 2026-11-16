@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uz" data-theme="chalkboard">
 <head>
   <meta charset="UTF-8">
@@ -292,20 +292,6 @@
         </a>
       </div>
 
-      <!-- 2. AI Assistent & Gemini -->
-      <div class="menu-section">
-        <div class="menu-section-title">Aqlli Sun'iy Intellekt</div>
-        <button id="menuBtnOpenAi" class="menu-action-item ai-highlight">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z"/>
-          </svg>
-          <div class="menu-item-text">
-            <strong>AI Assistent & Tahlilçi</strong>
-            <span>Matndan diagramma, tahlil va konspekt</span>
-          </div>
-          <span class="menu-badge-neon">LIVE AI</span>
-        </button>
-      </div>
 
       <!-- 3. Loyiha va Fayl amallari -->
       <div class="menu-section">
@@ -334,13 +320,6 @@
           <span class="menu-badge-neon" style="background: rgba(56, 189, 248, 0.2); color: #38BDF8; border-color: rgba(56, 189, 248, 0.4);">DOCS</span>
         </button>
         <div class="menu-grid-2">
-          <button id="menuBtnTemplates" class="menu-card-btn">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            </svg>
-            <span>Şablonlar</span>
-          </button>
           <button id="menuBtnExport" class="menu-card-btn">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
@@ -436,19 +415,19 @@
       <button id="btnExitFormulaMode" class="fmode-exit-btn" title="Rejimdan çiqiş">&times;</button>
     </div>
 
-    <!-- Jonli AI Formula Tahlil va Tasdiqlash Suzuvchi Nishoni -->
+    <!-- Jonli formula tahlili va tasdiqlash oynasi -->
     <div id="formulaLiveBadge" class="formula-live-badge hidden">
       <!-- 1. Tahlil jarayoni (Loading state) -->
       <div class="fbadge-loading" id="fbadgeLoading">
         <div class="fbadge-spinner"></div>
-        <span>⏳ AI formulani tahlil qilmoqda...</span>
+        <span>⏳ Formula tahlil qilinmoqda...</span>
       </div>
 
       <!-- 2. Natija va Tasdiqlash holati (Ready state) -->
       <div class="fbadge-ready hidden" id="fbadgeReady">
         <div class="fbadge-header">
           <span class="fbadge-word-tag">📄 MS WORD STANDART FORMULASI:</span>
-          <span id="fbadgeModeIndicator" style="font-family: var(--font-mono); font-size: 10px; color: #10B981; font-weight: 700;">✨ Gemini 2.5 Vision</span>
+          <span id="fbadgeModeIndicator" style="font-family: var(--font-mono); font-size: 10px; color: #38BDF8; font-weight: 700;">⚡ Lokal OCR</span>
         </div>
         <div id="fbadgeKatexPreview" class="fbadge-katex-preview"></div>
         <div class="fbadge-actions">
@@ -587,13 +566,6 @@
 
     <div class="toolbar-divider"></div>
 
-    <!-- Smart AI Assistent (Drawer) -->
-    <button class="tool-btn ai-tool-btn" id="btnToggleAi" title="Smart AI Assistent (Ctrl+I)">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-      </svg>
-      <span class="tool-shortcut">AI</span>
-    </button>
 
     <div class="toolbar-divider"></div>
 
@@ -619,11 +591,6 @@
           <span>Formula Muharriri (LaTeX)</span>
         </button>
 
-        <!-- AI Formula Rejimi -->
-        <button class="popover-item tool-btn-item" id="btnAiFormulaMode" data-tool="formula_mode" title="AI Formula Rejimi">
-          <span style="font-size: 14px;">✨</span>
-          <span>AI Formula Taniş (Alt+F)</span>
-        </button>
 
         <!-- 2D Funksiya Grafigi (Graph Plotter) -->
         <button class="popover-item tool-btn-item" id="btnGraphModalTool" title="2D Funksiya Grafigi çiziş (G)">
@@ -652,15 +619,6 @@
             <line x1="12" y1="17" x2="12.01" y2="17"/>
           </svg>
           <span>Interaktiv Test Kartoçkasi</span>
-        </button>
-
-        <!-- Magic Ink -->
-        <button class="popover-item tool-btn-item active-feature" id="btnMagicInkToggle" title="Magic Ink: Şakllarni töğirlaş">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 4l5 5L8 21H3v-5L15 4z"/>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L20 7l-5-5 1.5-1.5z"/>
-          </svg>
-          <span>Magic Ink (Avto-şakl)</span>
         </button>
 
         <!-- IP & Subnet Kalkulyator (CIDR / VLSM) -->
@@ -780,291 +738,6 @@
       </button>
     </div>
   </aside>
-
-  <!-- ==========================================================================
-       5. SMART AI ASSISTANT DRAWER (AI YON PANELI)
-       ========================================================================== -->
-  <aside class="ai-drawer" id="aiDrawer" role="complementary" aria-label="AI Yordamçi Paneli">
-    <div class="ai-drawer-header">
-      <div class="ai-header-title">
-        <div class="ai-avatar-pulse">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M12 2L14.39 8.26L21 9.27L16.24 13.97L17.5 20.5L12 17.27L6.5 20.5L7.76 13.97L3 9.27L9.61 8.26L12 2Z"/>
-          </svg>
-        </div>
-        <div>
-          <h3>Aqlli AI Co-pilot</h3>
-          <span class="ai-status-text">⚡ Doska tahlilçisi, repetitor va generatori</span>
-        </div>
-      </div>
-      <button class="drawer-close-btn" id="btnCloseAi" title="Yopiş">&times;</button>
-    </div>
-
-    <!-- AI Tab navigation: 6 ta aqlli bo'lim -->
-    <div class="ai-tabs" role="tablist" aria-label="AI bölimlari">
-      <button class="ai-tab active" data-tab="aiGenerate" role="tab" aria-selected="true" id="tab-aiGenerate" aria-controls="paneAiGenerate">🪄 Generatsiya</button>
-      <button class="ai-tab" data-tab="aiChat" role="tab" aria-selected="false" id="tab-aiChat" aria-controls="paneAiChat">💬 Co-pilot</button>
-      <button class="ai-tab" data-tab="aiAnalyze" role="tab" aria-selected="false" id="tab-aiAnalyze" aria-controls="paneAiAnalyze">🔍 Tahlil</button>
-      <button class="ai-tab" data-tab="aiEdit" role="tab" aria-selected="false" id="tab-aiEdit" aria-controls="paneAiEdit">✦ AI Tahrir</button>
-      <button class="ai-tab" data-tab="aiQuiz" role="tab" aria-selected="false" id="tab-aiQuiz" aria-controls="paneAiQuiz">🧠 Test</button>
-      <button class="ai-tab" data-tab="aiSettings" role="tab" aria-selected="false" id="tab-aiSettings" aria-controls="paneAiSettings">⚙️ Sozlama</button>
-    </div>
-
-    <!-- TAB 1: Diagramma & Mindmap Generatori -->
-    <div class="ai-pane active" id="paneAiGenerate" role="tabpanel" aria-labelledby="tab-aiGenerate">
-      <div class="ai-input-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <label for="aiPromptInput" class="ai-card-label" style="margin: 0;">AI ga buyruq bering (Prompt):</label>
-          <button id="btnVoicePrompt" class="voice-mic-btn" title="Ovozli buyruq aytiş (Mikrofon)">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
-            </svg>
-            <span>Ovoz</span>
-          </button>
-        </div>
-        <textarea id="aiPromptInput" class="ai-textarea" rows="3" placeholder="Masalan: Mikroxizmatlar arxitekturasini çiz yoki x^2 - 5x + 6 = 0 ni yeç..."></textarea>
-        <div class="ai-actions-row">
-          <select id="aiGenType" class="ai-select">
-            <option value="diagram">📊 Blok Sxema</option>
-            <option value="mindmap">🧠 Mindmap (Aqliy daraxt)</option>
-            <option value="sticky_cluster">📑 Stikerlar töplami</option>
-            <option value="network">🌐 Tarmoq Topologiyasi</option>
-          </select>
-          <button id="btnAiRunGenerate" class="btn-ai-primary">
-            <span>Doskaga Çiziş</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="ai-section-title">⚡ Tezkor IT & Muhandislik Sxemalari:</div>
-      <div class="ai-chips-grid">
-        <button class="ai-chip" data-preset="microservices">🏗️ Mikroxizmatlar</button>
-        <button class="ai-chip" data-preset="docker_k8s">☸️ Kubernetes K8s</button>
-        <button class="ai-chip" data-preset="cicd">🔄 CI/CD Pipeline</button>
-        <button class="ai-chip" data-preset="git_flow">🌿 Git Brançing</button>
-        <button class="ai-chip" data-preset="neural_net">🧠 Neyron Tarmoq</button>
-        <button class="ai-chip" data-preset="sql_joins">🗄️ SQL JOIN</button>
-        <button class="ai-chip" data-preset="load_balancer">⚖️ Load Balancer</button>
-        <button class="ai-chip" data-preset="dns">🌐 DNS Resolution</button>
-        <button class="ai-chip" data-preset="osi">📶 OSI 7 Qatlam</button>
-        <button class="ai-chip" data-preset="tcp_handshake">🤝 TCP Handshake</button>
-        <button class="ai-chip" data-preset="ospf_bgp">🗺️ OSPF+BGP Routing</button>
-        <button class="ai-chip" data-preset="zero_trust">🛡️ Zero-Trust ZTNA</button>
-        <button class="ai-chip" data-preset="rest_api">🔌 REST API dizayn</button>
-        <button class="ai-chip" data-preset="oauth_jwt">🔐 OAuth2 + JWT</button>
-        <button class="ai-chip" data-preset="cloud_arch">☁️ Cloud Arxitektura</button>
-        <button class="ai-chip" data-preset="cache_redis">⚡ Redis Cache</button>
-        <button class="ai-chip" data-preset="kafka">📨 Kafka Queue</button>
-        <button class="ai-chip" data-preset="vlan">🔀 VLAN 802.1Q</button>
-        <button class="ai-chip" data-preset="dhcp">📋 DHCP DORA</button>
-        <button class="ai-chip" data-preset="tls">🔒 TLS Handshake</button>
-        <button class="ai-chip" data-preset="erd">🗄️ ERD Ma'lumot Bazasi</button>
-        <button class="ai-chip" data-preset="big_o">📊 Big-O Tahlil</button>
-        <button class="ai-chip" data-preset="flowchart">🔄 Algoritm Blok-Sxema</button>
-        <button class="ai-chip" data-preset="subnet_calc">🔢 Subnet /26 Hisobi</button>
-        <button class="ai-chip" data-preset="tcp_udp_comp">📊 TCP vs UDP Jadvali</button>
-        <button class="ai-chip" data-preset="osi_comp">🏛️ OSI vs TCP/IP</button>
-        <button class="ai-chip" data-preset="pki_flow">🔐 PKI & Raqamli Imzo</button>
-        <button class="ai-chip" data-preset="webrtc_call">📹 WebRTC Video Call</button>
-        <button class="ai-chip" data-preset="cicd_gitops">🚀 CI/CD GitOps</button>
-      </div>
-
-      <div id="aiGenStatus" class="ai-status-box hidden"></div>
-    </div>
-
-    <!-- TAB 2: AI Co-pilot (Interaktiv Chat & Repetitor) -->
-    <div class="ai-pane" id="paneAiChat" role="tabpanel" aria-labelledby="tab-aiChat">
-      <div class="ai-chat-container">
-        <div class="ai-chat-messages" id="aiChatMessages">
-          <div class="chat-msg bot">
-            <div class="chat-bubble">
-              Assalomu alaykum! Men sizning <strong>AI Co-pilot</strong> yordamçingizman. OSI, TCP, dasturlaş, matematik, kiberxavfsizlik va boşqa köp mavzularda yordam beraman. Savol bering! 🤖
-            </div>
-          </div>
-        </div>
-
-        <div class="ai-chat-quick-prompts">
-          <button class="chat-quick-chip" data-q="Doskadagi sxemani o'quvchiga tushuntirgandek sodda tushuntirib ber">💡 Doskani tuşuntir</button>
-          <button class="chat-quick-chip" data-q="OSI 7 qatlam modeli nima va har bir qatlam vazifasi nima?">🌐 OSI nima?</button>
-          <button class="chat-quick-chip" data-q="TCP va UDP farqi va qayerda ishlatiladi?">🔀 TCP vs UDP</button>
-          <button class="chat-quick-chip" data-q="Ushbu arxitekturaning kamchiliklari va xavflari nimada?">🛡️ Xavflar</button>
-          <button class="chat-quick-chip" data-q="Python dasturlashda OOP nima va qanday qo'llaniladi?">🐍 OOP Python</button>
-          <button class="chat-quick-chip" data-q="Doska mavzusiga oid 3 ta muhim savol ber">❓ 3 ta savol</button>
-        </div>
-
-        <div class="ai-chat-input-row">
-          <textarea id="aiChatInput" class="ai-chat-input" rows="2" placeholder="Savol bering (masalan: OSPF qanday işlaydi?)..."></textarea>
-          <button id="btnVoiceChat" class="voice-mic-btn icon-only" title="Ovoz bilan yoziş">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
-            </svg>
-          </button>
-          <button id="btnSendChat" class="btn-ai-primary icon-only" title="Yuboriş">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-          </button>
-          <button id="btnClearChat" class="voice-mic-btn icon-only" title="Chat tarixini tozalaş" style="color:#F43F5E;">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: Doska Tahlili, Go'zallashtiruvchi & Tekshiruvchi -->
-    <div class="ai-pane" id="paneAiAnalyze" role="tabpanel" aria-labelledby="tab-aiAnalyze">
-      <div class="ai-analyze-intro">
-        <p>AI doskadagi barça çizmalar, stikerlar va tarmoq tugunlarini körib çiqib, ularning xatolarini tekşiradi va professional konspekt tuzadi.</p>
-        <div class="ai-analyze-grid-buttons">
-          <button id="btnAiSummarize" class="btn-ai-secondary">
-            <span>📝 Konspekt Tuziş</span>
-          </button>
-          <button id="btnAiExplain" class="btn-ai-secondary">
-            <span>💡 Doskani Tuşuntiriş</span>
-          </button>
-          <button id="btnAiQuizAnalysis" class="btn-ai-secondary">
-            <span>❓ Test Savollar</span>
-          </button>
-          <button id="btnAiColorPalette" class="btn-ai-secondary">
-            <span>🎨 Rang Tavsiyasi</span>
-          </button>
-          <button id="btnAiBeautify" class="btn-ai-secondary action-green">
-            <span>✨ Tekislaş</span>
-          </button>
-          <button id="btnAiValidate" class="btn-ai-secondary action-amber">
-            <span>⚠️ Xato Tekşir</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="ai-result-area" id="aiAnalysisResult">
-        <div class="ai-empty-state">
-          <span>Doskada biror sxema yoki yozuvlar yarating va yuqoridagi tugmalardan birini bosing.</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: AI Element Tahrirlash (YANGI) -->
-    <div class="ai-pane" id="paneAiEdit" role="tabpanel" aria-labelledby="tab-aiEdit">
-      <div class="ai-input-card">
-        <h4 style="margin:0 0 8px;font-size:13px;color:#F8FAFC;">✦ Tanlangan Elementni AI Bilan Tahrirlaş</h4>
-        <p style="font-size:11px;color:#94A3B8;margin:0 0 12px;line-height:1.5;">
-          Doskadan elementni tanlang (bosiş), keyin özgartiriş buyruğini yozing.
-        </p>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
-          <button class="ai-edit-chip" data-cmd="rang #38BDF8" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38BDF8;cursor:pointer;">🔵 Kök rang</button>
-          <button class="ai-edit-chip" data-cmd="rang #10B981" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#10B981;cursor:pointer;">🟢 Yaşil rang</button>
-          <button class="ai-edit-chip" data-cmd="rang #F43F5E" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(244,63,94,0.15);border:1px solid rgba(244,63,94,0.3);color:#F43F5E;cursor:pointer;">🔴 Qizil rang</button>
-          <button class="ai-edit-chip" data-cmd="rang #F59E0B" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#F59E0B;cursor:pointer;">🟡 Sariq rang</button>
-          <button class="ai-edit-chip" data-cmd="rang #A855F7" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:#A855F7;cursor:pointer;">🟣 Binafşa</button>
-          <button class="ai-edit-chip" data-cmd="kattalashtir" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#F8FAFC;cursor:pointer;">🔍 Kattalaştir</button>
-          <button class="ai-edit-chip" data-cmd="kichiklashtir" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#F8FAFC;cursor:pointer;">🔎 Kiçiklaştir</button>
-          <button class="ai-edit-chip" data-cmd="o'chir" style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(244,63,94,0.12);border:1px solid rgba(244,63,94,0.3);color:#F43F5E;cursor:pointer;">🗑️ Öçir</button>
-        </div>
-        <div style="display:flex;gap:6px;">
-          <input type="text" id="aiEditInput" placeholder="Misol: rang #FF6600  yoki  matn «Yangi nom»" style="flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:8px 10px;color:#F8FAFC;font-size:12px;outline:none;">
-          <button id="btnAiEdit" style="background:linear-gradient(135deg,#A855F7,#38BDF8);border:none;border-radius:6px;padding:8px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">✦ Bajar</button>
-        </div>
-        <div id="aiEditStatus" class="hidden" style="margin-top:8px;font-size:11px;padding:6px 8px;background:rgba(255,255,255,0.05);border-radius:4px;"></div>
-
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-          <p style="font-size:11px;color:#94A3B8;margin:0 0 8px;">📋 Qöllanma:</p>
-          <p style="font-size:10.5px;color:#64748B;line-height:1.7;margin:0;">
-            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">rang #FF0000</code> — Rang özgartiriş<br>
-            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">matn «Yangi nom»</code> — Matnni özgartiriş<br>
-            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">kattalashtir</code> — 130% ga kattalaştiriş<br>
-            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">kichiklashtir</code> — 75% ga kiçiklaştiriş<br>
-            • <code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;">o'chir</code> — Elementni öçiriş<br>
-            <br>💡 Ctrl+Shift+E — bu panelni tezkor oçiş
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 5: Doskadan Avtomatik Test Yaratish -->
-    <div class="ai-pane" id="paneAiQuiz" role="tabpanel" aria-labelledby="tab-aiQuiz">
-      <div class="ai-input-card">
-        <h4>🧠 Intellektual Test Generatori</h4>
-        <p style="font-size: 12px; color: #94A3B8; margin: 6px 0 14px 0; line-height: 1.5;">
-          AI doskaga çizilgan sxema, tarmoq yoki formulalarni örganib çiqib, talabalar bilimini sinaş uçun töğri javobi yaşiringan interaktiv test kartoçkasini avtomatik yaratadi.
-        </p>
-        <button id="btnAiAutoQuiz" class="btn-ai-primary" style="width: 100%; justify-content: center; padding: 12px 18px;">
-          <span>Doska Asosida Test Yaratiş</span>
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-      </div>
-
-      <div id="aiQuizStatus" class="ai-status-box hidden" style="margin-top: 14px;"></div>
-    </div>
-
-    <!-- TAB 6: Sozlamalar va Gemini API -->
-    <div class="ai-pane" id="paneAiSettings" role="tabpanel" aria-labelledby="tab-aiSettings">
-      <div class="ai-setting-block">
-        <label class="setting-label">AI Işlaş Rejimi:</label>
-        <div class="setting-radio-group">
-          <label class="radio-card">
-            <input type="radio" name="aiMode" value="offline" checked>
-            <div class="radio-content">
-              <strong>⚡ Tezkor Avtonom Rejim</strong>
-              <span>Internet yoki API kalit talab qilinmaydi. Örnatilgan aqlli şablonlar asosida işlaydi.</span>
-            </div>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="aiMode" value="gemini">
-            <div class="radio-content">
-              <strong>✨ Google Gemini API (Çeksiz AI)</strong>
-              <span>Har qanday erkin mavzuda jonli diagrammalar çiziş uçun Gemini kalitingizni ulang.</span>
-            </div>
-          </label>
-        </div>
-      </div>
-
-      <div class="ai-setting-block" id="geminiKeyBlock" style="opacity: 0.5;">
-        <label for="geminiApiKeyInput" class="setting-label">Google Gemini API Kaliti:</label>
-        <input type="password" id="geminiApiKeyInput" class="ai-input" placeholder="AIzaSy...">
-        <span class="setting-hint">Kalit faqat brauzeringizning LocalStorage-da saqlanadi va serverga jönatilmaydi.</span>
-        <button id="btnSaveApiKey" class="btn-save-key">Kalitni Saqlaş</button>
-      </div>
-
-      <div class="ai-setting-block">
-        <label class="setting-label">Ovozli Boşqaruv Tili (Voice AI):</label>
-        <select id="voiceLangSelect" class="ai-select">
-          <option value="uz-UZ" selected>🇺🇿 Özbek tili (uz-UZ)</option>
-          <option value="ru-RU">🇷🇺 Rus tili (ru-RU)</option>
-          <option value="en-US">🇺🇸 Ingliz tili (en-US)</option>
-        </select>
-        <span class="setting-hint">Mikrofon orqali buyruqlarni talaffuz qilişda uşbu til qöllaniladi.</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- ==========================================================================
-       6. SHABLONLAR MODALI (TEMPLATES MODAL)
-       ========================================================================== -->
-  <div class="modal-backdrop hidden" id="templatesModal" role="dialog" aria-modal="true" aria-labelledby="templatesModalTitle">
-    <div class="modal-card wide">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <span class="modal-pill">KUTUBXONA</span>
-          <h2 id="templatesModalTitle">Tayyor Öquv va Tarmoq Şablonlari</h2>
-        </div>
-        <button class="modal-close-btn" id="btnCloseTemplates">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p class="modal-desc">Dars yoki loyihangiz uçun kerakli şablonni tanlang. U darhol doskaga professional tarzda joylaştiriladi:</p>
-        <div class="templates-grid" id="templatesGrid">
-          <!-- Shablon kartochkalari js/templates.js orqali render bo'ladi -->
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ==========================================================================
        7. EKSPORT MODALI (EXPORT MODAL)
        ========================================================================== -->
@@ -1467,7 +1140,7 @@ else:
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; flex-wrap: wrap; gap: 10px;">
           <div id="ocrStatusBadge" style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #10B981;">
-            ✨ Gemini Vision orqali aniqlandi
+            ⚡ Lokal evristik OCR orqali aniqlandi
           </div>
           <div style="display: flex; gap: 10px;">
             <button id="btnCancelOcr" class="action-pill-btn">Bekor Qiliş</button>
@@ -1730,31 +1403,6 @@ else:
                   <p>Excel / CSV jadvallarini çiroyli vektorli taqqoslaş jadvali sifatida joylaydi</p>
                 </div>
               </div>
-
-              <!-- AI Amallari -->
-              <div class="doc-action-card ai-glow" id="btnActionAiSummarize">
-                <div class="doc-action-icon">🪄</div>
-                <div class="doc-action-details">
-                  <h5>AI Konspekt &amp; Tuşuntiriş</h5>
-                  <p>Hujjatning eng muhim ğoyalarini AI orqali konspekt qilib stikerga yozadi</p>
-                </div>
-              </div>
-
-              <div class="doc-action-card ai-glow" id="btnActionAiMindmap">
-                <div class="doc-action-icon">🧠</div>
-                <div class="doc-action-details">
-                  <h5>AI Mindmap &amp; Sxema Çiziş</h5>
-                  <p>Hujjat mavzusi böyiça boğlangan aqliy xarita (mindmap) generatsiya qiladi</p>
-                </div>
-              </div>
-
-              <div class="doc-action-card ai-glow" id="btnActionAiQuiz">
-                <div class="doc-action-icon">❓</div>
-                <div class="doc-action-details">
-                  <h5>AI Test Savollari (Quiz)</h5>
-                  <p>Hujjat asosida talabalarga bilim tekşiruvçi interaktiv test kartoçkasi yaratadi</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -1763,27 +1411,9 @@ else:
   </div>
 
   <!-- ==========================================================================
-       10d. SUZUVCHI SELECTION AI TEZKOR BUYRUQLAR BAR (SELECTION FLOATING BAR)
-       ========================================================================== -->
-  <div class="selection-floating-bar" id="selectionFloatingBar">
-    <button class="selection-ai-btn primary" id="btnSelAiExplain" title="Tanlangan elementni AI orqali tuşuntiriş va stiker yopiştiriş">
-      <span>💡 AI Tuşuntir</span>
-    </button>
-    <button class="selection-ai-btn" id="btnSelAiQuiz" title="Tanlangan ob'ekt böyiça interaktiv bilim test kartoçkasini yaratiş">
-      <span>🧠 Test Yarat</span>
-    </button>
-    <div class="selection-bar-divider"></div>
-    <button class="selection-ai-btn" id="btnSelAiColor" title="Elementga estetik mos rang palitrasini örnatiş">
-      <span>🎨 Smart Rang</span>
-    </button>
-    <button class="selection-ai-btn" id="btnSelAiAlign" title="Elementlarni kataklarga tekislaş">
-      <span>📏 Tekislaş</span>
-    </button>
-  </div>
-
-  <!-- ==========================================================================
        12. MINIMAP (PASTKI O'NG BURCHAKDA DOSKA HARITASI)
        ========================================================================== -->
+
   <div class="minimap-container" id="minimapContainer" title="Doska maydoni mini-xaritasi">
     <canvas id="minimapCanvas" width="140" height="90"></canvas>
     <div class="minimap-viewport" id="minimapViewport"></div>
@@ -1903,9 +1533,6 @@ else:
         <span class="presenter-title" id="presenterDocTitle">Hujjat nomi</span>
       </div>
       <div class="presenter-top-actions">
-        <button class="presenter-top-btn" id="btnPresenterAiExplain" title="AI Slayd Konspekti &amp; Izohi">
-          <span>🧠 AI Izoh</span>
-        </button>
         <button class="presenter-top-btn" id="btnPresenterSendToBoard" title="Uşbu slaydni doskaga saqlaş">
           <span>📌 Doskaga Saqlaş</span>
         </button>
@@ -1932,27 +1559,6 @@ else:
         <div id="presenterLaserDot" class="presenter-laser-dot hidden"></div>
       </div>
 
-      <!-- Yon tarafdagi AI Izohlar Paneli (Floating AI Slide Insights) -->
-      <aside id="presenterAiPanel" class="presenter-ai-panel hidden">
-        <div class="presenter-ai-header">
-          <div class="presenter-ai-title">
-            <span>🧠</span>
-            <h5>AI Slayd Izohi</h5>
-          </div>
-          <button id="btnClosePresenterAi" class="presenter-ai-close">&times;</button>
-        </div>
-        <div class="presenter-ai-body" id="presenterAiBody">
-          <div class="presenter-ai-loading hidden" id="presenterAiLoading">
-            <div class="doc-spinner"></div>
-            <span>AI slaydni tahlil qilmoqda...</span>
-          </div>
-          <div id="presenterAiContent" class="presenter-ai-content"></div>
-        </div>
-        <div class="presenter-ai-footer">
-          <button id="btnPresenterAiQuiz" class="presenter-ai-action-btn">❓ Slayd böyiça Test</button>
-          <button id="btnPresenterAiKeyPoints" class="presenter-ai-action-btn">💡 Asosiy Tezislar</button>
-        </div>
-      </aside>
     </div>
 
     <!-- Pastki Suzuvchi Taqdimotchi Paneli (Floating Presenter Toolbar) -->
@@ -2079,14 +1685,12 @@ else:
   <script src="js/board.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/smartboard.js"></script>
-  <script src="js/templates.js?v=2"></script>
   <script src="js/math-solver.js?v=3"></script>
   <script src="js/code-bridge.js"></script>
   <script src="js/handwriting-ocr.js"></script>
   <script src="js/subnet-calculator.js"></script>
   <script src="js/comparison-tables.js"></script>
   <script src="js/document-reader.js"></script>
-  <script src="js/ai-engine.js?v=3"></script>
   <script src="js/voice-assistant.js?v=3"></script>
   <script src="js/app.js?v=3"></script>
 </body>
